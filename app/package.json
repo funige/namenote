@@ -1,0 +1,41 @@
+{
+  "name": "Namenote",
+  "version": "0.7.6",
+  "description": "A hackable drawing notebook.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/funige/namenote.git"
+  },
+  "author": "funige",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/funige/namenote/issues"
+  },
+  "homepage": "https://github.com/funige/namenote#readme",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^14.4.0",
+    "electron": "^1.8.2-beta.2",
+    "electron-packager": "^9.1.0",
+    "gulp": "^3.9.1",
+    "gulp-notify": "^3.0.0",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglify": "^3.0.0",
+    "gulp-webserver": "^0.9.1",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "bl": "^1.2.1",
+    "browserify-fs": "^1.0.0",
+    "electron-json-storage": "^4.0.2",
+    "end-of-stream": "^1.4.0",
+    "fs": "0.0.1-security",
+    "jszip": "^3.1.3",
+    "pdfmake": "^0.1.33"
+  }
+}

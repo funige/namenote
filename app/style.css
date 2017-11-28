@@ -1,0 +1,399 @@
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+
+//  position: fixed;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    overflow: auto;
+
+    font-family: verdana;
+    font-size: 14px;
+
+    position: fixed;
+}
+
+/**
+ * ToolBar
+ */
+
+#tool-bar {
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    border: 0px solid black;
+    border-bottom: 1px solid #aaa;
+    background-color: #f6f6f6;
+    user-select: none;
+}
+
+/**
+ * Main
+ */
+
+#main {
+    position: absolute;
+    top: 37px;
+    width: 100%;
+    height: calc(100% - 37px);
+    overflow: hidden;
+}
+
+.split-pane {
+}
+
+.split-pane-divider {
+    background: #a3a3a3;
+}
+#left-component {
+    width: 200px;
+    overflow: scroll;
+}
+#my-divider {
+    left: 200px;       /* Same as left component initial width */
+    width: 1px;
+}
+#right-component {
+    left: 200px;       /* Same as left component initial width */
+    margin-left: 1px;  /* Same as divider width */
+    
+    background-color: #f0f0f0; //#d0d0d0; //#eee;
+    position: absolute;
+
+    overflow: scroll;
+    overflow-x: hidden;
+//  overflow-y: hidden; //test
+    -webkit-overflow-scrolling: touch;
+}
+
+.root {
+    position: absolute;
+}
+
+.view {
+    position: absolute;
+}
+
+.view-frame {
+    position: absolute;
+//  border: 1px solid blue;
+    border-bottom: 1px solid rgba(0,0,0,0.01)
+    pointer-events: none;
+}
+
+.page {
+    position: absolute;
+    box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.2);
+    z-index: 0
+}
+
+.page.selected {
+    z-index: 1;
+    outline: 3px solid rgba(133,191,253,1.0);
+}
+
+.page-mask {
+    position: absolute;
+    overflow: hidden;
+}
+
+.page-root {
+    position: absolute;
+}
+
+.number {
+    margin-top: 6px; //8px;
+    color: #555;
+    opacity: 1.0
+}
+.number.selected {
+    color: #3a98fc; //#85bffd;
+    opacity: 1.0
+}
+
+.project {
+    -webkit-font-smoothing: subpixel-antialiased;
+    font-smoothing: subpixel-antialiased;
+}
+
+.texts {
+}
+
+.text {
+//  position: absolute;
+    min-width: 1em;
+    min-height: 1em;
+    white-space: nowrap;
+    cursor: default;
+    outline: 1px solid #eee; //85bffd;
+    background: rgba(255,255,255,0)
+    z-index: 1000;
+}
+
+.text * {
+    user-select: element;
+}
+
+.text.selected {
+    border: none;
+    outline: 1px solid #3a98fc; //#3a98fc;
+    background: rgba(133,191,253,0.5); //rgba(58,152,252,1.0);
+}
+
+.text.editable {
+    outline: 2px solid orange; //#3a98fc; //orange; //#ff0084;
+    background: rgba(255,255,255,0.7)
+}
+
+.text-node {
+    position: absolute;
+//  border: 1px solid red; //background: rgba(255,255,0.5)
+}
+
+.selection {
+    position: absolute;
+    z-index: 2000;
+}
+
+canvas {
+    position: absolute;
+//  imageRendering: pixelated;
+}
+
+canvas .scratch {
+    z-index :100;
+}
+
+form {
+    line-height: 200%;
+}
+
+form td:first-child {
+    padding-right: 20px;
+    white-space: nowrap;
+}
+
+form input {
+    padding: 2px;
+}
+
+form input[type=radio] {
+    margin-right: 5px;
+}
+
+form label {
+    margin-right: 5px;
+}
+
+form .name   { width: 250px; }
+form .dir    { width: 250px; margin-right: 2px; border: none; text-overflow: ellipsis;}
+form .tmpl   { width: 250px; }
+form .ref    { padding: 5px; }
+form .key    { width: 30px; }
+form .count  { width: 30px; }
+form .count2 { width: 30px; border: none; text-overflow: ellipsis;}
+form .extract { width: 500px; height: 450px; }
+
+/**
+ * Scrollbar
+ */
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 12px; 
+    height: 12px; 
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: #c0c0c0;   
+}
+
+::-webkit-scrollbar-corner {
+    background-color: #a0a0a0;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px; //4px;
+    background-clip: content-box;
+    background-color: rgba(0,0,0,.5); 
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+}
+::-webkit-scrollbar-thumb:vertical {
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+}
+    
+/**
+ * jQuery ui
+ *
+ */
+
+.dialog {
+    margin-top: 1em;
+    font-size: 14px;
+}
+
+.dialog-message {
+    text-align: right;
+    margin-top: 14px;
+    margin-right: 14px;
+}
+
+.ui-dialog-titlebar-close {
+    visibility: hidden;
+}
+
+.ui-widget-overlay {
+    opacity: 0.5 !important;
+    filter: Alpha(Opacity=50) !important;
+    background-color: black !important;
+}
+
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}
+.ui-menu {
+    width: 150px;
+}
+
+/*
+.ui-button:focus {
+    outline:none !important
+}
+*/
+
+/**
+ * Widget
+ */
+
+.img-button {
+    margin: 6px 4px;
+    background-position: 0% 0%;
+    opacity: 1.0;
+}
+
+.img-button:hover {
+    background-position: 0% 33.3333%;
+}
+
+.img-button:active {
+    background-position: 0% 66.6666%;
+}
+
+.img-button.locked {
+    background-position: 0% 100%;
+}
+
+.img-button.off { opacity: 0.3; }
+.img-button.off:hover { background-position: 0% 0%; }
+.img-button.off:active { background-position: 0% 0%; }
+
+.separator {
+    background-color: #ccc;
+    width: 1px;
+    height: 24px;
+    margin: 6px 4px;
+}
+
+.separator.left { float: left; }
+.separator.right { float: right; }
+
+.clipboard {
+    width: 14px;
+    height: 14px;
+    border: none;
+    margin: 6px 4px;
+    margin-top: 12px;
+    background-color: #f6f6f6;
+}
+
+#save-indicator {
+    position: absolute;
+    left: 0px;
+    bottom: 0px; //7px;
+    z-index: 3000;
+    opacity: 0.8; //0.4
+    pointer-events: none;
+}
+
+
+/**
+ * Dropdown Button 
+ */
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+//.dropbtn:hover, .dropbtn:focus {
+//    background-color: #3e8e41;
+//}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 10;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 33px; //36px;
+    background-color: #eee; //#f6f6f6; //#d0d0d0;
+    border: 1px solid #aaa;
+    min-width: 180px; //160px;
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+
+.dropdown-form {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.dropdown-form-separator {
+    color: #ccc;
+    width: 1px;
+    height: 32px;
+}
+

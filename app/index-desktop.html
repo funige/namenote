@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="ja">
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css" media="all" href="style.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="js/lib/jquery-ui.min.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="js/lib/split-pane.css" />
+
+  <script>
+    if (typeof module === 'object') { window.module = module; module = undefined }
+  </script>
+  <script src="js/lib/jquery.min.js"></script>
+  <script src="js/lib/jquery-ui.min.js"></script>
+  <script src="js/lib/split-pane.js"></script>
+  <script src="js/lib/mousetrap.js"></script>
+
+  <script src="js/bundle-desktop.js"></script>
+
+  <script>
+    if (window.module) module = window.module
+    $(function() {
+      namenote.init()
+    })
+  </script>
+
+  <title>Namenote</title>
+</head>
+
+<body>
+  <div id="save-indicator" title="save indicator" style="display:none">
+    <img src='img/save-indicator.png'>
+  </div>
+  
+  <div id="tool-bar">
+    <div id="pen-button" title="pen"></div>
+    <div id="eraser-button" title="eraser"></div>
+    <div id="arrow-button" title="arrow"></div>
+
+    <div class="separator left"></div>
+    <div id="undo-button" title="undo"></div>
+    <div id="redo-button" title="redo"></div>
+
+    <input class='clipboard' id="clipboard" type="text" value=" " disabled />
+
+    <!--
+    <div class="separator left"></div>
+    -->
+    <!--
+    <div id="menu-button" title="menu"></div>
+    <div class="separator right"></div>
+    -->
+    
+    <div id="unzoom-button" title="unzoom"></div>
+    <div id="zoom-button" title="zoom" style=""></div>
+    <div id="row-button" title="row" style=""></div>
+    
+    <!--<div class="separator right"></div>-->
+    <div id="canvas-mask-button" title="canvas mask"></div>
+    <div id="text-mask-button" title="text mask"></div>
+
+  </div>
+
+  <div id="main">
+    <div class="split-pane fixed-left" style="opacity:0;">
+      <div class="split-pane-component" id="left-component">
+	This is the left component...
+      </div>
+      <div class="split-pane-divider" id="my-divider"></div>
+      <div class="split-pane-component" id="right-component">
+	<div class="root"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog" id="about-dialog" style="display:none;"></div>
+  <div class="dialog" id="open-new-dialog" style="display:none;"></div>
+  <div class="dialog" id="export-csnf-dialog" style="display:none;"></div>
+  <div class="dialog" id="export-pdf-dialog" style="display:none;"></div>
+  <div class="dialog" id="import-txt-dialog" style="display:none;"></div>
+  <div class="dialog" id="extract-text-dialog" style="display:none;"></div>
+  <div class="dialog" id="config-dialog" style="display:none;"></div>
+
+  <div id="text-buffer" style="display:none;"></div>
+</body>
+
+</html>
