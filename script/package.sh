@@ -20,15 +20,14 @@ electron-packager ./app --overwrite --platform=darwin --arch=x64 --icon=assets/i
 echo "packageing for win32..."
 electron-packager ./app --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/namenote.ico --prune=true --out=release-builds --ignore='es6/.*\.es6'
 
-echo "ditto for macos..."
-ditto -c -k --sequesterRsrc --keepParent release-builds/Namenote-darwin-x64 ./Namenote/mac.zip 
+cd release-builds
+echo "zip for macos..."
+zip -qyr ../Namenote/mac.zip Namenote-darwin-x64 -x *.DS_Store
 
-echo "ditto for win32..."
-ditto -c -k --sequesterRsrc --keepParent release-builds/Namenote-win32-ia32 ./Namenote/win.zip 
+echo "zip for win32..."
+zip -qr ../Namenote/win.zip Namenote-win32-ia32 -x *.DS_Store
 
-echo "zip files..."
-ditto -c -k --sequesterRsrc --keepParent Namenote Namenote.zip 
-zip -d Namenote.zip '__MACOSX*'
-zip -d Namenote.zip '*.DS_Store'
+cd ..
+zip -qr Namenote.zip Namenote -x *.DS_Store
 
 echo "done."

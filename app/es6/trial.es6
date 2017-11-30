@@ -33,6 +33,16 @@ Trial.showMessage = () => {
 
 Trial.getInstallTime = (callback) => {
   Trial.getStorageInstallTime((time) => {
+    // update time to extend trial period...
+    const betatime = Timestamp.toInt("20171201000000")
+    if (time < betatime) {
+      time = betatime
+      Trial.setConfigInstallTime(time)
+      Trial.setStorageInstallTime(time)
+      callback(time)
+      return
+    }
+    
     const time2 = Trial.getConfigInstallTime()
     if (time2 > time) {
       Trial.setConfigInstallTime(time)

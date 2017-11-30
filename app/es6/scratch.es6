@@ -87,28 +87,6 @@ class Scratch {
 	  // この計算もおかしい
 	  const a = a0 - a1
 	  dst8[index + 3] = a * 255
-	  
-	  /*
-	  const d = (1.0 - a1) * a0
-	  let a, ainv, c
-	  if (a0 == 0) {
-	    a = a0
-	    c = c0
-	  } else if (a0 == 1) {
-	    a = a1
-	    c = c1
-	  } else if (a1 == 0) {
-	    a = a0
-	    c = c0
-	  } else {
-	    a = a0 + a1
-	    ainv = 1.0 / a
-	    c = c1 * a1 * ainv + c0 * d * ainv
-	  }
-	  a = a * c
-	  dst8[index + 3] -= a * 255
-	  */
-
 	  index += 4;
 	}
       }
@@ -121,6 +99,11 @@ class Scratch {
 
   rect() {
     const bound = this.bound
+    bound[0] -= 1;
+    bound[1] -= 1;
+    bound[2] += 1;
+    bound[3] += 1;
+
     const xmin = (bound[0] > 0) ? bound[0] : 0
     const ymin = (bound[1] > 0) ? bound[1] : 0
     const xmax = (bound[2] < this.canvas.width-1) ? bound[2] : this.canvas.width-1

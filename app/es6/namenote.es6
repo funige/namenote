@@ -68,7 +68,7 @@ const namenote = {
   },
 }
 
-namenote.version = "0.7.6" // Use script/version.sh to update this value
+namenote.version = "0.7.7" // Use script/version.sh to update this value
 namenote.trial = true
 
 namenote.command = command
