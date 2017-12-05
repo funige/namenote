@@ -1,6 +1,6 @@
 {
   "name": "Namenote",
-  "version": "0.7.9-debug",
+  "version": "0.7.9",
   "description": "A hackable drawing notebook.",
   "main": "main.js",
   "scripts": {
