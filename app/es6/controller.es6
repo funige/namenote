@@ -122,12 +122,13 @@ Controller.onDown = (e) => {
     }
 
     if (node.classList && node.classList.contains('page')) {
-      if (Controller.spaceKey) {
+      pid = Page.getPID(node)
+
+      if (Controller.spaceKey || !project.findPageFromEvent(e)) {
 	Tool.push('hand')
 
       } else {
-	pid = Page.getPID(node)
-	project.selectPage(Page.getPID(node))
+	project.selectPage(pid)
 	project.selection.clear()
       }
 
@@ -192,6 +193,14 @@ Controller.isMoved = () => {
 
 Controller.clearMove = () => {
   if (!Controller.spaceKey) moved = false
+}
+
+Controller.rawPositionFromEvent = (e) => {
+  const x = (!e) ? Controller.x :
+	(e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+  const y = (!e) ? Controller.y :
+	(e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+  return [ x, y ]
 }
 
 

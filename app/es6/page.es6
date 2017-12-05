@@ -354,18 +354,18 @@ class Page {
     }
   }
 
-  positionFromEvent(e) {
+  positionFromRaw(raw) {
     const rect = this.element.getBoundingClientRect()
     const scale = this.project.bookmark.getScale()
-    const mouseX = (!e) ? Controller.x :
-	  (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
-    const mouseY = (!e) ? Controller.y :
-	  (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
-    
-    return [
-      (mouseX - rect.left) / scale + this.offsetX,
-      (mouseY - rect.top) / scale + this.offsetY
-    ]
+
+    const x = (raw[0] - rect.left) / scale + this.offsetX
+    const y = (raw[1] - rect.top) / scale + this.offsetY
+    return [ x, y ]
+  }
+
+  positionFromEvent(e) {
+    const raw = Controller.rawPositionFromEvent(e)
+    return this.positionFromRaw(raw)
   }
 
   extractText() {

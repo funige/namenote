@@ -66,6 +66,8 @@ Menu.update = (element) => {
       label: item, data: item, click: 'openURL'
     })
   }
+  recents[0].accelerator = "CmdOrCtrl+1"
+  
   for (let item of Project.list) {
     windows.unshift({
       label: item.url, data: item.url, click: 'openURL',

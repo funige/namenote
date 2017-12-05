@@ -29,7 +29,7 @@ const aboutDialog = {
     <br><br>
 
     <table>
-      <tr><td>ペン・消しゴム切替&nbsp;<td>X</tr>
+      <tr><td>ペン・消しゴム切替&nbsp;<td>C</tr>
       <tr><td>ズーム<td>Space</tr>
       <tr><td>テキストの追加<td>Ctrl+クリック</tr>
       <tr><td>テキストの削除<td>Del</tr>
