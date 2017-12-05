@@ -334,7 +334,6 @@ const command = {
       node = project.selection.list[0]
       if (node) {
 	$(node).addClass('editable')
-	//node.contentEditable = true
 	Text.setEditable(node, true)
 
 	project.selection.lift()
@@ -348,9 +347,7 @@ const command = {
     const project = Project.current
     if (!project) return
 
-//  if (Text.isEditable(element) && element.contentEditable) {
-      project.selection.addFontSize(element)
-//  }
+    project.selection.addFontSize(element)
   },
   
   subtractFontSize: (data) => {
@@ -358,9 +355,7 @@ const command = {
     const project = Project.current
     if (!project) return
 
-//  if (Text.isEditable(element) && element.contentEditable) {
-      project.selection.subtractFontSize(element);
-//  }
+    project.selection.subtractFontSize(element);
   },
   
   toggleDirection: (data) => {
@@ -368,9 +363,7 @@ const command = {
     const project = Project.current
     if (!project) return
 
-//  if (Text.isEditable(element) && element.contentEditable) {
-      project.selection.toggleDirection(element)
-//  }
+    project.selection.toggleDirection(element)
   },
 
   cutText: (data) => {
@@ -380,9 +373,29 @@ const command = {
   hoge: (data) => { nn.log('*hoge*') }, 
   funi: (data) => { nn.log('*funi*') }, 
 
-  pen: (data) => { Tool.select('pen') },
-  eraser: (data) => { Tool.select('eraser') },
-  text: (data) => { Tool.select('arrow') },
+  pen: (e) => {
+    if (!Tool.isSelected('pen')) {
+      Tool.select('pen')
+    } else {
+      Tool.toggleDropdown(e, 'pen')
+    }
+  },
+  
+  eraser: (e) => {
+    if (!Tool.isSelected('eraser')) {
+      Tool.select('eraser')
+    } else {
+      Tool.toggleDropdown(e, 'eraser')
+    }
+  },
+  
+  text: (e) => {
+    if (!Tool.isSelected('arrow')) {
+      Tool.select('arrow')
+    } else {
+      Tool.toggleDropdown(e, 'arrow')
+    }
+  },
 
   toggleTool: (data) => {
     if (Tool.current === Tool.tools['pen']) {
@@ -405,6 +418,7 @@ const command = {
 //    nn.log("*pass*")
 //    return
 //  }
+    
     if (Project.current) View.toggleShowMargin()
   },
   
@@ -433,6 +447,7 @@ const command = {
 
     toolButton.init()
     configDialog.initForm()
+    configDialog.initColor()
   },
 
   pageDown: (data) => {

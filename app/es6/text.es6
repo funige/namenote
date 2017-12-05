@@ -4,22 +4,27 @@ import { Project } from './project.es6'
 import { Page } from './page.es6'
 import { Menu } from './menu.es6'
 import { command } from './command.es6'
+import { config } from './config.es6'
 
 
 class Text {}
 
+Text.savedSize = null
+
 Text.addFontSize = (element)  => {
   const size = parseInt(element.style.fontSize)
+  const newSize = (size >= 72) ? size : size + 1
   
-  element.style.fontSize = `${(size >= 72) ? size : size + 1}px`
+  element.style.fontSize = `${newSize}px`
   Text.fixPosition(element)
   nn.log('fontSize=', element.style.fontSize)
 }
 
 Text.subtractFontSize = (element)  => {
   const size = parseInt(element.style.fontSize)
+  const newSize = (size <= 8) ? size : size - 1
 
-  element.style.fontSize = `${(size <= 8) ? size : size - 1}px`
+  element.style.fontSize = `${newSize}px`
   Text.fixPosition(element)
   nn.log('fontSize=', element.style.fontSize)
 }
@@ -40,15 +45,36 @@ Text.toggleDirection = (element)  => {
   setImmediate(() => { Text.initPosition(element) })
 }
 
+Text.readableSize = (size) => {
+  const min = Text.getZoomFontSize()
+  const readableSize = min / Project.current.bookmark.getScale()
+  if (size < readableSize) size = readableSize
+  return size + 'px'
+}
+
 Text.setEditable = (element, value) => {
   if (element.contentEditable && element.contentEditable == 'true') {
     if (!value) {
       element.contentEditable = false
+      if (config.getValue('zoomFont', false)) {
+	if (Text.savedSize) {
+	  element.style.fontSize = Text.savedSize + 'px'
+	  Text.fixPosition(element)
+	  Text.savedSize = null
+	}
+      }
       Menu.update(element);
     }
   } else {
     if (value) {
       element.contentEditable = 'true'
+      if (config.getValue('zoomFont', false)) {
+	if (element.style.fontSize) {
+	  Text.savedSize = parseFloat(element.style.fontSize)
+	  element.style.fontSize = Text.readableSize(Text.savedSize)
+	  Text.fixPosition(element)
+	}
+      }
       Menu.update(element);
     }
   }
@@ -186,8 +212,6 @@ Text.getParams = (element) => {
   return params
 }
 
-
-
 Text.normalize = (html) => {
   nn.log(html)
   
@@ -207,6 +231,17 @@ Text.normalize = (html) => {
 
   nn.log('=>', result)
   return result
+}
+
+Text.getTextColor = () => {
+  return config.getValue('textColor', '#bf0058')
+}
+
+Text.getZoomFontSize = () => {
+  if (config.getValue('zoomFont', false)) {
+    return config.getValue('zoomFontSize', 8)
+  }
+  return 0
 }
 
 

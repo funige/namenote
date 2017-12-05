@@ -28,6 +28,7 @@ import { Timestamp } from './timestamp.es6'
 
 import { Selection } from './selection.es6'
 import { Autosave } from './autosave.es6'
+import { debug } from './debug.es6'
 
 import { CSNF } from './csnf.es6'
 
@@ -49,6 +50,7 @@ const namenote = {
     Controller.init()
     View.init()
     Autosave.init()
+    debug.init()
     
     Tool.tools['dummy'] = new Tool()
     Tool.tools['pen'] = new PenTool()
@@ -57,7 +59,7 @@ const namenote = {
     Tool.tools['hand'] = new HandTool()
     Tool.tools['text'] = new TextTool()
     Tool.init()
-
+    
     if (namenote.trial) {
       Trial.showMessage()
     }
@@ -68,8 +70,8 @@ const namenote = {
   },
 }
 
-namenote.version = "0.7.7" // Use script/version.sh to update this value
-namenote.trial = true
+namenote.version = "0.7.9-debug" // Use script/version.sh to update this value
+namenote.trial = false
 
 namenote.command = command
 namenote.config = config
@@ -80,12 +82,13 @@ namenote.view = View
 namenote.tool = Tool
 namenote.selection = Selection
 namenote.autosave = Autosave
+namenote.debug = debug
 
 namenote.csnf = CSNF
 namenote.timestamp = Timestamp
 
-//namenote.log = console.log.bind(window.console)
-namenote.log = () => {}
+namenote.log = console.log.bind(window.console)
+//namenote.log = () => {}
 namenote.warn = console.warn.bind(window.console)
 namenote.error = console.error.bind(window.console)
 

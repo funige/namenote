@@ -4,7 +4,7 @@ import { Tool } from './tool.es6'
 import { Project } from './project.es6'
 import { config } from './config.es6'
 
-let page, pageX, pageY, moved
+let page, pageX, pageY, moved, stopped
 let sizeTable = [ 2, 4, 8 ]
 
 
@@ -12,8 +12,6 @@ class PenTool extends Tool {
   constructor() {
     super()
     this.name = 'pen'
-    //this.size = config.getValue('penSize', 0)
-    //this.pressure = config.getValue('penPressure', true)
   }
 
   onDown(e, pid) {
@@ -49,7 +47,7 @@ class PenTool extends Tool {
     const y = pos[1]
     
     let pressure = Math.min(1, e.pressure * e.pressure * 2)
-    if (!this.getPenPressure()) pressure = 1
+    if (!this.getPenPressure()) pressure = 0.7
 
 
     if (pageX != x || pageY != y) {
@@ -59,7 +57,7 @@ class PenTool extends Tool {
       const ctx = project.scratch.ctx
       if (ctx) {
 	ctx.beginPath()
-	ctx.lineWidth = d * pressure + 0.5
+	ctx.lineWidth = (d - 2) + (2 * pressure) + 0.5
 	ctx.lineCap = 'butt' //'round'
 	ctx.strokeStyle = `rgba(0, 0, 0, ${pressure * 1})`
 	ctx.moveTo(pageX, pageY)

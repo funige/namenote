@@ -53,6 +53,15 @@ const ui = {
     ui.toolBar.update()
     ui.sideBar.update()
   },
+
+  isDialogOpen: () => {
+    for (const dialog of $('.ui-dialog-content')) {
+      if ($(dialog).dialog('isOpen')) {
+	return true
+      }
+    }
+    return false
+  },
 }
 
 locale.init()

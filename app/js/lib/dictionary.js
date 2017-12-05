@@ -81,6 +81,12 @@ const dictionary = {
     "Start page": "開始ページ",
     "From left": "左ページ",
     "From right": "右ページ",
+    "Pages": "ページ",
+    "All": "すべて",
+    "Current page": "選択されたページ",
+    "Range": "範囲指定",
+    "Scale": "拡大/縮小",
+    "Text color": "テキストの色",
 
     "Export CLIP STUDIO Storyboard": "CLIP STUDIO ネーム書き出し",
     "Export PDF": "PDF書き出し",
@@ -93,7 +99,7 @@ const dictionary = {
     "File not found.": "ファイルが見つかりません。",
     "Save error.": "セーブできません。",
     "Compressing": "圧縮中",
-    "Renderring": "作成中",
+    "Rendering": "作成中",
 
     "Comment key": "コメント行頭",
     "Choose file...": "ファイルを選択...",
@@ -103,7 +109,8 @@ const dictionary = {
     " day(s) left.": "日ぐらい試用できます。\nありがとうございます！", 
     "We're sorry, but your trial period has expired.": "試用期間終了しました。\nありがとうございました！", 
 
-    "Can not draw because the canvas scrolls on drag.": "スクロールしちゃって全く描けない",
+    "Zoom small texts on input": "小さいテキストを入力するときは拡大表示する",
+    "Can not draw because the canvas scrolls on drag": "スクロールしちゃって全く描けない",
     "Click OK to restore default settings.": "デフォルトの設定に戻します",
     
     "Enable Japanese Options": "日本語用のオプションを有効にする"

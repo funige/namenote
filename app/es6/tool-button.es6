@@ -3,6 +3,7 @@
 import { Tool } from './tool.es6'
 import { locale } from './locale.es6'
 import { config } from './config.es6'
+import { command } from './command.es6'
 
 const buttons = []
 
@@ -35,12 +36,12 @@ toolButton.initPenButton = () => {
     locked: true,
     float: 'left',
     click: function(e) {
-      if (!Tool.isSelected('pen')) {
-	Tool.select('pen')
-
-      } else {
-	Tool.toggleDropdown(e, 'pen')
-      }
+      command.pen(e)
+//      if (!Tool.isSelected('pen')) {
+//	Tool.select('pen')
+//      } else {
+//	Tool.toggleDropdown(e, 'pen')
+//      }
     },
     html: locale.translateHTML(penDropdown)
   })[0]
@@ -64,12 +65,13 @@ toolButton.initEraserButton = () => {
     src: 'img/eraser-button.png',
     float: 'left',
     click: function(e) {
-      if (!Tool.isSelected('eraser')) {
-	Tool.select('eraser')
-
-      } else {
-	Tool.toggleDropdown(e, 'eraser')
-      }
+      command.eraser(e)
+//      if (!Tool.isSelected('eraser')) {
+//	Tool.select('eraser')
+//
+//      } else {
+//	Tool.toggleDropdown(e, 'eraser')
+//      }
     },
     html: locale.translateHTML(eraserDropdown)
   })[0]
@@ -107,12 +109,13 @@ toolButton.initTextButton = () => {
     src: 'img/text-button.png',
     float: 'left',
     click: function(e) {
-      if (!Tool.isSelected('arrow')) {
-	Tool.select('arrow')
-	
-      } else {
-	Tool.toggleDropdown(e, 'arrow')
-      }
+      command.text(e)
+//      if (!Tool.isSelected('arrow')) {
+//	Tool.select('arrow')
+//	
+//      } else {
+//	Tool.toggleDropdown(e, 'arrow')
+//      }
     },
     html: locale.translateHTML(textDropdown)
   })[0]

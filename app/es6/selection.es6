@@ -149,7 +149,7 @@ class Selection {
       for (let i = this.list.length - 1; i >= 0; i--) {
 	const element = this.list[i]
 	const info = this.liftinfo[i]
-	element.style.color = 'black'
+//	element.style.color = 'black'
 
 	if (!interPage) {
 	  const x = parseFloat(element.style.left) - info.x

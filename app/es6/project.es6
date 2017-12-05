@@ -156,7 +156,7 @@ class Project {
   getFramePNG() {
     const canvas = this.scratch.canvas
     const ctx = this.scratch.ctx
-    ctx.fillStyle = '#ffffff'
+    ctx.fillStyle = '#fcfcfc'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     ctx.lineWidth = 1
     ctx.beginPath()

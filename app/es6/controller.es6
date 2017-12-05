@@ -98,6 +98,7 @@ Controller.init = () => {
 }
 
 Controller.onDown = (e) => {
+  nn.log("on down")
   Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
   Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
 
@@ -137,7 +138,7 @@ Controller.onDown = (e) => {
       Tool.current.onDown(e, pid)
       nn.log('*page', pid)
       onStroke = true
-      return
+      return 
     }
 
     if (node.id == 'tool-bar') {
@@ -163,6 +164,7 @@ Controller.onUp = (e) => {
     onStroke = false
     pid = null
   }
+  //return false
 }
 
 Controller.onMove = (e) => {
@@ -171,6 +173,7 @@ Controller.onMove = (e) => {
   if (onStroke) {
     Tool.current.onMove(e)
   }
+  //return false
 }
 
 Controller.getPID = (node) => {

@@ -5,15 +5,13 @@ import { Project } from './project.es6'
 import { config } from './config.es6'
 
 let page, pageX, pageY, moved
-let sizeTable = [ 10, 50, 250 ]
+let sizeTable = [ 10, 25, 100 ]
 
 
 class EraserTool extends Tool {
   constructor() {
     super()
     this.name = 'eraser'
-    //this.size = config.getValue('eraserSize', 0)
-    //this.pressure = config.getValue('eraserPressure', true)
   }
 
   onDown(e, pid) {
@@ -49,7 +47,7 @@ class EraserTool extends Tool {
     const y = pos[1]
 
     let pressure = Math.min(1, e.pressure * e.pressure * 2)
-    if (!this.getEraserPressure()) pressure = 1
+    if (!this.getEraserPressure()) pressure = 0.7
     
     if (pageX != x || pageY != y) {
       moved = true
@@ -58,7 +56,7 @@ class EraserTool extends Tool {
       const ctx = project.scratch.ctx
       if (ctx) {
 	ctx.beginPath()
-	ctx.lineWidth = d * pressure + 0.5
+	ctx.lineWidth = (d - 2) + (2 * pressure) + 0.5
 	ctx.lineCap = 'round'
 	ctx.strokeStyle = `rgba(255, 255, 255, ${pressure})` //rgba(0, 255,...
 

@@ -6,7 +6,6 @@ const configDefault = {
   sideBarSize: 200,
 
   defaultPath: null,
-  defaultCommentKey: '’',
   defaultName: null,
   defaultAuthor: null,
 }

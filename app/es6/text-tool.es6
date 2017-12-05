@@ -64,7 +64,6 @@ class TextTool extends Tool {
       project.selection.removeOthers(_node)
 
       $(_node).addClass("editable")
-      //_node.contentEditable = true
       Text.setEditable(_node, true)
 
       project.selection.lift()

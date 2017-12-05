@@ -75,7 +75,7 @@ CSNF.zipData = (list, callback) => {
   if (list.length > 0) {
     const item = list.shift()
     nn.log('...zip', item.name, item.data.length)
-    exportCSNFDialog.showMessage(T('Compressing') + ` ${list.length}...`)
+    exportCSNFDialog.showMessage(T('Rendering') + ` ${list.length}...`)
 
     const zip = new JSZip()
     zip.file(item.name, item.data, { createFolders:false, binary:true })

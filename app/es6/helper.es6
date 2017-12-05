@@ -51,7 +51,12 @@ const helper = {
       }
     }
     if (!duplicate) nn.log('no duplicate ids!')
-  }
+  },
+
+  addRule: (selector, styleName, value) => {
+    var sheet = document.styleSheets[0]
+    sheet.addRule(selector, styleName + ":" + value, sheet.rules.length)
+  },
 }
 
 

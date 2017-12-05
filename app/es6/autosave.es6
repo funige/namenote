@@ -2,6 +2,7 @@
 
 import { Project } from './project.es6'
 import { Page } from './page.es6'
+import { debug } from './debug.es6'
 
 const worker = new Worker('./js/lib/worker.js')
 const defaultInterval = 10
@@ -77,6 +78,7 @@ Autosave.init = () => {
 
 Autosave.update = () => {
   Autosave.assertPage()
+  //debug.updateMemoryUsage()
 
   if (Autosave.status == Autosave.STATUS.DISABLED) return
   

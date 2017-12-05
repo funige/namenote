@@ -77,7 +77,8 @@ Tool.isSelected = (name) => {
 }
 
 Tool.toggleDropdown = (e, name) => {
-  if ($(e.target).hasClass('img-button')) {
+  if (e && !$(e.target).hasClass('img-button')) return
+//if (!e || $(e.target).hasClass('img-button')) {
     const id = name + '-dropdown'
     for (const element of $('.dropdown-content')) {
       if (element.id == id) {
@@ -86,7 +87,7 @@ Tool.toggleDropdown = (e, name) => {
 	element.style.display = 'none'
       }
     }
-  }
+//}
 }
 
 Tool.hideOtherDropdown = (name) => {

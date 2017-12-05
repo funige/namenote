@@ -1,11 +1,12 @@
 
 # Namenote
 
-ありがとうございます。
 Namenoteは、漫画のネームを快適に書くために作られた新しいツールです。
-
 明らかに力不足なので時間はかかると思いますが、なんとか仕事に使えるレベルのツールに仕上げたいと思っています。
 
+更新履歴は
+https://github.com/funige/namenote/releases
+にあります。
 
 気がついた点や要望がありましたら、
 https://github.com/funige/namenote/issues

@@ -240,10 +240,11 @@ class Page {
   setupTextElement(node, keepID) {
     const project = this.project
     
-    //node.contentEditable = false
     Text.setEditable(node, false)
     $(node).removeClass('editable')
     $(node).removeClass('selected')
+    $(node).css('color', '')
+    
     if (!keepID) {
       node.id = Date.now() + this.project.maxID++
     }
@@ -256,7 +257,6 @@ class Page {
 	project.selection.dropInBlur(node)
       })
       $(node).removeClass("editable")
-      //node.contentEditable = false
       Text.setEditable(node, false)
       Text.initPosition(node)
     })
@@ -409,7 +409,7 @@ class Page {
 	text = text.replace(/&yen;/g, '&#165;')
 	text = text.replace(/&plusmn;/g, '&#177;')
 	text = text.replace(/&minus;/g, '&#8722;')
-	text = text.replace(/style="/g, 'style="white-space:nowrap; z-index:100;')
+	text = text.replace(/style="/g, 'style="white-space:nowrap; z-index:100; color:#bf0058;')
 
 	text = text.replace(/<br>/g, "<br\/>")
 	text = text.replace(/<br\/><\/div>/g, "<\/div>")

@@ -56,7 +56,9 @@ View.init = () => {
   View.onScroll({target: root.parentNode})
 
   window.onresize = () => View.onResize()
-  window.oncontextmenu = (e) => { return false }
+  window.oncontextmenu = (e) => {
+    return false
+  }
   
   View.show()
 }

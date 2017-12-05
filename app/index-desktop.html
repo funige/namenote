@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" media="all" href="style.css" />
   <link rel="stylesheet" type="text/css" media="all" href="js/lib/jquery-ui.min.css" />
   <link rel="stylesheet" type="text/css" media="all" href="js/lib/split-pane.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="js/lib/spectrum.css" />
 
   <script>
     if (typeof module === 'object') { window.module = module; module = undefined }
@@ -13,6 +14,7 @@
   <script src="js/lib/jquery.min.js"></script>
   <script src="js/lib/jquery-ui.min.js"></script>
   <script src="js/lib/split-pane.js"></script>
+  <script src="js/lib/spectrum.js"></script>
   <script src="js/lib/mousetrap.js"></script>
 
   <script src="js/bundle-desktop.js"></script>
@@ -42,6 +44,7 @@
     <div id="redo-button" title="redo"></div>
 
     <input class='clipboard' id="clipboard" type="text" value=" " disabled />
+    <span id="memory-usage"></span>
 
     <!--
     <div class="separator left"></div>
@@ -53,7 +56,7 @@
     
     <div id="unzoom-button" title="unzoom"></div>
     <div id="zoom-button" title="zoom" style=""></div>
-    <div id="row-button" title="row" style=""></div>
+    <div id="row-button" title="quick zoom" style=""></div>
     
     <!--<div class="separator right"></div>-->
     <div id="canvas-mask-button" title="canvas mask"></div>

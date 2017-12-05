@@ -15,7 +15,7 @@ gulp.task('browserify', function() {
       console.log("Error : " + err.message);
     })
     .pipe(source('bundle-desktop.js'))
-    .pipe(streamify(uglify()))
+//  .pipe(streamify(uglify()))
     .pipe(gulp.dest('./js'))
     .pipe(notify({title:'ok', sound:'Hero'}))
 });

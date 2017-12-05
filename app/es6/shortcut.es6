@@ -4,6 +4,7 @@ import { command } from './command.es6'
 import { shortcutDefault } from './shortcut-default.es6'
 import { Text } from './text.es6'
 import { Controller } from './controller.es6'
+import { ui } from './ui.es6'
 
 
 
@@ -86,18 +87,14 @@ const shortcut = {
       Controller.clearMove()
       return false;
     })
+
     Mousetrap.bind('enter', (e) => {
-      Controller.clearMove()
-      return false;
+      if (ui.isDialogOpen()) return true
+      command.quickZoom()
+      return false
     })
 
     Mousetrap.bind('space', (e) => {
-      if (!Controller.isMoved()) {
-	command.quickZoom();
-      }
-      return false;
-    }, 'keyup')
-    Mousetrap.bind('enter', (e) => {
       if (!Controller.isMoved()) {
 	command.quickZoom();
       }

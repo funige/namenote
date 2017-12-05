@@ -3,8 +3,12 @@
 // alt+f, alt+e, alt+v, alt+h はウィンドウのメニューに使用
   
 const shortcutDefault = {
-  undo: ['command+z', 'ctrl+z', 'num/', ','],
-  redo: ['command+y', 'ctrl+y', 'num*', '.'],
+  undo: ['command+z', 'ctrl+z', 'num/', ',', 'z'],
+  redo: ['command+y', 'ctrl+y', 'num*', '.', 'x'],
+  zoom: ['[', 'q', 'numplus'],
+  unzoom: [']', 'a', 'numminus'],
+  toggleTool: ['c', 'num.', '/'],
+
   openNewDialog: ['command+n', 'alt+n'],
   open: ['command+o', 'alt+o'],
   close: ['command+w', 'alt+w'],
@@ -21,8 +25,6 @@ const shortcutDefault = {
   pageRight: 'right', //'ctrl+b'],
   pageUp: 'up',       //'ctrl+p'],
   pageDown: 'down',   //'ctrl+n'],
-  zoom: ['[', 'numplus'],
-  unzoom: [']', 'numminus'],
 
   selectAll: 'ctrl+a',
   unselect: 'ctrl+d',
@@ -34,7 +36,6 @@ const shortcutDefault = {
   pen: 'p',
   eraser: 'e',
   text: 't',
-  toggleTool: ['x', 'num.'],
 
   // ページ操作
 

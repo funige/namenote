@@ -37,6 +37,7 @@ body {
     border-bottom: 1px solid #aaa;
     background-color: #f6f6f6;
     user-select: none;
+    text-align: center;
 }
 
 /**
@@ -140,6 +141,7 @@ body {
     outline: 1px solid #eee; //85bffd;
     background: rgba(255,255,255,0)
     z-index: 1000;
+    color: #bf0058;
 }
 
 .text * {
@@ -153,8 +155,8 @@ body {
 }
 
 .text.editable {
-    outline: 2px solid orange; //#3a98fc; //orange; //#ff0084;
-    background: rgba(255,255,255,0.7)
+    outline: 2px solid #3a98fc; //orange; //#ff0084;
+    background: rgba(255,255,255,0.9); //0.7
 }
 
 .text-node {
