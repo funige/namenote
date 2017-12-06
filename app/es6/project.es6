@@ -113,11 +113,14 @@ class Project {
 //    return this.bookmark
 //  }
   
-  getPageInfo() {
+  getPageInfo(startPage, endPage) {
     const bind = this.params.bind_right
     const info = []
 
-    const array = this.getPageArray()
+    if (startPage === undefined) startPage = 1
+    if (endPage === undefined) endPage = this.pages.length
+    
+    const array = this.getPageArray(startPage, endPage)
     let counter = 1
 
     for (let i = 0; i < array.length; i += 2) {
@@ -138,14 +141,15 @@ class Project {
     return info
   }
 
-  getPageArray() {
+  getPageArray(startPage, endPage) {
     const array = []
     const bind = this.params.bind_right
     const start = this.params.startpage_right
 
     if ((bind && !start) || (!bind && start)) array.push(0)
 
-    for (let i = 0; i < this.pages.length; i++) {
+//  for (let i = 0; i < this.pages.length; i++) {
+    for (let i = startPage - 1; i <= endPage - 1; i++) {
       array.push(this.pages[i].pid)
     }
 
@@ -502,6 +506,29 @@ class Project {
     }
     Autosave.pushPage(page)
   }
+
+  setExportSettings(form) {
+    this.exportName = form.name.value.replace(/.csnf$/, '')
+
+    switch (parseInt(form.page.value)) {
+    case 1:
+      this.exportStart = this.currentPage.index
+      this.exportEnd = this.currentPage.index
+      break
+
+    case 2:
+      this.exportStart = parseInt(form.from.value)
+      this.exportEnd = parseInt(form.to.value)
+      break
+
+    case 0:
+    default:
+      this.exportStart = 1
+      this.exportEnd = this.pages.length
+      break
+    }
+    nn.warn(form.page.value, this.exportStart, this.exportEnd)
+  }
 }
 
 ////////////////////////////////////////////////////////////////
@@ -551,7 +578,6 @@ Project.select = (project) => {
 Project.getDefaultURL = () => {
   return T('Untitled')
 }
-
 
 Project.open = (url, callback) => {
   let project = Project.find(url)

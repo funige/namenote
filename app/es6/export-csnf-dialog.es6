@@ -36,6 +36,7 @@ const exportCSNFDialog = {
           <input name='from' class='count' value='10' /> -
           <input name='to' class='count' value='10' /></label>
 
+      <tr><td style='height: 0.5em;'>
       <tr><td valign=top>T(Scale):
       <td><select name='scale' class='tmpl'>
         <option value=100>100%
@@ -87,8 +88,8 @@ const exportCSNFDialog = {
       if (this.value < 1) {
 	this.value = 1
 	this.focus()
-      } else if (this.value > form.to.value) {
-	this.value = form.to.value
+      } else if (this.value > parseInt(form.to.value)) {
+	this.value = parseInt(form.to.value)
 	this.focus()
       }
     })
@@ -96,8 +97,8 @@ const exportCSNFDialog = {
       if (this.value > Project.current.pages.length) {
 	this.value = Project.current.pages.length
 	this.focus()
-      } else if (this.value < form.from.value) {
-	this.value = form.from.value
+      } else if (this.value < parseInt(form.from.value)) {
+	this.value = parseInt(form.from.value)
 	this.focus()
       }
     })

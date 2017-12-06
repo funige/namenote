@@ -112,7 +112,8 @@ CSNF.makeData = (project) => {
   const dir = files[0]
   const result = []
 
-  for (let i = 0; i < project.pages.length; i++) {
+  for (let i = project.exportStart - 1; i <= project.exportEnd - 1; i++) {
+//for (let i = 0; i < project.pages.length; i++) {
     const page = project.pages[i]
     const pageDir = `${dir}/${page.pid}`
     files.push(pageDir)
@@ -130,13 +131,14 @@ CSNF.makeData = (project) => {
 CSNF.getStory = (project) => {
   if (!project) project = Project.current
   
-  const pageinfo = project.getPageInfo()
+  const pageinfo = project.getPageInfo(project.exportStart, project.exportEnd)
   const body = {}
   body.finishing_id = 6
   body.sheet_id = 3 //B4
   body.sheet_size = project.params.export_size
   body.serial_id = body.page_count + 1
-  body.page_count = project.pages.length
+  body.page_count = project.exportEnd - project.exportStart + 1
+//body.page_count = project.pages.length
   body.version = 1
   body.bind_right = project.params.bind_right
   body.finishing_size = project.params.finishing_size

@@ -217,11 +217,13 @@ const command = {
   exportCSNF: (form, callback) => {
     const path = form.dir.value
     const name = form.name.value
+
     if (Project.current && namenote.app) {
       const project = Project.current
-
-      project.exportName = name.replace(/.csnf$/, '')
-      namenote.app.csnf.write(project, namenote.app.join(path, name), (err) => {
+      project.setExportSettings(form)
+      
+      const filename = namenote.app.join(path, name)
+      namenote.app.csnf.write(project, filename, (err) => {
 	if (!err) {
 	  callback(project)
 	}
@@ -232,13 +234,14 @@ const command = {
   exportPDF: (form, callback) => {
     const path = form.dir.value
     const name = form.name.value
+
     if (Project.current && namenote.app) {
       const project = Project.current
-
-      project.exportName = name.replace(/.pdf$/, '')
-      namenote.app.pdf.write(project, namenote.app.join(path, name), (err) => {
+      project.setExportSettings(form)
+      
+      const filename = namenote.app.join(path, name)
+      namenote.app.pdf.write(project, filename, (err) => {
 	if (!err) {
-	  nn.log('commend finishded..')
 	  callback(project)
 	}
       })

@@ -27,6 +27,21 @@ const exportPDFDialog = {
       <tr><td>T(Folder):
       <td><input name='dir' class='dir' type='text' value='' disabled />
 	<input name='ref' class='ref' type='button' value='T(Choose folder...)' />
+
+      <tr><td style='height: 1em;'>
+      <tr><td valign=top>T(Pages):
+      <td><label><input name='page' type='radio' value=0 >T(All)</label><br/>
+	<label><input name='page' type='radio' value=1>T(Current page)</label><br/>
+	<label><input name='page' type='radio' value=2>T(Range)
+          <input name='from' class='count' value='10' /> -
+          <input name='to' class='count' value='10' /></label>
+
+      <tr><td style='height: 0.5em;'>
+      <tr><td valign=top>T(Scale):
+      <td><select name='scale' class='tmpl'>
+        <option value=100>100%
+        <option value=81>81% (B4 → A4)<select>
+
         <input type='submit' style='display: none' />
     </table>
     <div id='export-pdf-message' class='dialog-message'></div>
@@ -57,12 +72,44 @@ const exportPDFDialog = {
     $('#export-pdf-dialog').dialog('close')
   },
       
-  initForm: () => {},
+  initForm: () => {
+    const form = document.forms['export-pdf']
+    form.scale.value = 100
+    form.page.value = 0
+    form.from.disabled = true
+    form.to.disabled = true
+
+    $('#export-pdf input[type="radio"]').on('change', function() { 
+      form.from.disabled = (this.value == 2) ? false : true
+      form.to.disabled = (this.value == 2) ? false : true
+    })
+    
+    $('#export-pdf input[name="from"]').on('change', function() { 
+      if (this.value < 1) {
+	this.value = 1
+	this.focus()
+      } else if (this.value > parseInt(form.to.value)) {
+	this.value = parseInt(form.to.value)
+	this.focus()
+      }
+    })
+    $('#export-pdf input[name="to"]').on('change', function() { 
+      if (this.value > Project.current.pages.length) {
+	this.value = Project.current.pages.length
+	this.focus()
+      } else if (this.value < parseInt(form.from.value)) {
+	this.value = parseInt(form.from.value)
+	this.focus()
+      }
+    })
+  },
 
   show: (path, name) => {
     const form = document.forms['export-pdf']
     form.dir.value = path
     form.name.value = name
+    form.from.value = 1
+    form.to.value = Project.current.pages.length
     $('#export-pdf-dialog').dialog('open')
     exportPDFDialog.showMessage('&nbsp;')
   },
@@ -70,7 +117,6 @@ const exportPDFDialog = {
   saveParams: () => {
     const form = document.forms['export-pdf']
     config.data.defaultPath = form.dir.value
-    nn.log('===SAVE DEFAULT PATH===', config.data.defaultPath)
     config.save()
   },
 

@@ -30,7 +30,8 @@ PDF.initData = (project) => {
 PDF.makeData = (project) => {
   PDF.initData(project)
   
-  for (let i = 0; i < project.pages.length; i++) {
+  for (let i = project.exportStart - 1; i <= project.exportEnd - 1; i++) {
+//for (let i = 0; i < project.pages.length; i++) {
     const page = project.pages[i]
     images.push(page)
   }
@@ -79,43 +80,6 @@ PDF.write = (project, filename, callback) => {
       })
     } else nn.log(err)
   })
-
-/*  
-  var docDefinition = {
-    pageSize: { width: 257 * 72 / 25.4, height: 364 * 72 / 25.4 }, // 'B4'
-    pageMargin: [0, 0],
-    
-    content: [
-      {
-	image: project.framePNG,
-	width: Math.floor(364 * 72 / 25.4),
-	height: Math.floor(364 * 72 / 25.4),
-	absolutePosition: { x:0, y:0 },
-	pageBreak: 'after',
-      },
-      {
-	image: project.framePNG,
-	width: Math.floor(364 * 72 / 25.4),
-	height: Math.floor(364 * 72 / 25.4),
-	absolutePosition: { x:0, y:0 },
-	pageBreak: 'after',
-      },
-      {
-	image: project.framePNG,
-	width: Math.floor(364 * 72 / 25.4),
-	height: Math.floor(364 * 72 / 25.4),
-	absolutePosition: { x:0, y:0 },
-	pageBreak: 'after',
-      },
-      {
-	image: project.framePNG,
-	width: Math.floor(364 * 72 / 25.4),
-	height: Math.floor(364 * 72 / 25.4),
-	absolutePosition: { x:0, y:0 },
-      },
-    ]
-  }
-*/
   
   exportPDFDialog.showMessage(T('Rendering') + `...`)
 
