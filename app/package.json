@@ -34,7 +34,7 @@
     "browserify-fs": "^1.0.0",
     "electron-json-storage": "^4.0.2",
     "end-of-stream": "^1.4.0",
-    "fs": "0.0.1-security",
+    "fs-extra": "^4.0.3",
     "jszip": "^3.1.3",
     "pdfmake": "^0.1.33"
   }

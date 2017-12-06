@@ -28,8 +28,7 @@ class Scratch {
 
   detach() {
     if (this.page) {
-      const rect = this.rect()
-      this.ctx.clearRect(...rect)
+      this.clearBound()
       this.page = null
     }
   }
@@ -110,13 +109,22 @@ class Scratch {
     const ymax = (bound[3] < this.canvas.height-1) ? bound[3] : this.canvas.height-1
     return [xmin, ymin, xmax - xmin, ymax - ymin]
   }
-  
+
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
   }
 
+  clearBound() {
+    const rect = this.rect()
+    this.ctx.clearRect(...rect)
+  }
+
+  setBound(x0, y0, x1, y1) {
+    this.bound = [x0, y0, x1, y1]
+  }
+  
   initBound(x, y, d) {
-    this.bound = [x - d, y - d, x + d, y + d]
+    this.setBound(x - d, y - d, x + d, y + d)
   }
 
   updateBound(x, y, d) {

@@ -2,10 +2,8 @@
 
 import { Tool } from './tool.es6'
 import { Project } from './project.es6'
-import { config } from './config.es6'
 
 let page, pageX, pageY, moved
-let sizeTable = [ 10, 25, 100 ]
 
 
 class EraserTool extends Tool {
@@ -24,7 +22,7 @@ class EraserTool extends Tool {
     pageY = pos[1]
     moved = false
 
-    const d = sizeTable[this.getEraserSize() % 3]
+    const d = this.getEraserSize()
     project.scratch.attach(page)
     project.scratch.initBound(pageX, pageY, Math.ceil((d + 1) / 2))
     return true
@@ -52,7 +50,7 @@ class EraserTool extends Tool {
     if (pageX != x || pageY != y) {
       moved = true
 
-      const d = sizeTable[this.getEraserSize() % 3]
+      const d = this.getEraserSize()
       const ctx = project.scratch.ctx
       if (ctx) {
 	ctx.beginPath()
@@ -71,13 +69,6 @@ class EraserTool extends Tool {
     }
   }
 
-  getEraserPressure() {
-    return config.getValue('eraserPressure', true)
-  }
-
-  getEraserSize() {
-    return config.getValue('eraserSize', 0)
-  }
 }
 
 

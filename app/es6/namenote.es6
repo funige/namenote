@@ -22,6 +22,7 @@ import { EraserTool } from './eraser-tool.es6'
 import { ArrowTool } from './arrow-tool.es6'
 import { HandTool } from './hand-tool.es6'
 import { TextTool } from './text-tool.es6'
+import { LineTool } from './line-tool.es6'
 
 import { Trial } from './trial.es6'
 import { Timestamp } from './timestamp.es6'
@@ -58,15 +59,12 @@ const namenote = {
     Tool.tools['arrow'] = new ArrowTool()
     Tool.tools['hand'] = new HandTool()
     Tool.tools['text'] = new TextTool()
+    Tool.tools['line'] = new LineTool()
     Tool.init()
     
     if (namenote.trial) {
       Trial.showMessage()
     }
-    
-    // 何かロードしてみる
-//  Project.create(null)
-    
   },
 }
 

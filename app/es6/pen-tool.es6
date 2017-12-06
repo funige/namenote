@@ -3,15 +3,15 @@
 import { Tool } from './tool.es6'
 import { Project } from './project.es6'
 import { Controller } from './controller.es6'
-import { config } from './config.es6'
+//import { config } from './config.es6'
 
 import { historyButton } from './history-button.es6'
 import { Autosave } from './autosave.es6'
 
 let page, pageX, pageY, moved
-let sizeTable = [ 2, 4, 8 ]
+//let sizeTable = [ 2, 4, 8 ]
 
-let points, stopped;
+let points, stopped, timer;
 
 
 class PenTool extends Tool {
@@ -33,11 +33,11 @@ class PenTool extends Tool {
     pageY = pos[1]
     moved = false
     
-    const d = sizeTable[this.getPenSize() % 3]
+    const d = this.getPenSize() //sizeTable[this.getPenSize() % 3]
     project.scratch.attach(page)
     project.scratch.initBound(pageX, pageY, Math.ceil((d + 1) / 2))
 
-    return true
+    timer = Date.now()
   }
 
   onUp(e) {
@@ -53,8 +53,11 @@ class PenTool extends Tool {
 
   onMove(e) {
     if (!page) return
-
     const project = Project.current
+
+    if (Controller.shiftKey) {
+      return this.startLine(e)
+    }
 
     let pressure = Math.min(1, e.pressure * e.pressure * 2)
     if (!this.getPenPressure()) pressure = 0.7
@@ -68,6 +71,7 @@ class PenTool extends Tool {
     const y = pos[1]
 
     if (pageX != x || pageY != y) {
+      timer = Date.now()
       moved = true
 
       const ctx = project.scratch.ctx
@@ -75,27 +79,25 @@ class PenTool extends Tool {
       pageX = x
       pageY = y
 
-      const d = sizeTable[this.getPenSize() % 3]
+      const d = this.getPenSize() //sizeTable[this.getPenSize() % 3]
       project.scratch.updateBound(x, y, Math.ceil((d + 1) / 2))
+
+    } else {
+      const interval = Date.now() - timer
+      if (interval > 1000) {
+	this.startLine(e)
+      }
     }
   }
 
-  drawSegment(ctx, x0, y0, pressure0, x1, y1, pressure1, color) {
-    if (!ctx) return
-    const d = sizeTable[this.getPenSize() % 3]
-    const lineWidth = (d - 2) + (2 * pressure0) + 0.5
-
-    ctx.beginPath()
-    ctx.lineWidth = lineWidth
-    ctx.lineCap = 'butt' //'round'
-    ctx.strokeStyle = `rgba(0, 0, 0, ${pressure0})`
-    //if (color) ctx.strokeStyle = `rgba(255, 0, 0, ${pressure0})`
-    
-    ctx.moveTo(x0, y0)
-    ctx.lineTo(x1, y1)
-    ctx.stroke()
+  startLine(e) {
+    const project = Project.current
+    project.scratch.detach()
+    Tool.push('line')
+    Tool.current.setPoints(points)
+    Tool.current.onDown(e, page.pid)
   }
-
+  
   draw() {
     const rect = Project.current.scratch.rect()
     page.pushUndo({
@@ -130,7 +132,7 @@ class PenTool extends Tool {
       const pressure = raw[2]
 
       if (pageX != x || pageY != y) {
-	this.drawSegment(ctx, pageX, pageY, pressure, x, y, pressure, 1)
+	this.drawSegment(ctx, pageX, pageY, pressure, x, y, pressure)
 	pageX = x
 	pageY = y
       }
@@ -170,18 +172,12 @@ class PenTool extends Tool {
       }
     }
 
+    /*
     const tmp2 = []
     for (const point of points) tmp2.push(point[component])
     console.log('removeJaggy', component, tmp)
     console.log('removeJaggy', component, tmp2)
-  }
-  
-  getPenPressure() {
-    return config.getValue('penPressure', true)
-  }
-
-  getPenSize() {
-    return config.getValue('penSize', 0)
+    */
   }
 }
 

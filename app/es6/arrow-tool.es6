@@ -14,8 +14,6 @@ class ArrowTool extends Tool {
   constructor() {
     super()
     this.name = 'arrow'
-    //this.size = config.getValue('textSize', 14)
-    //this.direction = config.getValue('textDirection', true)
   }
 
   start() {

@@ -29,17 +29,17 @@ const exportCSNFDialog = {
 	<input name='ref' class='ref' type='button' value='T(Choose folder...)' />
 
       <tr><td style='height: 1em;'>
-      <tr><td valign=top>T(Scale):
-      <td><select name='scale' class='tmpl'>
-        <option value=100>100%
-        <option value=81>81% (B4 → A4)<select>
-
       <tr><td valign=top>T(Pages):
       <td><label><input name='page' type='radio' value=0 >T(All)</label><br/>
 	<label><input name='page' type='radio' value=1>T(Current page)</label><br/>
 	<label><input name='page' type='radio' value=2>T(Range)
           <input name='from' class='count' value='10' /> -
           <input name='to' class='count' value='10' /></label>
+
+      <tr><td valign=top>T(Scale):
+      <td><select name='scale' class='tmpl'>
+        <option value=100>100%
+        <option value=81>81% (B4 → A4)<select>
 
       <input type='submit' style='display: none' />
     </table>
@@ -74,7 +74,7 @@ const exportCSNFDialog = {
   initForm: () => {
     const form = document.forms['export-csnf']
     form.scale.value = 100
-    form.page.value = 1
+    form.page.value = 0
     form.from.disabled = true
     form.to.disabled = true
 

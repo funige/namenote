@@ -137,6 +137,18 @@ const command = {
     }
   },
 
+  snapshot: () => {
+    if (namenote.app) {
+      const project = Project.current
+      if (!project) return
+      namenote.app.saveSnapshotDialog(null, project, (url) => {
+	if (url) {
+	  namenote.app.saveSnapshot(url, project)
+	}
+      })
+    }
+  },
+  
   extractText: () => {
     if (Project.current) extractTextDialog.show()
   },

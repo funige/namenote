@@ -9,7 +9,7 @@ const { app, dialog } = window.require('electron').remote
 
 //const { clipboard } = window.require('electron').clipboard
 
-const fs = window.require('fs')
+const fs = window.require('fs-extra')
 const path = window.require('path')
 
 const openNewParams = {
@@ -147,6 +147,25 @@ App.saveImage = (url, data) => {
   }
   reader.readAsArrayBuffer(blob);
 }
+
+App.saveSnapshotDialog = (dir, project, callback) => {
+  const name = Date.now()
+  const body = project.name()
+  const defaultPath = path.join(dir || app.getPath('downloads'), `${body}-${name}`)
+  chooseFolderParams.defaultPath = defaultPath
+  chooseFolderParams.title = T('Save Snapshot')
+  dialog.showSaveDialog(chooseFolderParams, (dirname) => {
+    callback(dirname)
+  })
+}
+
+App.saveSnapshot = (url, project) => {
+  nn.log('*saveSnapshot', project.url, '=>', url)
+  fs.copy(project.url, url, err => {
+    if (err) console.log(err)
+  })
+}
+
 
 App.chooseFolder = (dir, name, callback) => {
   chooseFolderParams.defaultPath = dir
