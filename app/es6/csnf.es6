@@ -111,16 +111,16 @@ CSNF.makeData = (project) => {
   CSNF.initData(project)
   const dir = files[0]
   const result = []
-
+  const scale = project.exportScale
+  
   for (let i = project.exportStart - 1; i <= project.exportEnd - 1; i++) {
-//for (let i = 0; i < project.pages.length; i++) {
     const page = project.pages[i]
     const pageDir = `${dir}/${page.pid}`
     files.push(pageDir)
 
     const image = `${pageDir}/ly_d0`
     files.push(image)
-    images.push({ name: image, data: CSNF.getBitmap(page) })
+    images.push({ name: image, data: CSNF.getBitmap(page, scale) })
     
     const text = `${pageDir}/ly_t0_t`
     files.push(text)
@@ -132,24 +132,24 @@ CSNF.getStory = (project) => {
   if (!project) project = Project.current
   
   const pageinfo = project.getPageInfo(project.exportStart, project.exportEnd)
+  const scale = project.exportScale
   const body = {}
   body.finishing_id = 6
-  body.sheet_id = 3 //B4
-  body.sheet_size = project.params.export_size
+  body.sheet_id = (scale == 1) ? 3 : 2
+  body.sheet_size = helper.scale(project.params.export_size, scale)
   body.serial_id = body.page_count + 1
-  body.page_count = project.exportEnd - project.exportStart + 1
-//body.page_count = project.pages.length
+  body.page_count = (project.exportEnd - project.exportStart) + 1
   body.version = 1
   body.bind_right = project.params.bind_right
-  body.finishing_size = project.params.finishing_size
+  body.finishing_size = helper.scale(project.params.finishing_size, scale)
   body.baseframe_id = 6
   body.author = ''
-  body.story_id = 1 //5
-  body.title = project.exportName //|| project.name()
+  body.story_id = 1
+  body.title = project.exportName
   body.pageinfo_count = pageinfo.length
   body.startpage_right = project.params.startpage_right
   body.edit_date = Timestamp.toString()
-  body.baseframe_size = project.params.baseframe_size
+  body.baseframe_size = helper.scale(project.params.baseframe_size, scale)
   body.dpi = project.params.dpi
   body.last_modify = 4
   body.pageinfo = pageinfo
@@ -165,9 +165,10 @@ CSNF.getStory = (project) => {
 
 CSNF.getText = (page) => {
   if (!page) page = Project.current.currentPage
+  const scale = page.project.exportScale
   const result = {}
   result.body = {}
-
+  
   const count = page.texts.childNodes.length
   const shape = []
 
@@ -176,10 +177,10 @@ CSNF.getText = (page) => {
     let x = parseFloat(element.style.left) + element.offsetWidth / 2
     let y = parseFloat(element.style.top) + element.offsetHeight / 2
 
-//  x = x * page.project.exportSize[0] / 1000
-//  y = y * page.project.exportSize[1] / 1000
+    x *= scale
+    y *= scale
     
-    const size = parseFloat(element.style.fontSize)
+    const size = parseFloat(element.style.fontSize) * scale
     const string = Text.normalize(element.innerHTML)
     const vert = (element.style.writingMode == 'vertical-rl') ? true : false
 	  
@@ -190,17 +191,13 @@ CSNF.getText = (page) => {
   
   result.body = { count: count, shape: shape }
   return JSON.stringify(result)
-
-  /*
-    const result = '{"body":{"count":6,"shape":[[5,577,186,14,0,0,true,"お嬢様\\nお嬢様"],[5,352,233,14,0,0,true,"そんな格好で\\n寝ていたら\\n風邪をひきますわ"],[5,247,332,11,2,0,true,"やだ"],[5,197,389,11,2,0,true,"今死ぬほど眠いのよね"],[5,470,536,11,0,0,true,"外はこんなに\\nいい天気なのに"],[5,292,789,11,2,0,true,"まぶしい…"]]}}'
-  return result
-  */
 }
 
 CSNF.getBitmap = (page) => {
   let bitmap
   if (page) {
-    bitmap = Canvas.makeBitmap(page.canvas)
+    const scale = page.project.exportScale
+    bitmap = Canvas.makeBitmap(page.canvas, scale)
 
   } else {
     bitmap = new Uint8Array(2 * 2 + 4)
@@ -210,12 +207,14 @@ CSNF.getBitmap = (page) => {
   return bitmap
 }
 
+/*
 CSNF.getThumbnail = (page) => {
   const img = page.project.getFramePNG()
   const data = img.replace(/^data:image\/\w+;base64,/, "")
 
   return pack.newBuffer(data, 'base64')
 }
+*/
 
 
 export { CSNF }

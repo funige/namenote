@@ -5,7 +5,7 @@ const helper = {
   setDPI: (dpi) => {
     helper.dpi = dpi
   },
-  
+
   topx: (mm) => {
     if (typeof mm === "number") {
       return Math.round(mm * (helper.dpi / 25.4))
@@ -22,6 +22,14 @@ const helper = {
     }
   },
 
+  scale: (px, s) => {
+    if (typeof px === "number") {
+      return Math.round(px * s)
+    } else {
+      return px.map((x) => Math.round(x * s))
+    }
+  },
+  
   toBase64: (buffer) => {
     return btoa(String.fromCharCode.apply(null, buffer))
   },

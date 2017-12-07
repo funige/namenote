@@ -509,6 +509,7 @@ class Project {
 
   setExportSettings(form) {
     this.exportName = form.name.value.replace(/.csnf$/, '')
+    this.exportScale = parseFloat(form.scale.value)
 
     switch (parseInt(form.page.value)) {
     case 1:

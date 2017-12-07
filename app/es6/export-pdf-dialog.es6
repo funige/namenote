@@ -39,8 +39,7 @@ const exportPDFDialog = {
       <tr><td style='height: 0.5em;'>
       <tr><td valign=top>T(Scale):
       <td><select name='scale' class='tmpl'>
-        <option value=100>100%
-        <option value=81>81% (B4 → A4)<select>
+        <option value=1>100%
 
         <input type='submit' style='display: none' />
     </table>
@@ -74,7 +73,7 @@ const exportPDFDialog = {
       
   initForm: () => {
     const form = document.forms['export-pdf']
-    form.scale.value = 100
+    form.scale.value = 1
     form.page.value = 0
     form.from.disabled = true
     form.to.disabled = true
