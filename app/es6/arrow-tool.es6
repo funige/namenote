@@ -2,6 +2,7 @@
 
 import { Tool } from './tool.es6'
 import { Project } from './project.es6'
+import { View } from './view.es6'
 import { command } from './command.es6'
 import { historyButton } from './history-button.es6'
 import { config } from './config.es6'
@@ -86,7 +87,7 @@ class ArrowTool extends Tool {
     const pos = page.positionFromEvent(e)
     const x = pos[0]
     const y = pos[1]
-    const minMove = 5
+    const minMove = 5 / View.scale() // 5
 
     if (Math.abs(pageX - x) >= minMove || Math.abs(pageY - y) >= minMove) {
       moved = true

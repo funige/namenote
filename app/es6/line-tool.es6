@@ -35,9 +35,22 @@ class LineTool extends Tool {
   onUp(e) {
     nn.log('line onUp')
     const project = Project.current
+    const rect = project.scratch.rect()
+    
+    page.pushUndo({
+      type: 'canvas',
+      pid: page.pid,
+      x: rect[0],
+      y: rect[1],
+      width: rect[2],
+      height: rect[3],
+    })
+    historyButton.update()
+
     const ctx = page.ctx
     this.drawLine(ctx, e)
-
+    Autosave.pushPage(page)
+    
     project.scratch.detach()
     Tool.pop()
   }
@@ -57,9 +70,20 @@ class LineTool extends Tool {
     const pos = page.positionFromEvent(e)
     const x0 = pos0[0]
     const y0 = pos0[1]
-    const x1 = pos[0]
-    const y1 = pos[1]
-    const pressure = 0.7
+
+    let x1 = pos[0]
+    let y1 = pos[1]
+    if (Controller.shiftKey) {
+      const dx = x1 - x0
+      const dy = y1 - y0
+      const r = Math.sqrt(dx * dx + dy * dy)
+      const deg = Math.atan2(dx, dy) * 12.0 / Math.PI
+      const radian = Math.round(deg) * Math.PI / 12.0
+      x1 = r * Math.sin(radian) + x0
+      y1 = r * Math.cos(radian) + y0
+    }
+    
+    const pressure = points[points.length - 1][2] || 0.7
     this.drawSegment(ctx, x0, y0, pressure, x1, y1, pressure)
 
     const maxWidth = 10

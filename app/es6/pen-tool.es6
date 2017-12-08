@@ -3,7 +3,7 @@
 import { Tool } from './tool.es6'
 import { Project } from './project.es6'
 import { Controller } from './controller.es6'
-//import { config } from './config.es6'
+import { config } from './config.es6'
 
 import { historyButton } from './history-button.es6'
 import { Autosave } from './autosave.es6'
@@ -82,9 +82,9 @@ class PenTool extends Tool {
       const d = this.getPenSize() //sizeTable[this.getPenSize() % 3]
       project.scratch.updateBound(x, y, Math.ceil((d + 1) / 2))
 
-    } else {
-      const interval = Date.now() - timer
-      if (interval > 1000) {
+    } else if (config.getQuickline()) {
+      const delay = Date.now() - timer
+      if (delay > config.getQuicklineDelay() * 1000) {
 	this.startLine(e)
       }
     }

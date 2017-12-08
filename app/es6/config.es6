@@ -29,6 +29,22 @@ const config = {
       return defaultValue
     }
   },
+
+  ////////////////////////////////////////////////////////////////
+  
+  getZoomFont: () => {
+    return config.getValue('zoomFont', true)
+  },
+  getZoomFontSize: () => {
+    return config.getValue('zoomFontSize', 10)
+  },
+  
+  getQuickline: () => {
+    return config.getValue('quickline', true)
+  },
+  getQuicklineDelay: () => {
+    return config.getValue('quicklineDelay', 0.5)
+  }
 }
 
 

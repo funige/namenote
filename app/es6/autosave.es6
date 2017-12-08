@@ -78,7 +78,7 @@ Autosave.init = () => {
 
 Autosave.update = () => {
   Autosave.assertPage()
-  //debug.updateMemoryUsage()
+  debug.updateMemoryUsage()
 
   if (Autosave.status == Autosave.STATUS.DISABLED) return
   

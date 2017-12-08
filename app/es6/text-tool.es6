@@ -7,6 +7,7 @@ import { Controller } from './controller.es6'
 import { Selection } from './selection.es6'
 import { historyButton } from './history-button.es6'
 import { Text } from './text.es6'
+import { View } from './view.es6'
 
 let _page, _pageX, _pageY, _moved, _node
 
@@ -78,7 +79,7 @@ class TextTool extends Tool {
     const pos = _page.positionFromEvent(e)
     const x = pos[0]
     const y = pos[1]
-    const minMove = 5
+    const minMove = 5 / View.scale() // 5
     if (Math.abs(_pageX - x) >= minMove || Math.abs(_pageY - y) >= minMove) {
       _moved = true
     }

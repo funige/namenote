@@ -12,15 +12,19 @@ class Text {}
 Text.savedSize = null
 
 Text.addFontSize = (element)  => {
+  if (Text.savedSize) return
+  
   const size = parseInt(element.style.fontSize)
   const newSize = (size >= 72) ? size : size + 1
-  
+
   element.style.fontSize = `${newSize}px`
   Text.fixPosition(element)
   nn.log('fontSize=', element.style.fontSize)
 }
 
 Text.subtractFontSize = (element)  => {
+  if (Text.savedSize) return
+
   const size = parseInt(element.style.fontSize)
   const newSize = (size <= 8) ? size : size - 1
 
@@ -46,19 +50,23 @@ Text.toggleDirection = (element)  => {
 }
 
 Text.readableSize = (size) => {
-  const min = Text.getZoomFontSize()
+  const min = config.getZoomFontSize()
   const readableSize = min / Project.current.bookmark.getScale()
-  if (size < readableSize) size = readableSize
-  return size + 'px'
+  if (size < readableSize) {
+    size = readableSize
+    return size + 'px'
+  }
+  return null
 }
 
 Text.setEditable = (element, value) => {
   if (element.contentEditable && element.contentEditable == 'true') {
     if (!value) {
       element.contentEditable = false
-      if (config.getValue('zoomFont', false)) {
+      if (config.getZoomFont()) { 
 	if (Text.savedSize) {
 	  element.style.fontSize = Text.savedSize + 'px'
+	  Text.fix(element)
 	  Text.fixPosition(element)
 	  Text.savedSize = null
 	}
@@ -68,13 +76,23 @@ Text.setEditable = (element, value) => {
   } else {
     if (value) {
       element.contentEditable = 'true'
-      if (config.getValue('zoomFont', false)) {
+      if (config.getZoomFont()) {
+	const readableSize = Text.readableSize(parseFloat(element.style.fontSize))
+	if (readableSize) {
+	  Text.savedSize = parseFloat(element.style.fontSize)
+	  element.style.fontSize = readableSize
+	  Text.fixPosition(element)
+	}
+      }
+      /*
+      if (config.getZoomFont()) {
 	if (element.style.fontSize) {
 	  Text.savedSize = parseFloat(element.style.fontSize)
 	  element.style.fontSize = Text.readableSize(Text.savedSize)
 	  Text.fixPosition(element)
 	}
       }
+      */
       Menu.update(element);
     }
   }
@@ -111,6 +129,11 @@ Text.fixPosition = (element) => {
     }
   }
   element.alt = JSON.stringify({ width: width, height: height })
+}
+
+Text.fix = (element) => {
+  const html = element.innerHTML.replace(/<span[^>]*>(.*?)<\/span>/g, "$1")
+  element.innerHTML = html
 }
 
 Text.checkText = (element) => {
@@ -233,16 +256,13 @@ Text.normalize = (html) => {
   return result
 }
 
-Text.getTextColor = () => {
-  return config.getValue('textColor', '#bf0058')
-}
+//Text.getTextColor = () => {
+//  return config.getValue('textColor', '#bf0058')
+//}
 
-Text.getZoomFontSize = () => {
-  if (config.getValue('zoomFont', false)) {
-    return config.getValue('zoomFontSize', 8)
-  }
-  return 0
-}
+//Text.getZoomFontSize = () => {
+//  return config.getValue('zoomFontSize', 10)
+//}
 
 
 export { Text }

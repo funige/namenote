@@ -68,8 +68,8 @@ const namenote = {
   },
 }
 
-namenote.version = "0.7.9" // Use script/version.sh to update this value
-namenote.trial = false
+namenote.version = "0.8.0" // Use script/version.sh to update this value
+namenote.trial = true
 
 namenote.command = command
 namenote.config = config
@@ -81,24 +81,17 @@ namenote.tool = Tool
 namenote.selection = Selection
 namenote.autosave = Autosave
 namenote.debug = debug
+//namenote.page = Page
+//namenote.controller = Controller
 
 namenote.csnf = CSNF
 namenote.timestamp = Timestamp
 
-namenote.log = console.log.bind(window.console)
-//namenote.log = () => {}
+//namenote.log = console.log.bind(window.console)
+namenote.log = () => {}
 namenote.warn = console.warn.bind(window.console)
 namenote.error = console.error.bind(window.console)
 
-//namenote.hoge = (id) => {
-//  document.getElementById(id).classList.toggle("show");
-//}
-
-
-//namenote.pageBuffer = PageBuffer
-
-//namenote.page = Page
-//namenote.controller = Controller
 
 export { namenote }
 

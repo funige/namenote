@@ -16,6 +16,10 @@ const configDialog = {
       modal: true,
       width: 600,
       buttons: { Ok: configDialog.ok, Cancel: configDialog.cancel },
+      open: function() {
+	console.log('onopen...', this)
+	$(this).parent().find('button:nth-child(1)').focus();
+      }
     })
 
     const string = locale.translateHTML(`
@@ -26,11 +30,17 @@ const configDialog = {
 
     <br/>
     <table>
-      <tr><td><label><input name='zoom' type='checkbox'/> T(Zoom small texts on input)</label>
-          <input name='zoomSize' class='count' value='' /> px</label>
+      <tr><td><label><input name='zoom' type='checkbox'/>
+        T(Zoom small texts on input)</label>
+        <input name='zoomSize' class='count' value='' /> px</label>
+
+      <tr><td><label><input name='line' type='checkbox'/>
+        T(Use Quickline)</label>
+        <input name='lineDelay' class='count' value='' /> s</label>
 
       <tr><td style='height: 1em;'>
-      <tr><td><label><input name='noScroll' type='checkbox'/> T(Can not draw because the canvas scrolls on drag)</label>
+      <tr><td><label><input name='noScroll' type='checkbox'/>
+        T(Can not draw because the canvas scrolls on drag)</label>
 
       <br/>
       <br/>
@@ -57,11 +67,15 @@ const configDialog = {
     const form = document.forms['config']
     const noScroll = (form.noScroll.checked) ? true : false
     const zoomFont = (form.zoom.checked) ? true : false
-    const zoomFontSize = parseInt(form.zoomSize.value || 8)
-
+    const zoomFontSize = parseInt(form.zoomSize.value)
+    const quickline = (form.line.checked) ? true : false
+    const quicklineDelay = parseFloat(form.lineDelay.value)
+    
     config.data.noScroll = noScroll
     config.data.zoomFont = zoomFont
     config.data.zoomFontSize = zoomFontSize
+    config.data.quickline = quickline
+    config.data.quicklineDelay = quicklineDelay
     config.save()
 
     View.setNoScroll()
@@ -77,9 +91,8 @@ const configDialog = {
     const form = document.forms['config']
     form.noScroll.checked = (config.data.noScroll) ? true : false
 
-    const zoomFont = config.getValue('zoomFont', false)
-    const zoomFontSize = Text.getZoomFontSize()
-
+    const zoomFont = config.getZoomFont()
+    const zoomFontSize = config.getZoomFontSize()
     form.zoom.checked = zoomFont
     form.zoomSize.value = zoomFontSize
     form.zoomSize.disabled = (zoomFont) ? false : true
@@ -87,11 +100,25 @@ const configDialog = {
     $('#config input[name="zoom"]').on('change', function() {
       form.zoomSize.disabled = (this.checked) ? false : true
     })
-
     $('#config input[name="zoomSize"]').on('change', function() {
-      this.value = parseInt(this.value) || 8
+      this.value = parseInt(this.value) || 10
       if (this.value < 8) this.value = 8
-      if (this.value > 32) this.value = 32
+      if (this.value > 32) this.value = 20
+    })
+
+    const quickline = config.getQuickline()
+    const quicklineDelay = config.getQuicklineDelay()
+    form.line.checked = quickline
+    form.lineDelay.value = quicklineDelay
+    form.lineDelay.disabled = (quickline) ? false : true
+
+    $('#config input[name="line"]').on('change', function() {
+      form.lineDelay.disabled = (this.checked) ? false : true
+    })
+    $('#config input[name="lineDelay"]').on('change', function() {
+      this.value = parseFloat(this.value) || 0.5
+      if (this.value < 0.1) this.value = 0.1
+      if (this.value > 1.5) this.value = 1.5
     })
   },
   
@@ -100,7 +127,7 @@ const configDialog = {
   },
 
   initColor: () => {
-    const textColor = Text.getTextColor()
+    const textColor = config.getValue('textColor', '#bf0058')
     helper.addRule('.text', 'color', textColor)
     
     $("#config-dialog-color").spectrum({
@@ -108,7 +135,7 @@ const configDialog = {
       showPalette: true,
       color: textColor,
       palette: [
-        ['#000000', '#bf0058', '#ff00ff', '#0097d4', '#e2b800'],
+        ['#000000', '#bf0058', '#ff0099', '#0097d4'], //, '#e2b800'],
       ],
       hide: function (color) {
 	const textColor = color.toHexString()

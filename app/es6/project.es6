@@ -528,7 +528,6 @@ class Project {
       this.exportEnd = this.pages.length
       break
     }
-    nn.warn(form.page.value, this.exportStart, this.exportEnd)
   }
 }
 

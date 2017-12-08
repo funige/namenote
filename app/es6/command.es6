@@ -362,7 +362,11 @@ const command = {
     const project = Project.current
     if (!project) return
 
-    project.selection.addFontSize(element)
+    if (Text.savedSize && $(element).hasClass('editable')) {
+      element.blur()
+    } else {
+      project.selection.addFontSize(element)
+    }
   },
   
   subtractFontSize: (data) => {
@@ -370,7 +374,11 @@ const command = {
     const project = Project.current
     if (!project) return
 
-    project.selection.subtractFontSize(element);
+    if (Text.savedSize && $(element).hasClass('editable')) {
+      element.blur()
+    } else {
+      project.selection.subtractFontSize(element);
+    }
   },
   
   toggleDirection: (data) => {

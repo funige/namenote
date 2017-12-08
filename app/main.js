@@ -28,7 +28,7 @@ function createWindow () {
     title: '', //'Namenote',
     webPreferences: {
       nodeIntegrationInWorker: true,
-      //blinkFeatures: 'PreciseMemoryInfo',
+//    blinkFeatures: 'PreciseMemoryInfo',
     }
   })
   global.win = win

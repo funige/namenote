@@ -7,7 +7,7 @@ const dictionary = {
     "About Namenote ...": "Namenote について ...",
     "Settings": "環境設定",
     "Settings ...": "環境設定 ...",
-    "Quit Namenote": "ネームノートを終了",
+    "Quit Namenote": "Namenote を終了",
     "Note": "ノート",
     "File": "ファイル",
     "Open ...": "開く ...",
@@ -109,8 +109,9 @@ const dictionary = {
     " day(s) left.": "日ぐらい試用できます。\nありがとうございます！", 
     "We're sorry, but your trial period has expired.": "試用期間終了しました。\nありがとうございました！", 
 
-    "Zoom small texts on input": "小さいテキストを入力するときは拡大表示する",
-    "Can not draw because the canvas scrolls on drag": "スクロールしちゃって全く描けない",
+    "Zoom small texts on input": "小さいテキストを編集するときは拡大表示する",
+    "Use Quickline" : "長押しで直線ツールに切り替える",
+    "Can not draw because the canvas scrolls on drag": "スクロールしちゃって全く描けない？",
     "Click OK to restore default settings.": "デフォルトの設定に戻します",
     
     "Enable Japanese Options": "日本語用のオプションを有効にする"
