@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+#
+# Trial
+#
+# script/trial true
+# (wait gulp)
+# script/package-trial
+#
+
+puts "trial should be true..."
+system("perl script/trial") || exit
+
+puts "PACKAGING TRIAL VERSION..."
+################################################################
+
+puts "packaging for macos..."
+system("electron-packager ./app --overwrite --platform=darwin --arch=x64 --icon=assets/icons/namenote.icns --prune=true --out=release-builds --ignore='es6/.*\.es6'")
+
+puts "packageing for win32..."
+system("electron-packager ./app --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/namenote.ico --prune=true --out=release-builds --ignore='es6/.*\.es6'")
+
+puts "zip for macos..."
+system("cd release-builds; zip -qyr ../Namenote-trial/mac.zip Namenote-darwin-x64 -x *.DS_Store")
+
+puts "zip for win32..."
+system("cd release-builds; zip -qr ../Namenote-trial/win.zip Namenote-win32-ia32 -x *.DS_Store")
+
+system("zip -qr Namenote-trial.zip Namenote-trial -x *.DS_Store")
+puts "done."
+
