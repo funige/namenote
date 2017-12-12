@@ -3,14 +3,14 @@
 import { Tool } from './tool.es6'
 import { Project } from './project.es6'
 import { Controller } from './controller.es6'
+import { View } from './view.es6'
 import { config } from './config.es6'
+import { command } from './command.es6'
 
 import { historyButton } from './history-button.es6'
 import { Autosave } from './autosave.es6'
 
 let page, pageX, pageY, moved
-//let sizeTable = [ 2, 4, 8 ]
-
 let points, stopped, timer;
 
 
@@ -33,7 +33,7 @@ class PenTool extends Tool {
     pageY = pos[1]
     moved = false
     
-    const d = this.getPenSize() //sizeTable[this.getPenSize() % 3]
+    const d = this.getPenSize()
     project.scratch.attach(page)
     project.scratch.initBound(pageX, pageY, Math.ceil((d + 1) / 2))
 
@@ -45,8 +45,10 @@ class PenTool extends Tool {
     const project = Project.current
 
     if (moved) {
-//    project.scratch.draw()
       this.draw()
+
+    } else {
+      this.selectNearestText(e)
     }
     project.scratch.detach()
   }
@@ -79,7 +81,7 @@ class PenTool extends Tool {
       pageX = x
       pageY = y
 
-      const d = this.getPenSize() //sizeTable[this.getPenSize() % 3]
+      const d = this.getPenSize()
       project.scratch.updateBound(x, y, Math.ceil((d + 1) / 2))
 
     } else if (config.getQuickline()) {
@@ -116,7 +118,7 @@ class PenTool extends Tool {
     if (!ctx || length < 2) return
 
     //ストロークの補間
-    points[0][2] = points[1][2]
+    this.fixFirstPoint()
     this.removeJaggy(0)
     this.removeJaggy(1)
     
@@ -140,6 +142,20 @@ class PenTool extends Tool {
     Autosave.pushPage(page)
   }
 
+  fixFirstPoint() {
+    const first = points[0]
+    const second = points[1]
+    const dx = first[0] - second[0]
+    const dy = first[1] - second[1]
+    if (dx * dx + dy * dy > 30 * 30) {
+      nn.warn('fixFirstPoint:', dx, dy)
+      points.unshift() //remove ghost
+
+    } else {
+      first[2] = second[2]
+    }
+  }
+  
   removeJaggy(component) {
     const numPoints = points.length
 
@@ -178,6 +194,33 @@ class PenTool extends Tool {
     console.log('removeJaggy', component, tmp)
     console.log('removeJaggy', component, tmp2)
     */
+  }
+
+  selectNearestText(e) {
+    const pos = page.positionFromEvent(e)
+    const scale = View.scale()
+    let nearest = null
+    let min
+	
+    for (const element of page.texts.childNodes) {
+      const width = element.offsetWidth
+      const height = element.offsetHeight
+      const x = parseFloat(element.style.left) + width / 2 - pos[0]
+      const y = parseFloat(element.style.top) + height / 2 - pos[1]
+      const d = Math.sqrt(x * x + y * y)
+      
+      if (!nearest || d < min) {
+	nearest = element
+	min = d
+      }
+    }
+    
+    if (nearest && min < 10000) {
+      console.log("*select nearest text", nearest.innerText.slice(0, 10), '...', min)
+      page.project.selection.clear()
+      page.project.selection.add(nearest)
+      command.toggleEditMode()
+    }
   }
 }
 

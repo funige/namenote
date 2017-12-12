@@ -3,11 +3,11 @@
 // alt+f, alt+e, alt+v, alt+h はウィンドウのメニューに使用
   
 const shortcutDefault = {
-  undo: ['command+z', 'ctrl+z', 'num/', ',', 'z'],
-  redo: ['command+y', 'ctrl+y', 'num*', '.', 'x'],
+  undo: ['command+z', 'ctrl+z', 'num/', ','],
+  redo: ['command+y', 'ctrl+y', 'num*', '.'],
   zoom: ['[', 'q', 'numplus'],
   unzoom: [']', 'a', 'numminus'],
-  toggleTool: ['c', 'num.', '/'],
+  toggleTool: ['x', 'num.', '/'],
 
   openNewDialog: ['command+n', 'alt+n'],
   open: ['command+o', 'alt+o'],

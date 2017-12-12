@@ -44,18 +44,13 @@ Controller.init = () => {
     Controller.onMove(e)
   })
 
-/* 
-  window.addEventListener('click', (e) => {
-    if (!e.target.matches('.dropbtn')) {
-      const dropdowns = document.getElementsByClassName("dropdown-content");
-      for (const openDropdown of dropdowns) {
-	if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
-	}
-      }
-    }    
-  })
-*/
+  // disable single touch scroll
+  if (1) {
+    $("#right-component")[0].parentNode.addEventListener('touchmove', (e) => {
+      console.log('touchmove')
+      e.preventDefault()
+    })
+  }
   
   document.addEventListener('keydown', (e) => {
     Controller.altKey = e.altKey
@@ -115,10 +110,12 @@ Controller.onDown = (e) => {
 	return
       }
 
-      Tool.push('text')
-      Tool.current.onDown(e, node)
-      onStroke = true
-      return
+      if (!Controller.spaceKey) {
+	Tool.push('text')
+	Tool.current.onDown(e, node)
+	onStroke = true
+	return
+      }
     }
 
     if (node.classList && node.classList.contains('page')) {
@@ -174,6 +171,7 @@ Controller.onMove = (e) => {
   if (onStroke) {
     Tool.current.onMove(e)
   }
+
   //return false
 }
 
