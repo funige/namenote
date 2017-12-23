@@ -16,7 +16,7 @@ const toolBar = {}
 toolBar.init = () => {
   toolButton.init()
   historyButton.init()
-  //maskButton.init()
+  maskButton.init()
   scaleButton.init()
   menuButton.init()
 

@@ -17,7 +17,6 @@ const configDialog = {
       width: 600,
       buttons: { Ok: configDialog.ok, Cancel: configDialog.cancel },
       open: function() {
-	console.log('onopen...', this)
 	$(this).parent().find('button:nth-child(1)').focus();
       }
     })
@@ -137,6 +136,13 @@ const configDialog = {
       palette: [
         ['#000000', '#bf0058', '#ff0099', '#0097d4'], //, '#e2b800'],
       ],
+      /*
+      togglePaletteOnly: true,
+      togglePaletteMoreText: 'More',
+      togglePaletteLessText: 'Less',
+      chooseText: 'Ok',
+      cancelText: 'Cancel',
+      */
       hide: function (color) {
 	const textColor = color.toHexString()
 	helper.addRule('.text', 'color', textColor)

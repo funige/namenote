@@ -94,6 +94,7 @@ Menu.updateEnabled = (template) => {
     enableItem(template, 'Close', true)
     enableItem(template, 'Close All', true)
     enableItem(template, 'Save Snapshot As ...', true)
+    enableItem(template, 'Note Settings ...', true)
     enableItem(template, 'Export', true)
     enableItem(template, 'Import', true)
 
@@ -114,6 +115,7 @@ Menu.updateEnabled = (template) => {
     enableItem(template, 'Close', false)
     enableItem(template, 'Close All', false)
     enableItem(template, 'Save Snapshot As ...', false)
+    enableItem(template, 'Note Settings ...', false)
     enableItem(template, 'Export', false)
     enableItem(template, 'Import', false)
 

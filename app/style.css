@@ -206,7 +206,7 @@ form label {
     margin-right: 5px;
 }
 
-form .name   { width: 250px; }
+form .name   { width: 250px; text-overflow: ellipsis;}
 form .dir    { width: 250px; margin-right: 2px; border: none; text-overflow: ellipsis;}
 form .tmpl   { width: 250px; }
 form .ref    { padding: 5px; }
@@ -214,6 +214,27 @@ form .key    { width: 30px; }
 form .count  { width: 30px; }
 form .count2 { width: 30px; border: none; text-overflow: ellipsis;}
 form .extract { width: 500px; height: 450px; }
+form .preview { width: 500px; height: 150px; } /* 350px */
+
+.preview2 {
+    width: 500px; height: 350px;
+    color: #555;
+    background-color: white;
+    border: 1px solid #aaa;
+    margin-left: 5px;
+}
+
+.preview2 div {
+    padding: 2px;
+}
+
+.preview2 hr {
+    border: 0;
+    border-top: 1px dashed #ccc;
+    width: 100%;
+    height: 0px;
+//  background-color: #aaa;
+}
 
 /**
  * Scrollbar

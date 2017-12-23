@@ -20,7 +20,7 @@ const openNewParams = {
   ],
 }
 
-const openTxtParams = {
+const chooseFileParams = {
   defaultPath: null,
   properties: ['openFile'],
   filters: [
@@ -102,7 +102,7 @@ App.openDialog = (dir, callback) => {
   })
 }
 
-App.openTxtDialog = (dir, callback) => {
+App.__openTxtDialog = (dir, callback) => {
   openTxtParams.defaultPath = dir
   dialog.showOpenDialog(openTxtParams, (filenames) => {
     if (filenames) {
@@ -166,6 +166,15 @@ App.saveSnapshot = (url, project) => {
   })
 }
 
+
+App.chooseFile = (dir, name, callback) => {
+  chooseFileParams.defaultPath = dir
+  dialog.showOpenDialog(chooseFileParams, (filenames) => {
+    if (filenames) {
+      callback(filenames[0])
+    }
+  })
+}
 
 App.chooseFolder = (dir, name, callback) => {
   chooseFolderParams.defaultPath = dir

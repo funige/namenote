@@ -12,7 +12,7 @@ import { configDialog } from './config-dialog.es6'
 import { openNewDialog } from './open-new-dialog.es6'
 import { exportCSNFDialog } from './export-csnf-dialog.es6'
 import { exportPDFDialog } from './export-pdf-dialog.es6'
-import { importTXTDialog } from './import-txt-dialog.es6'
+import { importTextDialog } from './import-text-dialog.es6'
 import { extractTextDialog } from './extract-text-dialog.es6'
 
 
@@ -26,7 +26,7 @@ const ui = {
   openNewDialog: openNewDialog,
   exportCSNFDialog: exportCSNFDialog,
   exportPDFDialog: exportPDFDialog,
-  importTXTDialog: importTXTDialog,
+  importTextDialog: importTextDialog,
   extractTextDialog: extractTextDialog,
   
   init: () => {
@@ -43,7 +43,7 @@ const ui = {
     ui.openNewDialog.init()
     ui.exportCSNFDialog.init()
     ui.exportPDFDialog.init()
-    ui.importTXTDialog.init()
+    ui.importTextDialog.init()
     ui.extractTextDialog.init()
 
     $('.split-pane').css('opacity', 1) // start the show

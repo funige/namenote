@@ -68,7 +68,7 @@ const namenote = {
   },
 }
 
-namenote.version = "0.8.2" // Use script/version.sh to update this value
+namenote.version = "0.8.3-debug" // Use script/version.sh to update this value
 namenote.trial = true
 
 namenote.command = command
@@ -87,8 +87,8 @@ namenote.debug = debug
 namenote.csnf = CSNF
 namenote.timestamp = Timestamp
 
-namenote.log = console.log.bind(window.console)
-//namenote.log = () => {}
+//namenote.log = console.log.bind(window.console)
+namenote.log = () => {}
 namenote.warn = console.warn.bind(window.console)
 namenote.error = console.error.bind(window.console)
 

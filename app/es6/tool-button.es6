@@ -37,11 +37,6 @@ toolButton.initPenButton = () => {
     float: 'left',
     click: function(e) {
       command.pen(e)
-//      if (!Tool.isSelected('pen')) {
-//	Tool.select('pen')
-//      } else {
-//	Tool.toggleDropdown(e, 'pen')
-//      }
     },
     html: locale.translateHTML(penDropdown)
   })[0]
@@ -66,12 +61,6 @@ toolButton.initEraserButton = () => {
     float: 'left',
     click: function(e) {
       command.eraser(e)
-//      if (!Tool.isSelected('eraser')) {
-//	Tool.select('eraser')
-//
-//      } else {
-//	Tool.toggleDropdown(e, 'eraser')
-//      }
     },
     html: locale.translateHTML(eraserDropdown)
   })[0]
@@ -110,12 +99,6 @@ toolButton.initTextButton = () => {
     float: 'left',
     click: function(e) {
       command.text(e)
-//      if (!Tool.isSelected('arrow')) {
-//	Tool.select('arrow')
-//	
-//      } else {
-//	Tool.toggleDropdown(e, 'arrow')
-//      }
     },
     html: locale.translateHTML(textDropdown)
   })[0]

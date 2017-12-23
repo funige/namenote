@@ -87,8 +87,9 @@ class ArrowTool extends Tool {
     const pos = page.positionFromEvent(e)
     const x = pos[0]
     const y = pos[1]
-    const minMove = 5 / View.scale() // 5
-
+    const minMove = 1 / View.scale() // 5
+    console.log('minMove', minMove)
+    
     if (Math.abs(pageX - x) >= minMove || Math.abs(pageY - y) >= minMove) {
       moved = true
     }

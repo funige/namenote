@@ -28,17 +28,20 @@ const menuTemplate = [
       { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
 	
       { type: 'separator' },
+      { label: 'Note Settings ...', click: 'noteSettings' },
+
+      { type: 'separator' },
+      { label: 'Import',
+	submenu: [
+	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
+	],
+      },
       { label: 'Export',
 	submenu: [
 	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },
 	  { label: '.pdf (PDF) ...', accelerator: "CmdOrCtrl+Shift+P", click: 'exportPDFDialog' },
 	],
       },
-//    { label: 'Import',
-//	submenu: [
-//	  { label: '.txt (Plain Text) ...', click: 'importTXTDialog' },
-//	],
-//    },
     ],
   },
   { label: "Edit",

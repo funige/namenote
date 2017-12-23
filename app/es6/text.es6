@@ -131,16 +131,19 @@ Text.fixPosition = (element) => {
   element.alt = JSON.stringify({ width: width, height: height })
 }
 
-Text.fix = (element) => {
+Text.getHTML = (element) => {
   const html = element.innerHTML.replace(/<span[^>]*>(.*?)<\/span>/g, "$1")
-  element.innerHTML = html
+  return html
+}
+
+Text.fix = (element) => {
+  element.innerHTML = Text.getHTML(element)
 }
 
 Text.checkText = (element) => {
-  const html = element.innerHTML
+  const html = Text.getHTML(element)
   if (html.match(/<div><br><\/div><div><br><\/div>/)) {
-    nn.log('[DIVIDE TEXT]')
-    // 2つのセリフに分割する
+    Text.divide(element)
   }
   
   if (html.match(/<div><br><\/div><div><br><\/div>$/)) {
@@ -165,7 +168,7 @@ Text.blankMove = (element) => {
 
 Text.append = (element) => {
   const project = Project.current
-  const html = element.innerHTML
+  const html = Text.getHTML(element)
   element.innerHTML = html.replace(/<div><br><\/div><div><br><\/div>$/, '')
 
   Text.fixPosition(element)
@@ -182,6 +185,38 @@ Text.append = (element) => {
     page.addText(x, y, Text.getParams(element), (node) => {
       node.style.writingMode = element.style.writingMode
       node.style.fontSize = element.style.fontSize
+      setImmediate(() => {
+	project.selection.clear()
+	project.selection.add(node)
+	command.toggleEditMode()
+      })
+    })
+  }
+}
+
+Text.divide = (element) => {
+  const project = Project.current
+  const html = Text.getHTML(element)
+  const array = html.split(/<div><br><\/div><div><br><\/div>/)
+  element.innerHTML = array[0]
+
+  Text.fixPosition(element)
+  project.selection.drop()
+  if (array.length == 0) return
+  
+  let x = parseFloat(element.style.left)
+  let y = parseFloat(element.style.top)
+  if (element.style.writingMode != 'vertical-rl') {
+    y += element.offsetHeight
+  }
+    
+  const page = project.findPage(Page.getPID(element))
+  if (page) {
+    page.addText(x, y, Text.getParams(element), (node) => {
+      node.style.writingMode = element.style.writingMode
+      node.style.fontSize = element.style.fontSize
+      node.innerHTML = array[1]
+      Text.fixPosition(node)
       setImmediate(() => {
 	project.selection.clear()
 	project.selection.add(node)

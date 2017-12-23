@@ -17,9 +17,11 @@ const shortcutDefault = {
 
   exportCSNFDialog: ['command+p', 'alt+p'],
   exportPDFDialog: ['command+shift+p', 'alt+shift+p'],
-//importTXTDialog: ['command+shift+i', 'alt+shoft+i'],
+  importTextDialog: ['command+shift+i', 'alt+shift+i'],
   savePageImage: ['command+-', 'alt+-'],
   extractText: ['command+t', 'alt+t'],
+
+  //marginSettingsDialog: ['command+shift+i', 'alt+shift+i'],
   
   pageLeft: 'left',   //'ctrl+f'],
   pageRight: 'right', //'ctrl+b'],

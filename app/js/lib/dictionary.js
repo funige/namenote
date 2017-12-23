@@ -16,6 +16,7 @@ const dictionary = {
     "New": "新規ノート",
     "Close": "閉じる",
     "Close All": "すべてを閉じる",
+    "Note Settings ...": "ノート設定 ...",
     "Export": "書き出し",
     "Import": "読み込み",
     ".csnf (CLIP STUDIO Storyboard) ...": ".csnf (CLIP STUDIO ネームファイル) ...",
@@ -98,6 +99,7 @@ const dictionary = {
     "Duplicate file name.": "同じ名前のファイルがあります。",
     "File not found.": "ファイルが見つかりません。",
     "Save error.": "セーブできません。",
+    "Select file to import": "読み込むファイルを選択してください",
     "Compressing": "圧縮中",
     "Rendering": "作成中",
 

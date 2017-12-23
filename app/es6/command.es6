@@ -10,7 +10,7 @@ import { PageBuffer } from './page-buffer.es6'
 import { openNewDialog } from './open-new-dialog.es6'
 import { exportCSNFDialog } from './export-csnf-dialog.es6'
 import { exportPDFDialog } from './export-pdf-dialog.es6'
-import { importTXTDialog } from './import-txt-dialog.es6'
+import { importTextDialog } from './import-text-dialog.es6'
 import { extractTextDialog } from './extract-text-dialog.es6'
 import { Selection } from './selection.es6'
 
@@ -34,6 +34,19 @@ const command = {
     if (namenote.app) {
       namenote.app.fixPath(path, name, (path, name) => {
 	openNewDialog.show(path, name)
+      })
+    }
+  },
+
+  chooseFile: (form, callback) => {
+    const url = form.name.value
+    const path = url.replace(/\/[^\/]+$/, '')
+    const name = url.replace(/^.*\//, '')
+    if (namenote.app) {
+      namenote.app.chooseFile(path, name, (url) => {
+	if (url && callback) {
+	  callback(url)
+	}
       })
     }
   },
@@ -121,8 +134,7 @@ const command = {
   },
   
   savePageImage: () => {
-    if (namenote.app) {
-      if (!Project.current) return
+    if (namenote.app && Project.current) {
       namenote.app.saveImageDialog(null, (url) => {
 	if (url) {
 	  nn.log('save page image to ->', url)
@@ -184,18 +196,19 @@ const command = {
     if (Project.current) Project.current.selection.clear()
   },
 
-  importTXTDialog: () => {
-    if (Project.current && namenote.app) {
+  noteSettings: () => {
+    console.log('note settings')
+  },
+  
+  importTextDialog: () => {
+    if (namenote.app && Project.current) {
       const path = config.data.defaultPath
-      importTXTDialog.showBlank(path)
-//    namenote.app.openTxtDialog(path, (url) => {
-//	importTXTDialog.show(url)
-//    })
+      importTextDialog.showBlank(path)
     }
   },
-
+  
   exportPDFDialog: () => {
-    if (Project.current && namenote.app) {
+    if (namenote.app && Project.current) {
       const path = config.data.defaultPath
       const name = Project.current.name() + '.pdf'
       namenote.app.fixPath(path, name, (path, name) => {

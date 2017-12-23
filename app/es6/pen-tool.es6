@@ -198,25 +198,25 @@ class PenTool extends Tool {
 
   selectNearestText(e) {
     const pos = page.positionFromEvent(e)
-    const scale = View.scale()
     let nearest = null
-    let min
+    let min = 0
 	
     for (const element of page.texts.childNodes) {
+      const x = parseFloat(element.style.left)
+      const y = parseFloat(element.style.top)
       const width = element.offsetWidth
       const height = element.offsetHeight
-      const x = parseFloat(element.style.left) + width / 2 - pos[0]
-      const y = parseFloat(element.style.top) + height / 2 - pos[1]
-      const d = Math.sqrt(x * x + y * y)
+
+      const dx = Math.max(Math.min(pos[0], x + width), x) - pos[0]
+      const dy = Math.max(Math.min(pos[1], y + height), y) - pos[1]
+      const d = Math.sqrt(dx * dx + dy * dy)
       
       if (!nearest || d < min) {
 	nearest = element
 	min = d
       }
     }
-    
-    if (nearest && min < 10000) {
-      console.log("*select nearest text", nearest.innerText.slice(0, 10), '...', min)
+    if (nearest && min < 5 / View.scale()) {
       page.project.selection.clear()
       page.project.selection.add(nearest)
       command.toggleEditMode()
