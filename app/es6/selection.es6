@@ -257,7 +257,28 @@ class Selection {
     }
     return { x:x, y:y }
   }
-  
+
+  marge() {
+    if (this.list.length < 2) return
+    if (this.lifted) this.drop()
+
+    const margeList = this.getMargeList()
+    const target = margeList.shift()
+    
+    for (const element of margeList) {
+      // marge element to target
+      // remove element
+    }
+  }
+
+  getMargeList() {
+    let ymin, yminElement
+    for (const element of this.list) {
+      const y = parseFloat(element.style.top)
+      if (y < ymin) ymin = y
+    }
+    return []
+  }
 }
 
 export { Selection }

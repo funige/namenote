@@ -132,7 +132,10 @@ Text.fixPosition = (element) => {
 }
 
 Text.getHTML = (element) => {
-  const html = element.innerHTML.replace(/<span[^>]*>(.*?)<\/span>/g, "$1")
+  // このへんは早めにちゃんとしないとまずい
+  const html = element.innerHTML
+	.replace(/<span[^>]*>(.*?)<\/span>/g, "$1")
+	.replace(/<div><br><div>/g, "<div><br><\/div><div>")
   return html
 }
 
@@ -289,6 +292,22 @@ Text.normalize = (html) => {
 
   nn.log('=>', result)
   return result
+}
+
+Text.nextNode = (node) => {
+  if ($(node).hasClass('text')) {
+    const next = node.nextSibling
+    return next
+  }
+  return null
+}
+
+Text.prevNode = (node) => {
+  if ($(node).hasClass('text')) {
+    const prev = node.previousSibling
+    return prev
+  }
+  return null
 }
 
 //Text.getTextColor = () => {

@@ -11,6 +11,8 @@ const day = 86400 * 1000
 class Trial {}
 
 Trial.showMessage = () => {
+  nn.warn('installTime-' + nn.version)
+  
   Trial.getInstallTime((installTime) => {
     const remain = (maxRemain * day - (Date.now() - installTime)) / day
     nn.warn('remain', remain)

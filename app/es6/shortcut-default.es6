@@ -30,6 +30,7 @@ const shortcutDefault = {
 
   selectAll: 'ctrl+a',
   unselect: 'ctrl+d',
+  margeText: 'ctrl+e',
   
   //sideBar: 'tab',
   developerTools: 'command+alt+j',
@@ -63,10 +64,9 @@ const shortcutDefault = {
   subtractFontSize: 'ctrl+,',
   toggleDirection: 'ctrl+]',
   cutText: 'backspace',
+  nextText: 'tab',
+  prevText: 'shift+tab',
   
-  // test
-//hoge: '@ 2', //row2と干渉する
-//funi: '@ 1', //row2と干渉する
 }
 
 

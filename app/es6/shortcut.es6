@@ -33,6 +33,11 @@ const shortcut = {
 	    return false
 	  }
 	}
+
+	if (e.keyCode == 9) { // TAB
+	  return false
+	}
+	
 	return true
       }
       return false

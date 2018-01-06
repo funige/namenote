@@ -196,6 +196,10 @@ const command = {
     if (Project.current) Project.current.selection.clear()
   },
 
+  margeText: () => {
+    if (Project.current) Project.current.selection.marge()
+  },
+
   noteSettings: () => {
     console.log('note settings')
   },
@@ -404,6 +408,42 @@ const command = {
 
   cutText: (data) => {
     if (Project.current) Project.current.cut('on baskspace')
+  },
+
+  nextText: (data) => {
+    const project = Project.current
+    if (!project) return
+    
+    const node = document.activeElement
+    if ($(node).hasClass('text') && Text.isEditable(node)) {
+      project.selection.clear()
+      const next = Text.nextNode(node)
+      if (next) {
+	project.selection.add(next)
+	command.toggleEditMode()
+      }
+      
+    } else if (project.selection.list.length == 1) {
+      nn.warn('nexttext on a element which editable is false...')
+    }
+  },
+
+  prevText: (data) => {
+    const project = Project.current
+    if (!project) return
+    
+    const node = document.activeElement
+    if ($(node).hasClass('text') && Text.isEditable(node)) {
+      project.selection.clear()
+      const prev = Text.prevNode(node)
+      if (prev) {
+	project.selection.add(prev)
+	command.toggleEditMode()
+      }
+      
+    } else if (project.selection.list.length == 1) {
+      nn.warn('nexttext on a element which editable is false...')
+    }
   },
   
   hoge: (data) => { nn.log('*hoge*') }, 

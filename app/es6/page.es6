@@ -262,7 +262,7 @@ class Page {
     })
 
     node.addEventListener('input', function(e) {
-      nn.warn(e.target.innerHTML)
+      nn.log(e.target.innerHTML)
       Text.fixPosition(e.target)
       Text.checkText(e.target)
     })
