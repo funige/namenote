@@ -8,10 +8,16 @@ const storage = window.require('electron-json-storage')
 const maxRemain = 31
 const day = 86400 * 1000
 
+const installTime = () => {
+  return ('installTime-' + namenote.version).replace(/\.[^.]*$/, '')
+}
+
+////////////////////////////////////////////////////////////////
+
 class Trial {}
 
 Trial.showMessage = () => {
-  nn.warn('installTime-' + nn.version)
+  nn.warn('installTime=', installTime())
   
   Trial.getInstallTime((installTime) => {
     const remain = (maxRemain * day - (Date.now() - installTime)) / day
@@ -26,9 +32,9 @@ Trial.showMessage = () => {
 				  (response) => null)
 
     } else {
-      const message = T("We're sorry, but your trial period has expired.")
-      namenote.app.showMessageBox({ type: 'error',  message: message },
-				  (responce) => command.quit())
+//      const message = T("We're sorry, but your trial period has expired.")
+//      namenote.app.showMessageBox({ type: 'error',  message: message },
+//				  (responce) => command.quit())
     }
   })
 }
@@ -58,24 +64,24 @@ Trial.getInstallTime = (callback) => {
 }
 
 Trial.getConfigInstallTime = () => {
-  let timeString = config.data.installTime
+  let timeString = config.data[installTime()]
   if (!timeString) {
     timeString = Timestamp.toString()
-    config.data.installTime = timeString
+    config.data[installTime()] = timeString
     config.save()
   }
   return Timestamp.toInt(timeString)
 }
 
 Trial.setConfigInstallTime = (time) => {
-  config.data.installTime = Timestamp.toString(time)
+  config.data[installTime()] = Timestamp.toString(time)
   config.save()
 }
 
 Trial.getStorageInstallTime = (callback) => {
   storage.get('trial', (err, data) => {
     if (!err) {
-      let timeString = data.installTime
+      let timeString = data[installTime()]
       if (timeString) {
 	callback(Timestamp.toInt(timeString))
 	return

@@ -185,6 +185,12 @@ canvas .scratch {
     z-index :100;
 }
 
+.wand {
+    position: absolute;
+    background-color: rgba(133,191,253,0.5);
+    z-index: 1000;
+}
+
 form {
     line-height: 200%;
 }
@@ -209,15 +215,17 @@ form label {
 form .name   { width: 250px; text-overflow: ellipsis;}
 form .dir    { width: 250px; margin-right: 2px; border: none; text-overflow: ellipsis;}
 form .tmpl   { width: 250px; }
+form .tmpl2  { width: 350px; }
 form .ref    { padding: 5px; }
 form .key    { width: 30px; }
+form .regex  { width: 100px; }
 form .count  { width: 30px; }
 form .count2 { width: 30px; border: none; text-overflow: ellipsis;}
 form .extract { width: 500px; height: 450px; }
 form .preview { width: 500px; height: 150px; } /* 350px */
 
 .preview2 {
-    width: 500px; height: 350px;
+    width: 500px; height: 250px;
     color: #555;
     background-color: white;
     border: 1px solid #aaa;

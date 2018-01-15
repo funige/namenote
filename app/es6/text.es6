@@ -33,9 +33,12 @@ Text.subtractFontSize = (element)  => {
   nn.log('fontSize=', element.style.fontSize)
 }
 
+Text.isVert = (element) => {
+  return (element.style.writingMode == 'vertical-rl') ? true : false
+}
+
 Text.toggleDirection = (element)  => {
-  const vert = (element.style.writingMode == 'vertical-rl') ? true : false
-  if (vert) {
+  if (Text.isVert(element)) {
     element.style.left = parseFloat(element.style.left) + element.offsetWidth + 'px'
     element.style.writingMode = 'horizontal-tb'
     element.alt = ''
@@ -121,7 +124,7 @@ Text.fixPosition = (element) => {
   const width = element.offsetWidth
   const height = element.offsetHeight
 
-  if (element.style.writingMode == 'vertical-rl') {
+  if (Text.isVert(element)) {
     const data = JSON.parse(element.alt)
     if (width != data.width) {
 	const left = parseFloat(element.style.left) - (width - data.width)
@@ -132,7 +135,7 @@ Text.fixPosition = (element) => {
 }
 
 Text.getHTML = (element) => {
-  // このへんは早めにちゃんとしないとまずい
+  // このへんは早めに整理しないとまずい
   const html = element.innerHTML
 	.replace(/<span[^>]*>(.*?)<\/span>/g, "$1")
 	.replace(/<div><br><div>/g, "<div><br><\/div><div>")
@@ -145,9 +148,10 @@ Text.fix = (element) => {
 
 Text.checkText = (element) => {
   const html = Text.getHTML(element)
-  if (html.match(/<div><br><\/div><div><br><\/div>/)) {
-    Text.divide(element)
-  }
+  
+//if (html.match(/^<div><br><\/div>/)) {
+//  Text.blankMove(element)
+//}
   
   if (html.match(/<div><br><\/div><div><br><\/div>$/)) {
     if (html.match(/^<div><br><\/div><div><br><\/div>$/)) {
@@ -156,16 +160,20 @@ Text.checkText = (element) => {
     } else {
       Text.append(element)
     }
+
+  } else if (html.match(/<div><br><\/div><div><br><\/div>/)) {
+    Text.divide(element)
   }
 }
 
 Text.blankMove = (element) => {
-  if (element.style.writingMode != 'vertical-rl') {
+  if (!Text.isVert(element)) {
     let y = parseFloat(element.style.top) + element.offsetHeight
     element.style.top = y + 'px'
   }
 
   element.innerHTML = ''
+  nn.warn(element.innerHTML)
   Text.initPosition(element)
 }
 
@@ -179,7 +187,7 @@ Text.append = (element) => {
 
   let x = parseFloat(element.style.left)
   let y = parseFloat(element.style.top)
-  if (element.style.writingMode != 'vertical-rl') {
+  if (!Text.isVert(element)) {
     y += element.offsetHeight
   }
     
@@ -201,6 +209,7 @@ Text.divide = (element) => {
   const project = Project.current
   const html = Text.getHTML(element)
   const array = html.split(/<div><br><\/div><div><br><\/div>/)
+  nn.warn('array=', array)
   element.innerHTML = array[0]
 
   Text.fixPosition(element)
@@ -209,11 +218,11 @@ Text.divide = (element) => {
   
   let x = parseFloat(element.style.left)
   let y = parseFloat(element.style.top)
-  if (element.style.writingMode != 'vertical-rl') {
+  if (!Text.isVert(element)) {
     y += element.offsetHeight
   }
     
-  const page = project.findPage(Page.getPID(element))
+  const page = project.findPage(Page.getPID(element) || project.selection.pid)
   if (page) {
     page.addText(x, y, Text.getParams(element), (node) => {
       node.style.writingMode = element.style.writingMode

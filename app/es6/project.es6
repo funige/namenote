@@ -7,6 +7,7 @@ import { RecentURL } from './recent-url.es6'
 import { bookmark } from './bookmark.es6'
 import { History } from './history.es6'
 import { Scratch } from './scratch.es6'
+import { Wand } from './wand.es6'
 import { Selection } from './selection.es6'
 import { helper } from './helper.es6'
 import { historyButton } from './history-button.es6'
@@ -48,6 +49,7 @@ class Project {
 
   destructor() {
     if (this.scratch) this.scratch.destructor()
+    if (this.wand) this.wand.destructor()
     if (this.selection) this.selection.destructor()
     if (this.history) this.history.destructor()
     if (this.bookmark) this.bookmark.destructor()
@@ -67,6 +69,7 @@ class Project {
     this.baseframeSize = namenote.helper.topx(this.params.baseframe_size)
 
     this.scratch = new Scratch(this)
+    this.wand = new Wand(this)
     this.selection = new Selection(this)
     this.framePNG = this.getFramePNG()
 

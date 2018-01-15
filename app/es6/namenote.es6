@@ -11,9 +11,6 @@ import { Page } from './page.es6'
 import { Controller } from './controller.es6'
 import { View } from './view.es6'
 
-//import { PageBuffer } from './page-buffer.es6'
-//import { TextBuffer } from './text-buffer.es6'
-
 import { Tool } from './tool.es6'
 import { toolBar } from './tool-bar.es6'
 
@@ -68,7 +65,7 @@ const namenote = {
   },
 }
 
-namenote.version = "0.8.3-debug" // Use script/version.sh to update this value
+namenote.version = "0.8.4-debug" // Use script/version.sh to update this value
 namenote.trial = false
 
 namenote.command = command
@@ -88,8 +85,9 @@ namenote.csnf = CSNF
 namenote.timestamp = Timestamp
 
 namenote.log = console.log.bind(window.console)
-//namenote.log = () => {}
 namenote.warn = console.warn.bind(window.console)
+//namenote.log = () => {}
+//namenote.warn = () => {}
 namenote.error = console.error.bind(window.console)
 
 

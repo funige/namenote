@@ -169,11 +169,13 @@ CSNF.getText = (page) => {
   const result = {}
   result.body = {}
   
-  const count = page.texts.childNodes.length
+//const count = page.texts.childNodes.length
+  const count = page.texts.children.length
   const shape = []
 
   for (let i = 0; i < count; i++) {
-    const element = page.texts.childNodes[i]
+//  const element = page.texts.childNodes[i]
+    const element = page.texts.children[i]
     let x = parseFloat(element.style.left) + element.offsetWidth / 2
     let y = parseFloat(element.style.top) + element.offsetHeight / 2
 
@@ -184,7 +186,7 @@ CSNF.getText = (page) => {
     const string = Text.normalize(element.innerHTML)
     const vert = (element.style.writingMode == 'vertical-rl') ? true : false
 	  
-    const item = [5, x, y, size, 0, 0, vert, string]
+    const item = [5, x, y, size, 0, 0, vert, string, 100, 200, 300]
     shape.push(item)
   }
   nn.log(shape)

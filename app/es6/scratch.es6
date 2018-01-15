@@ -97,6 +97,28 @@ class Scratch {
   }
 
   rect() {
+    let xmin = this.bound[0]
+    let ymin = this.bound[1]
+    let xmax = this.bound[2]
+    let ymax = this.bound[3]
+
+    if (xmin > xmax) [xmin, xmax] = [xmax, xmin]
+    if (ymin > ymax) [ymin, ymax] = [ymax, ymin]
+
+    xmin -= 1;
+    ymin -= 1;
+    xmax += 1;
+    ymax += 1;
+
+    if (xmin < 0) xmin = 0
+    if (ymin < 0) ymin = 0
+    if (xmax > this.canvas.width - 1) xmax = this.canvas.width - 1
+    if (ymax > this.canvas.height - 1) ymax = this.canvas.height - 1
+
+    return [xmin, ymin, xmax - xmin, ymax - ymin]
+  }
+  
+  __rect() {
     const bound = this.bound
     bound[0] -= 1;
     bound[1] -= 1;

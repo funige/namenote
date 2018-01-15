@@ -65,6 +65,15 @@ const helper = {
     var sheet = document.styleSheets[0]
     sheet.addRule(selector, styleName + ":" + value, sheet.rules.length)
   },
+
+  intersectRect: (r1, r2) => {
+    console.log(r1, r2)
+    
+    return !(r2[0] > (r1[0] + r1[2]) || 
+             (r2[0] + r2[2]) < r1[0] ||
+             r2[1] > (r1[1] + r1[3]) ||
+             (r2[1] + r2[3]) < r1[1])
+  },
 }
 
 

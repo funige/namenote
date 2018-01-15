@@ -40,7 +40,12 @@ const exportCSNFDialog = {
       <tr><td valign=top>T(Scale):
       <td><select name='scale' class='tmpl'>
         <option value=1>100%
-        <option value=0.815934>81% (B4 → A4)<select>
+        <option value=0.815934>T(82% (B4 → A4))
+        <option value=0.707107>T(71% (B4 → B5))
+        <option value=0>T(Custom)
+        </select>
+      <tr><td>
+      <td><input name='percent' class='count' type='text' value='70.7107' /> %
 
       <input type='submit' style='display: none' />
     </table>

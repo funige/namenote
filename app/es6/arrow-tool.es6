@@ -43,7 +43,10 @@ class ArrowTool extends Tool {
     moved = false
 
     project.scratch.attach(page)
-    project.scratch.initBound(pageX, pageY, 1)
+    project.scratch.initBound(pageX, pageY, d)
+
+    project.wand.attach(page)
+    project.wand.initBound(pageX, pageY)
   }
 
   onUp(e) {
@@ -67,9 +70,13 @@ class ArrowTool extends Tool {
       } else {
 	this.skip = false
       }
+
+    } else {
+      project.wand.selectText()
     }
 
     project.scratch.detach()
+    project.wand.detach()
 
     if (Tool.stack.length > 1) {
       Tool.pop()
@@ -99,6 +106,7 @@ class ArrowTool extends Tool {
       pageX = x
       pageY = y
       project.scratch.updateBound(x, y, d)
+      project.wand.updateBound(x, y)
     }
   }
 }

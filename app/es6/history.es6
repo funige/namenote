@@ -15,6 +15,7 @@ class History {
   }
   
   pushUndo(item, holdRedo) {
+    nn.warn('push undo')
     this.undoItems.push(item)
     if (this.undoItems.length > max) {
       this.undoItems.shift()

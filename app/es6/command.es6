@@ -186,7 +186,8 @@ const command = {
     if (project) {
       const selection = project.selection
       const page = project.currentPage
-      for (const element of page.texts.childNodes) {
+      //for (const element of page.texts.childNodes) {
+      for (const element of page.texts.children) {
 	selection.add(element)
       }
     }
@@ -196,8 +197,8 @@ const command = {
     if (Project.current) Project.current.selection.clear()
   },
 
-  margeText: () => {
-    if (Project.current) Project.current.selection.marge()
+  mergeText: () => {
+    if (Project.current) Project.current.selection.merge()
   },
 
   noteSettings: () => {

@@ -30,7 +30,7 @@ const shortcutDefault = {
 
   selectAll: 'ctrl+a',
   unselect: 'ctrl+d',
-  margeText: 'ctrl+e',
+  mergeText: 'ctrl+e',
   
   //sideBar: 'tab',
   developerTools: 'command+alt+j',

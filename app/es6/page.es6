@@ -370,7 +370,8 @@ class Page {
 
   extractText() {
     const result = []
-    for (const element of this.texts.childNodes) {
+    //for (const element of this.texts.childNodes) {
+    for (const element of this.texts.children) {
       const text = Text.normalize(element.innerHTML)
 	    .replace(/^\n+/, '')
 	    .replace(/\n+$/, '')

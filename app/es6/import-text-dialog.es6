@@ -25,8 +25,24 @@ const importTextDialog = {
       <td><input name='name' class='dir' type='text' value='' placeholder='T(Select file to import)' disabled />
       <input name='ref' class='ref' type='button' value='T(Choose file...)' />
 
-      <tr><td>T(Comment key):
-      <td><input name='key' class='key' type='text' value='’' />
+      <tr><td style='height: 1em;'>
+      <tr><td valign=top>T(Format):
+      <td><select name='format' class='tmpl2'>
+        <option value=1>ストーリーエディタ用ネームチェンジャー互換
+        <option value=0>T(Custom)
+        </select>
+      <tr><td>
+      <td><input name='line' class='regex' type='text' value='\\n' />
+          T(Line separator)
+      <tr><td>
+      <td><input name='balloon' class='regex' type='text' value='\\n\\n' />
+          T(Text area separator)
+      <tr><td>
+      <td><input name='page' class='regex' type='text' value='\\n\\n\\n' />
+          T(Page separator)
+      <tr><td>
+      <td><input name='key' class='regex' type='text' value='’' />
+          T(Comment key)
     </table>
     <br/>
     </table>

@@ -148,7 +148,7 @@ class PenTool extends Tool {
     const dx = first[0] - second[0]
     const dy = first[1] - second[1]
     if (dx * dx + dy * dy > 30 * 30) {
-      nn.warn('fixFirstPoint:', dx, dy)
+      nn.log('fixFirstPoint:', dx, dy)
       points.unshift() //remove ghost
 
     } else {
@@ -201,7 +201,8 @@ class PenTool extends Tool {
     let nearest = null
     let min = 0
 	
-    for (const element of page.texts.childNodes) {
+//  for (const element of page.texts.childNodes) {
+    for (const element of page.texts.children) {
       const x = parseFloat(element.style.left)
       const y = parseFloat(element.style.top)
       const width = element.offsetWidth

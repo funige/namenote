@@ -258,26 +258,55 @@ class Selection {
     return { x:x, y:y }
   }
 
-  marge() {
+  merge() {
     if (this.list.length < 2) return
     if (this.lifted) this.drop()
 
-    const margeList = this.getMargeList()
-    const target = margeList.shift()
-    
-    for (const element of margeList) {
-      // marge element to target
-      // remove element
+    const mergeList = this.getMergeList()
+    if (!mergeList) {
+      nn.warn('Can\'t merge selected texts.')
+      return
     }
+    
+    const page = this.project.findPage(this.pid)
+    page.pushUndo({ type:'text', pid:page.pid })
+
+    const target = mergeList.shift()
+    for (const element of mergeList) {
+      //nn.warn(element.style.left, element.style.top, element.innerHTML)
+      let html = Text.getHTML(element)
+      if (!html.match(/^<div>.*<\/div>$/)) html = `<div>${html}</div>`
+
+      target.innerHTML = Text.getHTML(target) + html
+      this.remove(element)
+      element.parentNode.removeChild(element)
+    }
+    Text.fixPosition(target)
+    
+    Autosave.pushPage(page)
   }
 
-  getMargeList() {
+  getMergeList() {
+    const vert = Text.isVert(this.list[0])
+    const tmp = []
     let ymin, yminElement
+
     for (const element of this.list) {
-      const y = parseFloat(element.style.top)
-      if (y < ymin) ymin = y
+      if (vert != Text.isVert(element)) return null
+
+      if (vert) {
+	const x = parseFloat(element.style.left) + element.offsetWidth
+	tmp.push([x, element])
+      } else {
+	const y = parseFloat(element.style.top)
+	tmp.push([-y, element])
+      }
     }
-    return []
+    return tmp.sort((a, b) => {
+      return (a[0] < b[0]) ? 1 : -1
+    }).map((a) => {
+      return a[1]
+    })
   }
 }
 

@@ -87,8 +87,11 @@ const dictionary = {
     "Current page": "選択されたページ",
     "Range": "範囲指定",
     "Scale": "拡大/縮小",
+    "Custom": "カスタム",
     "Text color": "テキストの色",
-
+    "82% (B4 → A4)": "82% (B4 → A4)",
+    "71% (B4 → B5)": "71% (B4 → B5)",
+    
     "Export CLIP STUDIO Storyboard": "CLIP STUDIO ネーム書き出し",
     "Export PDF": "PDF書き出し",
     "Import Plain Text": "テキスト読み込み",
@@ -103,7 +106,11 @@ const dictionary = {
     "Compressing": "圧縮中",
     "Rendering": "作成中",
 
-    "Comment key": "コメント行頭",
+    "Format": "フォーマット",
+    "Line separator": "改行",
+    "Text area separator": "改セリフ",
+    "Page separator": "改ページ",
+    "Comment key": "コメント",
     "Choose file...": "ファイルを選択...",
     
     "Trial": "試用版",
