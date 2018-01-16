@@ -67,7 +67,7 @@ Menu.update = (element) => {
     })
   }
   if (recents.length > 0) {
-    recents[0].accelerator = "CmdOrCtrl+1"
+    recents[0].accelerator = "F1" //"CmdOrCtrl+0"
   }
   
   for (let item of Project.list) {

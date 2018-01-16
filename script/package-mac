@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+#
+# package-mac
+# generates Namenote/mac.zip and Namenote-trial/mac.zip.
+#
+
+system("ruby script/trial") || system("ruby script/trial true")
+system("ruby script/trial") || exit
+
+puts "package trial version for mac..."
+system("electron-packager ./app --overwrite --platform=darwin --arch=x64 --icon=assets/icons/namenote.icns --prune=true --out=release-builds --ignore='es6/.*\.es6'")
+
+system("cd release-builds; zip -qyr ../Namenote-trial/mac.zip Namenote-darwin-x64 -x *.DS_Store")
+
+
+system("ruby script/trial") && system("ruby script/trial false")
+system("ruby script/trial") && exit
+
+puts "package paid version for mac..."
+system("electron-packager ./app --overwrite --platform=darwin --arch=x64 --icon=assets/icons/namenote.icns --prune=true --out=release-builds --ignore='es6/.*\.es6'")
+system("cd release-builds; zip -qyr ../Namenote/mac.zip Namenote-darwin-x64 -x *.DS_Store")
+
+puts "done."
+

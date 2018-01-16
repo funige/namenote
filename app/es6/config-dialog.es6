@@ -38,8 +38,11 @@ const configDialog = {
         <input name='lineDelay' class='count' value='' /> s</label>
 
       <tr><td style='height: 1em;'>
+      <tr><td><label><input name='noWintab' type='checkbox'/>
+        T(Disable wintab driver)</label>
+
       <tr><td><label><input name='noScroll' type='checkbox'/>
-        T(Can not draw because the canvas scrolls on drag)</label>
+        T(Disable mouse wheel scroll)</label>
 
       <br/>
       <br/>
@@ -64,12 +67,14 @@ const configDialog = {
 
   ok: () => {
     const form = document.forms['config']
+    const noWintab = (form.noWintab.checked) ? true : false
     const noScroll = (form.noScroll.checked) ? true : false
     const zoomFont = (form.zoom.checked) ? true : false
     const zoomFontSize = parseInt(form.zoomSize.value)
     const quickline = (form.line.checked) ? true : false
     const quicklineDelay = parseFloat(form.lineDelay.value)
     
+    config.data.noWintab = noWintab
     config.data.noScroll = noScroll
     config.data.zoomFont = zoomFont
     config.data.zoomFontSize = zoomFontSize
@@ -88,6 +93,7 @@ const configDialog = {
 
   initForm: () => {
     const form = document.forms['config']
+    form.noWintab.checked = (config.data.noWintab) ? true : false
     form.noScroll.checked = (config.data.noScroll) ? true : false
 
     const zoomFont = config.getZoomFont()
@@ -126,7 +132,7 @@ const configDialog = {
   },
 
   initColor: () => {
-    const textColor = config.getValue('textColor', '#bf0058')
+    const textColor = config.getValue('textColor', '#000000') //'#bf0058')
     helper.addRule('.text', 'color', textColor)
     
     $("#config-dialog-color").spectrum({
@@ -138,11 +144,12 @@ const configDialog = {
       ],
       /*
       togglePaletteOnly: true,
-      togglePaletteMoreText: 'More',
-      togglePaletteLessText: 'Less',
+      togglePaletteMoreText: '▶︎',
+      togglePaletteLessText: '◀︎️',
       chooseText: 'Ok',
       cancelText: 'Cancel',
       */
+      
       hide: function (color) {
 	const textColor = color.toHexString()
 	helper.addRule('.text', 'color', textColor)

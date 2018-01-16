@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+#
+# publish
+# compress Namenote/* and Namenote-trial/*.
+# 
+
+system("zip -qr Namenote.zip Namenote -x *.DS_Store")
+system("zip -qr Namenote-trial.zip Namenote-trial -x *.DS_Store")
+
+puts "done."

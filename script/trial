@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+require 'fileutils'
+
 
 def get_trial(filename)
   buffer = File.open(filename, "r") {|f| f.read()}
@@ -17,19 +19,34 @@ def replace_trial(filename, string)
   File.open(filename, "w") {|f| f.write(buffer)}
 end
 
+def get_mtime(filename)
+  stat = File::Stat::new(filename)
+  return stat.mtime.to_i
+end
+
+def wait_update(filename)
+  mtime = get_mtime(filename)
+
+  while get_mtime(filename) <= mtime do
+    print "."
+    sleep 2
+  end
+  sleep 1
+end
+
 ################################################################
 
 if ARGV.length <= 0
   trial = get_trial "app/es6/namenote.es6"
   
-  print <<-"EOS"
-  current trial is "#{trial}"
-  EOS
-
+  puts "current trial is '#{trial}'."
   exit ((trial == "true") ? 0 : 1)
 
 else
   value = (ARGV[0].match(/true/i)) ? "true" : "false"
   replace_trial "app/es6/namenote.es6", value
+
+  wait_update("app/js/bundle-desktop.js")
+  exit 0
 end
 

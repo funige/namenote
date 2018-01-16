@@ -13,24 +13,36 @@ def replace_version(filename, string)
   File.open(filename, "w") {|f| f.write(buffer)}
 end
 
+def get_mtime(filename)
+  stat = File::Stat::new(filename)
+  return stat.mtime.to_i
+end
+
+def wait_update(filename)
+  mtime = get_mtime(filename)
+
+  while get_mtime(filename) <= mtime do
+    print "."
+    sleep 2
+  end
+  sleep 1
+end
+
 ################################################################
 
 if ARGV.length <= 0
   old_version = get_version "app/package.json"
 
-  print <<-"EOS"
-  usage: version [new_version]
-
-  updates version of "package.json" & "es6/namenote.es6".
-  curent version is "#{old_version}".
-  EOS
-
-  exit
+  puts "curent version is '#{old_version}'."
+  exit ((old_version =~ /debug$/) ? 0 : 1)
 
 else
   new_version = ARGV[0]
   replace_version "app/package.json", new_version
   replace_version "app/es6/namenote.es6", new_version
+
+  wait_update("app/js/bundle-desktop.js")
+  exit 0
 end
 
 

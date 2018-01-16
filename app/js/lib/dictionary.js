@@ -120,7 +120,8 @@ const dictionary = {
 
     "Zoom small texts on input": "小さいテキストを編集するときは拡大表示する",
     "Use Quickline" : "長押しで直線ツールに切り替える",
-    "Can not draw because the canvas scrolls on drag": "スクロールしちゃって全く描けない？",
+    "Disable wintab driver": "Wintabドライバを使わない",
+    "Disable mouse wheel scroll": "マウスホイールでスクロールしない",
     "Click OK to restore default settings.": "デフォルトの設定に戻します",
     
     "Enable Japanese Options": "日本語用のオプションを有効にする"
