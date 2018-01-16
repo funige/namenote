@@ -4,6 +4,7 @@ require('./menu.js')
 require('./file.js')
 
 const { app, BrowserWindow, ipcMain } = require('electron')
+const {TabletEventReceiver} = require("receive-tablet-event");
 const fs = require('fs')
 
 const packageData = JSON.parse(fs.readFileSync(`${__dirname}/package.json`));
@@ -11,6 +12,7 @@ const name = packageData.name
 const debug = packageData.version.match(/debug/i)
 
 let win
+//let receiver
 let T
 
 
@@ -33,11 +35,27 @@ function createWindow () {
   })
   global.win = win
 
+  const receiver = new TabletEventReceiver(win)
+//  receiver.captureArea = {
+//    left: 0, top: 0, width: 800, height: 600
+//  };
+  console.log('receiver setup finished?', receiver)
+
+  const eventNames = ["enterProximity", "leaveProximity", "down", "move", "up"];
+  for (const name of eventNames) {
+    receiver.on(name, (ev) => {
+      console.log(name);
+      console.log(ev);
+      win.webContents.send(`tablet:${name}`, ev);
+    });
+  }
+  
   win.loadURL(`file://${__dirname}/index-desktop.html`)
   if (debug) win.webContents.openDevTools()
 
   win.on('closed', function () {
     win = null
+    receiver.dispose()
   })
 }
 
@@ -88,6 +106,11 @@ app.on('activate', function () {
  * ipc Event Handlers
  *
  */
+
+ipcMain.on("tablet:install", (ev, captureArea) => {
+  receiver.captureArea = captureArea;
+  console.log('tablet installed!!!', captureArea)
+});
 
 ipcMain.on('set-title', (event, arg) => {
   if (win) {
