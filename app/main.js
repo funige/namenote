@@ -48,6 +48,7 @@ function createWindow () {
       win.webContents.send(`tablet:${name}`, ev);
     });
   }
+
   
   win.loadURL(`file://${__dirname}/index-desktop.html`)
   if (debug) win.webContents.openDevTools()
@@ -106,10 +107,10 @@ app.on('activate', function () {
  *
  */
 
-ipcMain.on("tablet:install", (ev, captureArea) => {
-  receiver.captureArea = captureArea;
-  console.log('tablet installed!!!', captureArea)
-});
+//ipcMain.on("tablet:install", (ev, captureArea) => {
+//  receiver.captureArea = captureArea;
+//  console.log('tablet installed!!!', captureArea)
+//});
 
 ipcMain.on('set-title', (event, arg) => {
   if (win) {

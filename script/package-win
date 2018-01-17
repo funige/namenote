@@ -10,16 +10,16 @@ system("ruby script/trial") || system("ruby script/trial true")
 system("ruby script/trial") || exit
 
 puts "package trial version for windows..."
-system("electron-packager ./app --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/namenote.ico --prune=true --out=release-builds --ignore='es6/.*\.es6'")
-system("cd release-builds; zip -qr ..\Namenote-trial\win.zip Namenote-win32-ia32 -x *.DS_Store")
+system("cd app && electron-packager . Namenote --overwrite --platform=win32 --arch=ia32 --icon=..\\assets\\icons\\namenote.ico --prune=true --out=..\\release-builds --ignore='es6/.*\.es6'")
+system("cd release-builds && zip -qr ..\\Namenote-trial\\win.zip Namenote-win32-ia32 -x *.DS_Store")
 
 
 system("ruby script/trial") && system("ruby script/trial false")
 system("ruby script/trial") && exit
 
 puts "package paid version for windows..."
-system("electron-packager ./app --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/namenote.ico --prune=true --out=release-builds --ignore='es6/.*\.es6'")
-system("cd release-builds; zip -qr ..\Namenote\win.zip Namenote-win32-ia32 -x *.DS_Store")
+system("cd app && electron-packager . Namenote --overwrite --platform=win32 --arch=ia32 --icon=..\\assets\\icons\\namenote.ico --prune=true --out=..\\release-builds --ignore='es6/.*\.es6'")
+system("cd release-builds && zip -qr ..\\Namenote\\win.zip Namenote-win32-ia32 -x *.DS_Store")
 
 puts "done."
 
