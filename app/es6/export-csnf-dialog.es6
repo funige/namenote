@@ -38,14 +38,13 @@ const exportCSNFDialog = {
 
       <tr><td style='height: 0.5em;'>
       <tr><td valign=top>T(Scale):
-      <td><select name='scale' class='tmpl'>
-        <option value=1>100%
-        <option value=0.815934>T(82% (B4 → A4))
-        <option value=0.707107>T(71% (B4 → B5))
+      <td><select name='scale' class='tmpl2'>
+        <option value=1>T(100%)
+        <option value=0.815934>T(82%)
         <option value=0>T(Custom)
         </select>
       <tr><td>
-      <td><input name='percent' class='count' type='text' value='70.7107' /> %
+      <td><input name='percent' class='regex' type='text' value='0.707107' /> %
 
       <input type='submit' style='display: none' />
     </table>
@@ -80,6 +79,7 @@ const exportCSNFDialog = {
   initForm: () => {
     const form = document.forms['export-csnf']
     form.scale.value = 1
+    form.percent.value = 100
     form.page.value = 0
     form.from.disabled = true
     form.to.disabled = true
@@ -105,6 +105,25 @@ const exportCSNFDialog = {
       } else if (this.value < parseInt(form.from.value)) {
 	this.value = parseInt(form.from.value)
 	this.focus()
+      }
+    })
+    $('#export-csnf select[name="scale"]').on('change', function() {
+      if (this.value > 0) {
+	form.percent.value = this.value * 100.0
+      }	
+    })
+    $('#export-csnf input[name="percent"]').on('change', function() {
+      const value = this.value / 100
+      let selected = false
+      $('#export-csnf select[name="scale"] option').each(
+	function() {
+	  if (Math.abs(this.value - value) < 0.001) {
+	    $('#export-csnf select[name="scale"]').val(this.value)
+	    selected = true
+	  }
+	})
+      if (!selected) {
+	$('#export-csnf select[name="scale"]').val(0)
       }
     })
   },

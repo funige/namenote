@@ -89,8 +89,8 @@ const dictionary = {
     "Scale": "拡大/縮小",
     "Custom": "カスタム",
     "Text color": "テキストの色",
-    "82% (B4 → A4)": "82% (B4 → A4)",
-    "71% (B4 → B5)": "71% (B4 → B5)",
+    "100%": "商業誌用(B4サイズ原稿用紙/A4仕上がり)",
+    "82%": "同人誌用(A4サイズ原稿用紙/B5仕上がり)",
     
     "Export CLIP STUDIO Storyboard": "CLIP STUDIO ネーム書き出し",
     "Export PDF": "PDF書き出し",

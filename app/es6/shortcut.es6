@@ -79,7 +79,9 @@ const shortcut = {
 	  command.current = item
 	  nn.log(`*${item}*`)
 	  handler()
-	  return false;
+	  return (ui.isDialogOpen()) ? true : false // ダイアログでtabが効かないため
+//	  return false
+
 	}, 'keydown')
 //	}) //keydownにすると2ストロークコマンドと干渉する
 
