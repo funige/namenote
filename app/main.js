@@ -13,7 +13,7 @@ const debug = packageData.version.match(/debug/i)
 
 let win
 let T
-
+let receiver
 
 /**
  *
@@ -34,10 +34,10 @@ function createWindow () {
   })
   global.win = win
 
-  const receiver = new TabletEventReceiver(win)
-  receiver.captureArea = {
-    left: 0, top: 0, width: 100, height: 100
-  };
+  receiver = new TabletEventReceiver(win)
+  //receiver.captureArea = {
+  //  left: 0, top: 0, width: 100, height: 100
+  //};
   console.log('receiver setup finished?', receiver)
 
   const eventNames = ["enterProximity", "leaveProximity", "down", "move", "up"];
@@ -129,5 +129,11 @@ ipcMain.on('developerTools', (event) => {
   event.returnValue = "ok"
 })
 
+ipcMain.on('updateCaptureArea', (event, arg) => {
+  if (receiver) {
+    receiver.captureArea = arg
+  }
+  event.returnValue = "ok"
+})
 
 

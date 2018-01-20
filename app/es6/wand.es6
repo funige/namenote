@@ -21,6 +21,7 @@ class Wand {
   attach(page) {
     this.page = page
     this.page.root.insertBefore(this.element, this.page.canvas.nextSibling)
+//  this.page.root.append(this.element)
 
     this.clearBound()
     this.element.style.display = 'block'

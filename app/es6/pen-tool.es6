@@ -61,7 +61,8 @@ class PenTool extends Tool {
       return this.startLine(e)
     }
 
-    let pressure = Math.min(1, e.pressure * e.pressure * 2)
+    let pressure = Controller.pressure
+    pressure = Math.min(1, pressure * pressure * 2)
     if (!this.getPenPressure()) pressure = 0.7
 
     const raw = Controller.rawPositionFromEvent(e)
@@ -119,8 +120,10 @@ class PenTool extends Tool {
 
     //ストロークの補間
     this.fixFirstPoint()
-    this.removeJaggy(0)
-    this.removeJaggy(1)
+//  if (config.data.noWintab) {
+      this.removeJaggy(0)
+      this.removeJaggy(1)
+//  }
     
     const raw = points.unshift()
     const pos = page.positionFromRaw(raw)

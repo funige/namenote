@@ -2,6 +2,7 @@
 
 import { Tool } from './tool.es6'
 import { Project } from './project.es6'
+import { Controller } from './controller.es6'
 
 let page, pageX, pageY, moved
 
@@ -44,7 +45,8 @@ class EraserTool extends Tool {
     const x = pos[0]
     const y = pos[1]
 
-    let pressure = Math.min(1, e.pressure * e.pressure * 2)
+    let pressure= Controller.pressure
+    pressure = Math.min(1, pressure * pressure * 2)
     if (!this.getEraserPressure()) pressure = 0.7
     
     if (pageX != x || pageY != y) {

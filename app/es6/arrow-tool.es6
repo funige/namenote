@@ -76,7 +76,7 @@ class ArrowTool extends Tool {
     }
 
     project.scratch.detach()
-    project.wand.detach()
+//  project.wand.detach()
 
     if (Tool.stack.length > 1) {
       Tool.pop()

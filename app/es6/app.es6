@@ -4,13 +4,13 @@ import { config } from './config.es6'
 import { CSNF } from './csnf.es6'
 import { PDF } from './pdf.es6'
 
+import { Controller } from './controller.es6'
+
 const { ipcRenderer } = window.require('electron')
 const { app, dialog } = window.require('electron').remote
-
-//const { clipboard } = window.require('electron').clipboard
-
 const fs = window.require('fs-extra')
 const path = window.require('path')
+
 
 const openNewParams = {
   defaultPath: null,
@@ -71,9 +71,31 @@ const getDefaultName = (dir, name) => {
   return filename
 }
 
+ipcRenderer.on('tablet:down', (event, arg) => {
+  Controller.x = arg.clientX
+  Controller.y = arg.clientY
+  Controller.pressure = arg.pressure
+})
+
+ipcRenderer.on('tablet:up', (event, arg) => {
+  Controller.x = arg.clientX
+  Controller.y = arg.clientY
+  Controller.pressure = arg.pressure
+})
+
+ipcRenderer.on('tablet:move', (event, arg) => {
+  Controller.x = arg.clientX
+  Controller.y = arg.clientY
+  Controller.pressure = arg.pressure
+})
+
 ////////////////////////////////////////////////////////////////
 
 class App {}
+
+App.updateCaptureArea = (data) => {
+  ipcRenderer.send('updateCaptureArea', data)
+}
 
 App.join = (dir, name) => {
   return path.join(dir, name)

@@ -41,7 +41,7 @@ const importTextDialog = {
       <td><input name='page' class='regex' type='text' value='\\n\\n\\n' />
           T(Page separator)
       <tr><td>
-      <td><input name='key' class='regex' type='text' value='’' />
+      <td><input name='comment' class='regex' type='text' value='’' />
           T(Comment key)
     </table>
     <br/>
@@ -73,6 +73,7 @@ const importTextDialog = {
 
   ok: () => {
     const form = document.forms['import-text']
+    
     command.importText(form, (project) => {
       if (project) {
 	$('#import-text-dialog').dialog('close')

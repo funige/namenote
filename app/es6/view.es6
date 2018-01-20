@@ -83,6 +83,14 @@ View.onScroll = (e) => {
 View.onResize = () => {
   nn.log('[onResize]')
   if (Project.current) delete(Project.current.bookmark.quickPower)
+  if (namenote.app) {
+    namenote.app.updateCaptureArea({
+      left: 0,
+      top:0,
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
+  }
   View.update()
 }
 

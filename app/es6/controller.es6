@@ -5,14 +5,10 @@ import { View } from './view.es6'
 import { Tool } from './tool.es6'
 import { Page } from './page.es6'
 import { Selection } from './selection.es6'
+import { config } from './config.es6'
 
 let onStroke = false
 let pid = null
-
-//let altKey = false
-//let ctrlKey = false
-//let shiftKey = false
-//let spaceKey = false
 
 let x0 = 0
 let y0 = 0
@@ -94,8 +90,11 @@ Controller.init = () => {
 
 Controller.onDown = (e) => {
   nn.log("on down")
-  Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
-  Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+  if (config && config.data.noWintab) {
+    Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+    Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+    Controller.pressure = e.pressure
+  }
 
   const project = Project.current
   if (!project) return
@@ -155,8 +154,11 @@ Controller.onDown = (e) => {
 }
 
 Controller.onUp = (e) => {
-  Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
-  Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+  if (config && config.data.noWintab) {
+    Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+    Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+    Controller.pressure = e.pressure
+  }
   if (onStroke) {
     Tool.current.onUp(e)
     onStroke = false
@@ -166,8 +168,11 @@ Controller.onUp = (e) => {
 }
 
 Controller.onMove = (e) => {
-  Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
-  Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+  if (config && config.data.noWintab) {
+    Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+    Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+    Controller.pressure = e.pressure
+  }
   if (onStroke) {
     Tool.current.onMove(e)
   }
