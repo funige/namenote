@@ -43,23 +43,23 @@ class Page {
 
     if (pid) {
       command.loadPage(project, this, (err, data) => {
-	if (!err) {
-	  this.params = JSON.parse(data)
-	  this.dirty = false
-	  this.unzip()
+        if (!err) {
+          this.params = JSON.parse(data)
+          this.dirty = false
+          this.unzip()
 
-	} else {
-	  nn.log(`loadPage(${this.pid})`, err)
-	}
+        } else {
+          nn.log(`loadPage(${this.pid})`, err)
+        }
       })
 
     } else {
       command.savePage(project, this, (err) => {
-	if (err) {
-	  nn.log(`savePage(${this.pid})`, err)
-	} else {
-	  this.dirty = false
-	}
+        if (err) {
+          nn.log(`savePage(${this.pid})`, err)
+        } else {
+          this.dirty = false
+        }
       })
     }
   }
@@ -99,13 +99,13 @@ class Page {
     const zip = new JSZip()
     zip.loadAsync(base64, { base64: true })
       .then((zip) => {
-	zip.file('image').async('uint8Array').then((data) => {
-	  const width = this.canvas.width
-	  const height = this.canvas.height
-	  const imageData = this.ctx.createImageData(width, height)
-	  imageData.data.set(data);
-	  this.ctx.putImageData(imageData, 0, 0)
-	})
+        zip.file('image').async('uint8Array').then((data) => {
+          const width = this.canvas.width
+          const height = this.canvas.height
+          const imageData = this.ctx.createImageData(width, height)
+          imageData.data.set(data);
+          this.ctx.putImageData(imageData, 0, 0)
+        })
       })
   }
   
@@ -254,7 +254,7 @@ class Page {
     
     node.addEventListener('blur', function(e) {
       setImmediate(() => {
-	project.selection.dropInBlur(node)
+        project.selection.dropInBlur(node)
       })
       $(node).removeClass("editable")
       Text.setEditable(node, false)
@@ -373,11 +373,11 @@ class Page {
     //for (const element of this.texts.childNodes) {
     for (const element of this.texts.children) {
       const text = Text.normalize(element.innerHTML)
-	    .replace(/^\n+/, '')
-	    .replace(/\n+$/, '')
+            .replace(/^\n+/, '')
+            .replace(/\n+$/, '')
 
       if (!text.match(/^\s*$/)) {
-	result.push(text)
+        result.push(text)
       }
     }
     return result.join('\n\n') + '\n\n'
@@ -402,29 +402,20 @@ class Page {
     for (let i = 0; i < array.length; i++) {
       let text = array[i]
       if (text.length > 0) {
-	text = "<div" + array[i]
-	text = text.replace(/&nbsp;/g, '&#160;')
-	text = text.replace(/&copy;/g, '&#169;')
-	text = text.replace(/&laquo;/g, '&#171;')
-	text = text.replace(/&raquo;/g, '&#187;')
-	text = text.replace(/&yen;/g, '&#165;')
-	text = text.replace(/&plusmn;/g, '&#177;')
-	text = text.replace(/&minus;/g, '&#8722;')
-	text = text.replace(/style="/g, 'style="white-space:nowrap; z-index:100; color:#bf0058;')
+        text = "<div" + array[i]
+        text = text.replace(/&nbsp;/g, '&#160;')
+        text = text.replace(/&copy;/g, '&#169;')
+        text = text.replace(/&laquo;/g, '&#171;')
+        text = text.replace(/&raquo;/g, '&#187;')
+        text = text.replace(/&yen;/g, '&#165;')
+        text = text.replace(/&plusmn;/g, '&#177;')
+        text = text.replace(/&minus;/g, '&#8722;')
+        text = text.replace(/style="/g, 'style="white-space:nowrap; z-index:100; color:#bf0058;')
 
-	text = text.replace(/<br>/g, "<br\/>")
-	text = text.replace(/<br\/><\/div>/g, "<\/div>")
-	text = text.replace(/<div>(.*?)<\/div>/g, "<br\/>$1")
-	
-	/*
-	text = text.replace(/<div>(.*?)<\/div><\/div>/g, "<br\/>$1<\/div>")
-	text = text.replace(/<div>(.*?)<\/div><\/div>/g, "<br\/>$1<\/div>")
-	text = text.replace(/<div>(.*?)<\/div><\/div>/g, "<br\/>$1<\/div>")
-	text = text.replace(/<\/div><div>/g, "<br\/>")
-	text = text.replace(/<br>/g, "<br\/>")
-	*/
-	
-	array[i] = text
+        text = text.replace(/<br>/g, "<br\/>")
+        text = text.replace(/<br\/><\/div>/g, "<\/div>")
+        text = text.replace(/<div>(.*?)<\/div>/g, "<br\/>$1")
+        array[i] = text
       }
     }
     //nn.log('=>', array)

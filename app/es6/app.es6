@@ -93,10 +93,6 @@ ipcRenderer.on('tablet:move', (event, arg) => {
 
 class App {}
 
-App.updateCaptureArea = (data) => {
-  ipcRenderer.send('updateCaptureArea', data)
-}
-
 App.join = (dir, name) => {
   return path.join(dir, name)
 }
@@ -119,16 +115,6 @@ App.openDialog = (dir, callback) => {
     if (filenames) {
       let filename = filenames[0]
       if (fs.lstatSync(filename).isFile()) filename = path.dirname(filename)
-      callback(filename)
-    }
-  })
-}
-
-App.__openTxtDialog = (dir, callback) => {
-  openTxtParams.defaultPath = dir
-  dialog.showOpenDialog(openTxtParams, (filenames) => {
-    if (filenames) {
-      let filename = filenames[0]
       callback(filename)
     }
   })
@@ -280,6 +266,20 @@ App.loadProject = (url, callback) => {
 	type: 'error',
 	message: `"${filename}" ` + T('File not found.'),
       }, (responce) => { nn.log(responce) })
+    }
+  })
+}
+
+App.loadText = (filename, callback) => {
+  fs.readFile(filename, 'utf8', (err, text) => {
+    if (!err) {
+      callback(text)
+
+    } else {
+      App.showMessageBox({
+        type: 'error',
+        message: `"${filename}"` + T('File read error.'),
+      }, (responce) => { callback(null) })
     }
   })
 }

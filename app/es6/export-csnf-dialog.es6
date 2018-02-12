@@ -23,16 +23,16 @@ const exportCSNFDialog = {
     <table>
       <tr><td>T(File name):
       <td><input name='name' class='name' type='text' value='' />
-	  
+
       <tr><td>T(Folder):
       <td><input name='dir' class='dir' type='text' value='' disabled />
-	<input name='ref' class='ref' type='button' value='T(Choose folder...)' />
+        <input name='ref' class='ref' type='button' value='T(Choose folder...)' />
 
       <tr><td style='height: 1em;'>
       <tr><td valign=top>T(Pages):
       <td><label><input name='page' type='radio' value=0 >T(All)</label><br/>
-	<label><input name='page' type='radio' value=1>T(Current page)</label><br/>
-	<label><input name='page' type='radio' value=2>T(Range)
+        <label><input name='page' type='radio' value=1>T(Current page)</label><br/>
+        <label><input name='page' type='radio' value=2>T(Range)
           <input name='from' class='count' value='10' /> -
           <input name='to' class='count' value='10' /></label>
 
@@ -65,8 +65,8 @@ const exportCSNFDialog = {
     const form = document.forms['export-csnf']
     command.exportCSNF(form, (project) => {
       if (project) {
-	$('#export-csnf-dialog').dialog('close')
-	exportCSNFDialog.saveParams()
+        $('#export-csnf-dialog').dialog('close')
+        exportCSNFDialog.saveParams()
       }
     })
     return false
@@ -91,39 +91,39 @@ const exportCSNFDialog = {
     
     $('#export-csnf input[name="from"]').on('change', function() { 
       if (this.value < 1) {
-	this.value = 1
-	this.focus()
+        this.value = 1
+        this.focus()
       } else if (this.value > parseInt(form.to.value)) {
-	this.value = parseInt(form.to.value)
-	this.focus()
+        this.value = parseInt(form.to.value)
+        this.focus()
       }
     })
     $('#export-csnf input[name="to"]').on('change', function() { 
       if (this.value > Project.current.pages.length) {
-	this.value = Project.current.pages.length
-	this.focus()
+        this.value = Project.current.pages.length
+        this.focus()
       } else if (this.value < parseInt(form.from.value)) {
-	this.value = parseInt(form.from.value)
-	this.focus()
+        this.value = parseInt(form.from.value)
+        this.focus()
       }
     })
     $('#export-csnf select[name="scale"]').on('change', function() {
       if (this.value > 0) {
-	form.percent.value = this.value * 100.0
-      }	
+        form.percent.value = this.value * 100.0
+      }
     })
     $('#export-csnf input[name="percent"]').on('change', function() {
       const value = this.value / 100
       let selected = false
       $('#export-csnf select[name="scale"] option').each(
-	function() {
-	  if (Math.abs(this.value - value) < 0.001) {
-	    $('#export-csnf select[name="scale"]').val(this.value)
-	    selected = true
-	  }
-	})
+        function() {
+          if (Math.abs(this.value - value) < 0.001) {
+            $('#export-csnf select[name="scale"]').val(this.value)
+            selected = true
+          }
+        })
       if (!selected) {
-	$('#export-csnf select[name="scale"]').val(0)
+        $('#export-csnf select[name="scale"]').val(0)
       }
     })
   },

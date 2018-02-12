@@ -67,12 +67,12 @@ Text.setEditable = (element, value) => {
     if (!value) {
       element.contentEditable = false
       if (config.getZoomFont()) { 
-	if (Text.savedSize) {
-	  element.style.fontSize = Text.savedSize + 'px'
-	  Text.fix(element)
-	  Text.fixPosition(element)
-	  Text.savedSize = null
-	}
+        if (Text.savedSize) {
+          element.style.fontSize = Text.savedSize + 'px'
+          Text.fix(element)
+          Text.fixPosition(element)
+          Text.savedSize = null
+        }
       }
       Menu.update(element);
     }
@@ -80,20 +80,20 @@ Text.setEditable = (element, value) => {
     if (value) {
       element.contentEditable = 'true'
       if (config.getZoomFont()) {
-	const readableSize = Text.readableSize(parseFloat(element.style.fontSize))
-	if (readableSize) {
-	  Text.savedSize = parseFloat(element.style.fontSize)
-	  element.style.fontSize = readableSize
-	  Text.fixPosition(element)
-	}
+        const readableSize = Text.readableSize(parseFloat(element.style.fontSize))
+        if (readableSize) {
+          Text.savedSize = parseFloat(element.style.fontSize)
+          element.style.fontSize = readableSize
+          Text.fixPosition(element)
+        }
       }
       /*
       if (config.getZoomFont()) {
-	if (element.style.fontSize) {
-	  Text.savedSize = parseFloat(element.style.fontSize)
-	  element.style.fontSize = Text.readableSize(Text.savedSize)
-	  Text.fixPosition(element)
-	}
+        if (element.style.fontSize) {
+          Text.savedSize = parseFloat(element.style.fontSize)
+          element.style.fontSize = Text.readableSize(Text.savedSize)
+          Text.fixPosition(element)
+        }
       }
       */
       Menu.update(element);
@@ -104,10 +104,10 @@ Text.setEditable = (element, value) => {
 Text.isEditable = (element)  => {
   if (element) {
     if (element.tagName == 'INPUT' ||
-	element.tagName == 'SELECT' ||
-	element.tagName == 'TEXTAREA' ||
-	(element.contentEditable && element.contentEditable == 'true')) {
-//	element.contentEditable) {
+        element.tagName == 'SELECT' ||
+        element.tagName == 'TEXTAREA' ||
+        (element.contentEditable && element.contentEditable == 'true')) {
+      //element.contentEditable) {
       return true
     }
   }
@@ -127,7 +127,7 @@ Text.fixPosition = (element) => {
   if (Text.isVert(element)) {
     const data = JSON.parse(element.alt)
     if (width != data.width) {
-	const left = parseFloat(element.style.left) - (width - data.width)
+      const left = parseFloat(element.style.left) - (width - data.width)
       element.style.left = left + "px"
     }
   }
@@ -137,8 +137,8 @@ Text.fixPosition = (element) => {
 Text.getHTML = (element) => {
   // このへんは早めに整理しないとまずい
   const html = element.innerHTML
-	.replace(/<span[^>]*>(.*?)<\/span>/g, "$1")
-	.replace(/<div><br><div>/g, "<div><br><\/div><div>")
+        .replace(/<span[^>]*>(.*?)<\/span>/g, "$1")
+        .replace(/<div><br><div>/g, "<div><br><\/div><div>")
   return html
 }
 
@@ -197,9 +197,9 @@ Text.append = (element) => {
       node.style.writingMode = element.style.writingMode
       node.style.fontSize = element.style.fontSize
       setImmediate(() => {
-	project.selection.clear()
-	project.selection.add(node)
-	command.toggleEditMode()
+        project.selection.clear()
+        project.selection.add(node)
+        command.toggleEditMode()
       })
     })
   }
@@ -230,9 +230,9 @@ Text.divide = (element) => {
       node.innerHTML = array[1]
       Text.fixPosition(node)
       setImmediate(() => {
-	project.selection.clear()
-	project.selection.add(node)
-	command.toggleEditMode()
+        project.selection.clear()
+        project.selection.add(node)
+        command.toggleEditMode()
       })
     })
   }
@@ -255,10 +255,10 @@ Text.pasteAsync = (page, x, y, list, callback) => {
       Text.fixPosition(node)
       
       if (list.length > 0) {
-	Text.pasteAsync(page, x - node.offsetWidth, y, list, callback)
+        Text.pasteAsync(page, x - node.offsetWidth, y, list, callback)
 
       } else {
-	if (callback) callback()
+        if (callback) callback()
       }
     })
   }

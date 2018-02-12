@@ -177,13 +177,13 @@ Autosave.saveProject = (project) => {
 // テキストのセーブ漏れを確認する
 Autosave.assertPage = () => {
   //nn.log('...')
-
+  /*
   const project = Project.current
   if (!project) return
   const page = project.currentPage
   if (!page) return
   const texts = page.texts.innerHTML
-  
+  */
   //throw new Error('セーブ漏れ監視中')
 }
 

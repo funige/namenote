@@ -15,7 +15,6 @@ class Selection {
     this.pid = null
 
     this.lifted = false
-    this.liftInfo = []
     
     this.element = document.createElement('div')
     this.element.className = 'selection'
@@ -46,27 +45,43 @@ class Selection {
     $(element).addClass('selected')
   }
 
-  removeOthers(element) {
-    if (this.lifted) return
-    for (let i = this.list.length - 1; i >= 0; i--) {
-      const item = this.list[i]
-      if (item != element) {
-	$(item).removeClass('selected')
-	this.list.splice(i, 1)
-      }
-    }
-  }
-  
   remove(element) {
     if (this.lifted) return
     for (let i = this.list.length - 1; i >= 0; i--) {
       const item = this.list[i]
       if (item == element) {
-	$(item).removeClass('selected')
-	this.list.splice(i, 1)
+        $(item).removeClass('selected')
+        this.list.splice(i, 1)
       }
     }
   }
+  
+  removeOthers(element) {
+    if (this.lifted) return
+    for (let i = this.list.length - 1; i >= 0; i--) {
+      const item = this.list[i]
+      if (item != element) {
+        $(item).removeClass('selected')
+        this.list.splice(i, 1)
+      }
+    }
+  }
+
+  removeBlank() { 
+    for (let i = this.list.length - 1; i >= 0; i--) {
+      const item = this.list[i]
+      if (item.innerHTML.match(item.innerHTML.match(/^[\s]*<br\/?[\s]*$/))) {
+        //どんなのがマッチするのか忘れたので確認します
+        console.error('removeBlank', item.innerHTML)
+      }
+          
+      if (item.innerHTML.match(/^[\s]*$/)) {
+        item.parentNode.removeChild(item)
+        this.list.splice(i, 1)
+      }
+    }
+  }
+  
   
   clear() {
     if (this.lifted) this.drop()
@@ -104,30 +119,37 @@ class Selection {
     }
   }
 
+  prepareSave() {
+    const page = this.project.findPage(this.pid)
+    this.texts = page.texts.innerHTML
+  }
+
+  liftElement(element) {
+    const offset = this.getPageOffset(element.parentNode)
+    const info = {
+      parent: element.parentNode,
+      before: element.nextSibling,
+      x: offset.x,
+      y: offset.y
+    }
+    const x = parseFloat(element.style.left) + offset.x
+    const y = parseFloat(element.style.top) + offset.y
+    element.style.left = x + "px"
+    element.style.top = y + "px"
+    element.style.color = 'red'
+    this.element.appendChild(element)
+    return info
+  }
+
   lift() {
     if (!this.lifted) {
-      const page = this.project.findPage(this.pid)
-      this.texts = page.texts.innerHTML
-      
-      this.liftinfo = []
-      for (let i = 0; i < this.list.length; i++) {
-	const element = this.list[i]
-	nn.log('..', element, element.className, element.id)
-	const offset = this.getPageOffset(element.parentNode)
-	this.liftinfo[i] = {
-	  parent: element.parentNode,
-	  before: element.nextSibling,
-	  x: offset.x,
-	  y: offset.y
-	}
-	const x = parseFloat(element.style.left) + offset.x
-	const y = parseFloat(element.style.top) + offset.y
-	element.style.left = x + "px"
-	element.style.top = y + "px"
-//	element.style.color = 'red'
-	this.element.appendChild(element)
-      }
       this.lifted = true
+      this.prepareSave()
+        
+      this.liftinfo = []
+      for (const element of this.list) {
+        this.liftinfo.push(this.liftElement(element))
+      }
     }
   }
 
@@ -138,56 +160,50 @@ class Selection {
       Tool.setSkip(false)
     }
   }
+
+  dropElement(element, info, target) {
+    element.style.color = 'black'
+
+    if (!target) {
+      const x = parseFloat(element.style.left) - info.x
+      const y = parseFloat(element.style.top) - info.y
+      element.style.left = x + "px"
+      element.style.top = y + "px"
+      info.parent.insertBefore(element, info.before)
+
+    } else {
+      const offset = this.getPageOffset(target.texts)
+      const x = parseFloat(element.style.left) - offset.x
+      const y = parseFloat(element.style.top) - offset.y
+      element.style.left = x + "px"
+      element.style.top = y + "px"
+      target.texts.appendChild(element)
+    }
+  }
   
   drop(target) {
     if (this.lifted) {
       const page = this.project.findPage(this.pid)
-      let dx = 0
-      let dy = 0
-      let interPage = (target && target != page) ? true : false
+      if  (target == page) target = null
       
       for (let i = this.list.length - 1; i >= 0; i--) {
-	const element = this.list[i]
-	const info = this.liftinfo[i]
-//	element.style.color = 'black'
-
-	if (!interPage) {
-	  const x = parseFloat(element.style.left) - info.x
-	  const y = parseFloat(element.style.top) - info.y
-	  element.style.left = x + "px"
-	  element.style.top = y + "px"
-	  info.parent.insertBefore(element, info.before)
-
-	} else {
-	  const offset = this.getPageOffset(target.texts)
-	  const x = parseFloat(element.style.left) - offset.x
-	  const y = parseFloat(element.style.top) - offset.y
-	  element.style.left = x + "px"
-	  element.style.top = y + "px"
-
-	  target.texts.appendChild(element)
-	}
+        const element = this.list[i]
+        const info = this.liftinfo[i]
+        this.dropElement(element, info, target)
       }
+      
       this.lifted = false
-      if (interPage) this.pid = target.pid
+      if (target) this.pid = target.pid
 
-      //空白行の削除
-      for (let i = this.list.length - 1; i >= 0; i--) {
-	const element = this.list[i]
-	nn.log('match...[', element.innerHTML, ']')
-	if (element.innerHTML.match(/^[\s]*$/) ||
-	    element.innerHTML.match(/^[\s]*<br\/?[\s]*$/)) {
-	  element.parentNode.removeChild(element)
-	  this.list.splice(i, 1)
-	}
-      }	
+      this.removeBlank()
 
-      // オートセーブ
-      Autosave.pushPage(page)
-      if (interPage) Autosave.pushPage(target)
+      // オートセーブ。これは未完成。
+      Autosave.pushPage(page) //pageはthis.textsを使ってセーブする
+      if (target) Autosave.pushPage(target) //targetのデータを作ってセーブする
     }
   }
 
+  //ここでwandの状態も保存しないとダメだ
   getStatus() {
     const ids = []
     for (const element of this.list) {
@@ -237,11 +253,11 @@ class Selection {
   onDrag(dx, dy) {
     if (this.lifted) {
       for (let i = 0; i < this.list.length; i++) {
-	const element = this.list[i]
-	const x = parseFloat(element.style.left) - dx
-	const y = parseFloat(element.style.top) - dy
-	element.style.left = x + "px"
-	element.style.top = y + "px"
+        const element = this.list[i]
+        const x = parseFloat(element.style.left) - dx
+        const y = parseFloat(element.style.top) - dy
+        element.style.left = x + "px"
+        element.style.top = y + "px"
       }
     }
   }
@@ -295,11 +311,11 @@ class Selection {
       if (vert != Text.isVert(element)) return null
 
       if (vert) {
-	const x = parseFloat(element.style.left) + element.offsetWidth
-	tmp.push([x, element])
+        const x = parseFloat(element.style.left) + element.offsetWidth
+        tmp.push([x, element])
       } else {
-	const y = parseFloat(element.style.top)
-	tmp.push([-y, element])
+        const y = parseFloat(element.style.top)
+        tmp.push([-y, element])
       }
     }
     return tmp.sort((a, b) => {

@@ -88,7 +88,7 @@ class PenTool extends Tool {
     } else if (config.getQuickline()) {
       const delay = Date.now() - timer
       if (delay > config.getQuicklineDelay() * 1000) {
-	this.startLine(e)
+        this.startLine(e)
       }
     }
   }
@@ -120,10 +120,8 @@ class PenTool extends Tool {
 
     //ストロークの補間
     this.fixFirstPoint()
-//  if (config.data.noWintab) {
-      this.removeJaggy(0)
-      this.removeJaggy(1)
-//  }
+    this.removeJaggy(0)
+    this.removeJaggy(1)
     
     const raw = points.unshift()
     const pos = page.positionFromRaw(raw)
@@ -137,9 +135,9 @@ class PenTool extends Tool {
       const pressure = raw[2]
 
       if (pageX != x || pageY != y) {
-	this.drawSegment(ctx, pageX, pageY, pressure, x, y, pressure)
-	pageX = x
-	pageY = y
+        this.drawSegment(ctx, pageX, pageY, pressure, x, y, pressure)
+        pageX = x
+        pageY = y
       }
     }
     Autosave.pushPage(page)
@@ -170,24 +168,23 @@ class PenTool extends Tool {
     let len = 1
     while (index < numPoints) {
       if (points[index][component] == x) {
-	index++
-	len++
+        index++
+        len++
 	
       } else {
-	if (points[index][component] < x) {
-	  for (let j = 0; j < len - 1; j++) {
-	    const k = (j + 1) / len
-	    points[index - (len - 1) + j][component] -= k
-	  }
-	  
-	} else {
-	  for (let j = 0; j < len - 1; j++) {
-	    const k = (j + 1) / len
-	    points[index - (len - 1) + j][component] += k
-	  }
-	}
-	x = points[index][component]
-	len = 0
+        if (points[index][component] < x) {
+          for (let j = 0; j < len - 1; j++) {
+            const k = (j + 1) / len
+            points[index - (len - 1) + j][component] -= k
+          }
+        } else {
+          for (let j = 0; j < len - 1; j++) {
+            const k = (j + 1) / len
+            points[index - (len - 1) + j][component] += k
+          }
+        }
+        x = points[index][component]
+        len = 0
       }
     }
 
@@ -216,8 +213,8 @@ class PenTool extends Tool {
       const d = Math.sqrt(dx * dx + dy * dy)
       
       if (!nearest || d < min) {
-	nearest = element
-	min = d
+        nearest = element
+        min = d
       }
     }
     if (nearest && min < 5 / View.scale()) {

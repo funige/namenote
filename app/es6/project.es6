@@ -130,14 +130,14 @@ class Project {
       const item = [0]
       const i0 = array[i] ? counter++ : 0
       const i1 = array[i + 1] ? counter++ : 0
-	
+
       if (bind) {
-	item.push(i1, array[i + 1])
-	item.push(i0, array[i])
-	  
+        item.push(i1, array[i + 1])
+        item.push(i0, array[i])
+
       } else {
-	item.push(i0, array[i])
-	item.push(i1, array[i + 1])
+        item.push(i0, array[i])
+        item.push(i1, array[i + 1])
       }
       info.push(item)
     }
@@ -207,19 +207,18 @@ class Project {
 
     } else {
       if (c.singleSided) {
-	return this.finishingRect()
+        return this.finishingRect()
 
       } else {
-	const rect = this.finishingRect()
-	const x = Math.round((this.exportSize[0] - this.baseframeSize[0]) / 2)
-	const w = Math.round((this.finishingSize[0] + this.baseframeSize[0]) / 2)
-	
-	if (isRight) {
-	  return [x - c.spineMargin, rect[1], w + c.spineMargin, rect[3]]
+        const rect = this.finishingRect()
+        const x = Math.round((this.exportSize[0] - this.baseframeSize[0]) / 2)
+        const w = Math.round((this.finishingSize[0] + this.baseframeSize[0]) / 2)
 
-	} else {
-	  return [rect[0], rect[1], w + c.spineMargin, rect[3]]
-	}
+        if (isRight) {
+          return [x - c.spineMargin, rect[1], w + c.spineMargin, rect[3]]
+        } else {
+          return [rect[0], rect[1], w + c.spineMargin, rect[3]]
+        }
       }
     }
   }
@@ -267,7 +266,7 @@ class Project {
   selectPage(pid) {
     if (this.currentPage) {
       if (this.currentPage.pid != pid) {
-	Tool.setSkip(true)
+        Tool.setSkip(true)
       }
       
       this.currentPage.unselect()
@@ -351,11 +350,11 @@ class Project {
     if (PageBuffer.hasPage()) {
 //    for (const item of PageBuffer.list) {
       for (let i = PageBuffer.list.length - 1; i >= 0; i--) {
-	const item = PageBuffer.list[i]
-	const page = this.insertPage()
-	page.ctx.putImageData(item.imageData, 0, 0)
-	page.resurrect(item.texts)
-	Autosave.pushPage(page)
+        const item = PageBuffer.list[i]
+        const page = this.insertPage()
+        page.ctx.putImageData(item.imageData, 0, 0)
+        page.resurrect(item.texts)
+        Autosave.pushPage(page)
       }
       PageBuffer.pasted = true
     }
@@ -393,16 +392,16 @@ class Project {
       const element = this.element.childNodes[i]
       const pid = Page.getPID(element)
       if (pid) {
-	const page = this.findPage(pid)
-	const pos = page.positionFromEvent(e)
-	const rect = this.pageRect(page.isRight)
-	if (pos[0] >= rect[0] &&
-	    pos[1] >= rect[1] &&
-	    pos[0] < rect[0] + rect[2] &&
-	    pos[1] < rect[1] + rect[3]) {
-	  nn.log('findPageFromEvent', page.pid)
-	  return page
-	}
+        const page = this.findPage(pid)
+        const pos = page.positionFromEvent(e)
+        const rect = this.pageRect(page.isRight)
+        if (pos[0] >= rect[0] &&
+            pos[1] >= rect[1] &&
+            pos[0] < rect[0] + rect[2] &&
+            pos[1] < rect[1] + rect[3]) {
+          nn.log('findPageFromEvent', page.pid)
+          return page
+        }
       }
     }
     return null
@@ -416,8 +415,8 @@ class Project {
     if (item) {
       const page = this.findPage(item.pid)
       if (page) {
-	page.pushRedo(item)
-	page.apply(item)
+        page.pushRedo(item)
+        page.apply(item)
       }
     }
     historyButton.update()
@@ -429,8 +428,8 @@ class Project {
     if (item) {
       const page = this.findPage(item.pid)
       if (page) {
-	page.pushUndo(item, true)
-	page.apply(item)
+        page.pushUndo(item, true)
+        page.apply(item)
       }
     }
     historyButton.update()
@@ -485,7 +484,7 @@ class Project {
     const list = data.split(/\n\n/)
     Text.pasteAsync(page, pos[0], pos[1], list, (err) => {
       if (!err) {
-	Autosave.pushPage(page)
+        Autosave.pushPage(page)
       } else nn.log(err)
     })
 
@@ -588,7 +587,7 @@ Project.open = (url, callback) => {
     command.loadProject(url, (data) => {
       project = Project.create(url, data)
       if (project && callback) {
-	callback(project)
+        callback(project)
       }
     })
     

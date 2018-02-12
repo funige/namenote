@@ -33,7 +33,7 @@ const command = {
     const name = T('Untitled')
     if (namenote.app) {
       namenote.app.fixPath(path, name, (path, name) => {
-	openNewDialog.show(path, name)
+        openNewDialog.show(path, name)
       })
     }
   },
@@ -44,9 +44,9 @@ const command = {
     const name = url.replace(/^.*\//, '')
     if (namenote.app) {
       namenote.app.chooseFile(path, name, (url) => {
-	if (url && callback) {
-	  callback(url)
-	}
+        if (url && callback) {
+          callback(url)
+        }
       })
     }
   },
@@ -56,8 +56,8 @@ const command = {
     const name = form.name.value
     if (namenote.app) {
       namenote.app.chooseFolder(path, name, (path, name) => {
-	form.dir.value = path
-	form.name.value = name
+        form.dir.value = path
+        form.name.value = name
       })
     }
   },
@@ -67,9 +67,9 @@ const command = {
     const name = form.name.value
     if (namenote.app) {
       namenote.app.createFolder(path, name, (url) => {
-	if (url && callback) {
-	  callback(url)
-	}
+        if (url && callback) {
+          callback(url)
+        }
       })
     }
   },
@@ -114,12 +114,12 @@ const command = {
     const path = config.data.defaultPath
     if (namenote.app) {
       namenote.app.openDialog(path, (url) => {
-	Project.open(url, (project) => {
-	  if (project) {
-	    config.data.defaultPath = namenote.app.dirname(url)
-	    config.save()
-	  }
-	})
+        Project.open(url, (project) => {
+          if (project) {
+            config.data.defaultPath = namenote.app.dirname(url)
+            config.save()
+          }
+        })
       })
     }
   },
@@ -127,8 +127,8 @@ const command = {
   openURL: (url) => {
     Project.open(url, (project) => {
       if (project) {
-	config.data.defaultPath = namenote.app.dirname(url)
-	config.save()
+        config.data.defaultPath = namenote.app.dirname(url)
+        config.save()
       }
     })
   },
@@ -136,15 +136,15 @@ const command = {
   savePageImage: () => {
     if (namenote.app && Project.current) {
       namenote.app.saveImageDialog(null, (url) => {
-	if (url) {
-	  nn.log('save page image to ->', url)
-	  const imageType = url.match(/\.png$/) ? 'image/png' : 'image/jpeg'
-	  Project.current.currentPage.capture(imageType, (data) => {
-	    if (data) {
-	      namenote.app.saveImage(url, data)
-	    }
-	  })
-	}
+        if (url) {
+          nn.log('save page image to ->', url)
+          const imageType = url.match(/\.png$/) ? 'image/png' : 'image/jpeg'
+          Project.current.currentPage.capture(imageType, (data) => {
+            if (data) {
+              namenote.app.saveImage(url, data)
+            }
+          })
+        }
       })
     }
   },
@@ -154,9 +154,9 @@ const command = {
       const project = Project.current
       if (!project) return
       namenote.app.saveSnapshotDialog(null, project, (url) => {
-	if (url) {
-	  namenote.app.saveSnapshot(url, project)
-	}
+        if (url) {
+          namenote.app.saveSnapshot(url, project)
+        }
       })
     }
   },
@@ -188,7 +188,7 @@ const command = {
       const page = project.currentPage
       //for (const element of page.texts.childNodes) {
       for (const element of page.texts.children) {
-	selection.add(element)
+        selection.add(element)
       }
     }
   },
@@ -217,7 +217,7 @@ const command = {
       const path = config.data.defaultPath
       const name = Project.current.name() + '.pdf'
       namenote.app.fixPath(path, name, (path, name) => {
-	exportPDFDialog.show(path, name)
+        exportPDFDialog.show(path, name)
       })
     }
   },
@@ -227,7 +227,7 @@ const command = {
       const path = config.data.defaultPath
       const name = Project.current.name() + '.csnf'
       namenote.app.fixPath(path, name, (path, name) => {
-	exportCSNFDialog.show(path, name)
+        exportCSNFDialog.show(path, name)
       })
     }
   },
@@ -242,9 +242,9 @@ const command = {
       
       const filename = namenote.app.join(path, name)
       namenote.app.csnf.write(project, filename, (err) => {
-	if (!err) {
-	  callback(project)
-	}
+        if (!err) {
+          callback(project)
+        }
       })
     }
   },
@@ -259,9 +259,9 @@ const command = {
       
       const filename = namenote.app.join(path, name)
       namenote.app.pdf.write(project, filename, (err) => {
-	if (!err) {
-	  callback(project)
-	}
+        if (!err) {
+          callback(project)
+        }
       })
     }
   },
@@ -333,7 +333,7 @@ const command = {
     const project = Project.current
     if (project) {
       (project.params.bind_right) ?
-	project.movePageBackward() : project.movePageForward()
+        project.movePageBackward() : project.movePageForward()
     }
   },
 
@@ -341,7 +341,7 @@ const command = {
     const project = Project.current
     if (project) {
       (project.params.bind_right) ?
-	project.movePageForward() : project.movePageBackward()
+        project.movePageForward() : project.movePageBackward()
     }
   },
 
@@ -366,11 +366,11 @@ const command = {
       nn.log('focus..', node)
       node = project.selection.list[0]
       if (node) {
-	$(node).addClass('editable')
-	Text.setEditable(node, true)
+        $(node).addClass('editable')
+        Text.setEditable(node, true)
 
-	project.selection.lift()
-      	node.focus()
+        project.selection.lift()
+        node.focus()
       }
     }
   },
@@ -420,11 +420,11 @@ const command = {
       project.selection.clear()
       const next = Text.nextNode(node)
       if (next) {
-	project.selection.add(next)
-	command.toggleEditMode()
+        project.selection.add(next)
+        command.toggleEditMode()
       }
       
-    } else if (project.selection.list.length == 1) {
+    } else  {
       nn.warn('nexttext on a element which editable is false...')
     }
   },
@@ -438,11 +438,11 @@ const command = {
       project.selection.clear()
       const prev = Text.prevNode(node)
       if (prev) {
-	project.selection.add(prev)
-	command.toggleEditMode()
+        project.selection.add(prev)
+        command.toggleEditMode()
       }
       
-    } else if (project.selection.list.length == 1) {
+    } else {
       nn.warn('nexttext on a element which editable is false...')
     }
   },

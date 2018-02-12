@@ -89,9 +89,11 @@ const dictionary = {
     "Scale": "拡大/縮小",
     "Custom": "カスタム",
     "Text color": "テキストの色",
-    "100%": "商業誌用(B4サイズ原稿用紙/A4仕上がり)",
-    "82%": "同人誌用(A4サイズ原稿用紙/B5仕上がり)",
-    
+    "100%": "B5商業誌用(B4サイズ原稿用紙/A4仕上がり)",
+    "82%": "A5同人誌用(A4サイズ原稿用紙/B5仕上がり)",
+    "Name changer compatible": "ストーリーエディタ用ネームチェンジャー互換",
+    "Namenote text": "Namenoteテキスト",
+
     "Export CLIP STUDIO Storyboard": "CLIP STUDIO ネーム書き出し",
     "Export PDF": "PDF書き出し",
     "Import Plain Text": "テキスト読み込み",
@@ -108,7 +110,7 @@ const dictionary = {
 
     "Format": "フォーマット",
     "Line separator": "改行",
-    "Text area separator": "改セリフ",
+    "Balloon separator": "改セリフ",
     "Page separator": "改ページ",
     "Comment key": "コメント",
     "Choose file...": "ファイルを選択...",

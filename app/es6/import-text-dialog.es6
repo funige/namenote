@@ -4,10 +4,26 @@ import { locale } from './locale.es6'
 import { Project } from './project.es6'
 import { config } from './config.es6'
 import { command } from './command.es6'
+import { helper } from './helper.es6'
 
 let path = null
 let name = null
+let scrupt = []
 
+const formatStrings = {
+  'Name changer compatible': {
+    line: '\\n',
+    balloon: '\\n\\n',
+    page: '\\n\\n\\n',
+    comment: '’',
+  },
+  'Namenote text': {
+    line: '[\\n/]',
+    balloon: '\\n\\n',
+    page: '##*',
+    comment: '#',
+  },
+}
 
 const importTextDialog = {
   init: () => {
@@ -28,26 +44,27 @@ const importTextDialog = {
       <tr><td style='height: 1em;'>
       <tr><td valign=top>T(Format):
       <td><select name='format' class='tmpl2'>
-        <option value=1>ストーリーエディタ用ネームチェンジャー互換
+        <option value='Name changer compatible'>T(Name changer compatible)
+        <option value='Namenote text'>T(Namenote text)
         <option value=0>T(Custom)
         </select>
       <tr><td>
-      <td><input name='line' class='regex' type='text' value='\\n' />
+      <td><input name='line' class='regexp' type='text' value='\\n' />
           T(Line separator)
       <tr><td>
-      <td><input name='balloon' class='regex' type='text' value='\\n\\n' />
-          T(Text area separator)
+      <td><input name='balloon' class='regexp' type='text' value='\\n\\n' />
+          T(Balloon separator)
       <tr><td>
-      <td><input name='page' class='regex' type='text' value='\\n\\n\\n' />
+      <td><input name='page' class='regexp' type='text' value='\\n\\n\\n' />
           T(Page separator)
       <tr><td>
-      <td><input name='comment' class='regex' type='text' value='’' />
+      <td><input name='comment' class='regexp' type='text' value='’' />
           T(Comment key)
     </table>
     <br/>
     </table>
       <tr><td style='height: 1em;'>
-      <tr><td><div class='preview2'></div>
+      <tr><td><div id='preview' class='preview2'></div>
     </table>
     <table>
       <tr><td>T(Number of pages):
@@ -64,8 +81,8 @@ const importTextDialog = {
     const form = document.forms['import-text']
     form.ref.onclick = () => {
       command.chooseFile(document.forms['import-text'], (url) => {
-	form.name.value = url
-	importTextDialog.updatePreview()
+        form.name.value = url
+        importTextDialog.updatePreview(url)
       })
     }
     importTextDialog.initForm()
@@ -73,11 +90,21 @@ const importTextDialog = {
 
   ok: () => {
     const form = document.forms['import-text']
+    const lineSeparator = helper.parseRegexp(form.line)
+    const balloonSeparator = helper.parseRegexp(form.balloon)
+    const pageSeparator = helper.parseRegexp(form.page)
+    const commentKey = helper.parseRegexp(form.comment)
+
+    config.data.lineSeparator = lineSeparator
+    config.data.balloonSeparator = balloonSeparator
+    config.data.pageSeparator = pageSeparator
+    config.data.commentKey = commentKey
+    config.save()
     
     command.importText(form, (project) => {
       if (project) {
-	$('#import-text-dialog').dialog('close')
-	importTextDialog.saveParams()
+        $('#import-text-dialog').dialog('close')
+        importTextDialog.saveParams()
       }
     })
     return false
@@ -87,11 +114,60 @@ const importTextDialog = {
     $('#import-text-dialog').dialog('close')
   },
       
-  initForm: () => {},
-
-  updatePreview: () => {
+  initForm: () => {
     const form = document.forms['import-text']
-    console.log('update preview for', form.name.value)
+    const d = 'Name changer compatible'
+    form.line.value = config.getValue('lineSeparator', formatStrings[d].line)
+    form.balloon.value = config.getValue('balloonSeparator', formatStrings[d].balloon)
+    form.page.value = config.getValue('pageSeparator', formatStrings[d].page)
+    form.comment.value = config.getValue('commentKey', formatStrings[d].comment)
+    importTextDialog.getFormat()
+    
+    $('#import-text input[name="line"]').on('change', function() {
+      console.warn("line change")
+      importTextDialog.getFormat()
+    })
+    $('#import-text input[name="balloon"]').on('change', function() {
+      console.warn("balloon change")
+      importTextDialog.getFormat()
+    })
+    $('#import-text input[name="page"]').on('change', function() {
+      console.warn("page change")
+      importTextDialog.getFormat()
+    })
+    $('#import-text input[name="comment"]').on('change', function() {
+      console.warn("comment change")
+      importTextDialog.getFormat()
+    })
+
+    $('#import-text select[name="format"]').on('change', function() {
+      importTextDialog.setFormat()
+    })
+  },
+
+  setFormat: () => {
+    const form = document.forms['import-text']
+    const format = form.format.value
+    if (formatStrings[format]) {
+      form.line.value = formatStrings[format].line
+      form.balloon.value = formatStrings[format].balloon
+      form.page.value = formatStrings[format].page
+      form.comment.value = formatStrings[format].comment
+    }
+  },
+
+  getFormat: () => {
+    const form = document.forms['import-text']
+    for (const format in formatStrings) {
+      console.warn('getFormat', format)
+      if (formatStrings[format].line != form.line.value) continue
+      if (formatStrings[format].balloon != form.balloon.value) continue
+      if (formatStrings[format].page != form.page.value) continue
+      if (formatStrings[format].comment != form.comment.value) continue
+      form.format.value = format
+      return
+    }
+      form.format.value = 0
   },
   
   show: (url) => {
@@ -117,6 +193,48 @@ const importTextDialog = {
 
   showMessage: (message) => {
     $('#import-text-message').html(message)
+  },
+
+  updatePreview: (filename) => {
+    if (namenote.isApp) {
+      namenote.app.loadText(filename, (text) => {
+        const preview = $('#preview')[0]
+        if (text && preview) {
+          const script = importTextDialog.parse(text)
+          preview.innerHTML = importTextDialog.getPreviewHTML(script)
+        }
+      })
+    }
+  },
+
+  parse: (text) => {
+    const form = document.forms['import-text']
+    const lineRegex = new RegExp(form.line.value)
+    const balloonRegex = new RegExp(form.balloon.value)
+    const pageRegex = new RegExp(form.page.value)
+    const commentRegex = new RegExp('^' + form.comment.value)
+
+    const texts = text.split(/\n/)
+    return texts
+
+    /*
+    let i = 0
+    while (texts[i]) {
+      const item = texts[i]
+      if (item.match(commentRegex)) {
+        
+        texts.splice(i, 1)
+      }
+    } while (texts[++i])
+    
+        if (texts[i].match(/^[\s]*$/ && text)
+      }
+    }
+    */
+  },
+
+  getPreviewHTML: (script) => {
+    return script.join('<br>')
   }
 }
 

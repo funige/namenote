@@ -17,7 +17,7 @@ const configDialog = {
       width: 600,
       buttons: { Ok: configDialog.ok, Cancel: configDialog.cancel },
       open: function() {
-	$(this).parent().find('button:nth-child(1)').focus();
+        $(this).parent().find('button:nth-child(1)').focus();
       }
     })
 
@@ -38,8 +38,6 @@ const configDialog = {
         <input name='lineDelay' class='count' value='' /> s</label>
 
       <tr><td style='height: 1em;'>
-      <tr><td><label><input name='noWintab' type='checkbox'/>
-        T(Disable wintab driver)</label>
 
       <tr><td><label><input name='noScroll' type='checkbox'/>
         T(Disable mouse wheel scroll)</label>
@@ -57,7 +55,7 @@ const configDialog = {
     $('#config').on('submit', function() { return configDialog.ok() })
     document.forms['config'].reset.onclick = () => {
       if (confirm(T('Click OK to restore default settings.'))) {
-	command.resetSettings()
+        command.resetSettings()
       }
     }
     
@@ -67,14 +65,12 @@ const configDialog = {
 
   ok: () => {
     const form = document.forms['config']
-    const noWintab = (form.noWintab.checked) ? true : false
     const noScroll = (form.noScroll.checked) ? true : false
     const zoomFont = (form.zoom.checked) ? true : false
     const zoomFontSize = parseInt(form.zoomSize.value)
     const quickline = (form.line.checked) ? true : false
     const quicklineDelay = parseFloat(form.lineDelay.value)
     
-    config.data.noWintab = noWintab
     config.data.noScroll = noScroll
     config.data.zoomFont = zoomFont
     config.data.zoomFontSize = zoomFontSize
@@ -93,7 +89,6 @@ const configDialog = {
 
   initForm: () => {
     const form = document.forms['config']
-    form.noWintab.checked = (config.data.noWintab) ? true : false
     form.noScroll.checked = (config.data.noScroll) ? true : false
 
     const zoomFont = config.getZoomFont()
@@ -151,10 +146,10 @@ const configDialog = {
       */
       
       hide: function (color) {
-	const textColor = color.toHexString()
-	helper.addRule('.text', 'color', textColor)
-	config.data.textColor = textColor
-	config.save()
+        const textColor = color.toHexString()
+        helper.addRule('.text', 'color', textColor)
+        config.data.textColor = textColor
+        config.save()
       }
     });
   },

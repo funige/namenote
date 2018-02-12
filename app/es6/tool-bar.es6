@@ -8,7 +8,6 @@ import { toolButton } from './tool-button.es6'
 import { historyButton } from './history-button.es6'
 import { maskButton } from './mask-button.es6'
 import { scaleButton } from './scale-button.es6'
-import { menuButton } from './menu-button.es6'
 
 
 const toolBar = {}
@@ -18,7 +17,6 @@ toolBar.init = () => {
   historyButton.init()
   maskButton.init()
   scaleButton.init()
-  menuButton.init()
 
   toolBar.update()
   toolBar.updateButtons()
@@ -29,7 +27,6 @@ toolBar.updateButtons = () => {
   historyButton.update()
   maskButton.update()
   scaleButton.update()
-  menuButton.update()
 }
 
 toolBar.update = (value) => {

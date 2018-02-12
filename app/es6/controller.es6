@@ -89,11 +89,12 @@ Controller.init = () => {
 }
 
 Controller.onDown = (e) => {
-  nn.log("on down")
-  if (config && config.data.noWintab) {
+  //nn.log(e)
+  if (1)  { //config && config.data.noWintab) {
     Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
     Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
     Controller.pressure = e.pressure
+    Controller.pointerId = e.pointerId
   }
 
   const project = Project.current
@@ -154,7 +155,8 @@ Controller.onDown = (e) => {
 }
 
 Controller.onUp = (e) => {
-  if (config && config.data.noWintab) {
+  if (e.pointerId != Controller.pointerId) return
+  if (1) { //(config && config.data.noWintab) {
     Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
     Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
     Controller.pressure = e.pressure
@@ -164,11 +166,11 @@ Controller.onUp = (e) => {
     onStroke = false
     pid = null
   }
-  //return false
 }
 
 Controller.onMove = (e) => {
-  if (config && config.data.noWintab) {
+  if (e.pointerId != Controller.pointerId) return
+  if (1) { //(config && config.data.noWintab) {
     Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
     Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
     Controller.pressure = e.pressure
@@ -176,8 +178,6 @@ Controller.onMove = (e) => {
   if (onStroke) {
     Tool.current.onMove(e)
   }
-
-  //return false
 }
 
 Controller.getPID = (node) => {
