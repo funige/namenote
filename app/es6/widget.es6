@@ -23,6 +23,7 @@ function initImgButton() {
     },
   
     _create: function() {
+      console.warn('[widget]', this.element)
       this.element.addClass('img-button')
       this.element.css('background-image', `url(${this.options.src})`)
 
@@ -33,11 +34,15 @@ function initImgButton() {
       this.disabled(this.options.disabled)
 
       if (this.options.html) {
-	this.element.html(this.options.html)
+        //	this.element.html(this.options.html)
+        const dropdown = document.createElement('div')
+        dropdown.innerHTML = this.options.html
+        this.element[0].parentNode.appendChild(dropdown)
       }
 
       const click = this.options.click
       if (click) this.element.on('click', click)
+//    if (click) this.element.on('mousedown', click)
 },
 
     locked: function(value) {

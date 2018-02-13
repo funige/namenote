@@ -21,14 +21,14 @@ toolButton.init = () => {
 toolButton.initPenButton = () => {
   const penDropdown = `
       <div id="pen-dropdown" class="dropdown-content">
-	<form name="pen-form" class="dropdown-form" title="">
-	  <label><input type='radio' name='size' value=0 />T(S)</label>
-	  <label><input type='radio' name='size' value=1 />T(M)</label>
-	  <label><input type='radio' name='size' value=2 />T(L)</label>
+        <form name="pen-form" class="dropdown-form" title="">
+          <label><input type='radio' name='size' value=0 />T(S)</label>
+          <label><input type='radio' name='size' value=1 />T(M)</label>
+          <label><input type='radio' name='size' value=2 />T(L)</label>
 
           &nbsp;&nbsp;
           <label><input type='checkbox' name='pressure' />&nbsp;T(Pressure)</label>
-	</div>
+        </form>
       </div>`
 
   const penButton = $('#pen-button').imgButton({
@@ -46,14 +46,14 @@ toolButton.initPenButton = () => {
 toolButton.initEraserButton = () => {
   const eraserDropdown = `
       <div id="eraser-dropdown" class="dropdown-content">
-	<form name="eraser-form" class="dropdown-form" title="">
-	  <label><input type='radio' name='size' value=0 />T(S)</label>
-	  <label><input type='radio' name='size' value=1 />T(M)</label>
-	  <label><input type='radio' name='size' value=2 />T(L)</label>
+        <form name="eraser-form" class="dropdown-form" title="">
+          <label><input type='radio' name='size' value=0 />T(S)</label>
+          <label><input type='radio' name='size' value=1 />T(M)</label>
+          <label><input type='radio' name='size' value=2 />T(L)</label>
 
           &nbsp;&nbsp;
           <label><input type='checkbox' name='pressure' />&nbsp;T(Pressure)</label>
-	</div>
+        </form>
       </div>`
 
   const eraserButton = $('#eraser-button').imgButton({
@@ -70,28 +70,28 @@ toolButton.initEraserButton = () => {
 toolButton.initTextButton = () => {
   const textDropdown = `
       <div id="arrow-dropdown" class="dropdown-content">
-	<form name = "arrow-form" class="dropdown-form" title="">
-	  <select name='size'>
-	    <option>8
-	    <option>9
-	    <option>10
-	    <option>11
-	    <option>12
-	    <option>14
-	    <option>16
-	    <option>18
-	    <option>24
-	    <option>36
-	    <option>48
-	    <option>64
-	    <option>72
-	  </select>&nbsp;
+        <form name = "arrow-form" class="dropdown-form" title="">
+          <select name='size'>
+            <option>8
+            <option>9
+            <option>10
+            <option>11
+            <option>12
+            <option>14
+            <option>16
+            <option>18
+            <option>24
+            <option>36
+            <option>48
+            <option>64
+            <option>72
+          </select>&nbsp;
 
           &nbsp;&nbsp;
-	  <label><input type='radio' name='vert' value=0 />T(Horizontal)</label>
-	  <label><input type='radio' name='vert' value=1 />T(Vertical)</label>
-	  <br/>
-	</div>
+          <label><input type='radio' name='vert' value=0 />T(Horizontal)</label>
+          <label><input type='radio' name='vert' value=1 />T(Vertical)</label>
+          <br/>
+        </form>
       </div>`
 
   const textButton = $('#arrow-button').imgButton({
@@ -171,6 +171,19 @@ toolButton.initForm = () => {
   document['arrow-form'].vert[0].onchange = toolButton.textDirectionChanged
   document['arrow-form'].vert[1].onchange = toolButton.textDirectionChanged
 
+  /*
+  document['arrow-form'].size.onclick = function(e) {
+    const target = e.target
+    console.warn('[select]', target.innerHTML)
+
+    const offset = $(this).offset()
+    console.warn('offset', e.pageX - offset.left, e.pageY - offset.top)
+
+//  const rect = target.getBoundingClientRect()
+//  console.warn(target)
+//  console.warn(rect.left, rect.top, rect.width, rect.height)
+  }
+  */
 }
 
 export { toolButton }

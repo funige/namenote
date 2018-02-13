@@ -71,24 +71,6 @@ const getDefaultName = (dir, name) => {
   return filename
 }
 
-ipcRenderer.on('tablet:down', (event, arg) => {
-  Controller.x = arg.clientX
-  Controller.y = arg.clientY
-  Controller.pressure = arg.pressure
-})
-
-ipcRenderer.on('tablet:up', (event, arg) => {
-  Controller.x = arg.clientX
-  Controller.y = arg.clientY
-  Controller.pressure = arg.pressure
-})
-
-ipcRenderer.on('tablet:move', (event, arg) => {
-  Controller.x = arg.clientX
-  Controller.y = arg.clientY
-  Controller.pressure = arg.pressure
-})
-
 ////////////////////////////////////////////////////////////////
 
 class App {}

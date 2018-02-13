@@ -447,7 +447,9 @@ View.quickZoom = () => {
 }
 
 View.zoom = () => {
+  if (!Project.current) return
   const c = Project.current.bookmark
+  
   if (c) {
     if (!c.quickZoom) {
       c.quickX = root.parentNode.scrollLeft
@@ -466,6 +468,7 @@ View.zoom = () => {
 }
 
 View.unzoom = () => {
+  if (!Project.current) return
   const c = Project.current.bookmark
 
   if (c && c.quickZoom) {
