@@ -41,6 +41,7 @@ toolButton.initPenButton = () => {
     html: locale.translateHTML(penDropdown)
   })[0]
   buttons.push(penButton)
+  $('#pen-dropdown').css('left', $('#pen-button').position().left)
 }
 
 toolButton.initEraserButton = () => {
@@ -65,7 +66,7 @@ toolButton.initEraserButton = () => {
     html: locale.translateHTML(eraserDropdown)
   })[0]
   buttons.push(eraserButton)
-
+  $('#eraser-dropdown').css('left', $('#eraser-button').position().left)
 }
 toolButton.initTextButton = () => {
   const textDropdown = `
@@ -103,6 +104,7 @@ toolButton.initTextButton = () => {
     html: locale.translateHTML(textDropdown)
   })[0]
   buttons.push(textButton)
+  $('#arrow-dropdown').css('left', $('#arrow-button').position().left)
 }
 
 toolButton.update = (name) => {

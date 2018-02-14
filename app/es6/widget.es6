@@ -23,7 +23,6 @@ function initImgButton() {
     },
   
     _create: function() {
-      console.warn('[widget]', this.element)
       this.element.addClass('img-button')
       this.element.css('background-image', `url(${this.options.src})`)
 
