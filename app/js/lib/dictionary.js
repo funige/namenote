@@ -92,7 +92,6 @@ const dictionary = {
     "100%": "B5商業誌用(B4サイズ原稿用紙/A4仕上がり)",
     "82%": "A5同人誌用(A4サイズ原稿用紙/B5仕上がり)",
     "Name changer compatible": "ストーリーエディタ用ネームチェンジャー互換",
-    "Namenote text": "Namenoteテキスト",
 
     "Export CLIP STUDIO Storyboard": "CLIP STUDIO ネーム書き出し",
     "Export PDF": "PDF書き出し",

@@ -1,0 +1,13 @@
+const { app, BrowserWindow, Menu } = require('electron');
+
+app.on('ready', function() {
+  const mainWindow = new BrowserWindow({width: 800, height: 600});
+  const applicationMenu = [
+    {label: 'menu', submenu: [
+      {label: 'submenu1'},
+      {label: 'submenu2'}
+    ]}
+  ];
+  const menu = Menu.buildFromTemplate(applicationMenu);
+  Menu.setApplicationMenu(menu);
+})

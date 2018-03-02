@@ -17,7 +17,7 @@ const formatStrings = {
     page: '\\n\\n\\n',
     comment: '’',
   },
-  'Namenote text': {
+  'Namenote': {
     line: '[\\n/]',
     balloon: '\\n\\n',
     page: '##*',
@@ -45,7 +45,7 @@ const importTextDialog = {
       <tr><td valign=top>T(Format):
       <td><select name='format' class='tmpl2'>
         <option value='Name changer compatible'>T(Name changer compatible)
-        <option value='Namenote text'>T(Namenote text)
+        <option value='Namenote'>T(Namenote)
         <option value=0>T(Custom)
         </select>
       <tr><td>

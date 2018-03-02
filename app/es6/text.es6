@@ -1,5 +1,6 @@
 'use strict'
 
+import { View } from './view.es6'
 import { Project } from './project.es6'
 import { Page } from './page.es6'
 import { Menu } from './menu.es6'
@@ -305,16 +306,41 @@ Text.normalize = (html) => {
 
 Text.nextNode = (node) => {
   if ($(node).hasClass('text')) {
-    const next = node.nextSibling
-    return next
+    let next = node.nextSibling
+    if (next) return next
+
+    const project = Project.current
+    let index = project.findPageIndex(Page.getPID(node)) + 1
+
+    while (index < project.pages.length) {
+      const page = project.pages[index]
+      next = page.texts ? page.texts.firstElementChild : null
+      if (next) {
+        View.jumpPage(page)
+        return next
+      }
+      index++;
+    }
   }
   return null
 }
 
 Text.prevNode = (node) => {
   if ($(node).hasClass('text')) {
-    const prev = node.previousSibling
-    return prev
+    let prev = node.previousSibling
+    if (prev) return prev
+
+    const project = Project.current
+    let index = project.findPageIndex(Page.getPID(node)) - 1
+    while (index >= 0) {
+      const page = project.pages[index]
+      prev = page.texts ? page.texts.lastElementChild : null
+      if (prev) {
+        View.jumpPage(page)
+        return prev
+      }
+      index--;
+    }
   }
   return null
 }

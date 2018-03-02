@@ -418,10 +418,16 @@ const command = {
     const node = document.activeElement
     if ($(node).hasClass('text') && Text.isEditable(node)) {
       project.selection.clear()
+
       const next = Text.nextNode(node)
       if (next) {
         project.selection.add(next)
         command.toggleEditMode()
+      } else {
+        project.selection.add(node)
+        setTimeout(() => {
+          command.toggleEditMode()
+        }, 1) 
       }
       
     } else  {
@@ -436,10 +442,17 @@ const command = {
     const node = document.activeElement
     if ($(node).hasClass('text') && Text.isEditable(node)) {
       project.selection.clear()
+
       const prev = Text.prevNode(node)
       if (prev) {
         project.selection.add(prev)
         command.toggleEditMode()
+
+      } else {
+        project.selection.add(node)
+        setTimeout(() => {
+          command.toggleEditMode()
+        }, 1)
       }
       
     } else {
