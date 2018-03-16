@@ -427,7 +427,7 @@ const command = {
         project.selection.add(node)
         setTimeout(() => {
           command.toggleEditMode()
-        }, 1) 
+        }, 100) 
       }
       
     } else  {
@@ -452,7 +452,7 @@ const command = {
         project.selection.add(node)
         setTimeout(() => {
           command.toggleEditMode()
-        }, 1)
+        }, 100)
       }
       
     } else {

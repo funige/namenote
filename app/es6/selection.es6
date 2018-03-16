@@ -121,6 +121,8 @@ class Selection {
 
   prepareSave() {
     const page = this.project.findPage(this.pid)
+    console.log('page', page) //debug
+    console.log('page.texts', page.texts) //debug
     this.texts = page.texts.innerHTML
   }
 
@@ -161,10 +163,12 @@ class Selection {
     }
   }
 
-  dropElement(element, info, target) {
+  dropElement(index, target) {
+    const element = this.list[index]
     element.style.color = 'black'
 
     if (!target) {
+      const info = this.liftinfo[index]
       const x = parseFloat(element.style.left) - info.x
       const y = parseFloat(element.style.top) - info.y
       element.style.left = x + "px"
@@ -172,24 +176,25 @@ class Selection {
       info.parent.insertBefore(element, info.before)
 
     } else {
+      // drop interpage
       const offset = this.getPageOffset(target.texts)
       const x = parseFloat(element.style.left) - offset.x
       const y = parseFloat(element.style.top) - offset.y
       element.style.left = x + "px"
       element.style.top = y + "px"
-      target.texts.appendChild(element)
+//    target.texts.appendChild(element)
+      target.texts.insertBefore(element, target.texts.firstElementChild)
     }
   }
   
   drop(target) {
     if (this.lifted) {
       const page = this.project.findPage(this.pid)
-      if  (target == page) target = null
-      
+      if (target == page) target = null
+
+      //const inv = (target && target.index < page.index) ? true : false 
       for (let i = this.list.length - 1; i >= 0; i--) {
-        const element = this.list[i]
-        const info = this.liftinfo[i]
-        this.dropElement(element, info, target)
+        this.dropElement(i, target)
       }
       
       this.lifted = false

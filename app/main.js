@@ -12,6 +12,7 @@ const debug = packageData.version.match(/debug/i)
 
 let win
 let T
+let tabletEventReceiver
 
 /**
  *
@@ -27,16 +28,42 @@ function createWindow () {
     title: '', //'Namenote',
     webPreferences: {
       nodeIntegrationInWorker: true,
-//    blinkFeatures: 'PreciseMemoryInfo',
+      blinkFeatures: 'PreciseMemoryInfo',
     }
   })
   global.win = win
 
+  console.log('process=', process.platform, 'arch=', process.arch)
+  if (process.platform == "win32" && process.arch == "x64") {
+    const {TabletEventReceiver} = require("receive-tablet-event")
+    tabletEventReceiver = new TabletEventReceiver(win)
+    tabletEventReceiver.captureArea = {
+      left:0, top:0, width: 800, height: 600
+    }
+    
+    const eventNames = ["enterProximity", "leaveProximity",
+                        "down", "move", "up"];
+    for (const name of eventNames) {
+      tabletEventReceiver.on(name, (ev) => {
+        if (name.indexOf("Proximity") > 0) {
+          console.log(name);
+          console.log(ev);
+        }
+        win.webContents.send(`tablet:${name}`, ev);
+      });
+    }
+
+    win.webContents.executeJavaScript('_hasWintab = true')
+  }
+  
   win.loadURL(`file://${__dirname}/index-desktop.html`)
   if (debug) win.webContents.openDevTools()
 
   win.on('closed', function () {
     win = null
+    if (tabletEventReceiver) {
+      tabletEventReceiver.dispose()
+    }
   })
 }
 
@@ -105,5 +132,9 @@ ipcMain.on('developerTools', (event) => {
   event.returnValue = "ok"
 })
 
+ipcMain.on('detectTablet', (event, data) => {
+  const hasTablet = (tabletEventReceiver) ? true : false
+  event.sender.send('reply', {hasTablet: hasTablet})
+})
 
 

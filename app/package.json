@@ -32,7 +32,7 @@
   "dependencies": {
     "bl": "^1.2.1",
     "browserify-fs": "^1.0.0",
-    "electron": "^1.7.10",
+    "electron": "^1.7.12",
     "electron-json-storage": "^4.0.2",
     "end-of-stream": "^1.4.0",
     "fs-extra": "^4.0.3",

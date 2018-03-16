@@ -78,6 +78,10 @@ const helper = {
   parseRegex: (regex) => {
     return regex
   },
+
+  hasWintab: () => {
+    return typeof _hasWintab != "undefined"
+  },
 }
 
 
