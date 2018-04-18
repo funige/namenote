@@ -17,21 +17,6 @@ https://github.com/funige/namenote/issues
 https://github.com/funige/namenote/tree/master/Namenote
 からダウンロードしてください。
 
-## インストール
-インストーラとかはまだ用意していません。  
-解凍したフォルダをどこか適当な場所にコピーして下さい。
-
-- 【Windowsの場合】  
-  win.zipを解凍したフォルダ（Namenote-win32-ia32）の中にある  
-  実行ファイル（Namenote.exe）をダブルクリックして起動して下さい。
-
-- 【Macの場合】  
-  mac.zipを解凍したフォルダ（Namenote-darwin-x64）の中にある  
-  実行ファイル（Namenote）をダブルクリックして起動して下さい。
-
-- ダブルクリックで起動しない場合は（OSのバージョンにもよるのですが）  
-  右クリックしてメニューから何かすればだいたい起動できると思います。
-
 ## 使用方法
 マニュアルは現在作成中です。
 
