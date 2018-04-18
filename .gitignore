@@ -1,6 +1,8 @@
 .DS_Store
 Namenote.zip
 Namenote-trial.zip
+Namenote/*.zip
+Namenote-trial/*.zip
 drafts
 support
 release-builds/*
