@@ -3,8 +3,7 @@
 import { Project } from './project.es6'
 import { Page } from './page.es6'
 import { config } from './config.es6'
-import { bookmark } from './bookmark.es6'
-import { bookmarkDefault } from './bookmark-default.es6'
+import { viewDefault } from './view-default.es6'
 import { Animation } from './animation.es6'
 import { scaleButton } from './scale-button.es6'
 import { Title } from './title.es6'
@@ -25,8 +24,8 @@ let _prevScale = 1
 class View {
   constructor(project) {
     this.project = project
-    for (const key in bookmarkDefault) {
-      this[key] = bookmarkDefault[key]
+    for (const key in viewDefault) {
+      this[key] = viewDefault[key]
     }
   }
 
@@ -68,7 +67,7 @@ View.onScroll = (e) => {
   if (!project) return
   
   const contentSize = View.getContentSize(project)
-  const c = project.bookmark
+  const c = project.view
 
   const width = View.width() //e.target.offsetWidth - scrollBarWidth
   const height = View.height() //e.target.offsetHeight - scrollBarWidth
@@ -82,7 +81,7 @@ View.onScroll = (e) => {
 
 View.onResize = () => {
   nn.log('[onResize]')
-  if (Project.current) delete(Project.current.bookmark.quickPower)
+  if (Project.current) delete(Project.current.view.quickPower)
   View.update()
 }
 
@@ -113,7 +112,7 @@ View.jumpPage = (page, newPower) => {
   const pageRect = page.project.pageRect()
   const scale = View.contentWidthScale() * newPower
   
-  const c = Project.current.bookmark
+  const c = Project.current.view
   const pos = View.getPagePosition(page, scale)
   page.project.selectPage(page.pid)
 
@@ -123,7 +122,7 @@ View.jumpPage = (page, newPower) => {
 }
 
 View.jump = (x, y, newPower) => {
-  const c = Project.current.bookmark
+  const c = Project.current.view
 
   let duration = 0 //4
   if (!newPower) {
@@ -137,7 +136,7 @@ View.update = () => {
   const project = Project.current
   if (!project) return
 
-  const c = project.bookmark
+  const c = project.view
 
   View.setNoScroll()
 
@@ -180,7 +179,7 @@ View.update = () => {
 
 View.getPagePosition = (page, scale) => {
   if (!scale) scale = View.scale()
-  const c = page.project.bookmark
+  const c = page.project.view
   const x = (page.x) * scale + c.viewSpacing
   const y = (page.y) * scale + c.viewSpacing
   return [x, y]
@@ -226,27 +225,27 @@ View.height = () => {
 
 
 View.contentWidthScale = () => {
-  const c = Project.current.bookmark
+  const c = Project.current.view
   const contentSize = View.getContentSize(Project.current)
   return ((View.width() - c.viewSpacing * 2) / contentSize[0])
 }
 
 View.pageWidthPower = () => {
-  const c = Project.current.bookmark
+  const c = Project.current.view
   const pageSize = Project.current.pageRect()
   const scale = (View.width() - c.viewSpacing * 2) / pageSize[2] * 0.98
   return scale / View.contentWidthScale()
 }
 
 View.pageHeightPower = () => {
-  const c = Project.current.bookmark
+  const c = Project.current.view
   const pageSize = Project.current.pageRect()
   const scale = (View.height() - c.viewSpacing * 2) / pageSize[3] * 0.98
   return scale / View.contentWidthScale()
 }
 
 View.getItemPosition = (project, i) => {
-  const c = project.bookmark
+  const c = project.view
   const sx = c.itemSpacingX
   const sy = c.itemSpacingY
     
@@ -260,7 +259,7 @@ View.getItemPosition = (project, i) => {
 }
   
 View.getContentSize = (project) => {
-  const c = project.bookmark
+  const c = project.view
   const sx = c.itemSpacingX
   const sy = c.itemSpacingY
 
@@ -274,7 +273,7 @@ View.getContentSize = (project) => {
 }
 
 View.getItemSize = (project) => {
-  const c = project.bookmark
+  const c = project.view
   const rect = project.pageRect()
   return [
     rect[2] * 2 + c.spineSpacing,
@@ -299,14 +298,14 @@ View.getPageRectInView = (page) => {
 
   const pageRect = page.project.pageRect()
 //return [x, y, pageRect[2] * _scale, pageRect[3] * _scale]
-  return [x, y, pageRect[2] * _scale, (pageRect[3] + page.project.bookmark.itemSpacingY) * _scale]
+  return [x, y, pageRect[2] * _scale, (pageRect[3] + page.project.view.itemSpacingY) * _scale]
 }
 
 
 ////////////////////////////////////////////////////////////////
 
 View.getPageDY = (project, rect) => {
-  const c = project.bookmark
+  const c = project.view
 
   let y = rect[1]
   let height = rect[3]
@@ -332,7 +331,7 @@ View.getPageDY = (project, rect) => {
 }
 
 View.getPageDX = (project, rect) => {
-  const c = project.bookmark
+  const c = project.view
 
   let x = rect[0]
   let width = rect[2]
@@ -364,7 +363,7 @@ View.getPageDX = (project, rect) => {
 
 View.pageMove = (index) => {
   const project = Project.current
-  const c = project.bookmark
+  const c = project.view
   if (index < 0 || index >= project.pages.length) {
     const page = project.currentPage
     index = project.findPageIndex(page.pid) 
@@ -387,7 +386,7 @@ View.pageMove = (index) => {
 
 View.pageUp = () => {
   const project = Project.current
-  const c = project.bookmark
+  const c = project.view
   const page = project.currentPage
 
   const index = project.findPageIndex(page.pid)
@@ -396,7 +395,7 @@ View.pageUp = () => {
 
 View.pageDown = () => {
   const project = Project.current
-  const c = project.bookmark
+  const c = project.view
   const page = project.currentPage
 
   const index = project.findPageIndex(page.pid)
@@ -405,7 +404,7 @@ View.pageDown = () => {
 
 View.pageLeft = () => {
   const project = Project.current
-  const c = project.bookmark
+  const c = project.view
   const page = project.currentPage
 
   const index = project.findPageIndex(page.pid)
@@ -413,8 +412,8 @@ View.pageLeft = () => {
 }
 
 View.pageRight = () => {
-  const project =Project.current
-  const c = project.bookmark
+  const project = Project.current
+  const c = project.view
   const page = project.currentPage
 
   const index = project.findPageIndex(page.pid)
@@ -423,7 +422,7 @@ View.pageRight = () => {
 
 View.quickZoom = () => {
   const project = Project.current
-  const c = project.bookmark
+  const c = project.view
   const page = project.currentPage
   if (c && page) {
     c.quickZoom = !c.quickZoom
@@ -448,7 +447,7 @@ View.quickZoom = () => {
 
 View.zoom = () => {
   if (!Project.current) return
-  const c = Project.current.bookmark
+  const c = Project.current.view
   
   if (c) {
     if (!c.quickZoom) {
@@ -469,7 +468,7 @@ View.zoom = () => {
 
 View.unzoom = () => {
   if (!Project.current) return
-  const c = Project.current.bookmark
+  const c = Project.current.view
 
   if (c && c.quickZoom) {
     if (c.power * 0.9 > 1.0) {
@@ -508,7 +507,7 @@ View.flip = () => {
 ////////////////////////////////////////////////////////////////
   
 View.setShowMargin = (value) => {
-  const c = Project.current.bookmark //bookmark.current
+  const c = Project.current.view
   if (c) {
     if (value == undefined) value = c.showMargin
     c.showMargin = value
@@ -519,7 +518,7 @@ View.setShowMargin = (value) => {
 }
 
 View.toggleShowMargin = () => {
-  const c = Project.current.bookmark //bookmark.current
+  const c = Project.current.view
   if (c) {
     View.setShowMargin(!c.showMargin)
     View.jumpPage(Project.current.currentPage)
@@ -527,7 +526,7 @@ View.toggleShowMargin = () => {
 }
   
 View.setRowCount = (value) => {
-  const c = Project.current.bookmark //bookmark.current
+  const c = Project.current.view
   if (c) {
     if (value == undefined) value = c.rowCount
     c.rowCount = value
@@ -538,17 +537,8 @@ View.setRowCount = (value) => {
   }
 }
 
-/*
-View.toggleRowCount = () => {
-  const c = Project.current.bookmark //bookmark.current
-  if (c) {
-    View.setRowCount(!c.rowCount)
-  }
-}
-*/
-
 View.setSingleSided = (value) => {
-  const c = Project.current.bookmark //bookmark.current
+  const c = Project.current.view
   if (c) {
     if (value == undefined) value = c.singleSided
     c.singleSided = value
@@ -559,7 +549,7 @@ View.setSingleSided = (value) => {
 }
 
 View.toggleSingleSided = () => {
-  const c = Project.current.bookmark //bookmark.current
+  const c = Project.current.view
   if (c) {
     View.setSingleSided(!c.singleSided)
   }
@@ -569,7 +559,7 @@ View.setNoScroll = () => {
   View.noScroll = config.data.noScroll
 
   if (!View.noScroll) {
-    const c = Project.current ? Project.current.bookmark : null
+    const c = Project.current ? Project.current.view : null
     root.parentNode.style.overflowX = (c && c.quickZoom) ? 'scroll' : 'hidden'
     root.parentNode.style.overflowY = 'scroll'
 

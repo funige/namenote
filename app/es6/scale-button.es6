@@ -37,7 +37,7 @@ scaleButton.init = () => {
 scaleButton.update = () => {
   const project = Project.current
 
-  const quickZoom = (project) ? project.bookmark.quickZoom : false
+  const quickZoom = (project) ? project.view.quickZoom : false
   $(quickZoomButton).imgButton('locked', quickZoom)
   $(zoomButton).imgButton('disabled', !project)
   $(unzoomButton).imgButton('disabled', !quickZoom)

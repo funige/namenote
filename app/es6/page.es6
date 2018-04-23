@@ -356,7 +356,7 @@ class Page {
 
   positionFromRaw(raw) {
     const rect = this.element.getBoundingClientRect()
-    const scale = this.project.bookmark.getScale()
+    const scale = this.project.view.getScale()
 
     const x = (raw[0] - rect.left) / scale + this.offsetX
     const y = (raw[1] - rect.top) / scale + this.offsetY

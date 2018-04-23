@@ -17,7 +17,7 @@ maskButton.init = () => {
       const project = Project.current
       if (!project) return
 
-      const c = project.bookmark
+      const c = project.view
       c.canvasMask = !c.canvasMask
       if (c.canvasMask && c.textMask) c.textMask = false
       maskButton.update()
@@ -32,7 +32,7 @@ maskButton.init = () => {
       const project = Project.current
       if (!project) return
 
-      const c = project.bookmark
+      const c = project.viwe
       c.textMask = !c.textMask
       if (c.textMask && c.canvasMask) c.canvasMask = false
       maskButton.update()
@@ -46,7 +46,7 @@ maskButton.update = () => {
   $(textMaskButton).imgButton('disabled', project ? false : true)
 
   if (project) {
-    const c = project.bookmark
+    const c = project.view
     const canvasMask = (project) ? c.canvasMask : false
     const textMask = (project) ? c.textMask : false
     $(canvasMaskButton).imgButton('locked', canvasMask)

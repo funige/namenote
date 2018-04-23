@@ -43,7 +43,7 @@ Animation.setJump = (x, y, power, duration) => {
   
   const x0 = target.scrollLeft
   const y0 = target.scrollTop
-  const power0 = project.bookmark.power
+  const power0 = project.view.power
   
   Animation.data = {
     type: 'jump',
@@ -86,8 +86,7 @@ Animation.updateJump = (count) => {
   let k = 1 - (x * x * x)
   if (k < 0.7) k = 0
   
-  const c = Project.current.bookmark
-  c.power = data.power0  * k + data.power1 * (1 - k)
+  Project.current.view.power = data.power0  * k + data.power1 * (1 - k)
   
   View.update()
   target.scrollLeft = data.x0 * k + data.x1 * (1 - k)

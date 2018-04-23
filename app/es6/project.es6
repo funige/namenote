@@ -4,7 +4,6 @@ import { View } from './view.es6'
 import { Page } from './page.es6'
 import { config } from './config.es6'
 import { RecentURL } from './recent-url.es6'
-import { bookmark } from './bookmark.es6'
 import { History } from './history.es6'
 import { Scratch } from './scratch.es6'
 import { Wand } from './wand.es6'
@@ -24,7 +23,7 @@ import { PageBuffer } from './page-buffer.es6'
 import { TextBuffer } from './text-buffer.es6'
 
 import { projectTemplate } from './project-template.es6'
-import { bookmarkDefault } from './bookmark-default.es6'
+//import { viewDefault } from './view-default.es6'
 
 
 class Project {
@@ -33,7 +32,7 @@ class Project {
     url = url.replace(/\\/g, '/')
     
     this.url = url
-    this.bookmark= new View()
+    this.view = new View()
     this.history = new History(this)
     
     this.element = document.createElement('div')
@@ -52,7 +51,7 @@ class Project {
     if (this.wand) this.wand.destructor()
     if (this.selection) this.selection.destructor()
     if (this.history) this.history.destructor()
-    if (this.bookmark) this.bookmark.destructor()
+    if (this.view) this.view.destructor()
     for (let i = 0; i < this.pages.length; i++) {
       this.pages[i].destructor()
     }
@@ -111,10 +110,6 @@ class Project {
 
   path() {
   }
-  
-//  getBookmark() {
-//    return this.bookmark
-//  }
   
   getPageInfo(startPage, endPage) {
     const bind = this.params.bind_right
@@ -200,13 +195,13 @@ class Project {
   }
   
   pageRect(isRight) {
-    const c = this.bookmark
+    const c = this.view
 
-    if (c.showMargin) {
+    if (this.view.showMargin) {
       return [0, 0, this.exportSize[0], this.exportSize[1]]
 
     } else {
-      if (c.singleSided) {
+      if (this.view.singleSided) {
         return this.finishingRect()
 
       } else {
@@ -215,9 +210,11 @@ class Project {
         const w = Math.round((this.finishingSize[0] + this.baseframeSize[0]) / 2)
 
         if (isRight) {
-          return [x - c.spineMargin, rect[1], w + c.spineMargin, rect[3]]
+            return [x - this.view.spineMargin, rect[1],
+                    w + this.view.spineMargin, rect[3]]
         } else {
-          return [rect[0], rect[1], w + c.spineMargin, rect[3]]
+            return [rect[0], rect[1],
+                    w + this.view.spineMargin, rect[3]]
         }
       }
     }

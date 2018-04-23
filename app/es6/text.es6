@@ -55,7 +55,7 @@ Text.toggleDirection = (element)  => {
 
 Text.readableSize = (size) => {
   const min = config.getZoomFontSize()
-  const readableSize = min / Project.current.bookmark.getScale()
+  const readableSize = min / Project.current.view.getScale()
   if (size < readableSize) {
     size = readableSize
     return size + 'px'
