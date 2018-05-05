@@ -34,7 +34,7 @@ function createWindow () {
   global.win = win
 
   console.log('process=', process.platform, 'arch=', process.arch)
-  if (process.platform == "win32" && process.arch == "x64") {
+  if (1) { //(process.platform == "win32" && process.arch == "ia32") {
     const {TabletEventReceiver} = require("receive-tablet-event")
     tabletEventReceiver = new TabletEventReceiver(win)
     tabletEventReceiver.captureArea = {

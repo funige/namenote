@@ -11,6 +11,13 @@ const { app, dialog } = window.require('electron').remote
 const fs = window.require('fs-extra')
 const path = window.require('path')
 
+ipcRenderer.on("tablet:down", (ev, arg) => {
+  console.log("tablet:down")
+  //pressed = true;
+  //updateInfo(arg);
+});
+
+////////////////////////////////////////////////////////////////////////////
 
 const openNewParams = {
   defaultPath: null,
@@ -307,6 +314,10 @@ App.pdf.write = (project, filename, callback) => {
     }, (responce) => { nn.log(responce) })
   }
 }
+
+////////////////////////////////////////////////////////////////
+
+
 
 ////////////////////////////////////////////////////////////////
 
