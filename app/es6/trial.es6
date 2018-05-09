@@ -9,6 +9,7 @@ const maxRemain = 31
 const day = 86400 * 1000
 
 const installTime = () => {
+  console.log('...', ('installTime-' + namenote.version).replace(/\.[^.]*$/, ''))
   return ('installTime-' + namenote.version).replace(/\.[^.]*$/, '')
 }
 
@@ -32,9 +33,9 @@ Trial.showMessage = () => {
 				  (response) => null)
 
     } else {
-//      const message = T("We're sorry, but your trial period has expired.")
-//      namenote.app.showMessageBox({ type: 'error',  message: message },
-//				  (responce) => command.quit())
+      const message = T("We're sorry, but your trial period has expired.")
+      namenote.app.showMessageBox({ type: 'error',  message: message },
+				  (responce) => command.quit())
     }
   })
 }
