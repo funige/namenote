@@ -76,7 +76,7 @@ class ArrowTool extends Tool {
     }
 
     project.scratch.detach()
-//  project.wand.detach()
+    project.wand.detach() // TODO: tempolary unavailable
 
     if (Tool.stack.length > 1) {
       Tool.pop()

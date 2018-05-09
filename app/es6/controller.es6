@@ -17,12 +17,12 @@ let moved = false
 class Controller {}
 
 Controller.init = () => {
-  const api= (window.PointerEvent) ? 'pointer' : ((window.TouchEvent) ? 'touch' : 'mouse')
-  nn.log(`use ${api} api`)
+  //const api= (window.PointerEvent) ? 'pointer' : ((window.TouchEvent) ? 'touch' : 'mouse')
+  const api = 'pointer'
   
   window.addEventListener(api + 'down', (e) => {
-    x0 = (e.clientX !== undefined) ? e.clientX : e.touched[0].clientX
-    y0 = (e.clientY !== undefined) ? e.clientY : e.touched[0].clientY
+    x0 = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+    y0 = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
     Controller.onDown(e)
   })
 
@@ -31,8 +31,8 @@ Controller.init = () => {
   })
     
   window.addEventListener(api + 'move', (e) => {
-    const x = (e.clientX !== undefined) ? e.clientX : e.touched[0].clientX
-    const y = (e.clientY !== undefined) ? e.clientY : e.touched[0].clientY
+    const x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+    const y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
     const minMove = 5
     if (Math.abs(x - x0) >= minMove || Math.abs(y - y0) >= minMove) {
       moved = true
@@ -89,13 +89,10 @@ Controller.init = () => {
 }
 
 Controller.onDown = (e) => {
-  //nn.log(e)
-  if (1)  { //config && config.data.noWintab) {
-    Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
-    Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
-    Controller.pressure = e.pressure
-    Controller.pointerId = e.pointerId
-  }
+  Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+  Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+  Controller.pressure = e.pressure
+  Controller.pointerId = e.pointerId
 
   const project = Project.current
   if (!project) return
@@ -156,11 +153,11 @@ Controller.onDown = (e) => {
 
 Controller.onUp = (e) => {
   if (e.pointerId != Controller.pointerId) return
-  if (1) { //(config && config.data.noWintab) {
-    Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
-    Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
-    Controller.pressure = e.pressure
-  }
+
+  Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+  Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+  Controller.pressure = e.pressure
+  
   if (onStroke) {
     Tool.current.onUp(e)
     onStroke = false
@@ -170,11 +167,11 @@ Controller.onUp = (e) => {
 
 Controller.onMove = (e) => {
   if (e.pointerId != Controller.pointerId) return
-  if (1) { //(config && config.data.noWintab) {
-    Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
-    Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
-    Controller.pressure = e.pressure
-  }
+
+  Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+  Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+  Controller.pressure = e.pressure
+
   if (onStroke) {
     Tool.current.onMove(e)
   }

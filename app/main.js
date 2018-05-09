@@ -28,26 +28,25 @@ function createWindow () {
     title: '', //'Namenote',
     webPreferences: {
       nodeIntegrationInWorker: true,
-      blinkFeatures: 'PreciseMemoryInfo',
+      //blinkFeatures: 'PreciseMemoryInfo',
     }
   })
   global.win = win
 
-  console.log('process=', process.platform, 'arch=', process.arch)
-  if (1) { //(process.platform == "win32" && process.arch == "ia32") {
+//  console.log('process=', process.platform, 'arch=', process.arch)
+
+/*
+  //  if (process.platform == "win32") {
+  if (0) {
     const {TabletEventReceiver} = require("receive-tablet-event")
     tabletEventReceiver = new TabletEventReceiver(win)
-    tabletEventReceiver.captureArea = {
-      left:0, top:0, width: 800, height: 600
-    }
     
-    const eventNames = ["enterProximity", "leaveProximity",
-                        "down", "move", "up"];
+    const eventNames = ["enterProximity", "leaveProximity", "down", "move", "up"];
     for (const name of eventNames) {
       tabletEventReceiver.on(name, (ev) => {
         if (name.indexOf("Proximity") > 0) {
-          console.log(name);
-          console.log(ev);
+//       console.log(name);
+//       console.log(ev);
         }
         win.webContents.send(`tablet:${name}`, ev);
       });
@@ -55,6 +54,7 @@ function createWindow () {
 
     win.webContents.executeJavaScript('_hasWintab = true')
   }
+*/
   
   win.loadURL(`file://${__dirname}/index-desktop.html`)
   if (debug) win.webContents.openDevTools()

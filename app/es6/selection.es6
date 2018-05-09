@@ -138,7 +138,7 @@ class Selection {
     const y = parseFloat(element.style.top) + offset.y
     element.style.left = x + "px"
     element.style.top = y + "px"
-    element.style.color = 'red'
+// element.style.color = 'red' // test to check lifted elements
     this.element.appendChild(element)
     return info
   }
@@ -165,7 +165,7 @@ class Selection {
 
   dropElement(index, target) {
     const element = this.list[index]
-    element.style.color = 'black'
+    //element.style.color = 'black'
 
     if (!target) {
       const info = this.liftinfo[index]

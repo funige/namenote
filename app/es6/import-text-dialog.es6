@@ -159,7 +159,7 @@ const importTextDialog = {
   getFormat: () => {
     const form = document.forms['import-text']
     for (const format in formatStrings) {
-      console.warn('getFormat', format)
+      //console.warn('getFormat', format)
       if (formatStrings[format].line != form.line.value) continue
       if (formatStrings[format].balloon != form.balloon.value) continue
       if (formatStrings[format].page != form.page.value) continue

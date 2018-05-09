@@ -31,11 +31,12 @@ const menuTemplate = [
       { label: 'Note Settings ...', click: 'noteSettings' },
 
       { type: 'separator' },
+      /*
       { label: 'Import',
 	submenu: [
 	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
 	],
-      },
+      },*/
       { label: 'Export',
 	submenu: [
 	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },

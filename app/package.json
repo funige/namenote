@@ -1,6 +1,6 @@
 {
   "name": "Namenote",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "A hackable drawing notebook.",
   "main": "main.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^7.3.0",
     "browserify": "^14.4.0",
-    "electron": "^1.7.12",
+    "electron": "^2.0.0",
     "electron-packager": "^9.1.0",
     "electron-rebuild": "^1.7.3",
     "gulp": "^3.9.1",
@@ -37,7 +37,6 @@
     "end-of-stream": "^1.4.0",
     "fs-extra": "^4.0.3",
     "jszip": "^3.1.3",
-    "pdfmake": "^0.1.33",
-    "receive-tablet-event": "github:seanchas116/receive-tablet-event"
+    "pdfmake": "^0.1.33"
   }
 }
