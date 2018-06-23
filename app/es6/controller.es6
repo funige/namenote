@@ -136,9 +136,14 @@ Controller.onDown = (e) => {
       return 
     }
 
-    if (node.id == 'tool-bar') {
-      return
-    }
+//  if (node.id == 'tool-bar') {
+//    nn.error('ondown blank tool')
+//    return
+//  }
+
+//  if (node.className == 'root') {
+//    nn.error('ondown blank canvas')
+//  }
     
     if (node.className == 'root' && !Controller.ctrlKey && !Controller.shiftKey) {
       Tool.push('hand')
@@ -149,6 +154,7 @@ Controller.onDown = (e) => {
     
     node = node.parentNode
   }
+
 }
 
 Controller.onUp = (e) => {

@@ -22,12 +22,19 @@
   <script src="js/bundle-desktop.js"></script>
 
   <script>
+    $("#menu").menu();
+    
     if (window.module) module = window.module
     $(function() {
       namenote.init()
     })
   </script>
 
+  <style>
+    ul {}
+    .ui-menu { width: 150px; z-index: 0;}
+  </style>
+  
   <title>Namenote</title>
 </head>
 
@@ -37,6 +44,9 @@
   </div>
   
   <div id="tool-bar">
+    <div id="file-button" title="load"></div>
+
+    <div class="separator left"></div>
     <div id="pen-button" title="pen"></div>
     <div id="eraser-button" title="eraser"></div>
     <div id="arrow-button" title="arrow"></div>
@@ -51,10 +61,10 @@
     <!--
     <div class="separator left"></div>
     -->
-    <!--
-    <div id="menu-button" title="menu"></div>
+
+    <div id="menu-button" title="menu" style="float: left;"></div>
     <div class="separator right"></div>
-    -->
+
     
     <div id="unzoom-button" title="unzoom"></div>
     <div id="zoom-button" title="zoom" style=""></div>
@@ -86,6 +96,7 @@
   <div class="dialog" id="import-text-dialog" style="display:none;"></div>
   <div class="dialog" id="extract-text-dialog" style="display:none;"></div>
   <div class="dialog" id="config-dialog" style="display:none;"></div>
+  <div class="dialog" id="tablet-settings-dialog" style="display:none;"></div>
 
   <div id="text-buffer" style="display:none;"></div>
 </body>

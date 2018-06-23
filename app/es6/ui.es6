@@ -14,6 +14,7 @@ import { exportCSNFDialog } from './export-csnf-dialog.es6'
 import { exportPDFDialog } from './export-pdf-dialog.es6'
 import { importTextDialog } from './import-text-dialog.es6'
 import { extractTextDialog } from './extract-text-dialog.es6'
+import { tabletSettingsDialog } from './tablet-settings-dialog.es6'
 
 
 const ui = {
@@ -28,13 +29,11 @@ const ui = {
   exportPDFDialog: exportPDFDialog,
   importTextDialog: importTextDialog,
   extractTextDialog: extractTextDialog,
+  tabletSettingsDialog: tabletSettingsDialog,
   
   init: () => {
     ui.widget.init()
 
-    Menu.init()
-    Title.init()
-    
     ui.sideBar.init()
     ui.toolBar.init()
 
@@ -45,6 +44,10 @@ const ui = {
     ui.exportPDFDialog.init()
     ui.importTextDialog.init()
     ui.extractTextDialog.init()
+    ui.tabletSettingsDialog.init()
+    
+    Title.init()
+    Menu.init()
 
     $('.split-pane').css('opacity', 1) // start the show
   },

@@ -308,10 +308,48 @@ form .preview { width: 500px; height: 150px; } /* 350px */
 }
 
 .ui-draggable, .ui-droppable {
-	background-position: top;
+    background-position: top;
 }
+
+.ui-menu .ui-menu-item {
+    margin:0;
+    padding:0;
+    width: 100%;
+}
+
 .ui-menu {
-    width: 150px;
+    text-align: left;
+}
+
+span .ui-icon {
+    display: none;
+}
+
+.ui-menu > li {
+    font-size: 14px;
+//  width: 400px;
+}
+
+.ui-menu > li > div {
+    line-height: 1.5em;
+    margin: 0;
+    padding: 0;
+//  width: 400px;
+}
+
+.ui-menu .ui-widget {
+    background-color: white; //#f6f6f6;
+    border: 1px solid #aaa;
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+    width: 300px;
+}
+
+.ui-menu-item-wrapper .ui-widget-content {
+    width: 400px;
+}
+
+#menu {
+    background-color: #f6f6f6;
 }
 
 /*
@@ -405,9 +443,9 @@ form .preview { width: 500px; height: 150px; } /* 350px */
     display: none;
     position: absolute;
     top: 33px; //36px;
-    background-color: #eee; //#f6f6f6; //#d0d0d0;
+    background-color: #f6f6f6; //#eee;
     border: 1px solid #aaa;
-    min-width: 180px; //160px;
+//  min-width: 180px; //160px;
     box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }

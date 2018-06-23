@@ -6,6 +6,7 @@ const menuTemplate = [
       { label: 'About Namenote ...', click: 'about' },
       { type: 'separator' },
       { label: 'Settings ...', click: 'settings' },
+      { label: 'Tablet Settings ...', click: 'tabletSettings' },
       { type: 'separator' },
       { label: 'Quit Namenote', accelerator: "CmdOrCtrl+Q", click: 'quit' },
       
@@ -27,16 +28,15 @@ const menuTemplate = [
       { label: 'Close All', click: 'closeAll' },
       { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
 	
-      { type: 'separator' },
-      { label: 'Note Settings ...', click: 'noteSettings' },
+//    { type: 'separator' },
+//    { label: 'Note Settings ...', click: 'noteSettings' },
 
       { type: 'separator' },
-      /*
       { label: 'Import',
 	submenu: [
 	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
 	],
-      },*/
+      },
       { label: 'Export',
 	submenu: [
 	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },
@@ -97,4 +97,73 @@ const menuTemplate = [
   },
 ]
 
-export { menuTemplate }
+const fileMenuTemplate = [
+  { label: 'New ...', accelerator: "CmdOrCtrl+N", click: 'openNewDialog' },
+  { label: 'Open ...', accelerator: "CmdOrCtrl+O", click: 'open' },
+  { label: 'Open Recent', submenu: [] },
+]
+
+const otherMenuTemplate = [
+  { label: 'Namenote',
+    submenu: [
+      { label: 'Settings ...', click: 'settings' },
+      { label: 'Tablet Settings ...', click: 'tabletSettings' },
+      { type: 'separator' },
+      { label: 'About Namenote ...', click: 'about' },
+    ],
+  },
+  { label: 'Note',
+    submenu: [
+      { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
+      { label: 'Close All', click: 'closeAll' },
+      { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
+	
+      { type: 'separator' },
+      { label: 'Import',
+	submenu: [
+	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
+	],
+      },
+      { label: 'Export',
+	submenu: [
+	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },
+	  { label: '.pdf (PDF) ...', accelerator: "CmdOrCtrl+Shift+P", click: 'exportPDFDialog' },
+	],
+      },
+    ],
+  },
+  { label: 'Page',
+    submenu: [
+      { label: 'Add', accelerator: "Shift+i", click: 'appendPage' },
+      { label: 'Move Forward', accelerator: "Shift+.", click: 'movePageForward' },
+      { label: 'Move Backward', accelerator: "Shift+,", click: 'movePageBackward' },
+      { type: "separator" },
+      { label: 'Move to Buffer', accelerator: "Shift+k", click: 'cutPage' },
+      { label: 'Put Back from Buffer', accelerator: "Shift+Y", click: 'pastePage' },
+      { label: 'Empty Buffer', accelerator: "Shift+0", click: 'emptyPage' },
+      { type: "separator" },
+      { label: 'Extract Text', accelerator: "CmdOrCtrl+T", click: 'extractText' },
+      { label: 'Save Image As ...', accelerator: "CmdOrCtrl+-", click: 'savePageImage' },
+    ],
+  },
+  { label: 'View',
+    submenu: [
+      { label: 'Page Margin', accelerator: "R", click: 'showMargin' },
+      { label: 'Number of Pages per Row',
+	submenu: [
+	  { label: '2', click: 'row1' },
+	  { label: '4', click: 'row2' },
+	  { label: '6', click: 'row3' },
+	  { label: '8', click: 'row4' },
+	],
+      }
+    ],
+  },
+  { label: 'Window',
+    submenu: [
+      { type: 'separator' },
+    ],
+  },
+]
+
+export { menuTemplate, fileMenuTemplate, otherMenuTemplate }

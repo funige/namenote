@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+#
+# Release
+#
+# script/trial false
+# (wait gulp)
+# script/package
+#
+
+system("ruby script/trial") && system("ruby script/trial false")
+system("ruby script/trial") && exit
+
+puts "PACKAGING PAID VERSION..."
+################################################################
+
+puts "packaging for macos..."
+system("electron-packager ./app --overwrite --platform=darwin --arch=x64 --icon=assets/icons/namenote.icns --prune=true --out=release-builds --ignore='es6/.*\.es6'")
+
+puts "packageing for win32..."
+system("electron-packager ./app --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/namenote.ico --prune=true --out=release-builds --ignore='es6/.*\.es6'")
+
+puts "zip for macos..."
+system("cd release-builds; zip -qyr ../Namenote/mac.zip Namenote-darwin-x64 -x *.DS_Store")
+
+puts "zip for win32..."
+system("cd release-builds; zip -qr ../Namenote/win.zip Namenote-win32-ia32 -x *.DS_Store")
+
+system("zip -qr Namenote.zip Namenote -x *.DS_Store")
+puts "done."
+

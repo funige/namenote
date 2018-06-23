@@ -6,6 +6,7 @@ import { config } from './config.es6'
 import { viewDefault } from './view-default.es6'
 import { Animation } from './animation.es6'
 import { scaleButton } from './scale-button.es6'
+import { menuButton } from './menu-button.es6'
 import { Title } from './title.es6'
 
 const scrollBarWidth = 12
@@ -81,6 +82,8 @@ View.onScroll = (e) => {
 
 View.onResize = () => {
   nn.log('[onResize]')
+  menuButton.onresize()
+
   if (Project.current) delete(Project.current.view.quickPower)
   View.update()
 }
@@ -216,11 +219,11 @@ View.scale = () => {
 }
 
 View.width = () => {
-  return root.parentNode.offsetWidth - scrollBarWidth
+  return root && (root.parentNode.offsetWidth - scrollBarWidth)
 }
 
 View.height = () => {
-  return root.parentNode.offsetHeight - scrollBarWidth
+  return root && (root.parentNode.offsetHeight - scrollBarWidth)
 }
 
 

@@ -73,7 +73,9 @@ class Page {
   }
 
   addText(x, y, params, callback) {
-    if (!params) params = Text.getParams()
+    if (!params) {
+      params = Text.getParams()
+    }
 
     const node = this.createTextElement()
     node.style.left = x + 'px';

@@ -210,7 +210,7 @@ Text.divide = (element) => {
   const project = Project.current
   const html = Text.getHTML(element)
   const array = html.split(/<div><br><\/div><div><br><\/div>/)
-  nn.warn('array=', array)
+
   element.innerHTML = array[0]
 
   Text.fixPosition(element)
@@ -225,6 +225,8 @@ Text.divide = (element) => {
     
   const page = project.findPage(Page.getPID(element) || project.selection.pid)
   if (page) {
+    nn.error("typeof element is", element instanceof HTMLElement)
+    
     page.addText(x, y, Text.getParams(element), (node) => {
       node.style.writingMode = element.style.writingMode
       node.style.fontSize = element.style.fontSize

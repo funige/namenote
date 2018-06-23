@@ -7,6 +7,8 @@ const dictionary = {
     "About Namenote ...": "Namenote について ...",
     "Settings": "環境設定",
     "Settings ...": "環境設定 ...",
+    "Tablet Settings": "筆圧調整",
+    "Tablet Settings ...": "筆圧調整 ...",
     "Quit Namenote": "Namenote を終了",
     "Note": "ノート",
     "File": "ファイル",

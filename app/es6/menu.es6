@@ -4,7 +4,9 @@ import { Project } from './project.es6'
 import { PageBuffer } from './page-buffer.es6'
 import { RecentURL } from './recent-url.es6'
 import { Text } from './text.es6'
-import { menuTemplate, menuTemplateTrial } from './menu-template.es6'
+import { Tool } from './tool.es6'
+import { command } from './command.es6'
+import { menuTemplate, fileMenuTemplate, otherMenuTemplate } from './menu-template.es6'
 
 
 function findSubmenu(template, label) {
@@ -28,6 +30,16 @@ function enableItem(template, label, value) {
       if (!value) delete(item.submenu)
     }
   }
+
+  // HTMLMenu
+  const li = findHTMLSubmenu($('#menu-menu')[0], label)
+  if (li) {
+    if (value) {
+      li.classList.remove('ui-state-disabled')
+    } else {
+      li.classList.add('ui-state-disabled')
+    }
+  }
 }
 
 function setShortcut(template, label, isEditable) {
@@ -37,29 +49,69 @@ function setShortcut(template, label, isEditable) {
   }
 }
 
+function findHTMLSubmenu(node, label) {
+  for (let li of node.childNodes) {
+    const tmp = li.getElementsByTagName('div')
+    if (tmp.length > 0 && tmp[0].title == label) return li
+
+    const submenu = li.getElementsByTagName('ul')
+    if (submenu.length > 0) {
+      const result = findHTMLSubmenu(submenu[0], label)
+      if (result) return result
+    }
+  }
+  return null
+}
+
+function rebuildMenu(template) {
+//  $("#menu-menu").html()
+//  rebuildSubmenu(template)
+}
+
+/*
+function rebuildSubmenu(template) {
+  for (let item of template) {
+    if (item.submenu) {
+      rebuildSubmenu(item.submenu)
+
+    } else {
+      nn.warn(item.label)
+      $("<li>" + item.label + "</li>").appendTo("#menu-menu");
+      $("#menu-menu").menu("refresh")
+    }
+  }
+}
+*/
+  
 ////////////////////////////////////////////////////////////////
 
 class Menu {}
 
-Menu.menuTemplate = menuTemplate
+//Menu.menuTemplate = menuTemplate
+
+Menu.rebuild = (template) => {
+  if (namenote.isApp) {
+    namenote.app.rebuildMenu(template)
+  }
+  //rebuildMenu(template)
+}
+
 
 Menu.init = () => {
-  $('#menu').menu()
-  
-  if (namenote.isTrial) {
-    Menu.menuTemplate = menuTemplateTrial
-  }
-  if (namenote.isApp) {
-    namenote.app.rebuildMenu(Menu.menuTemplate)
-  }
+  //Menu.getMenuHTML(menuTemplate)
+  //Menu.getMenuHTML(Menu.menuTemplate)
+    
+  //Menu.rebuild(Menu.menuTemplate)
   Menu.update()
 }
 
 Menu.update = (element) => {
-  const template = JSON.parse(JSON.stringify(Menu.menuTemplate))
+//const template = JSON.parse(JSON.stringify(Menu.menuTemplate))
+  const template = JSON.parse(JSON.stringify(menuTemplate))
+  const project = Project.current
+
   const recents = findSubmenu(template, 'Open Recent').submenu
   const windows = findSubmenu(template, 'Window').submenu
-  const project = Project.current
   
   for (let item of RecentURL.list) {
     recents.push({
@@ -80,10 +132,7 @@ Menu.update = (element) => {
   
   Menu.updateEnabled(template)
   Menu.updateShortcut(template, element)
-
-  if (namenote.isApp) {
-    namenote.app.rebuildMenu(template)
-  }
+  Menu.rebuild(template)
 }
 
 Menu.updateEnabled = (template) => {
@@ -143,6 +192,50 @@ Menu.updateShortcut = (template, element) => {
   setShortcut(template, 'Move Backward', false)
   setShortcut(template, 'Flip', isEditable)
   setShortcut(template, 'Page Margin', isEditable)
+}
+
+Menu.getMenuHTML = (template, id) => {
+  const node = document.createElement('div')
+  node.className = 'dropdown-content'
+  node.id = id + '-dropdown'
+  Menu.addMenuHTML(node, template)
+
+  node.childNodes[0].id = id + '-menu'
+  return node.outerHTML
+}
+
+Menu.addMenuHTML = (node, template) => {
+  const ul = document.createElement('ul')
+  node.appendChild(ul)
+
+  for (let item of template) {
+    const li = document.createElement('li')
+    const div = document.createElement('div')
+    li.appendChild(div)
+    div.title = item.label
+    div.innerHTML = T(item.label || '-')
+
+    if (item.submenu) {
+      Menu.addMenuHTML(li, item.submenu)
+    }
+    ul.appendChild(li)
+  }
+}
+
+Menu.onselect  = (event, ui) => {
+  const label = ui.item[0].childNodes[0].title
+//const item = findSubmenu(Menu.menuTemplate, label)
+  const item = findSubmenu(menuTemplate, label)
+  if (item) {
+    if (item.click) command.do(`${item.click}`, `${item.data}`)
+  }
+
+/*
+  $("#menu-menu").menu("collapseAll", event, true)
+  setTimeout(function() {
+    Tool.toggleDropdown(null, 'menu')
+  }, 500)
+*/
 }
 
 export { Menu }

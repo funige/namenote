@@ -520,6 +520,10 @@ const command = {
     namenote.ui.configDialog.show()
   },
   
+  tabletSettings: (data) => {
+    namenote.ui.tabletSettingsDialog.show()
+  },
+  
   close: (data) => {
     if (Project.current) Project.close(Project.current)
   },
