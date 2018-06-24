@@ -98,21 +98,23 @@ Menu.rebuild = (template) => {
 
 
 Menu.init = () => {
-  //Menu.getMenuHTML(menuTemplate)
-  //Menu.getMenuHTML(Menu.menuTemplate)
-    
-  //Menu.rebuild(Menu.menuTemplate)
   Menu.update()
 }
 
 Menu.update = (element) => {
-//const template = JSON.parse(JSON.stringify(Menu.menuTemplate))
   const template = JSON.parse(JSON.stringify(menuTemplate))
   const project = Project.current
 
-  const recents = findSubmenu(template, 'Open Recent').submenu
-  const windows = findSubmenu(template, 'Window').submenu
+  Menu.updateRecents(template)
+  Menu.updateWindows(template)
   
+  Menu.updateEnabled(template)
+  Menu.updateShortcut(template, element)
+  Menu.rebuild(template)
+}
+
+Menu.updateRecents = (template) => {
+  const recents = findSubmenu(template, 'Open Recent').submenu
   for (let item of RecentURL.list) {
     recents.push({
       label: item, data: item, click: 'openURL'
@@ -121,7 +123,10 @@ Menu.update = (element) => {
   if (recents.length > 0) {
     recents[0].accelerator = "F1" //"CmdOrCtrl+0"
   }
-  
+}
+
+Menu.updateWindows = (template) => {
+  const windows = findSubmenu(template, 'Window').submenu
   for (let item of Project.list) {
     windows.unshift({
       label: item.url, data: item.url, click: 'openURL',
@@ -129,10 +134,6 @@ Menu.update = (element) => {
       checked: (project && item.url == project.url),
     })
   }
-  
-  Menu.updateEnabled(template)
-  Menu.updateShortcut(template, element)
-  Menu.rebuild(template)
 }
 
 Menu.updateEnabled = (template) => {
@@ -224,18 +225,10 @@ Menu.addMenuHTML = (node, template) => {
 
 Menu.onselect  = (event, ui) => {
   const label = ui.item[0].childNodes[0].title
-//const item = findSubmenu(Menu.menuTemplate, label)
   const item = findSubmenu(menuTemplate, label)
   if (item) {
     if (item.click) command.do(`${item.click}`, `${item.data}`)
   }
-
-/*
-  $("#menu-menu").menu("collapseAll", event, true)
-  setTimeout(function() {
-    Tool.toggleDropdown(null, 'menu')
-  }, 500)
-*/
 }
 
 export { Menu }

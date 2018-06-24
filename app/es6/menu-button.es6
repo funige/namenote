@@ -9,6 +9,18 @@ import { command } from './command.es6'
 import { menuTemplate, fileMenuTemplate, otherMenuTemplate } from './menu-template.es6'
 
 
+function closeMenu(menu) {
+  menu.menu("collapseAll", null, true)
+  setTimeout(function() {
+    Tool.hideDropdown()
+
+    const id = menu[0].id.replace(/-menu/, '')
+    $('#' + id + '-button').imgButton('locked', false)
+  }, 500)
+}
+
+////////////////////////////////////////////////////////////////
+
 const menuButton = {}
 
 const blurDelay = 500
@@ -40,17 +52,28 @@ menuButton.initFileButton = () => {
     html: Menu.getMenuHTML(fileMenuTemplate, 'file')
   })[0]
 
-  $("#file-menu").menu({
+  const fileMenu = $("#file-menu")
+  fileMenu.menu({
     position: {
       my: 'left top',
       at: 'right top'
     },
     select: function (event, ui) {
-      console.warn(event, ui)
-    }
+      Menu.onselect(event, ui)
+      fileMenu.menu('blur')
+    },
   })
   
   $('#file-menu .ui-icon').hide()
+
+  fileMenu.on('menufocus', function() {
+    clearTimeout(fileTimer)
+  })
+  fileMenu.on('menublur', function() {
+    fileTimer = setTimeout(function() {
+      closeMenu(fileMenu)
+    }, blurDelay)
+  })
 }
 
 menuButton.initMenuButton = () => {
@@ -87,20 +110,12 @@ menuButton.initMenuButton = () => {
 
   $('#menu-menu .ui-icon').hide()
 
-//$('#menu-button').on('blur', function() {
-//  nn.warn('dropdown onblur...')
-//})
-  
   menuMenu.on('menufocus', function() {
     clearTimeout(menuTimer)
   })
   menuMenu.on('menublur', function() {
     menuTimer = setTimeout(function() {
-      menuMenu.menu("collapseAll", null, true)
-      setTimeout(function() {
-        Tool.toggleDropdown(null, 'menu')
-      }, 500)
-
+      closeMenu(menuMenu)
     }, blurDelay)
   })
 }
@@ -115,8 +130,6 @@ menuButton.onresize = () => {
 
 menuButton.update = () => {
 }
-
-
 
 export { menuButton }
 

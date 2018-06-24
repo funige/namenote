@@ -128,6 +128,20 @@ Tool.toggleDropdown = (e, name) => {
   }
 }
 
+Tool.showDropdown = (name) => {
+  const id = name + '-dropdown'
+  for (const element of $('.dropdown-content')) {
+    element.style.display = (element.id == id) ? 'block' : 'none'
+  }
+}
+
+Tool.hideDropdown = () => {
+  for (const element of $('.dropdown-content')) {
+    element.style.display = 'none'
+  }
+}
+
+
 Tool.hideOtherDropdown = (name) => {
   const id = name + '-dropdown'
   for (const element of $('.dropdown-content')) {
@@ -136,6 +150,15 @@ Tool.hideOtherDropdown = (name) => {
     }
   }
 }
+
+/*
+Tool.unlockDropdown = (name) => {
+  const button = $('#' + name + '-button')
+  if (button) {
+    button.imgButton('locked', false)
+  }
+}
+*/
 
 Tool.tools = {}
 Tool.current = null
