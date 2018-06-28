@@ -4,6 +4,26 @@ import { toolButton } from './tool-button.es6'
 import { config } from './config.es6'
 
 
+function hideDropdown(element) {
+  const name = element.id.replace(/-dropdown$/, '')
+  element.style.display = 'none'
+
+  if (name == 'menu' || name == 'file') {
+    $('#' + name + '-button').imgButton('locked', false)
+  }
+}
+
+function showDropdown(element) {
+  const name = element.id.replace(/-dropdown$/, '')
+  element.style.display = 'block'
+
+  if (name == 'menu' || name == 'file') {
+    $('#' + name + '-button').imgButton('locked', true)
+  }
+}
+
+////////////////////////////////////////////////////////////////
+
 class Tool {
   constructor() {
     this.name = 'dummy'
@@ -119,11 +139,13 @@ Tool.toggleDropdown = (e, name) => {
   if (e && !$(e.target).hasClass('img-button')) return
 
   const id = name + '-dropdown'
+  
   for (const element of $('.dropdown-content')) {
-    if (element.id == id) {
-      element.style.display = (element.style.display != 'block') ? 'block' : 'none'
+    if (element.id == id && element.style.display != 'block') {
+      showDropdown(element)
+
     } else {
-      element.style.display = 'none'
+      hideDropdown(element)
     }
   }
 }
@@ -131,13 +153,18 @@ Tool.toggleDropdown = (e, name) => {
 Tool.showDropdown = (name) => {
   const id = name + '-dropdown'
   for (const element of $('.dropdown-content')) {
-    element.style.display = (element.id == id) ? 'block' : 'none'
+    if (element.id == id) {
+      showDropdown(element)
+
+    } else {
+      hideDropdown(element)
+    }
   }
 }
 
 Tool.hideDropdown = () => {
   for (const element of $('.dropdown-content')) {
-    element.style.display = 'none'
+    hideDropdown(element)
   }
 }
 
@@ -151,14 +178,6 @@ Tool.hideOtherDropdown = (name) => {
   }
 }
 
-/*
-Tool.unlockDropdown = (name) => {
-  const button = $('#' + name + '-button')
-  if (button) {
-    button.imgButton('locked', false)
-  }
-}
-*/
 
 Tool.tools = {}
 Tool.current = null

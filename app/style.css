@@ -315,10 +315,15 @@ form .preview { width: 500px; height: 150px; } /* 350px */
     margin:0;
     padding:0;
     width: 100%;
+//  width: 300px;
 }
 
 .ui-menu {
     text-align: left;
+}
+
+#file-dropdown .ui-menu {
+    width: 300px !important;
 }
 
 span .ui-icon {
@@ -327,25 +332,40 @@ span .ui-icon {
 
 .ui-menu > li {
     font-size: 14px;
-//  width: 400px;
+
 }
 
 .ui-menu > li > div {
+//  background-color: red; //#f6f6f6;
     line-height: 1.5em;
     margin: 0;
     padding: 0;
-//  width: 400px;
+
+//  width: 300px;
 }
 
 .ui-menu .ui-widget {
-    background-color: white; //#f6f6f6;
+//  background-color: red; //#f6f6f6;
     border: 1px solid #aaa;
     box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+
     width: 300px;
 }
 
-.ui-menu-item-wrapper .ui-widget-content {
-    width: 400px;
+.ui-widget-content {
+//  width: 400px;
+}
+
+.ui-menu-item-wrapper {
+//  width: 400px;
+}
+
+.ui-widget-content > li {
+//  width: 400px;
+}
+
+.ui-widget {
+//  width: 400px;
 }
 
 #menu {
@@ -445,9 +465,10 @@ span .ui-icon {
     top: 33px; //36px;
     background-color: #f6f6f6; //#eee;
     border: 1px solid #aaa;
-//  min-width: 180px; //160px;
     box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
     z-index: 1;
+
+//  width: 400px; // .dropdownの横幅だけ広がる
 }
 
 /* Links inside the dropdown */

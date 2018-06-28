@@ -92,7 +92,6 @@ const menuTemplate = [
   },
   { label: 'Window',
     submenu: [
-      { type: 'separator' },
     ],
   },
 ]
@@ -100,7 +99,7 @@ const menuTemplate = [
 const fileMenuTemplate = [
   { label: 'New ...', accelerator: "CmdOrCtrl+N", click: 'openNewDialog' },
   { label: 'Open ...', accelerator: "CmdOrCtrl+O", click: 'open' },
-  { label: 'Open Recent', submenu: [] },
+  { type: 'separator' },
 ]
 
 const otherMenuTemplate = [
@@ -161,7 +160,6 @@ const otherMenuTemplate = [
   },
   { label: 'Window',
     submenu: [
-      { type: 'separator' },
     ],
   },
 ]

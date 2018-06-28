@@ -63,37 +63,14 @@ function findHTMLSubmenu(node, label) {
   return null
 }
 
-function rebuildMenu(template) {
-//  $("#menu-menu").html()
-//  rebuildSubmenu(template)
-}
-
-/*
-function rebuildSubmenu(template) {
-  for (let item of template) {
-    if (item.submenu) {
-      rebuildSubmenu(item.submenu)
-
-    } else {
-      nn.warn(item.label)
-      $("<li>" + item.label + "</li>").appendTo("#menu-menu");
-      $("#menu-menu").menu("refresh")
-    }
-  }
-}
-*/
-  
 ////////////////////////////////////////////////////////////////
 
 class Menu {}
-
-//Menu.menuTemplate = menuTemplate
 
 Menu.rebuild = (template) => {
   if (namenote.isApp) {
     namenote.app.rebuildMenu(template)
   }
-  //rebuildMenu(template)
 }
 
 
@@ -103,7 +80,6 @@ Menu.init = () => {
 
 Menu.update = (element) => {
   const template = JSON.parse(JSON.stringify(menuTemplate))
-  const project = Project.current
 
   Menu.updateRecents(template)
   Menu.updateWindows(template)
@@ -123,10 +99,12 @@ Menu.updateRecents = (template) => {
   if (recents.length > 0) {
     recents[0].accelerator = "F1" //"CmdOrCtrl+0"
   }
+  Menu.updateRecentsHTML()
 }
 
 Menu.updateWindows = (template) => {
   const windows = findSubmenu(template, 'Window').submenu
+  const project = Project.current
   for (let item of Project.list) {
     windows.unshift({
       label: item.url, data: item.url, click: 'openURL',
@@ -134,6 +112,47 @@ Menu.updateWindows = (template) => {
       checked: (project && item.url == project.url),
     })
   }
+  Menu.updateWindowsHTML()
+}
+
+Menu.updateRecentsHTML = () => {
+  const fileMenu = $('#file-menu')
+  const ul = fileMenu[0]
+
+  while (ul.childNodes.length > 3) {
+    ul.removeChild(ul.childNodes[ul.childNodes.length - 1])
+  }
+  
+  for (let item of RecentURL.list) {
+    const li = document.createElement('li')
+    const div = document.createElement('div')
+    li.appendChild(div)
+    div['data-data'] = item
+    div['data-click'] = 'openURL'
+    div.innerHTML = item
+    ul.appendChild(li)
+  }
+  fileMenu.menu('refresh')
+}
+
+Menu.updateWindowsHTML = () => {
+  const menuMenu = $('#menu-menu')
+  const ul = menuMenu[0].childNodes[4].childNodes[1]
+
+  while (ul.childNodes.length > 0) {
+    ul.removeChild(ul.childNodes[ul.childNodes.length - 1])
+  }
+
+  for (let item of Project.list) {
+    const li = document.createElement('li')
+    const div = document.createElement('div')
+    li.appendChild(div)
+    div['data-data'] = item.url
+    div['data-click'] = 'openURL'
+    div.innerHTML = item.url
+    ul.insertBefore(li, ul.childNodes[0])
+  }
+  menuMenu.menu('refresh')
 }
 
 Menu.updateEnabled = (template) => {
@@ -213,7 +232,9 @@ Menu.addMenuHTML = (node, template) => {
     const li = document.createElement('li')
     const div = document.createElement('div')
     li.appendChild(div)
-    div.title = item.label
+    
+    div['data-data'] = item.label
+    div['data-click'] = item.click
     div.innerHTML = T(item.label || '-')
 
     if (item.submenu) {
@@ -224,11 +245,18 @@ Menu.addMenuHTML = (node, template) => {
 }
 
 Menu.onselect  = (event, ui) => {
-  const label = ui.item[0].childNodes[0].title
-  const item = findSubmenu(menuTemplate, label)
-  if (item) {
-    if (item.click) command.do(`${item.click}`, `${item.data}`)
+  const div = ui.item[0] && ui.item[0].childNodes[0]
+  if (div) {
+    const data = div['data-data']
+    const click = div['data-click']
+    nn.warn('onselect..', ui, data, click)
+
+    if (click) {
+      command.do(`${click}`, `${data}`)
+      return true
+    }
   }
+  return false
 }
 
 export { Menu }

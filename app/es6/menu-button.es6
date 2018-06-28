@@ -59,8 +59,9 @@ menuButton.initFileButton = () => {
       at: 'right top'
     },
     select: function (event, ui) {
-      Menu.onselect(event, ui)
-      fileMenu.menu('blur')
+      if (Menu.onselect(event, ui)) {
+        fileMenu.menu('blur')
+      }
     },
   })
   
@@ -103,8 +104,9 @@ menuButton.initMenuButton = () => {
       at: 'left top'
     },
     select: function (event, ui) {
-      Menu.onselect(event, ui)
-      menuMenu.menu('blur')
+      if (Menu.onselect(event, ui)) {
+        menuMenu.menu('blur')
+      }
     },
   })
 

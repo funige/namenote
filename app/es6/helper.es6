@@ -79,9 +79,22 @@ const helper = {
     return regex
   },
 
+  truncate: (string, length) => {
+    const root = $('.root')[0]
+    const div = document.createElement('div')
+    root.appendChild(div)
+    div.innerHTML = 'test'
+    nn.warn('test..', div.offsetWidth)
+    div.innerHTML = 'testtest'
+    nn.warn('testtest...', div.offsetWidth)
+    root.removeChild(div)
+  },
+  
+  /*
   hasWintab: () => {
     return typeof _hasWintab != "undefined"
   },
+  */
 }
 
 

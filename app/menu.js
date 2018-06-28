@@ -17,7 +17,6 @@ function getMenuTemplate (template) {
 }
 
 function fixCommand (item) {
-//let script = `namenote.command.${item.click}('${item.data}')`
   let script = `namenote.command.do('${item.click}', '${item.data}')`
   return () => run(script)
 }
