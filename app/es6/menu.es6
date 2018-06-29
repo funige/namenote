@@ -31,8 +31,21 @@ function enableItem(template, label, value) {
     }
   }
 
-  // HTMLMenu
+  enableItemHTML($('#menu-menu')[0], label, value)
+/*
   const li = findHTMLSubmenu($('#menu-menu')[0], label)
+  if (li) {
+    if (value) {
+      li.classList.remove('ui-state-disabled')
+    } else {
+      li.classList.add('ui-state-disabled')
+    }
+  }
+*/
+}
+
+function enableItemHTML(node, label, value) {
+  const li = findHTMLSubmenu(node, label)
   if (li) {
     if (value) {
       li.classList.remove('ui-state-disabled')
@@ -51,8 +64,10 @@ function setShortcut(template, label, isEditable) {
 
 function findHTMLSubmenu(node, label) {
   for (let li of node.childNodes) {
-    const tmp = li.getElementsByTagName('div')
-    if (tmp.length > 0 && tmp[0].title == label) return li
+    const tmp = li.getElementsByTagName('p')
+    if (tmp.length > 0) {
+      if (tmp[0].innerHTML == label) return li
+    }
 
     const submenu = li.getElementsByTagName('ul')
     if (submenu.length > 0) {
@@ -61,6 +76,41 @@ function findHTMLSubmenu(node, label) {
     }
   }
   return null
+}
+
+function appendAttribute(div, data, click) {
+  if (data) {
+    const p = document.createElement('p')
+    p.innerHTML = data
+    p.title = click || ''
+    p.style.display = 'none'
+    div.appendChild(p)
+  }
+  return div
+}
+
+function appendKey(string, key, check) {
+  check = (check) ? '&#x2714;' : ''
+  key = convertKey(key) || '&nbsp;'
+
+  const result = `
+     <div class='check'>${check}</div>
+     <div class='label'>${string}</div>
+     <div class='key'>${key}</div>`
+  return result
+}
+
+function convertKey(key) {
+  const platform = window.process.platform //darwin or win32
+
+  if (key) {
+    key = key.replace(/Shift\+\,/, '<')
+    key = key.replace(/Shift\+\./, '>')
+    key = key.replace(/CmdOrCtrl\+/, '&#8984;')
+    key = key.replace(/Shift\+/, '&#8679;')
+    key = key.toUpperCase()
+  }
+  return key
 }
 
 ////////////////////////////////////////////////////////////////
@@ -126,31 +176,36 @@ Menu.updateRecentsHTML = () => {
   for (let item of RecentURL.list) {
     const li = document.createElement('li')
     const div = document.createElement('div')
-    li.appendChild(div)
-    div['data-data'] = item
-    div['data-click'] = 'openURL'
     div.innerHTML = item
+    li.appendChild(appendAttribute(div, item, 'openURL'))
+    
     ul.appendChild(li)
   }
   fileMenu.menu('refresh')
 }
 
 Menu.updateWindowsHTML = () => {
+  const project = Project.current
   const menuMenu = $('#menu-menu')
-  const ul = menuMenu[0].childNodes[4].childNodes[1]
+  const li = menuMenu[0].childNodes[3]
+  const hasWindows = (Project.list.length > 0) ? true : false
+  enableItemHTML(menuMenu[0], 'Window', hasWindows)
 
-  while (ul.childNodes.length > 0) {
-    ul.removeChild(ul.childNodes[ul.childNodes.length - 1])
-  }
+  if (hasWindows) {
+    const ul = li.childNodes[1]
+    
+    while (ul.childNodes.length > 0) {
+      ul.removeChild(ul.childNodes[ul.childNodes.length - 1])
+    }
 
-  for (let item of Project.list) {
-    const li = document.createElement('li')
-    const div = document.createElement('div')
-    li.appendChild(div)
-    div['data-data'] = item.url
-    div['data-click'] = 'openURL'
-    div.innerHTML = item.url
-    ul.insertBefore(li, ul.childNodes[0])
+    for (let item of Project.list) {
+      const li = document.createElement('li')
+      const div = document.createElement('div')
+
+      div.innerHTML = appendKey(item.url, null, project && item.url == project.url)
+      li.appendChild(appendAttribute(div, item.url, 'openURL'))
+      ul.insertBefore(li, ul.childNodes[0])
+    }
   }
   menuMenu.menu('refresh')
 }
@@ -163,7 +218,6 @@ Menu.updateEnabled = (template) => {
     enableItem(template, 'Close', true)
     enableItem(template, 'Close All', true)
     enableItem(template, 'Save Snapshot As ...', true)
-    enableItem(template, 'Note Settings ...', true)
     enableItem(template, 'Export', true)
     enableItem(template, 'Import', true)
 
@@ -171,10 +225,8 @@ Menu.updateEnabled = (template) => {
     enableItem(template, 'Move to Buffer', true)
     enableItem(template, 'Put Back from Buffer', PageBuffer.hasPage())
     enableItem(template, 'Empty Buffer', PageBuffer.hasPage())
-    enableItem(template, 'Duplicate', true)
     enableItem(template, 'Move Forward', true)
     enableItem(template, 'Move Backward', true)
-    enableItem(template, 'Flip', true)
     enableItem(template, 'Extract Text', true)
     enableItem(template, 'Save Image As ...', true)
     
@@ -184,7 +236,6 @@ Menu.updateEnabled = (template) => {
     enableItem(template, 'Close', false)
     enableItem(template, 'Close All', false)
     enableItem(template, 'Save Snapshot As ...', false)
-    enableItem(template, 'Note Settings ...', false)
     enableItem(template, 'Export', false)
     enableItem(template, 'Import', false)
 
@@ -192,10 +243,8 @@ Menu.updateEnabled = (template) => {
     enableItem(template, 'Move to Buffer', false)
     enableItem(template, 'Put Back from Buffer', false)
     enableItem(template, 'Empty Buffer', false)
-    enableItem(template, 'Duplicate', false)
     enableItem(template, 'Move Forward', false)
     enableItem(template, 'Move Backward', false)
-    enableItem(template, 'Flip', false)
     enableItem(template, 'Extract Text', false)
     enableItem(template, 'Save Image As ...', false)
   }  
@@ -231,11 +280,13 @@ Menu.addMenuHTML = (node, template) => {
   for (let item of template) {
     const li = document.createElement('li')
     const div = document.createElement('div')
-    li.appendChild(div)
+    if (item.label) {
+      div.innerHTML = appendKey(T(item.label), item.accelerator)
+    } else {
+      div.innerHTML = '-'
+    }
     
-    div['data-data'] = item.label
-    div['data-click'] = item.click
-    div.innerHTML = T(item.label || '-')
+    li.appendChild(appendAttribute(div, item.label, item.click))
 
     if (item.submenu) {
       Menu.addMenuHTML(li, item.submenu)
@@ -245,11 +296,10 @@ Menu.addMenuHTML = (node, template) => {
 }
 
 Menu.onselect  = (event, ui) => {
-  const div = ui.item[0] && ui.item[0].childNodes[0]
-  if (div) {
-    const data = div['data-data']
-    const click = div['data-click']
-    nn.warn('onselect..', ui, data, click)
+  const p = ui.item[0] && ui.item[0].getElementsByTagName('p')[0]
+  if (p) {
+    const data = p.innerHTML
+    const click = p.title
 
     if (click) {
       command.do(`${click}`, `${data}`)

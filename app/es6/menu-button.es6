@@ -40,7 +40,7 @@ menuButton.initFileButton = () => {
       </div>`
   
   const fileButton = $('#file-button').imgButton({
-    src: 'img/flip-button.png',
+    src: 'img/file-button.png',
     float: 'left',
     click: function(e) {
       const element = $(e.target)

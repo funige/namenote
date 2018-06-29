@@ -315,7 +315,6 @@ form .preview { width: 500px; height: 150px; } /* 350px */
     margin:0;
     padding:0;
     width: 100%;
-//  width: 300px;
 }
 
 .ui-menu {
@@ -323,7 +322,7 @@ form .preview { width: 500px; height: 150px; } /* 350px */
 }
 
 #file-dropdown .ui-menu {
-    width: 300px !important;
+    width: 320px !important;
 }
 
 span .ui-icon {
@@ -332,51 +331,34 @@ span .ui-icon {
 
 .ui-menu > li {
     font-size: 14px;
-
 }
 
 .ui-menu > li > div {
-//  background-color: red; //#f6f6f6;
+    position: relative;
     line-height: 1.5em;
     margin: 0;
     padding: 0;
-
-//  width: 300px;
 }
 
 .ui-menu .ui-widget {
-//  background-color: red; //#f6f6f6;
     border: 1px solid #aaa;
     box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
 
-    width: 300px;
-}
-
-.ui-widget-content {
-//  width: 400px;
+    width: 320px;
 }
 
 .ui-menu-item-wrapper {
-//  width: 400px;
+    padding-left: 2em !important;
 }
 
-.ui-widget-content > li {
-//  width: 400px;
-}
-
-.ui-widget {
-//  width: 400px;
-}
+.ui-menu div.check { position:absolute; left:5px; }
+.ui-menu div.label { text-align:left; float: left; }
+.ui-menu div.key   { text-align: right; margin-right: -8px; }
 
 #menu {
     background-color: #f6f6f6;
 }
 
-/*
-.ui-button:focus {
-    outline:none !important
-}
-*/
 
 /**
  * Widget

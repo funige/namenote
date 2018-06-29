@@ -5,6 +5,7 @@ const dictionary = {
     "Namenote": "Namenote",
     "About Namenote": "Namenote について",
     "About Namenote ...": "Namenote について ...",
+    "Help": "ヘルプ",
     "Settings": "環境設定",
     "Settings ...": "環境設定 ...",
     "Tablet Settings": "筆圧調整",

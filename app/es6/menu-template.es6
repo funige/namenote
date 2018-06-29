@@ -32,11 +32,13 @@ const menuTemplate = [
 //    { label: 'Note Settings ...', click: 'noteSettings' },
 
       { type: 'separator' },
+      /*
       { label: 'Import',
 	submenu: [
 	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
 	],
       },
+      */
       { label: 'Export',
 	submenu: [
 	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },
@@ -103,14 +105,6 @@ const fileMenuTemplate = [
 ]
 
 const otherMenuTemplate = [
-  { label: 'Namenote',
-    submenu: [
-      { label: 'Settings ...', click: 'settings' },
-      { label: 'Tablet Settings ...', click: 'tabletSettings' },
-      { type: 'separator' },
-      { label: 'About Namenote ...', click: 'about' },
-    ],
-  },
   { label: 'Note',
     submenu: [
       { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
@@ -118,11 +112,13 @@ const otherMenuTemplate = [
       { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
 	
       { type: 'separator' },
+      /*
       { label: 'Import',
 	submenu: [
 	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
 	],
       },
+      */
       { label: 'Export',
 	submenu: [
 	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },
@@ -137,7 +133,7 @@ const otherMenuTemplate = [
       { label: 'Move Forward', accelerator: "Shift+.", click: 'movePageForward' },
       { label: 'Move Backward', accelerator: "Shift+,", click: 'movePageBackward' },
       { type: "separator" },
-      { label: 'Move to Buffer', accelerator: "Shift+k", click: 'cutPage' },
+      { label: 'Move to Buffer', accelerator: "Shift+K", click: 'cutPage' },
       { label: 'Put Back from Buffer', accelerator: "Shift+Y", click: 'pastePage' },
       { label: 'Empty Buffer', accelerator: "Shift+0", click: 'emptyPage' },
       { type: "separator" },
@@ -162,6 +158,10 @@ const otherMenuTemplate = [
     submenu: [
     ],
   },
+  { type: "separator" },
+  { label: 'Settings ...', click: 'settings' },
+  { label: 'Tablet Settings ...', click: 'tabletSettings' },
+  { label: 'Help', click: 'about' },
 ]
 
 export { menuTemplate, fileMenuTemplate, otherMenuTemplate }
