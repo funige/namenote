@@ -353,7 +353,7 @@ span .ui-icon {
 
 .ui-menu div.check { position:absolute; left:5px; }
 .ui-menu div.label { text-align:left; float: left; }
-.ui-menu div.key   { text-align: right; margin-right: -8px; }
+.ui-menu div.key   { text-align: right; margin-right: -8px; font-size: 13px; }
 
 #menu {
     background-color: #f6f6f6;

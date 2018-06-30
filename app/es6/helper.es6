@@ -89,6 +89,10 @@ const helper = {
     nn.warn('testtest...', div.offsetWidth)
     root.removeChild(div)
   },
+
+  isMac: () => {
+    return (window.process.platform == "darwin") ? true : false
+  },
   
   /*
   hasWintab: () => {

@@ -55,6 +55,9 @@ function createWindow () {
     win.webContents.executeJavaScript('_hasWintab = true')
   }
 */
+
+  win.setMenu(null)
+  win.setAutoHideMenuBar(true)
   
   win.loadURL(`file://${__dirname}/index-desktop.html`)
   if (debug) win.webContents.openDevTools()

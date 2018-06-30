@@ -5,6 +5,7 @@ import { PageBuffer } from './page-buffer.es6'
 import { RecentURL } from './recent-url.es6'
 import { Text } from './text.es6'
 import { Tool } from './tool.es6'
+import { helper } from './helper.es6'
 import { command } from './command.es6'
 import { menuTemplate, fileMenuTemplate, otherMenuTemplate } from './menu-template.es6'
 
@@ -101,14 +102,22 @@ function appendKey(string, key, check) {
 }
 
 function convertKey(key) {
-  const platform = window.process.platform //darwin or win32
-
   if (key) {
-    key = key.replace(/Shift\+\,/, '<')
-    key = key.replace(/Shift\+\./, '>')
-    key = key.replace(/CmdOrCtrl\+/, '&#8984;')
-    key = key.replace(/Shift\+/, '&#8679;')
-    key = key.toUpperCase()
+    if (!helper.isMac()) {
+      key = key.replace(/Shift\+\,/, 'Shift+Comma')
+      key = key.replace(/Shift\+\./, 'Shift+Period')
+      key = key.replace(/CmdOrCtrl\+/, 'Ctrl+')
+      key = key.replace(/Command\+Alt\+/, 'Ctrl+Alt+')
+      key = key.toUpperCase()
+
+    } else {
+      key = key.replace(/Shift\+\,/, '<')
+      key = key.replace(/Shift\+\./, '>')
+      key = key.replace(/CmdOrCtrl\+/, '&#8984;')
+      key = key.replace(/Command\+Alt\+/, '&#8997;&#8984;')
+      key = key.replace(/Shift\+/, '&#8679;')
+      key = key.toUpperCase()
+    }
   }
   return key
 }
@@ -125,6 +134,10 @@ Menu.rebuild = (template) => {
 
 
 Menu.init = () => {
+  if (!helper.isMac()) {
+    helper.addRule('.ui-menu div.key', 'color', '#ccc')
+    helper.addRule('.ui-menu .ui-widget', 'width', '350px')
+  }
   Menu.update()
 }
 

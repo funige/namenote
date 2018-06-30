@@ -50,8 +50,6 @@ const configDialog = {
 
       <br/>
       <br/>
-      <br/>
-      <br/>
       <input type='submit' style='display: none' />
       <input name='reset' class='reset' type='button' value='T(Reset Settings to Default)' />
     </table>

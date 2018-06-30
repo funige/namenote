@@ -66,7 +66,7 @@ const namenote = {
 }
 
 namenote.version = "0.9.1" // Use script/version to update this value
-namenote.trial = false
+namenote.trial = true
 
 namenote.command = command
 namenote.config = config

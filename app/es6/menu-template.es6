@@ -6,7 +6,7 @@ const menuTemplate = [
       { label: 'About Namenote ...', click: 'about' },
       { type: 'separator' },
       { label: 'Settings ...', click: 'settings' },
-      { label: 'Tablet Settings ...', click: 'tabletSettings' },
+//    { label: 'Tablet Settings ...', click: 'tabletSettings' },
       { type: 'separator' },
       { label: 'Quit Namenote', accelerator: "CmdOrCtrl+Q", click: 'quit' },
       
@@ -77,7 +77,7 @@ const menuTemplate = [
   },
   { label: 'View',
     submenu: [
-      { label: 'Tool Bar', accelerator: "Command+Alt+H", click: 'toolBar' },
+      { label: 'Tool Bar', click: 'toolBar' }, //accelerator: "Command+Alt+H", 
 //    { label: 'Side Bar', click: 'sideBar' },
       { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
       { type: 'separator' },
@@ -143,6 +143,7 @@ const otherMenuTemplate = [
   },
   { label: 'View',
     submenu: [
+      { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
       { label: 'Page Margin', accelerator: "R", click: 'showMargin' },
       { label: 'Number of Pages per Row',
 	submenu: [
@@ -160,7 +161,7 @@ const otherMenuTemplate = [
   },
   { type: "separator" },
   { label: 'Settings ...', click: 'settings' },
-  { label: 'Tablet Settings ...', click: 'tabletSettings' },
+//{ label: 'Tablet Settings ...', click: 'tabletSettings' },
   { label: 'Help', click: 'about' },
 ]
 

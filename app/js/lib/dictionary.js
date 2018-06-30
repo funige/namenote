@@ -127,7 +127,8 @@ const dictionary = {
     "Disable wintab driver": "Wintabドライバを使わない",
     "Disable mouse wheel scroll": "マウスホイールでスクロールしない",
     "Click OK to restore default settings.": "デフォルトの設定に戻します",
-    "Use Wintab": "Wintabを使う",
+    "Pen pressure": "筆圧",
+    "Output": "出力",
     
     "Enable Japanese Options": "日本語用のオプションを有効にする"
   }

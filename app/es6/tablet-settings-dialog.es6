@@ -16,27 +16,26 @@ const tabletSettingsDialog = {
     })
 
     const string = locale.translateHTML(`
-    <div style="width:300px; height:300px; font-size:12px;">
+    <div style="width:300px; height:250px; font-size:12px;">
       <div style="position:relative; left:40px;">
-        <canvas id="tablet-curve" style="position:absolute; width:250px; height:250px; border: 1px solid black"></canvas>
+        <canvas id="tablet-curve" style="position:absolute; width:200px; height:200px; border: 1px solid black"></canvas>
 
-        <div style="position:absolute; top:0px;   left:-205px; width: 200px; text-align:right;">100%</div>
-        <div style="position:absolute; top:105px; left:-205px; width: 200px; text-align:right;">出力</div>
-        <div style="position:absolute; top:230px; left:-205px; width: 200px; text-align:right;">0%</div>
+        <div style="position:absolute; top:-15px; left:-205px; width: 200px; text-align:right;">100%</div>
+        <div style="position:absolute; top:85px; left:-205px; width: 200px; text-align:right;">T(Output)</div>
+        <div style="position:absolute; top:185px; left:-205px; width: 200px; text-align:right;">0%</div>
 
-        <div style="position:absolute; left:0px; top:250px;">0%</div>
-        <div style="position:absolute; left:115px; top:250px;">筆圧</div>
-        <div style="position:absolute; left:225px; top:250px;">100%</div>
+        <div style="position:absolute; left:0px; top:200px;">0%</div>
+        <div style="position:absolute; left:100px; top:200px;">T(Pen pressure)</div>
+        <div style="position:absolute; left:200px; top:200px;">100%</div>
 
-        <div style="position:absolute; left:-5px; top: 95px; width:10px; height:10px; border:1px solid red;"></div>
-        <div style="position:absolute; left:95px; top: -5px; width:10px; height:10px; border:1px solid blue;"></div>
+        <div style="position:absolute; left:0px; top: 100px; width:5px; height:5px; border:1px solid blue;"></div>
+        <div style="position:absolute; left:0px; top: 0px; width:5px; height:5px; border:1px solid red;"></div>
+        <div style="position:absolute; left:200px; top: 0px; width:5px; height:5px; border:1px solid red;"></div>
       </div>
-
     </div>
+    <input type='submit' style='display: none' />
+    <input name='reset' class='reset' type='button' value='T(Reset Settings to Default)' />
     `)
-
-
-
 
     $('#tablet-settings-dialog').html(`<form id='tablet'>${string}</form>`)
     $('#tablet').on('submit', function() { return tabletSettingsDialog.ok() })
@@ -46,6 +45,8 @@ const tabletSettingsDialog = {
   },
 
   ok: () => {
+    $('#tablet-settings-dialog').dialog('close')
+    return false
   },
 
   cancel: () => {
