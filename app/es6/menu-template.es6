@@ -6,7 +6,7 @@ const menuTemplate = [
       { label: 'About Namenote ...', click: 'about' },
       { type: 'separator' },
       { label: 'Settings ...', click: 'settings' },
-//    { label: 'Tablet Settings ...', click: 'tabletSettings' },
+      { label: 'Tablet Settings ...', click: 'tabletSettings' },
       { type: 'separator' },
       { label: 'Quit Namenote', accelerator: "CmdOrCtrl+Q", click: 'quit' },
       
@@ -161,7 +161,7 @@ const otherMenuTemplate = [
   },
   { type: "separator" },
   { label: 'Settings ...', click: 'settings' },
-//{ label: 'Tablet Settings ...', click: 'tabletSettings' },
+  { label: 'Tablet Settings ...', click: 'tabletSettings' },
   { label: 'Help', click: 'about' },
 ]
 

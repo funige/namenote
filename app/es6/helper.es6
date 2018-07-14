@@ -93,6 +93,12 @@ const helper = {
   isMac: () => {
     return (window.process.platform == "darwin") ? true : false
   },
+
+  limit: (value, min, max) => {
+    if (value < min) value = min
+    if (value > max) value = max
+    return value
+  },
   
   /*
   hasWintab: () => {
