@@ -160,9 +160,9 @@ Controller.onDown = (e) => {
 Controller.onUp = (e) => {
   if (e.pointerId != Controller.pointerId) return
 
-  Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
-  Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
-  Controller.pressure = e.pressure
+//Controller.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX
+//Controller.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY
+//Controller.pressure = e.pressure
   
   if (onStroke) {
     Tool.current.onUp(e)

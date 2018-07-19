@@ -45,9 +45,11 @@ class EraserTool extends Tool {
     const x = pos[0]
     const y = pos[1]
 
-    let pressure= Controller.pressure
-    pressure = Math.min(1, pressure * pressure * 2)
-    if (!this.getEraserPressure()) pressure = 0.7
+    const pressure= (this.getEraserPressure()) ?
+          config.getPressure(Controller.pressure) : 0.7
+
+//  pressure = Math.min(1, pressure * pressure * 2)
+//  if (!this.getEraserPressure()) pressure = 0.7
     
     if (pageX != x || pageY != y) {
       moved = true

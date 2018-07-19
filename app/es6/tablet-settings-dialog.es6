@@ -4,19 +4,28 @@ import { locale } from './locale.es6'
 import { config } from './config.es6'
 import { helper } from './helper.es6'
 
+
+const width = 200
+const d = 15
+//const pressureTableSize = 25
+//let pressureTable = null
+
 function decodePosition(string) {
   const array = string.split(',')
   const x = parseFloat(array[0] || 0)
   const y = parseFloat(array[1] || 0)
-  return { left:(x * 200) - 15, top:(y * 200) - 15 }
+  return { left:(x * width) - d, top:((1.0 - y) * width) - d }
 }
 
-function encodePosition(x, y) {
-  x = (parseFloat(x || 0) + 15) / 200
-  y = (parseFloat(y || 0) + 15) / 200
-  console.error('encodePosition', `${x},${y}`)
-  return `${x},${y}`
+function encodePosition(id) {
+  const e = document.getElementById(id)
+  const x = (parseFloat(e.style.left || 0) + d) / width
+  const y = (parseFloat(e.style.top || 0) + d) / width
+  return `${x},${1.0 - y}`
 }
+
+
+////////////////////////////////////////////////////////////////
 
 const tabletSettingsDialog = {
   init: () => {
@@ -34,7 +43,7 @@ const tabletSettingsDialog = {
     const string = locale.translateHTML(`
     <div style="width:300px; height:250px; font-size:12px;">
       <div id="tablet-curve-container">
-        <canvas id="tablet-curve" width="200px" height="200px" style="width:200px; height:200px; border: 1px solid black"></canvas>
+        <canvas id="tablet-curve" width="${width}px" height="${width}px" style="width:${width}px; height:${width}px; border: 1px solid black"></canvas>
 
         <div style="top:-15px; left:-205px; width: 200px; text-align:right;">100%</div>
         <div style="top:85px; left:-205px; width: 200px; text-align:right;">T(Output)</div>
@@ -62,22 +71,24 @@ const tabletSettingsDialog = {
     $('#tablet-curve-left').draggable({
       axis: "y",
       drag: function(event, ui) {
-        ui.position.top = helper.limit(ui.position.top, -15, 200 - 15)
+        ui.position.top = helper.limit(ui.position.top, - d, width - d)
+        tabletSettingsDialog.updateCanvas()
       }
-    }).css({top: 200 - 15, left: -15})
+    }) //.css({top: width - d, left: -d})
     $('#tablet-curve-right').draggable({
       axis: "y",
       drag: function(event, ui) {
-        ui.position.top = helper.limit(ui.position.top, -15, 200 - 15)
+        ui.position.top = helper.limit(ui.position.top, -d, width - d)
+        tabletSettingsDialog.updateCanvas()
       }
-    }).css({top: -15, left: 200 - 15})
+    }) //.css({top: -d, left: width - d})
     $('#tablet-curve-center').draggable({
       drag: function(event, ui) {
-        ui.position.top = helper.limit(ui.position.top, -15, 200 - 15)
-        ui.position.left = helper.limit(ui.position.left, -15, 200 - 15)
-        console.warn('center', ui)
+        ui.position.top = helper.limit(ui.position.top, -d, width - d)
+        ui.position.left = helper.limit(ui.position.left, -d, width - d)
+        tabletSettingsDialog.updateCanvas()
       }
-    }).css({top: 100 - 15, left: 100 - 15})
+    }) //.css({top: 100 - 15, left: 100 - 15})
 
 
     /*
@@ -95,6 +106,16 @@ const tabletSettingsDialog = {
   },
 
   ok: () => {
+    const curveLeft = encodePosition('tablet-curve-left')
+    const curveRight = encodePosition('tablet-curve-right')
+    const curveCenter = encodePosition('tablet-curve-center')
+    config.data.tabletCurveLeft = curveLeft
+    config.data.tabletCurveRight = curveRight
+    config.data.tabletCurveCenter = curveCenter
+    config.save()
+
+    config.precalculatePressure();
+    
     $('#tablet-settings-dialog').dialog('close')
     return false
   },
@@ -105,20 +126,17 @@ const tabletSettingsDialog = {
 
   initForm: () => {
     const curveLeft = config.getValue('tabletCurveLeft', '0,0')
-    const curveRight = config.getValue('tabletCurveRight', '1,0')
+    const curveRight = config.getValue('tabletCurveRight', '1,1')
     const curveCenter = config.getValue('tabletCurveCenter', '0.5,0.5')
-
-    nn.error(decodePosition(curveLeft), curveLeft, curveRight, curveCenter)
-    
     $('#tablet-curve-left').css(decodePosition(curveLeft))
     $('#tablet-curve-right').css(decodePosition(curveRight))
     $('#tablet-curve-center').css(decodePosition(curveCenter))
+    tabletSettingsDialog.updateCanvas()
   },
 
   resetSettings: () => {
-    nn.warn('resetSettings')
     config.data.tabletCurveLeft = '0,0'
-    config.data.tabletCurveRight = '1,0'
+    config.data.tabletCurveRight = '1,1'
     config.data.tabletCurveCenter = '0.5,0.5'
     config.save()
     
@@ -130,22 +148,33 @@ const tabletSettingsDialog = {
   },
 
   updateCanvas: () => {
-    nn.warn('updateCanvas....')
     const canvas = $('#tablet-curve')[0]
     const ctx = canvas.getContext('2d')
 
-    const x0 = 0
-    const y0 = 0
-    const x1 = 100
-    const y1 = 100
-    
-    ctx.beginPath()
-    ctx.lineWidth = 1
-    ctx.lineCap = 'round'
-    ctx.strokeStyle = `rgba(255, 0, 0, 1.0)`
+    const left = document.getElementById('tablet-curve-left')
+    const right = document.getElementById('tablet-curve-right')
+    const center = document.getElementById('tablet-curve-center')
+    const x0 = parseFloat(left.style.left) + d
+    const y0 = parseFloat(left.style.top) + d
+    const x1 = parseFloat(center.style.left) + d
+    const y1 = parseFloat(center.style.top) + d
+    const x2 = parseFloat(right.style.left) + d
+    const y2 = parseFloat(right.style.top) + d
 
+    ctx.clearRect(0, 0, width, width)
+    ctx.lineWidth = 1
+
+    ctx.beginPath()
+    ctx.strokeStyle = '#ccc'
     ctx.moveTo(x0, y0)
     ctx.lineTo(x1, y1)
+    ctx.lineTo(x2, y2)
+    ctx.stroke()
+    
+    ctx.beginPath()
+    ctx.strokeStyle = 'black'
+    ctx.moveTo(x0, y0)
+    ctx.quadraticCurveTo(x1, y1, x2, y2)
     ctx.stroke()
   },
 }

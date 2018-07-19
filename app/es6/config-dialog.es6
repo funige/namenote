@@ -42,11 +42,6 @@ const configDialog = {
 
       <tr><td><label><input name='noScroll' type='checkbox'/>
         T(Disable mouse wheel scroll)</label>
-<!--
-      <tr><td><label name='useWintab'>
-        <input name='useWintab' type='checkbox'/>
-        T(Use Wintab)</label>
--->
 
       <br/>
       <br/>
@@ -70,14 +65,12 @@ const configDialog = {
   ok: () => {
     const form = document.forms['config']
     const noScroll = (form.noScroll.checked) ? true : false
-//  const useWintab = (form.useWintab.checked) ? true : false
     const zoomFont = (form.zoom.checked) ? true : false
     const zoomFontSize = parseInt(form.zoomSize.value)
     const quickline = (form.line.checked) ? true : false
     const quicklineDelay = parseFloat(form.lineDelay.value)
     
     config.data.noScroll = noScroll
-//  config.data.useWintab = useWintab
     config.data.zoomFont = zoomFont
     config.data.zoomFontSize = zoomFontSize
     config.data.quickline = quickline
@@ -96,10 +89,6 @@ const configDialog = {
   initForm: () => {
     const form = document.forms['config']
     form.noScroll.checked = config.getValue('noScroll', false)
-//  form.useWintab.checked = config.getValue('useWintab', true)
-
-//    $('form label[name ="useWintab"]')[0].style.display =
-//      (helper.hasWintab() && window.process.platform == 'win32') ? "block" : "none"
     
     const zoomFont = config.getZoomFont()
     const zoomFontSize = config.getZoomFontSize()
