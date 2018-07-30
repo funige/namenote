@@ -99,6 +99,30 @@ const helper = {
     if (value > max) value = max
     return value
   },
+
+  openDialog: (dialog) => {
+    if (!dialog.element) {
+      //nn.warn('open', dialog)
+      const element = document.createElement('div')
+      element.id = dialog.id
+      element.className = 'dialog'
+      element.style.top = '0';
+      $('body')[0].appendChild(element)
+      dialog.element = element
+    }
+    dialog.init()
+  },
+
+
+  closeDialog: (dialog) => {
+    const element = dialog.element
+    if (element) {
+      //nn.warn('close', dialog)
+      $('#' + dialog.id).dialog('close')
+    }
+    element.parentNode.removeChild(element)
+    dialog.element = null
+  },
   
   /*
   hasWintab: () => {

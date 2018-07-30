@@ -1,20 +1,21 @@
 'use strict'
 
 import { locale } from './locale.es6'
+import { helper } from './helper.es6'
 
 
 const aboutDialog = {
+  id: 'about-dialog',
+  element: null,
+  
   init: (version) => {
     $('#about-dialog').dialog({
-      autoOpen: false,
+      autoOpen: true,
+      position: { at:'center top+150px' },
       title: T('About Namenote'),
       modal: true,
       width: 600,
-      buttons: {
-        Ok: function() {
-	  $(this).dialog('close')
-	},
-      },
+      buttons: { Ok: aboutDialog.ok },
     })
 
     const string = locale.translateHTML(`
@@ -44,9 +45,14 @@ const aboutDialog = {
     
     $('#about-dialog').html(string)
   },
+
+  ok: () => {
+    helper.closeDialog(aboutDialog)
+    return false
+  },
   
   show: () => {
-    $('#about-dialog').dialog('open')
+    helper.openDialog(aboutDialog)
   },
 }
 

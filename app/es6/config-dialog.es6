@@ -9,9 +9,13 @@ import { helper } from './helper.es6'
 
 
 const configDialog = {
+  id: 'config-dialog',
+  element: null,
+  
   init: () => {
     $('#config-dialog').dialog({
-      autoOpen: false,
+      autoOpen: true,
+      position: { at:'center top+150px' },
       title: T('Settings'),
       modal: true,
       width: 600,
@@ -52,12 +56,13 @@ const configDialog = {
     
     $('#config-dialog').html(`<form id='config'>${string}</form>`)
     $('#config').on('submit', function() { return configDialog.ok() })
+
     document.forms['config'].reset.onclick = () => {
       if (confirm(T('Click OK to restore default settings.'))) {
         command.resetSettings()
       }
     }
-    
+
     configDialog.initForm()
     configDialog.initColor()
   },
@@ -78,12 +83,15 @@ const configDialog = {
     config.save()
 
     View.setNoScroll()
-    $('#config-dialog').dialog('close')
+
+    helper.closeDialog(configDialog)
+    //$('#config-dialog').dialog('close')
     return false
   },
 
   cancel: () => {
-    $('#config-dialog').dialog('close')
+    helper.closeDialog(configDialog)
+    //$('#config-dialog').dialog('close')
   },
 
   initForm: () => {
@@ -122,7 +130,8 @@ const configDialog = {
   },
   
   show: () => {
-    $('#config-dialog').dialog('open')
+    helper.openDialog(configDialog)
+    //$('#config-dialog').dialog('open')
   },
 
   initColor: () => {

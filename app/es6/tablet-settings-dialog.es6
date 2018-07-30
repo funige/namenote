@@ -24,13 +24,16 @@ function encodePosition(id) {
   return `${x},${1.0 - y}`
 }
 
-
 ////////////////////////////////////////////////////////////////
 
 const tabletSettingsDialog = {
+  id: 'tablet-settings-dialog',
+  element: null,
+  
   init: () => {
     $('#tablet-settings-dialog').dialog({
-      autoOpen: false,
+      autoOpen: true,
+      position: { at:'center top+150px' },
       title: T('Tablet Settings'),
       modal: true,
       width: 360,
@@ -74,33 +77,21 @@ const tabletSettingsDialog = {
         ui.position.top = helper.limit(ui.position.top, - d, width - d)
         tabletSettingsDialog.updateCanvas()
       }
-    }) //.css({top: width - d, left: -d})
+    })
     $('#tablet-curve-right').draggable({
       axis: "y",
       drag: function(event, ui) {
         ui.position.top = helper.limit(ui.position.top, -d, width - d)
         tabletSettingsDialog.updateCanvas()
       }
-    }) //.css({top: -d, left: width - d})
+    })
     $('#tablet-curve-center').draggable({
       drag: function(event, ui) {
         ui.position.top = helper.limit(ui.position.top, -d, width - d)
         ui.position.left = helper.limit(ui.position.left, -d, width - d)
         tabletSettingsDialog.updateCanvas()
       }
-    }) //.css({top: 100 - 15, left: 100 - 15})
-
-
-    /*
-    $('#tablet-curve-left').on('mousedown', function() { nn.warn('down') })
-    $('#tablet-curve-left').on('mouseup', function() { nn.warn('up') })
-    $('#tablet-curve-right').on('mousedown', function() { nn.warn('down') })
-    $('#tablet-curve-right').on('mouseup', function() { nn.warn('up') })
-    $('#tablet-curve-center').on('mousedown', function() { nn.warn('down') })
-    $('#tablet-curve-center').on('mouseup', function() { nn.warn('up') })
-    */
-    
-    /*tabletSettingsDialog.updateCanvas()*/
+    })
 
     tabletSettingsDialog.initForm()
   },
@@ -116,12 +107,14 @@ const tabletSettingsDialog = {
 
     config.precalculatePressure();
     
-    $('#tablet-settings-dialog').dialog('close')
+    helper.closeDialog(tabletSettingsDialog)
+    //$(tabletSettingsDialog.element).dialog('close')
     return false
   },
 
   cancel: () => {
-    $('#tablet-settings-dialog').dialog('close')
+    helper.closeDialog(tabletSettingsDialog)
+    //$(tabletSettingsDialog.element).dialog('close')
   },
 
   initForm: () => {
@@ -144,7 +137,7 @@ const tabletSettingsDialog = {
   },
   
   show: () => {
-    $('#tablet-settings-dialog').dialog('open')
+    helper.openDialog(tabletSettingsDialog)
   },
 
   updateCanvas: () => {
