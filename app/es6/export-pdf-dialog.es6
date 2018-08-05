@@ -4,15 +4,20 @@ import { locale } from './locale.es6'
 import { Project } from './project.es6'
 import { config } from './config.es6'
 import { command } from './command.es6'
+import { helper } from './helper.es6'
 
 let path = null
 let name = null
 
 
 const exportPDFDialog = {
+  id: 'export-pdf-dialog',
+  element: null,
+  
   init: () => {
     $('#export-pdf-dialog').dialog({
-      autoOpen: false,
+      autoOpen: true,
+      position: { at:'center top+150px' },
       title: T('Export PDF'),
       modal: true,
       width: 550,
@@ -60,15 +65,17 @@ const exportPDFDialog = {
     const form = document.forms['export-pdf']
     command.exportPDF(form, (project) => {
       if (project) {
-	$('#export-pdf-dialog').dialog('close')
 	exportPDFDialog.saveParams()
+        helper.closeDialog(exportPDFDialog)
+//	$('#export-pdf-dialog').dialog('close')
       }
     })
     return false
   },
 
   cancel: () => {
-    $('#export-pdf-dialog').dialog('close')
+    helper.closeDialog(exportPDFDialog)
+//  $('#export-pdf-dialog').dialog('close')
   },
       
   initForm: () => {
@@ -104,12 +111,14 @@ const exportPDFDialog = {
   },
 
   show: (path, name) => {
+    helper.openDialog(exportPDFDialog)
+    //$('#export-pdf-dialog').dialog('open')
+
     const form = document.forms['export-pdf']
     form.dir.value = path
     form.name.value = name
     form.from.value = 1
     form.to.value = Project.current.pages.length
-    $('#export-pdf-dialog').dialog('open')
     exportPDFDialog.showMessage('&nbsp;')
   },
   

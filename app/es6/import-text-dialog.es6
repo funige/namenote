@@ -26,9 +26,13 @@ const formatStrings = {
 }
 
 const importTextDialog = {
+  id: 'import-text-dialog',
+  element: null,
+  
   init: () => {
     $('#import-text-dialog').dialog({
-      autoOpen: false,
+      autoOpen: true,
+      position: { at:'center top+150px' },
       title: T('Import Plain Text'),
       modal: true,
       width: 550,
@@ -103,15 +107,17 @@ const importTextDialog = {
     
     command.importText(form, (project) => {
       if (project) {
-        $('#import-text-dialog').dialog('close')
         importTextDialog.saveParams()
+        helper.closeDialog(importTextDialog)
+        //$('#import-text-dialog').dialog('close')
       }
     })
     return false
   },
 
   cancel: () => {
-    $('#import-text-dialog').dialog('close')
+    helper.closeDialog(importTextDialog)
+    //$('#import-text-dialog').dialog('close')
   },
       
   initForm: () => {
@@ -171,15 +177,18 @@ const importTextDialog = {
   },
   
   show: (url) => {
+    helper.openDialog(importTextDialog)
+    //$('#import-text-dialog').dialog('open')
+
     const form = document.forms['import-text']
     //form.dir.value = path
     //form.name.value = name
-    $('#import-text-dialog').dialog('open')
     importTextDialog.showMessage('&nbsp;')
   },
 
   showBlank: (path) => {
-    $('#import-text-dialog').dialog('open')
+    helper.openDialog(importTextDialog)
+    //$('#import-text-dialog').dialog('open')
 //  namenote.app.openTextDialog(path, (url) => {
 //    nn.log('set params...')
 //  })

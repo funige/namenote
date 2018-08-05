@@ -4,19 +4,24 @@ import { locale } from './locale.es6'
 import { Project } from './project.es6'
 import { config } from './config.es6'
 import { command } from './command.es6'
+import { helper } from './helper.es6'
 
 let path = null
 let name = null
 
 
 const extractTextDialog = {
+  id: 'extract-text-dialog',
+  element: null,
+  
   init: () => {
     $('#extract-text-dialog').dialog({
-      autoOpen: false,
+      autoOpen: true,
+      position: { at:'center top+150px' },
       title: T('Extract Text'),
       modal: true,
       width: 550,
-      buttons: { Ok: extractTextDialog.ok }, //Cancel: extractTextDialog.cancel },
+      buttons: { Ok: extractTextDialog.ok },
     })
 
     const string = locale.translateHTML(`
@@ -39,16 +44,20 @@ const extractTextDialog = {
   },
 
   ok: () => {
-    $('#extract-text-dialog').dialog('close')
+    helper.closeDialog(extractTextDialog)
+    //$('#extract-text-dialog').dialog('close')
+    return false
   },
 
   show: (url) => {
     const form = document.forms['extract-text']
     nn.log('show..', Project.current.currentPage.extractText())
 
+    helper.openDialog(extractTextDialog)
+    //$('#extract-text-dialog').dialog('open')
+
     const text = Project.current.currentPage.extractText()
     $('#extract-text-dialog textarea')[0].value = text
-    $('#extract-text-dialog').dialog('open')
   },
 
   showBlank: (path) => {

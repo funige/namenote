@@ -37,12 +37,11 @@ const ui = {
     ui.sideBar.init()
     ui.toolBar.init()
 
-    ui.openNewDialog.init()
-    ui.exportCSNFDialog.init()
-    ui.exportPDFDialog.init()
-    ui.importTextDialog.init()
-    ui.extractTextDialog.init()
-
+//  ui.importTextDialog.init()
+//  ui.openNewDialog.init()
+//  ui.exportCSNFDialog.init()
+//  ui.exportPDFDialog.init()
+//  ui.extractTextDialog.init()
 //  ui.configDialog.init()
 //  ui.aboutDialog.init()
 //  ui.tabletSettingsDialog.init()

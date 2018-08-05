@@ -4,15 +4,20 @@ import { locale } from './locale.es6'
 import { Project } from './project.es6'
 import { config } from './config.es6'
 import { command } from './command.es6'
+import { helper } from './helper.es6'
 
 let path = null
 let name = null
 
 
 const exportCSNFDialog = {
+  id: 'export-csnf-dialog',
+  element: null,
+  
   init: () => {
     $('#export-csnf-dialog').dialog({
-      autoOpen: false,
+      autoOpen: true,
+      position: { at:'center top+150px' },
       title: T('Export CLIP STUDIO Storyboard'),
       modal: true,
       width: 550,
@@ -65,15 +70,17 @@ const exportCSNFDialog = {
     const form = document.forms['export-csnf']
     command.exportCSNF(form, (project) => {
       if (project) {
-        $('#export-csnf-dialog').dialog('close')
         exportCSNFDialog.saveParams()
+        helper.closeDialog(exportCSNFDialog)
+//      $('#export-csnf-dialog').dialog('close')
       }
     })
     return false
   },
 
   cancel: () => {
-    $('#export-csnf-dialog').dialog('close')
+    helper.closeDialog(exportCSNFDialog)
+    //$('#export-csnf-dialog').dialog('close')
   },
       
   initForm: () => {
@@ -129,12 +136,14 @@ const exportCSNFDialog = {
   },
 
   show: (path, name) => {
+    helper.openDialog(exportCSNFDialog)
+    //$('#export-csnf-dialog').dialog('open')
+
     const form = document.forms['export-csnf']
     form.dir.value = path
     form.name.value = name
     form.from.value = 1
     form.to.value = Project.current.pages.length
-    $('#export-csnf-dialog').dialog('open')
     exportCSNFDialog.showMessage('&nbsp;')
   },
   

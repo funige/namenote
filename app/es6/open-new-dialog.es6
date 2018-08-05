@@ -5,12 +5,17 @@ import { Project } from './project.es6'
 import { config } from './config.es6'
 import { command } from './command.es6'
 import { projectTemplate } from './project-template.es6'
+import { helper } from './helper.es6'
 
 
 const openNewDialog = {
+  id: 'open-new-dialog',
+  element: null,
+  
   init : () => {
     $('#open-new-dialog').dialog({
-      autoOpen: false,
+      autoOpen: true,
+      position: { at:'center top+150px' },
       title: T('New'),
       modal: true,
       width: 550,
@@ -59,18 +64,20 @@ const openNewDialog = {
   ok: () => {
     const form = document.forms['open-new']
     command.createFolder(form, (url) => {
-      $('#open-new-dialog').dialog('close')
       openNewDialog.saveParams()
       const project = Project.create(url, openNewDialog.getForm())
       command.saveProject(project, (err) => {
 	if (err) nn.log(err)
       })
+      helper.closeDialog(openNewDialog)
+//    $('#open-new-dialog').dialog('close')
     })
     return false
   },
 
   cancel: () => {
-    $('#open-new-dialog').dialog('close')
+    helper.closeDialog(openNewDialog)
+    //$('#open-new-dialog').dialog('close')
   },
   
   initForm: (templateName) => {
@@ -99,10 +106,12 @@ const openNewDialog = {
 
 
   show: (path, name) => {
+    helper.openDialog(openNewDialog)
+    //$('#open-new-dialog').dialog('open')
+
     const form = document.forms['open-new']
     form.dir.value = path
     form.name.value = name
-    $('#open-new-dialog').dialog('open')
   },
   
   saveParams: () => {
