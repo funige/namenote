@@ -108,6 +108,7 @@ function convertKey(key) {
       key = key.replace(/Shift\+\./, 'Shift+Period')
       key = key.replace(/CmdOrCtrl\+/, 'Ctrl+')
       key = key.replace(/Command\+Alt\+/, 'Ctrl+Alt+')
+      key = key.replace(/Command\+Ctrl\+/, '???+')
       key = key.toUpperCase()
 
     } else {
@@ -115,6 +116,7 @@ function convertKey(key) {
       key = key.replace(/Shift\+\./, '>')
       key = key.replace(/CmdOrCtrl\+/, '&#8984;')
       key = key.replace(/Command\+Alt\+/, '&#8997;&#8984;')
+      key = key.replace(/Command\+Ctrl\+/, '&#8963;&#8984;')
       key = key.replace(/Shift\+/, '&#8679;')
       key = key.toUpperCase()
     }

@@ -135,9 +135,15 @@ ipcMain.on('developerTools', (event) => {
   event.returnValue = "ok"
 })
 
+ipcMain.on('fullScreen', (event) => {
+  win.setFullScreen(!win.isFullScreen())
+  event.returnValue = "ok"
+})
+
+/*
 ipcMain.on('detectTablet', (event, data) => {
   const hasTablet = (tabletEventReceiver) ? true : false
   event.sender.send('reply', {hasTablet: hasTablet})
 })
-
+*/
 

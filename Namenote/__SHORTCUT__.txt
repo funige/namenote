@@ -112,8 +112,8 @@ row4:                   'shift+4'
 showMargin:             'r'
 余白の表示
 
-toolBar:                'command+alt+h'
-ツールバー
+fullScreen:             'command+ctrl+f'
+フルスクリーン
 
 developerTools:         'command+alt+j'
 デベロッパーツール

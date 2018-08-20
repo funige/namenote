@@ -54,6 +54,7 @@ const dictionary = {
     "Tool Bar": "ツールバー",
     "Side Bar": "サイドバー",
     "Developer Tools": "デベロッパー ツール",
+    "Full Screen": "フルスクリーン",
     "Page Margin": "余白",
     "Number of Pages per Row": "1行あたりのページ数",
     

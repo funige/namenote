@@ -166,10 +166,12 @@ const command = {
   },
   
   undo: (data) => {
+//  History.undo()
     if (Project.current) Project.current.undo()
   },
 
   redo: (data) => {
+//  History.redo()
     if (Project.current) Project.current.redo()
   },
 
@@ -565,8 +567,10 @@ const command = {
   },
   
   developerTools: (data) => { command.runMain('developerTools') },
+  fullScreen: (data) => { command.runMain('fullScreen') },
   quit: (data) => { command.runMain('quit') },
 
+  
   runMain: (message, data) => {
     if (namenote.isApp) {
       nn.log('runMain', message, data)

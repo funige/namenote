@@ -76,7 +76,8 @@ const menuTemplate = [
   },
   { label: 'View',
     submenu: [
-      { label: 'Tool Bar', click: 'toolBar' }, //accelerator: "Command+Alt+H", 
+      { label: 'Full Screen', accelerator: 'Ctrl+Command+F', click: 'fullScreen' }, 
+//    { label: 'Tool Bar', click: 'toolBar' }, //accelerator: "Command+Alt+H", 
 //    { label: 'Side Bar', click: 'sideBar' },
       { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
       { type: 'separator' },
@@ -141,7 +142,9 @@ const otherMenuTemplate = [
   },
   { label: 'View',
     submenu: [
+      { label: 'Full Screen', accelerator: 'Command+Ctrl+F', click: 'fullScreen' }, 
       { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
+      { type: 'separator' },
       { label: 'Page Margin', accelerator: "R", click: 'showMargin' },
       { label: 'Number of Pages per Row',
 	submenu: [
