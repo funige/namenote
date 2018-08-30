@@ -33,11 +33,11 @@ const menuTemplate = [
 
       { type: 'separator' },
 
-      { label: 'Import',
-	submenu: [
-	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
-	],
-      },
+//    { label: 'Import',
+//	submenu: [
+//	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
+//	],
+//    },
       { label: 'Export',
 	submenu: [
 	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },
@@ -113,11 +113,11 @@ const otherMenuTemplate = [
 	
       { type: 'separator' },
 
-      { label: 'Import',
-	submenu: [
-	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
-	],
-      },
+//    { label: 'Import',
+//	submenu: [
+//	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
+//	],
+//    },
       { label: 'Export',
 	submenu: [
 	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },

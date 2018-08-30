@@ -3,6 +3,7 @@
 import { Tool } from './tool.es6'
 import { Project } from './project.es6'
 import { Controller } from './controller.es6'
+import { config } from './config.es6'
 
 let page, pageX, pageY, moved
 
