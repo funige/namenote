@@ -15,7 +15,7 @@ zoom:                  '[', 'q', 'numplus'
 unzoom:                ']', 'a', 'numminus'
 縮小
 
-toggleTool:            'c', 'num.', '/'
+toggleTool:            'x', 'num.', '/'
 鉛筆<->消しゴムの切り替え
 
 --------------------------------------------------------------------------------
@@ -112,8 +112,8 @@ row4:                   'shift+4'
 showMargin:             'r'
 余白の表示
 
-toolBar:                'command+alt+h'
-ツールバー
+fullScreen:             'command+ctrl+f'
+フルスクリーン
 
 developerTools:         'command+alt+j'
 デベロッパーツール

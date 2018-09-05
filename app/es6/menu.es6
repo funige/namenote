@@ -9,6 +9,7 @@ import { helper } from './helper.es6'
 import { command } from './command.es6'
 import { menuTemplate, fileMenuTemplate, otherMenuTemplate } from './menu-template.es6'
 
+let template
 
 function findSubmenu(template, label) {
   for (let item of template) {
@@ -33,16 +34,6 @@ function enableItem(template, label, value) {
   }
 
   enableItemHTML($('#menu-menu')[0], label, value)
-/*
-  const li = findHTMLSubmenu($('#menu-menu')[0], label)
-  if (li) {
-    if (value) {
-      li.classList.remove('ui-state-disabled')
-    } else {
-      li.classList.add('ui-state-disabled')
-    }
-  }
-*/
 }
 
 function enableItemHTML(node, label, value) {
@@ -104,6 +95,8 @@ function appendKey(string, key, check) {
 function convertKey(key) {
   if (key) {
     if (!helper.isMac()) {
+      if (key.indexOf('Command+Ctrl+F') >= 0) return ''
+      
       key = key.replace(/Shift\+\,/, 'Shift+Comma')
       key = key.replace(/Shift\+\./, 'Shift+Period')
       key = key.replace(/CmdOrCtrl\+/, 'Ctrl+')
@@ -140,17 +133,27 @@ Menu.init = () => {
     helper.addRule('.ui-menu div.key', 'color', '#ccc')
     helper.addRule('.ui-menu .ui-widget', 'width', '350px')
   }
+
   Menu.update()
 }
 
 Menu.update = (element) => {
-  const template = JSON.parse(JSON.stringify(menuTemplate))
-
+  template = JSON.parse(JSON.stringify(menuTemplate))
+  
   Menu.updateRecents(template)
   Menu.updateWindows(template)
   
   Menu.updateEnabled(template)
   Menu.updateShortcut(template, element)
+  Menu.rebuild(template)
+}
+
+Menu.updateHistory = (element) => {
+  if (!template) {
+    return Menu.update(element)
+  }
+
+  Menu.updateEnabledHistory(template)
   Menu.rebuild(template)
 }
 
@@ -187,7 +190,18 @@ Menu.updateRecentsHTML = () => {
   while (ul.childNodes.length > 3) {
     ul.removeChild(ul.childNodes[ul.childNodes.length - 1])
   }
+
+  const df = document.createDocumentFragment();
+  for (let item of RecentURL.list) {
+    const li = document.createElement('li')
+    const div = document.createElement('div')
+    div.innerHTML = item
+    li.appendChild(appendAttribute(div, item, 'openURL'))
+    df.appendChild(li)
+  }
+  ul.appendChild(df)
   
+/*  
   for (let item of RecentURL.list) {
     const li = document.createElement('li')
     const div = document.createElement('div')
@@ -196,6 +210,8 @@ Menu.updateRecentsHTML = () => {
     
     ul.appendChild(li)
   }
+*/
+  
   fileMenu.menu('refresh')
 }
 
@@ -208,11 +224,22 @@ Menu.updateWindowsHTML = () => {
 
   if (hasWindows) {
     const ul = li.childNodes[1]
-    
+
     while (ul.childNodes.length > 0) {
       ul.removeChild(ul.childNodes[ul.childNodes.length - 1])
     }
 
+    const df = document.createDocumentFragment();
+    for (let item of Project.list) {
+      const li = document.createElement('li')
+      const div = document.createElement('div')
+      div.innerHTML = appendKey(item.url, null, project && item.url == project.url)
+      li.appendChild(appendAttribute(div, item.url, 'openURL'))
+      df.insertBefore(li, df.childNodes[0])
+    }
+    ul.appendChild(df)
+    
+/*
     for (let item of Project.list) {
       const li = document.createElement('li')
       const div = document.createElement('div')
@@ -221,6 +248,7 @@ Menu.updateWindowsHTML = () => {
       li.appendChild(appendAttribute(div, item.url, 'openURL'))
       ul.insertBefore(li, ul.childNodes[0])
     }
+*/
   }
   menuMenu.menu('refresh')
 }
@@ -228,8 +256,6 @@ Menu.updateWindowsHTML = () => {
 Menu.updateEnabled = (template) => {
   const project = Project.current
   if (project) {
-    enableItem(template, 'Undo', project.history.hasUndo())
-    enableItem(template, 'Redo', project.history.hasRedo())
     enableItem(template, 'Close', true)
     enableItem(template, 'Close All', true)
     enableItem(template, 'Save Snapshot As ...', true)
@@ -263,6 +289,15 @@ Menu.updateEnabled = (template) => {
     enableItem(template, 'Extract Text', false)
     enableItem(template, 'Save Image As ...', false)
   }  
+  Menu.updateEnabledHistory(template)
+}
+
+Menu.updateEnabledHistory = (template) => {
+  const project = Project.current
+  if (project) {
+    enableItem(template, 'Undo', project.history.hasUndo())
+    enableItem(template, 'Redo', project.history.hasRedo())
+  }
 }
 
 Menu.updateShortcut = (template, element) => {

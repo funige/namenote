@@ -18,7 +18,9 @@ RecentURL.save = () => {
   const json = JSON.stringify(RecentURL.list)
   localStorage.setItem('namenote/recent-url', json)
 
-  Menu.update()
+  setTimeout(function() {
+    Menu.update()
+  }, 500);
 }
 
 RecentURL.update = (url) => {

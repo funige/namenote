@@ -39,7 +39,7 @@ historyButton.update = () => {
     $(undoButton).imgButton('disabled', !hasUndo)
     $(redoButton).imgButton('disabled', !hasRedo)
 
-    Menu.update()
+    Menu.updateHistory()
   }
 }
 
