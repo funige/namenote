@@ -1,35 +1,35 @@
 'use strict'
 
-const locale = {
-  translate: (string) => {
-    return locale.truncate(string)
-  },
+////////////////////////////////////////////////////////////////
 
-  translateHTML: (html) => {
-    return html.replace(/T\((.*?)\)/g, (all, match) => {
-      return T(match)
-    })
-  },
-
-  init: () => {
+class Locale {
+  constructor() {
     const dictionary = require('../js/lib/dictionary.js').dictionary
     
     for (let key in dictionary) {
-      if (navigator.language.indexOf(key) == 0) {
-	locale.translate = (string) => {
-          return locale.truncate(dictionary[key][string] || string)
+      if (navigator.language.indexOf(key) == 0 && dictionary[key]) {
+        const dict = dictionary[key]
+        this.translate = (string) => {
+          return dict[string] || string
         }
+        break
       }
     }
-  },
+  }
 
-  truncate: (string, length) => {
-    if (length && string.length > 3) {
-      string = "..." + string.slice(length - 3)
-    }
+  translate(string) {
     return string
-  },
+  }
+  
+  translateHTML(html) {
+    return html.replace(/T\((.*?)\)/g, (all, match) => {
+      return this.translate(match)
+    })
+  }
 }
 
+const locale = new Locale()
 
 export { locale }
+
+

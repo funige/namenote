@@ -24,9 +24,9 @@ function createWindow () {
   win = new BrowserWindow({
     width: 1200,
     height: 750,
-    nodeIntegration: false,
-    title: '', //'Namenote',
+    title: '',
     webPreferences: {
+      nodeIntegration: true,
       nodeIntegrationInWorker: true,
       //blinkFeatures: 'PreciseMemoryInfo',
     }
@@ -35,32 +35,13 @@ function createWindow () {
 
 //  console.log('process=', process.platform, 'arch=', process.arch)
 
-/*
-  //  if (process.platform == "win32") {
-  if (0) {
-    const {TabletEventReceiver} = require("receive-tablet-event")
-    tabletEventReceiver = new TabletEventReceiver(win)
-    
-    const eventNames = ["enterProximity", "leaveProximity", "down", "move", "up"];
-    for (const name of eventNames) {
-      tabletEventReceiver.on(name, (ev) => {
-        if (name.indexOf("Proximity") > 0) {
-//       console.log(name);
-//       console.log(ev);
-        }
-        win.webContents.send(`tablet:${name}`, ev);
-      });
-    }
-
-    win.webContents.executeJavaScript('_hasWintab = true')
-  }
-*/
-
   win.setMenu(null)
   win.setAutoHideMenuBar(true)
   
   win.loadURL(`file://${__dirname}/index-desktop.html`)
+  
   if (debug) win.webContents.openDevTools()
+//win.webContents.openDevTools()
 
   win.on('closed', function () {
     win = null

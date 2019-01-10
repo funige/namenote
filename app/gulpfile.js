@@ -3,35 +3,48 @@ var browserify = require('browserify');
 var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 var streamify = require('gulp-streamify')
-var webserver = require('gulp-webserver');
 var notify = require('gulp-notify')
 var uglify = require('gulp-uglify')
 
-gulp.task('browserify', function() {
+
+gulp.task('browser', function(done) {
+  browserify('./es6/browser.es6', { debug: true })
+    .transform(babelify, {presets: ['@babel/preset-env']})
+    .bundle()
+    .on("error", function (err) {
+      console.log("Error : " + err.message);
+    })
+    .pipe(source('bundle-browser.js'))
+//  .pipe(streamify(uglify()))  // comment out when deguging
+    .pipe(gulp.dest('./js'))
+    .pipe(gulp.dest('../funige.github.io/namenote/js'))
+    .pipe(notify({title:'browser ok', sound:'Hero'}))
+
+  gulp.src('style.css').
+    pipe(gulp.dest('../funige.github.io/namenote'))
+
+  done();
+});
+
+gulp.task('desktop', function(done) {
   browserify('./es6/desktop.es6', { debug: true })
-    .transform(babelify, {presets: ['es2015']})
+    .transform(babelify, {presets: ['@babel/preset-env']})
     .bundle()
     .on("error", function (err) {
       console.log("Error : " + err.message);
     })
     .pipe(source('bundle-desktop.js'))
-//  .pipe(streamify(uglify()))  //デバッグ中はここをコメントアウト
+//  .pipe(streamify(uglify()))  // comment out when deguging
     .pipe(gulp.dest('./js'))
-    .pipe(notify({title:'ok', sound:'Hero'}))
+    .pipe(notify({title:'desktop ok', sound:'Hero'}))
+  done();
 });
 
-gulp.task('watch', function() {
-  gulp.watch(['./es6/*.es6', './js/lib/*.js', './*.js'], ['browserify'])
+gulp.task('build', gulp.parallel('browser', 'desktop'));
 
+gulp.task('default', function() {
+  gulp.watch(['./style.css', './es6/*.es6', './js/lib/*.js', './*.js'], gulp.task('build'))
 });
 
-gulp.task('webserver', function() {
-  gulp.src('./')
-    .pipe(webserver({
-      host: '127.0.0.1',
-      livereload: true
-    })
-  );
-});
 
-gulp.task('default', ['browserify', 'watch', 'webserver']);
+

@@ -1,17 +1,20 @@
 'use strict'
 
-import { command } from './command.es6'
+//import { namenote } from './namenote.es6'
 import { shortcutDefault } from './shortcut-default.es6'
+import { command } from './command.es6'
+
+/*
 import { Text } from './text.es6'
 import { Controller } from './controller.es6'
+*/
+
 import { ui } from './ui.es6'
 
+class Shortcut {
+  constructor() {
+    this.data = []
 
-
-const shortcut = {
-  data: [],
-
-  init: () => {
     Mousetrap.addKeycodes({
       107: 'numplus',
       109: 'numminus',
@@ -21,8 +24,9 @@ const shortcut = {
     })
 
     Mousetrap.prototype.stopCallback = function(e, element, combo) {
+/*
       if (Text.isEditable(element)) {
-	nn.log('keycode=', e.keyCode, e)
+        log('keycode=', e.keyCode, e)
 
 	if (e.ctrlKey && !e.shiftKey && !e.metaKey) {
 	  switch (e.keyCode) {
@@ -37,79 +41,77 @@ const shortcut = {
 	if (e.keyCode == 9) { // TAB
 	  return false
 	}
-	
 	return true
       }
       return false
+*/
     }
-    shortcut.load()
-  },
-  
-  load: () => {
-    const json = localStorage.getItem('namenote/shortcut')
-    shortcut.data = json ? JSON.parse(json) : Object.assign({}, shortcutDefault)
-    shortcut.bind();
-  },
+  }
 
-  save: () => {
-    const json = JSON.stringify(shortcut.data)
+  load() {
+    const json = localStorage.getItem('namenote/shortcut')
+    this.data = json ? JSON.parse(json) : Object.assign({}, shortcutDefault)
+    this.bind()
+  }
+
+  save() {
+    const json = JSON.stringify(this.data)
     localStorage.setItem('namenote/shortcut', json)
-  },
+  }
   
-  reset: () => {
-    shortcut.data = Object.assign({}, shortcutDefault)
-    shortcut.save()
+  resetStorage() {
+    this.data = Object.assign({}, shortcutDefault)
+    this.save()
 
     Mousetrap.reset()
-    shortcut.bind()
-  },
+    this.bind()
+  }
 
-  bind: () => {
-    for (let item in shortcut.data) {
-      const key = shortcut.data[item]
+  bind() {
+    for (let item in this.data) {
+      const key = this.data[item]
       const handler = command[item]
 
-      if (!namenote.isApp) {
-	if (item == 'developerTools') continue
-      }
+      if (item == 'developerTools') continue
 
       if (handler) {
+	log(`'${item}`)
+        
 	Mousetrap.bind(key, (e) => {
 	  command.prev = command.current
 	  command.current = item
-	  nn.log(`*${item}*`)
+	  log(`*${item}*`)
+          
 	  handler()
-	  return (ui.isDialogOpen()) ? true : false // ダイアログでtabが効かないため
-//	  return false
+	  return (ui.dialog.isOpen()) ? true : false
 
 	}, 'keydown')
-//	}) //keydownにすると2ストロークコマンドと干渉する
 
       } else {
-	nn.log(`'${item}': no such command`)
+	log(`'${item}': no such command`)
       }
     }
 
-    Mousetrap.bind('space', (e) => {
-      Controller.clearMove()
-      return false;
-    })
+//  Mousetrap.bind('space', (e) => {
+//    Controller.clearMove()
+//    return false;
+//  })
 
-    Mousetrap.bind('enter', (e) => {
-      if (ui.isDialogOpen()) return true
-      command.quickZoom()
-      return false
-    })
+//  Mousetrap.bind('enter', (e) => {
+//    if (ui.dialog.isOpen()) return true
+//    command.quickZoom()
+//    return false
+//  })
 
-    Mousetrap.bind('space', (e) => {
-      if (!Controller.isMoved()) {
-	command.quickZoom();
-      }
-      return false;
-    }, 'keyup')
-  },
+//  Mousetrap.bind('space', (e) => {
+//    if (!Controller.isMoved()) {
+//	command.quickZoom();
+//    }
+//    return false;
+//  }, 'keyup')
+  }
 }
 
-
+const shortcut = new Shortcut()
 
 export { shortcut }

@@ -9,18 +9,19 @@
 html {
     width: 100%;
     height: 100%;
-    min-height: 100%;
+    //min-height: 100%;
     overflow: hidden;
-
-//  position: fixed;
+    position:fixed;
 }
 
 body {
     width: 100%;
     height: 100%;
+    
+    //min-width: 600px;
     min-height: 100%;
     overflow: auto;
-
+    
     font-family: verdana;
     font-size: 14px;
 
@@ -33,11 +34,14 @@ body {
 
 #tool-bar {
     width: 100%;
+//  min-width: 600px;
+//  overflow-x: scroll;
+    
     height: 36px;
     line-height: 36px;
     border: 0px solid black;
     border-bottom: 1px solid #aaa;
-    background-color: #f6f6f6;
+    background-color: white; //#f6f6f6;
     user-select: none;
     text-align: center;
 }
@@ -55,35 +59,59 @@ body {
 }
 
 .split-pane {
-}
-
-.split-pane-divider {
     background: #a3a3a3;
 }
-#left-component {
-    width: 200px;
-    overflow: scroll;
+
+/*
+* {
+    -webkit-overflow-scrolling: touch;
 }
-#my-divider {
+*/
+
+#left-component {
+    background-color: #f0f0f0;
+    width: 200px;
+//  overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+#divider {
     left: 200px;       /* Same as left component initial width */
     width: 1px;
 }
 #right-component {
+    background-color: #f0f0f0;
     left: 200px;       /* Same as left component initial width */
     margin-left: 1px;  /* Same as divider width */
-    
-    background-color: #f0f0f0; //#d0d0d0; //#eee;
-    position: absolute;
-
-    overflow: scroll;
-    overflow-x: hidden;
+//  overflow: hidden;
     -webkit-overflow-scrolling: touch;
 }
 
-.root {
-    position: absolute;
+.side-bar {
+    background-color: #f6f6f6;
+    font-size: 14px;
+    
+//  overflow: scroll;
+//  overflow-x: auto;
+
+    min-width: 100%;
+    min-height: 100%;
+
+    user-select: text;
 }
 
+.main-view {
+//  background-color: #f0f0f0;
+    font-size: 14px;
+    
+    position: absolute;
+
+//  overflow: scroll;
+
+    min-width: 100%;
+    min-height: 100%;
+}
+ 
+/*
 .view {
     position: absolute;
 }
@@ -94,6 +122,7 @@ body {
     border-bottom: 1px solid rgba(0,0,0,0.01)
     pointer-events: none;
 }
+*/
 
 .page {
     position: absolute;
@@ -326,6 +355,9 @@ form .preview { width: 500px; height: 150px; } /* 350px */
 
 .ui-menu {
     text-align: left;
+
+    width: 150px;
+    z-index: 0;
 }
 
 #file-dropdown .ui-menu {
@@ -337,7 +369,7 @@ span .ui-icon {
 }
 
 .ui-menu > li {
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .ui-menu > li > div {
@@ -361,6 +393,16 @@ span .ui-icon {
 .ui-menu div.check { position:absolute; left:5px; }
 .ui-menu div.label { text-align:left; float: left; }
 .ui-menu div.key   { text-align: right; margin-right: -8px; font-size: 13px; }
+
+/*
+.ui-menu-item > .ui-state-active {
+    background-color: #e8eaed !important;
+    color: black !important;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    border-left: 1px solid rgba(0,0,0,0.2) !important;
+    border-right: 1px solid rgba(0,0,0,0.2) !important;
+}
+*/
 
 #menu {
     background-color: #f6f6f6;
@@ -481,12 +523,10 @@ span .ui-icon {
     display: none;
     position: absolute;
     top: 33px; //36px;
-    background-color: #f6f6f6; //#eee;
-    border: 1px solid #aaa;
-    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+    background-color: white; //#f6f6f6; 
+                                                       
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.4);
     z-index: 1;
-
-//  width: 400px; // .dropdownの横幅だけ広がる
 }
 
 /* Links inside the dropdown */

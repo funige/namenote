@@ -4,7 +4,7 @@ require 'fileutils'
 
 def get_trial(filename)
   buffer = File.open(filename, "r") {|f| f.read()}
-  if buffer =~ /(namenote.trial) = (\w+)/
+  if buffer =~ /(this.trial) = (\w+)/
     if $2 == "true"
       return "true"
     end
@@ -15,7 +15,7 @@ end
 def replace_trial(filename, string)
   buffer = File.open(filename, "r") {|f| f.read()}
 
-  buffer.gsub!(/(namenote.trial) = (\w+)/, "\\1 = #{string}")
+  buffer.gsub!(/(this.trial) = (\w+)/, "\\1 = #{string}")
   File.open(filename, "w") {|f| f.write(buffer)}
 end
 

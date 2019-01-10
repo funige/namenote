@@ -24,8 +24,8 @@ const menuTemplate = [
       { label: 'Open Recent', submenu: [] },
 
       { type: 'separator' },
-      { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
-      { label: 'Close All', click: 'closeAll' },
+//    { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
+//    { label: 'Close All', click: 'closeAll' },
       { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
 	
 //    { type: 'separator' },
@@ -78,7 +78,7 @@ const menuTemplate = [
     submenu: [
       { label: 'Full Screen', accelerator: 'Ctrl+Command+F', click: 'fullScreen' }, 
 //    { label: 'Tool Bar', click: 'toolBar' }, //accelerator: "Command+Alt+H", 
-//    { label: 'Side Bar', click: 'sideBar' },
+      { label: 'Side Bar', accelerator: 'Command+Alt+S', click: 'sideBar' }, 
       { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
       { type: 'separator' },
       { label: 'Page Margin', accelerator: "R", click: 'showMargin' },
@@ -92,10 +92,12 @@ const menuTemplate = [
       }
     ],
   },
+/*  
   { label: 'Window',
     submenu: [
     ],
   },
+*/
 ]
 
 const fileMenuTemplate = [
@@ -107,8 +109,8 @@ const fileMenuTemplate = [
 const otherMenuTemplate = [
   { label: 'Note',
     submenu: [
-      { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
-      { label: 'Close All', click: 'closeAll' },
+//    { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
+//    { label: 'Close All', click: 'closeAll' },
       { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
 	
       { type: 'separator' },
@@ -143,6 +145,7 @@ const otherMenuTemplate = [
   { label: 'View',
     submenu: [
       { label: 'Full Screen', accelerator: 'Command+Ctrl+F', click: 'fullScreen' }, 
+      { label: 'Side Bar', accelerator: 'Command+Alt+S', click: 'sideBar' }, 
       { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
       { type: 'separator' },
       { label: 'Page Margin', accelerator: "R", click: 'showMargin' },
@@ -156,10 +159,12 @@ const otherMenuTemplate = [
       }
     ],
   },
+/*  
   { label: 'Window',
     submenu: [
     ],
   },
+*/
   { type: "separator" },
   { label: 'Settings ...', click: 'settings' },
   { label: 'Tablet Settings ...', click: 'tabletSettings' },

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<!--meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline';" /-->
-
 <html>
-<head lang="ja">
+<head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="stylesheet" type="text/css" media="all" href="style.css" />
   <link rel="stylesheet" type="text/css" media="all" href="js/lib/jquery-ui.min.css" />
@@ -23,18 +24,9 @@
 
   <script>
     $("#menu").menu();
-    
     if (window.module) module = window.module
-    $(function() {
-      namenote.init()
-    })
   </script>
 
-  <style>
-    ul {}
-    .ui-menu { width: 150px; z-index: 0;}
-  </style>
-  
   <title>Namenote</title>
 </head>
 
@@ -44,25 +36,20 @@
   </div>
   
   <div id="tool-bar">
-    <div id="file-button" title="load"></div>
+    <div id="file-menu-button" title="file"></div>
 
     <div class="separator left"></div>
     <div id="pen-button" title="pen"></div>
     <div id="eraser-button" title="eraser"></div>
-    <div id="arrow-button" title="arrow"></div>
+    <div id="text-button" title="text"></div>
 
     <div class="separator left"></div>
     <div id="undo-button" title="undo"></div>
     <div id="redo-button" title="redo"></div>
 
-    <input class='clipboard' id="clipboard" type="text" value=" " disabled />
-    <span id="memory-usage"></span>
+    <!--input class='clipboard' id="clipboard" type="text" value=" " disabled /-->
 
-    <!--
-    <div class="separator left"></div>
-    -->
-
-    <div id="menu-button" title="menu" style="float: left;"></div>
+    <div id="other-menu-button" title="menu" style="float: left;"></div>
     <div class="separator right"></div>
 
     
@@ -70,33 +57,31 @@
     <div id="zoom-button" title="zoom" style=""></div>
     <div id="row-button" title="quick zoom" style=""></div>
     
-    <!--
-    <div class="separator right"></div>
-    <div id="canvas-mask-button" title="canvas mask"></div>
-    <div id="text-mask-button" title="text mask"></div>
-    -->
   </div>
 
   <div id="main">
     <div class="split-pane fixed-left" style="opacity:0;">
       <div class="split-pane-component" id="left-component">
-	This is the left component...
+        <div class="side-bar">
+	  This is the left component...<br>
+	  This is the left component...<br>
+	  This is the left component...<br>
+	  This is the left component...<br>
+	  This is the left component...<br>
+        </div>
       </div>
-      <div class="split-pane-divider" id="my-divider"></div>
+      <div class="split-pane-divider" id="divider"></div>
       <div class="split-pane-component" id="right-component">
-	<div class="root"></div>
+	<div class="main-view">
+	  This is the right component...<br>
+	  This is the right component...<br>
+	  This is the right component...<br>
+	  This is the right component...<br>
+	  This is the right component...<br>
+        </div>
       </div>
     </div>
   </div>
-
-
-  <!--<div class="dialog" id="import-text-dialog" style="display:none;"></div>-->
-  <!--<div class="dialog" id="open-new-dialog" style="display:none;"></div>-->
-  <!--<div class="dialog" id="about-dialog" style="display:none;"></div>-->
-  <!--<div class="dialog" id="export-csnf-dialog" style="display:none;"></div>-->
-  <!--<div class="dialog" id="export-pdf-dialog" style="display:none;"></div>-->
-  <!--<div class="dialog" id="extract-text-dialog" style="display:none;"></div>-->
-  <!--<div class="dialog" id="config-dialog" style="display:none;"></div>-->
 
   <div id="text-buffer" style="display:none;"></div>
 </body>

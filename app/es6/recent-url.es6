@@ -1,45 +1,47 @@
 'use strict'
 
-import { Menu } from './menu.es6'
+import { projectManager } from './project-manager.es6'
+import { menu } from './menu.es6'
 
-const max = 5
-
-
-class RecentURL {}
-
-RecentURL.list = []
-
-RecentURL.load = () => {
-  const json = localStorage.getItem('namenote/recent-url')
-  RecentURL.list = (json) ? JSON.parse(json) : [];
-}
-
-RecentURL.save = () => {
-  const json = JSON.stringify(RecentURL.list)
-  localStorage.setItem('namenote/recent-url', json)
-
-  setTimeout(function() {
-    Menu.update()
-  }, 500);
-}
-
-RecentURL.update = (url) => {
-  RecentURL.list = RecentURL.list.filter((value) => value != url);
-  RecentURL.list.unshift(url)
-
-  if (RecentURL.list.length > max) {
-    RecentURL.list.length = max
-  }
-  RecentURL.save()
-}
-
-RecentURL.reset = () => {
-  RecentURL.list.length = 0
-  RecentURL.save()
-}
-
-export { RecentURL }
+const max = 10
 
 ////////////////////////////////////////////////////////////////
 
-RecentURL.load()
+class RecentURL {
+  constructor() {
+    this.data = []
+  }
+
+  load() {
+    const json = localStorage.getItem('namenote/recent-url')
+    this.data = (json) ? JSON.parse(json) : []
+  }
+
+  save() {
+    const json = JSON.stringify(this.data)
+    localStorage.setItem('namenote/recent-url', json)
+
+    setTimeout(() => {
+      menu.update()
+    }, 500)
+  }
+
+  resetStorage() {
+    this.data = []
+    this.save()
+  }
+
+  add(url) {
+    this.data = this.data.filter((value) => value != url)
+    this.data.unshift(url)
+
+    if (this.data.length > max) {
+      this.data.length = max
+    }
+    this.save()
+  }
+}
+
+const recentURL = new RecentURL()
+
+export { recentURL }

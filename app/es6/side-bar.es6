@@ -1,43 +1,78 @@
 'use strict'
 
 import { config } from './config.es6'
-import { View } from './view.es6'
 
+let minWidth = 150
 
-const sideBar = {
-  init: () => {
+////////////////////////////////////////////////////////////////
+
+class SideBar {
+  constructor() {
+  }
+
+  init() {
     $('.split-pane').splitPane()
     $('.split-pane').on('dividerdragend', (e) => { // or 'splitpaneresize'
-      sideBar.onDividerDragEnd()
+      this.onDividerDragEnd()
     })
-
-    sideBar.update()
-  },
-
-  update: (value) => {
-    if (value === undefined) value = config.data.sideBar
+    this.updatePosition()
+  }
+  
+  update(value) {
+    if (value == undefined) value = config.data.sideBar
     config.data.sideBar = value
     config.save()
 
-    const size = config.data.sideBarSize
-    $('.split-pane').splitPane('firstComponentSize', value ? size : 0)
-    View.onResize();
-  },
-
-  toggle: () => {
-    sideBar.update(!config.data.sideBar)
-  },
-  
-  onDividerDragEnd: () => {
-    const size = $('#left-component').width()
-    if (size > 0) {
-      config.data.sideBarSize = size
-      namenote.ui.sideBar.update(true)
-    } else {
-      namenote.ui.sideBar.update(false)
+    let width = (value) ? config.data.sideBarWidth : 0
+    if (config.data.sideBarPosition == 'right') {
+      width = $('.split-pane').width() - width + 1
     }
-  },
+
+    if (value) {
+      const maxWidth = $('.split-pane').width() - minWidth - 1
+      if (width < minWidth) width = minWidth
+      if (width > maxWidth) width = maxWidth
+    }
+    $('.split-pane').splitPane('firstComponentSize', width)
+  }
+
+  toggle() {
+    this.update(!config.data.sideBar)
+  }
+
+  updatePosition(value) {
+    if (value == undefined) value = config.data.sideBarPosition
+    config.data.sideBarPosition = value
+    config.save()
+
+    const mainView = $('.main-view')
+    const sideBar = $('.side-bar')
+
+    if (value == 'left') {
+      $('#left-component').append(sideBar)
+      $('#right-component').append(mainView)
+
+    } else {
+      $('#right-component').append(sideBar)
+      $('#left-component').append(mainView)
+    }
+    this.update()
+  }
+  
+  onDividerDragEnd() {
+    let width = $('.side-bar').width()
+
+    const maxWidth = $('.split-pane').width() - minWidth - 1
+    if (width < minWidth) width = minWidth
+    if (width > maxWidth) width = maxWidth
+
+    config.data.sideBarWidth = parseInt(width)
+    config.data.sideBar = true
+    config.save()
+    this.update()
+  }
 }
 
+const sideBar = new SideBar()
 
 export { sideBar }

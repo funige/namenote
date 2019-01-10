@@ -3,8 +3,9 @@
 const configDefault = {
   toolBar: true,
   sideBar: false,
-  sideBarSize: 200,
-
+  sideBarWidth: 200,
+  sideBarPosition: 'right',
+  
   defaultPath: null,
   defaultName: null,
   defaultAuthor: null,

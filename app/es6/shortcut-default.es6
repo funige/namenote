@@ -1,7 +1,5 @@
 'use strict'
 
-// alt+f, alt+e, alt+v, alt+h はウィンドウのメニューに使用
-  
 const shortcutDefault = {
   undo: ['command+z', 'ctrl+z', 'num/', ','],
   redo: ['command+y', 'ctrl+y', 'num*', '.'],
@@ -23,16 +21,16 @@ const shortcutDefault = {
 
   //marginSettingsDialog: ['command+shift+i', 'alt+shift+i'],
   
-  pageLeft: 'left',   //'ctrl+f'],
-  pageRight: 'right', //'ctrl+b'],
-  pageUp: 'up',       //'ctrl+p'],
-  pageDown: 'down',   //'ctrl+n'],
+  pageLeft: 'left',
+  pageRight: 'right',
+  pageUp: 'up',      
+  pageDown: 'down',  
 
   selectAll: 'ctrl+a',
   unselect: 'ctrl+d',
   mergeText: 'ctrl+e',
   
-  //sideBar: 'tab',
+  sideBar: 'command+alt+s',
   developerTools: 'command+alt+j',
   toolBar: 'command+alt+h',
 
@@ -40,8 +38,10 @@ const shortcutDefault = {
   eraser: 'e',
   text: 't',
 
-  // ページ操作
-
+  //
+  // Page shortcuts
+  //
+  
   insertPage: 'shift+i',
   duplicatePage: 'shift+d',
 
@@ -58,7 +58,10 @@ const shortcutDefault = {
   row3: 'shift+3',
   row4: 'shift+4',
 
-  // テキスト関係のコマンドはテキスト入力中でも使える
+  //
+  // Text shortcuts (can be used while text editing)
+  //
+  
   toggleEditMode: 'ctrl+g',
   addFontSize: 'ctrl+.',
   subtractFontSize: 'ctrl+,',
@@ -66,8 +69,6 @@ const shortcutDefault = {
   cutText: 'backspace',
   nextText: 'tab',
   prevText: 'shift+tab',
-  
 }
-
 
 export { shortcutDefault }

@@ -135,5 +135,4 @@ const dictionary = {
   }
 }
 
-
 exports.dictionary = dictionary
