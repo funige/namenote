@@ -116,7 +116,7 @@ class HTMLMenu {
       select: function(event, ui) {
         if (this.select(event, ui)) {
           this.collapse(menu, id)
-          buttons[id].imgButton('locked', false)
+          buttons[id].imageButton('locked', false)
         }
       }.bind(this),
     })
@@ -126,7 +126,7 @@ class HTMLMenu {
     })
     
     $(menu).on('menublur', () => {
-      if (!buttons[id].imgButton('locked')) return
+      if (!buttons[id].imageButton('locked')) return
       timers[id] = setTimeout(() => {
         this.collapse(menu, id)
       }, blurDelay)
@@ -137,7 +137,7 @@ class HTMLMenu {
     $(menu).menu('collapseAll', null, true)
     setTimeout(() => {
       this.close(menu.parentNode)
-      buttons[id].imgButton('locked', false)
+      buttons[id].imageButton('locked', false)
     }, 500)
   }
   
@@ -146,7 +146,7 @@ class HTMLMenu {
   update(element) {
     const menu = element.childNodes[0]
     const id = element.id.replace(/-.*$/, '')
-    warn('[html menu update]', id)
+//  warn('[html menu update]', id)
 
     if (id == 'file') {
       this.updateRecents(menu)

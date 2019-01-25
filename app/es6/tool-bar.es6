@@ -32,7 +32,7 @@ class ToolBar {
     config.data.toolBar = value
     config.save()
 
-    $('#tool-bar').css('display', value ? 'block' : 'none')
+    $('#toolbar').css('display', value ? 'block' : 'none')
     $('#main').css('height', value ? 'calc(100% - 37px)' : '100%')
     $('#main').css('top', value ? '37px' : '0')
 

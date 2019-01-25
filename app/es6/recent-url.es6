@@ -20,15 +20,15 @@ class RecentURL {
   save() {
     const json = JSON.stringify(this.data)
     localStorage.setItem('namenote/recent-url', json)
-
-    setTimeout(() => {
-      menu.update()
-    }, 500)
   }
 
   resetStorage() {
     this.data = []
     this.save()
+
+//  setTimeout(() => {
+    menu.update()
+//  }, 500)
   }
 
   add(url) {

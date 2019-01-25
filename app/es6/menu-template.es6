@@ -20,17 +20,17 @@ const menuTemplate = [
   { label: 'Note',
     submenu: [
       { label: 'New ...', accelerator: "CmdOrCtrl+N", click: 'openNewDialog' },
-      { label: 'Open ...', accelerator: "CmdOrCtrl+O", click: 'open' },
+      { label: 'Open ...', accelerator: "CmdOrCtrl+O", click: 'openDialog' },
       { label: 'Open Recent', submenu: [] },
 
       { type: 'separator' },
-//    { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
+      { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
 //    { label: 'Close All', click: 'closeAll' },
-      { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
 	
 //    { type: 'separator' },
 //    { label: 'Note Settings ...', click: 'noteSettings' },
 
+      { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
       { type: 'separator' },
 
 //    { label: 'Import',
@@ -81,6 +81,9 @@ const menuTemplate = [
       { label: 'Side Bar', accelerator: 'Command+Alt+S', click: 'sideBar' }, 
       { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
       { type: 'separator' },
+      { label: 'Zoom In', accelerator: '[', click: 'zoom' }, 
+      { label: 'Zoom Out', accelerator: ']', click: 'unzoom' }, 
+      { type: 'separator' },
       { label: 'Page Margin', accelerator: "R", click: 'showMargin' },
       { label: 'Number of Pages per Row',
 	submenu: [
@@ -102,17 +105,16 @@ const menuTemplate = [
 
 const fileMenuTemplate = [
   { label: 'New ...', accelerator: "CmdOrCtrl+N", click: 'openNewDialog' },
-  { label: 'Open ...', accelerator: "CmdOrCtrl+O", click: 'open' },
+  { label: 'Open ...', accelerator: "CmdOrCtrl+O", click: 'openDialog' },
   { type: 'separator' },
 ]
 
 const otherMenuTemplate = [
   { label: 'Note',
     submenu: [
-//    { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
+      { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
 //    { label: 'Close All', click: 'closeAll' },
       { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
-	
       { type: 'separator' },
 
 //    { label: 'Import',
@@ -148,6 +150,9 @@ const otherMenuTemplate = [
       { label: 'Side Bar', accelerator: 'Command+Alt+S', click: 'sideBar' }, 
       { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
       { type: 'separator' },
+      { label: 'Zoom In', accelerator: '[', click: 'zoom' }, 
+      { label: 'Zoom Out', accelerator: ']', click: 'unzoom' }, 
+      { type: 'separator' },
       { label: 'Page Margin', accelerator: "R", click: 'showMargin' },
       { label: 'Number of Pages per Row',
 	submenu: [
@@ -171,4 +176,13 @@ const otherMenuTemplate = [
   { label: 'Help', click: 'about' },
 ]
 
-export { menuTemplate, fileMenuTemplate, otherMenuTemplate }
+const sidebarMenuTemplate = [
+  { label: 'サイドバーの位置',
+    submenu: [
+      { label: '左', click: 'dockLeft' },
+      { label: '右', click: 'dockRight' },
+    ],
+  },
+]
+
+export { menuTemplate, fileMenuTemplate, otherMenuTemplate, sidebarMenuTemplate }

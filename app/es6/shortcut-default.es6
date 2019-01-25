@@ -8,7 +8,8 @@ const shortcutDefault = {
   toggleTool: ['x', 'num.', '/'],
 
   openNewDialog: ['command+n', 'alt+n'],
-  open: ['command+o', 'alt+o'],
+  openDialog: ['command+o', 'alt+o'],
+  
   close: ['command+w', 'alt+w'],
   quit: ['command+q', 'alt+q'],
   reload: ['command+shift+r'],

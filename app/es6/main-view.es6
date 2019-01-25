@@ -46,6 +46,17 @@ class MainView {
       }
     }
   }
+
+  update() {
+  }
+  
+  setProject(project) {
+    this.project = project
+    if (project) {
+    } else {
+    }
+    this.update()
+  }
 }
 
 const mainView = new MainView()

@@ -16,6 +16,7 @@
   </script>
   <script src="js/lib/jquery.min.js"></script>
   <script src="js/lib/jquery-ui.min.js"></script>
+  <script src="js/lib/jquery.ui.touch-punch.min.js"></script>
   <script src="js/lib/split-pane.js"></script>
   <script src="js/lib/spectrum.js"></script>
   <script src="js/lib/mousetrap.js"></script>
@@ -35,7 +36,7 @@
     <img src='img/save-indicator.png'>
   </div>
   
-  <div id="tool-bar">
+  <div id="toolbar">
     <div id="file-menu-button" title="file"></div>
 
     <div class="separator left"></div>
@@ -62,22 +63,28 @@
   <div id="main">
     <div class="split-pane fixed-left" style="opacity:0;">
       <div class="split-pane-component" id="left-component">
-        <div class="side-bar">
-	  This is the left component...<br>
-	  This is the left component...<br>
-	  This is the left component...<br>
-	  This is the left component...<br>
-	  This is the left component...<br>
+        <div class="sidebar">
+          
+          <div id="sidebar-header">
+            <div class="text-button" id="page-view-button"></div>
+            <div class="text-button" id="text-view-button"></div>
+            <div id="sidebar-menu-button"></div>
+            <div class="separator right"></div>
+          </div>
+          <div id="sidebar-container">
+            <div class="page-view">
+              page view
+            </div>
+            <div class="text-view" style="display:none;">
+              text view
+            </div>
+          </div>
         </div>
       </div>
       <div class="split-pane-divider" id="divider"></div>
       <div class="split-pane-component" id="right-component">
 	<div class="main-view">
-	  This is the right component...<br>
-	  This is the right component...<br>
-	  This is the right component...<br>
-	  This is the right component...<br>
-	  This is the right component...<br>
+	  Main view<br>
         </div>
       </div>
     </div>

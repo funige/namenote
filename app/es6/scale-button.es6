@@ -7,6 +7,8 @@ let quickZoomButton
 let zoomButton
 let unzoomButton
 
+let sidebarButton
+
 ////////////////////////////////////////////////////////////////
 
 class ScaleButton {
@@ -14,24 +16,31 @@ class ScaleButton {
   }
 
   init() {
-    quickZoomButton = $('#row-button').imgButton({
+    quickZoomButton = $('#row-button').imageButton({
       src: 'img/magnifier-button.png',
       float: 'right',
       click: function(e) { command.quickZoom() }
     })[0]
 
-    zoomButton = $('#zoom-button').imgButton({
+    zoomButton = $('#zoom-button').imageButton({
       src: 'img/zoom-button.png',
       disabled: true,
       float: 'right',
       click: function(e) { command.zoom() }
     })[0]
 
-    unzoomButton = $('#unzoom-button').imgButton({
+    unzoomButton = $('#unzoom-button').imageButton({
       src: 'img/unzoom-button.png',
       disabled: true,
       float: 'right',
       click: function(e) { command.unzoom() }
+    })[0]
+    
+    sidebarButton = $('#sidebar-button').imageButton({
+      src: 'img/unzoom-button.png',
+      disabled: true,
+      float: 'right',
+      click: function(e) { command.sideBar() }
     })[0]
   }
 
@@ -39,9 +48,9 @@ class ScaleButton {
     const project = projectManager.current
     const quickZoom = (project) ? project.view.quickZoom : false
     
-    $(quickZoomButton).imgButton('locked', quickZoom)
-    $(zoomButton).imgButton('disabled', !project)
-    $(unzoomButton).imgButton('disabled', !quickZoom)
+    $(quickZoomButton).imageButton('locked', quickZoom)
+    $(zoomButton).imageButton('disabled', !project)
+    $(unzoomButton).imageButton('disabled', !quickZoom)
   }
 }
 

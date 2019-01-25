@@ -15,34 +15,34 @@ class ToolButton {
   }
 
   init() {
-    penButton = $('#pen-button').imgButton({
+    penButton = $('#pen-button').imageButton({
       src: 'img/pen-button.png',
       locked: true,
       float: 'left',
       click: function(e) {
-        if ($(e.target).imgButton('instance')) {
+        if ($(e.target).imageButton('instance')) {
           this.select('pen')
         }
       }.bind(this),
       content: htmlDropdown.make('penDropDown', 'pen')
     })[0]
     
-    eraserButton = $('#eraser-button').imgButton({
+    eraserButton = $('#eraser-button').imageButton({
       src: 'img/eraser-button.png',
       float: 'left',
       click: function(e) {
-        if ($(e.target).imgButton('instance')) {
+        if ($(e.target).imageButton('instance')) {
           this.select('eraser')
         }
       }.bind(this),
       content: htmlDropdown.make('eraserDropDown', 'eraser')
     })[0]
 
-    textButton = $('#text-button').imgButton({
+    textButton = $('#text-button').imageButton({
       src: 'img/text-button.png',
       float: 'left',
       click: function(e) {
-        if ($(e.target).imgButton('instance')) {
+        if ($(e.target).imageButton('instance')) {
           this.select('text')
         }
       }.bind(this),
@@ -55,18 +55,17 @@ class ToolButton {
   update() {
   }
 
-  select(tool) {
+  select(name) {
     for (const button of this.buttons) {
-      const locked = $(button).imgButton('locked')
-      const dropdown = $(button).find('.dropdown-content')[0]
+      const locked = $(button).imageButton('locked')
       
-      if (button && button.id.indexOf(tool) == 0) {
+      if (button && button.id.indexOf(name) == 0) {
         if (!locked) {
-          $(button).imgButton('locked', true)
+          $(button).imageButton('locked', true)
         }
       } else {
         if (locked) {
-          $(button).imgButton('locked', false)
+          $(button).imageButton('locked', false)
         }
       }
     }

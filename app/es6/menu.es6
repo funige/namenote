@@ -48,7 +48,6 @@ class Menu {
   update() {
     template = JSON.parse(JSON.stringify(menuTemplate))
     states = {}
-    warn('[native menu update]')
     
     this.updateRecents(template)
     this.updateStates(template)

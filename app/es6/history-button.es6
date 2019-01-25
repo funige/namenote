@@ -13,7 +13,7 @@ class HistoryButton {
   }
 
   init() {
-    undoButton = $('#undo-button').imgButton({
+    undoButton = $('#undo-button').imageButton({
       src: 'img/undo-button.png',
       float: 'left',
       disabled: true,
@@ -22,7 +22,7 @@ class HistoryButton {
       }
     })[0]
 
-    redoButton = $('#redo-button').imgButton({
+    redoButton = $('#redo-button').imageButton({
       src: 'img/redo-button.png',
       float: 'left',
       disabled: true,
@@ -38,8 +38,8 @@ class HistoryButton {
     if (project) {
       const hasUndo = (project) ? project.history.hasUndo() : false
       const hasRedo = (project) ? project.history.hasRedo() : false
-      $(undoButton).imgButton('disabled', !hasUndo)
-      $(redoButton).imgButton('disabled', !hasRedo)
+      $(undoButton).imageButton('disabled', !hasUndo)
+      $(redoButton).imageButton('disabled', !hasRedo)
 
 //    Menu.updateHistory()
     }

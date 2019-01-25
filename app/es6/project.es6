@@ -28,6 +28,10 @@ class Project {
     }
     return -1
   }
+
+  name() {
+    return (this.url) ? this.url.replace(/^.*\//, '') : T('Untitled')
+  }
 }
 
 export { Project }

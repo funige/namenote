@@ -3,8 +3,10 @@
 import { namenote } from './namenote.es6'
 import { dialog } from './dialog.es6'
 import { aboutDialog } from './about-dialog.es6'
-import { sideBar } from './side-bar.es6'
+import { divider } from './divider.es6'
 import { toolButton } from './tool-button.es6'
+import { sideBarTab } from './side-bar-tab.es6'
+import { projectManager } from './project-manager.es6'
 
 const _runMain = (message, data) => {
   if (namenote.app) {
@@ -51,9 +53,66 @@ class Command {
 
   sideBar() {
     log('sideBar')
-    sideBar.toggle()
+    divider.toggle()
   }
 
+  showPageView() {
+    $('.page-view').show()
+    $('.text-view').hide()
+    sideBarTab.select('page')
+  }
+
+  showTextView() {
+    $('.page-view').hide()
+    $('.text-view').show()
+    sideBarTab.select('text')
+  }
+  
+  openDialog() {
+    if (namenote.app) {
+      namenote.app.openDialog().then((url) => {
+        warn(`open '${url}'...`)
+        projectManager.open(url)
+
+      }).then((project) => {
+        //warn('project=', project)
+        
+      }).catch((error) => {
+        if (error) {
+          namenote.app.showMessageBox({
+            type: 'error',
+            message: error
+          })
+        }
+      })
+    }
+  }
+
+  openNewDialog() {
+    warn('open new dialog..')
+  }
+  
+  close() {
+    projectManager.close()
+  }
+
+  zoom() {
+    log('zoom')
+  }
+
+  unzoom() {
+    log('unzoom')
+  }
+
+  dockLeft() {
+    divider.setPosition('left')
+  }
+
+  dockRight() {
+    divider.setPosition('right')
+  }
+
+  
   toggleEditMode() {}
   
   //////////////////
