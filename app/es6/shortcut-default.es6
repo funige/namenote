@@ -31,7 +31,7 @@ const shortcutDefault = {
   unselect: 'ctrl+d',
   mergeText: 'ctrl+e',
   
-  sideBar: 'command+alt+s',
+  sideBar: '1',
   developerTools: 'command+alt+j',
   toolBar: 'command+alt+h',
 

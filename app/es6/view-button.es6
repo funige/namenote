@@ -2,16 +2,16 @@
 
 import { command } from './command.es6'
 import { projectManager } from './project-manager.es6'
+import { config } from './config.es6'
 
 let quickZoomButton
 let zoomButton
 let unzoomButton
-
-let sidebarButton
+let splitButton
 
 ////////////////////////////////////////////////////////////////
 
-class ScaleButton {
+class ViewButton {
   constructor() {
   }
 
@@ -35,10 +35,9 @@ class ScaleButton {
       float: 'right',
       click: function(e) { command.unzoom() }
     })[0]
-    
-    sidebarButton = $('#sidebar-button').imageButton({
+
+    splitButton = $('#split-button').imageButton({
       src: 'img/unzoom-button.png',
-      disabled: true,
       float: 'right',
       click: function(e) { command.sideBar() }
     })[0]
@@ -51,9 +50,11 @@ class ScaleButton {
     $(quickZoomButton).imageButton('locked', quickZoom)
     $(zoomButton).imageButton('disabled', !project)
     $(unzoomButton).imageButton('disabled', !quickZoom)
+
+    $(splitButton).imageButton('locked', config.data.sideBar)
   }
 }
 
-const scaleButton = new ScaleButton()
+const viewButton = new ViewButton()
 
-export { scaleButton }
+export { viewButton }

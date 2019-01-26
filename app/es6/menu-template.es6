@@ -8,7 +8,7 @@ const menuTemplate = [
       { label: 'Settings ...', click: 'settings' },
       { label: 'Tablet Settings ...', click: 'tabletSettings' },
       { type: 'separator' },
-      { label: 'Quit Namenote', accelerator: "CmdOrCtrl+Q", click: 'quit' },
+      { label: 'Quit Namenote', click: 'quit' },
       
 //    { label: 'Settings',
 //	submenu: [
@@ -19,72 +19,72 @@ const menuTemplate = [
   },
   { label: 'Note',
     submenu: [
-      { label: 'New ...', accelerator: "CmdOrCtrl+N", click: 'openNewDialog' },
-      { label: 'Open ...', accelerator: "CmdOrCtrl+O", click: 'openDialog' },
+      { label: 'New ...', click: 'openNewDialog' },
+      { label: 'Open ...', click: 'openDialog' },
       { label: 'Open Recent', submenu: [] },
 
       { type: 'separator' },
-      { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
+      { label: 'Close', click: 'close' },
 //    { label: 'Close All', click: 'closeAll' },
 	
 //    { type: 'separator' },
 //    { label: 'Note Settings ...', click: 'noteSettings' },
 
-      { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
+      { label: 'Save Snapshot As ...', click: 'snapshot' },
       { type: 'separator' },
 
 //    { label: 'Import',
 //	submenu: [
-//	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
+//	  { label: '.txt (Plain Text) ...', click: 'importTextDialog' },
 //	],
 //    },
       { label: 'Export',
 	submenu: [
-	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },
-	  { label: '.pdf (PDF) ...', accelerator: "CmdOrCtrl+Shift+P", click: 'exportPDFDialog' },
+	  { label: '.csnf (CLIP STUDIO Storyboard) ...', click: 'exportCSNFDialog' },
+	  { label: '.pdf (PDF) ...', click: 'exportPDFDialog' },
 	],
       },
     ],
   },
   { label: "Edit",
     submenu: [
-      { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:", click: 'undo' },
-      { label: "Redo", accelerator: "CmdOrCtrl+Y", selector: "redo:", click: 'redo' },
+      { label: "Undo", selector: "undo:", click: 'undo' },
+      { label: "Redo", selector: "redo:", click: 'redo' },
       { type: "separator" },
-      { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-      { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-      { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+      { label: "Cut", selector: "cut:" },
+      { label: "Copy", selector: "copy:" },
+      { label: "Paste", selector: "paste:" },
 
-      { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:", click: 'selectAll' },
+      { label: "Select All", selector: "selectAll:", click: 'selectAll' },
     ]
   },
   { label: 'Page',
     submenu: [
-      { label: 'Add', accelerator: "Shift+i", click: 'appendPage' },
-      { label: 'Move Forward', accelerator: "Shift+.", click: 'movePageForward' },
-      { label: 'Move Backward', accelerator: "Shift+,", click: 'movePageBackward' },
+      { label: 'Add', click: 'appendPage' },
+      { label: 'Move Forward', click: 'movePageForward' },
+      { label: 'Move Backward', click: 'movePageBackward' },
       { type: "separator" },
-      { label: 'Move to Buffer', accelerator: "Shift+k", click: 'cutPage' },
-      { label: 'Put Back from Buffer', accelerator: "Shift+Y", click: 'pastePage' },
-      { label: 'Empty Buffer', accelerator: "Shift+0", click: 'emptyPage' },
+      { label: 'Move to Buffer', click: 'cutPage' },
+      { label: 'Put Back from Buffer', click: 'pastePage' },
+      { label: 'Empty Buffer', click: 'emptyPage' },
 //    { type: "separator" },
-//    { label: 'Flip', accelerator: "H", click: 'flipPage' },
+//    { label: 'Flip', click: 'flipPage' },
       { type: "separator" },
-      { label: 'Extract Text', accelerator: "CmdOrCtrl+T", click: 'extractText' },
-      { label: 'Save Image As ...', accelerator: "CmdOrCtrl+-", click: 'savePageImage' },
+      { label: 'Extract Text', click: 'extractText' },
+      { label: 'Save Image As ...', click: 'savePageImage' },
     ],
   },
   { label: 'View',
     submenu: [
-      { label: 'Full Screen', accelerator: 'Ctrl+Command+F', click: 'fullScreen' }, 
-//    { label: 'Tool Bar', click: 'toolBar' }, //accelerator: "Command+Alt+H", 
-      { label: 'Side Bar', accelerator: 'Command+Alt+S', click: 'sideBar' }, 
-      { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
+      { label: 'Full Screen', click: 'fullScreen' }, 
+//    { label: 'Tool Bar', click: 'toolBar' },
+      { label: 'Side Bar', click: 'sideBar' }, 
+      { label: 'Developer Tools', click: 'developerTools' },
       { type: 'separator' },
-      { label: 'Zoom In', accelerator: '[', click: 'zoom' }, 
-      { label: 'Zoom Out', accelerator: ']', click: 'unzoom' }, 
+      { label: 'Zoom In', click: 'zoom' }, 
+      { label: 'Zoom Out', click: 'unzoom' }, 
       { type: 'separator' },
-      { label: 'Page Margin', accelerator: "R", click: 'showMargin' },
+      { label: 'Page Margin', click: 'showMargin' },
       { label: 'Number of Pages per Row',
 	submenu: [
 	  { label: '2', click: 'row1' },
@@ -95,65 +95,56 @@ const menuTemplate = [
       }
     ],
   },
-/*  
-  { label: 'Window',
-    submenu: [
-    ],
-  },
-*/
 ]
 
 const fileMenuTemplate = [
-  { label: 'New ...', accelerator: "CmdOrCtrl+N", click: 'openNewDialog' },
-  { label: 'Open ...', accelerator: "CmdOrCtrl+O", click: 'openDialog' },
+  { label: 'New ...', click: 'openNewDialog' },
+  { label: 'Open ...', click: 'openDialog' },
   { type: 'separator' },
-]
-
-const otherMenuTemplate = [
   { label: 'Note',
     submenu: [
-      { label: 'Close', accelerator: "CmdOrCtrl+W", click: 'close' },
+      { label: 'Close', click: 'close' },
 //    { label: 'Close All', click: 'closeAll' },
-      { label: 'Save Snapshot As ...', accelerator: "CmdOrCtrl+S", click: 'snapshot' },
+      { label: 'Save Snapshot As ...', click: 'snapshot' },
       { type: 'separator' },
 
 //    { label: 'Import',
 //	submenu: [
-//	  { label: '.txt (Plain Text) ...', accelerator: "CmdOrCtrl+Shift+I", click: 'importTextDialog' },
+//	  { label: '.txt (Plain Text) ...', click: 'importTextDialog' },
 //	],
 //    },
       { label: 'Export',
 	submenu: [
-	  { label: '.csnf (CLIP STUDIO Storyboard) ...', accelerator: "CmdOrCtrl+P", click: 'exportCSNFDialog' },
-	  { label: '.pdf (PDF) ...', accelerator: "CmdOrCtrl+Shift+P", click: 'exportPDFDialog' },
+	  { label: '.csnf (CLIP STUDIO Storyboard) ...', click: 'exportCSNFDialog' },
+	  { label: '.pdf (PDF) ...', click: 'exportPDFDialog' },
 	],
       },
     ],
   },
   { label: 'Page',
     submenu: [
-      { label: 'Add', accelerator: "Shift+i", click: 'appendPage' },
-      { label: 'Move Forward', accelerator: "Shift+.", click: 'movePageForward' },
-      { label: 'Move Backward', accelerator: "Shift+,", click: 'movePageBackward' },
+      { label: 'Add', click: 'appendPage' },
+      { label: 'Move Forward', click: 'movePageForward' },
+      { label: 'Move Backward', click: 'movePageBackward' },
       { type: "separator" },
-      { label: 'Move to Buffer', accelerator: "Shift+K", click: 'cutPage' },
-      { label: 'Put Back from Buffer', accelerator: "Shift+Y", click: 'pastePage' },
-      { label: 'Empty Buffer', accelerator: "Shift+0", click: 'emptyPage' },
+      { label: 'Move to Buffer', click: 'cutPage' },
+      { label: 'Put Back from Buffer', click: 'pastePage' },
+      { label: 'Empty Buffer', click: 'emptyPage' },
       { type: "separator" },
-      { label: 'Extract Text', accelerator: "CmdOrCtrl+T", click: 'extractText' },
-      { label: 'Save Image As ...', accelerator: "CmdOrCtrl+-", click: 'savePageImage' },
+      { label: 'Extract Text', click: 'extractText' },
+      { label: 'Save Image As ...', click: 'savePageImage' },
     ],
   },
   { label: 'View',
     submenu: [
-      { label: 'Full Screen', accelerator: 'Command+Ctrl+F', click: 'fullScreen' }, 
-      { label: 'Side Bar', accelerator: 'Command+Alt+S', click: 'sideBar' }, 
-      { label: 'Developer Tools', accelerator: "Command+Alt+J", click: 'developerTools' },
+      { label: 'Full Screen', click: 'fullScreen' }, 
+      { label: 'Side Bar', click: 'sideBar' }, 
+      { label: 'Developer Tools', click: 'developerTools' },
       { type: 'separator' },
-      { label: 'Zoom In', accelerator: '[', click: 'zoom' }, 
-      { label: 'Zoom Out', accelerator: ']', click: 'unzoom' }, 
+      { label: 'Zoom In', click: 'zoom' }, 
+      { label: 'Zoom Out', click: 'unzoom' }, 
       { type: 'separator' },
-      { label: 'Page Margin', accelerator: "R", click: 'showMargin' },
+      { label: 'Page Margin', click: 'showMargin' },
       { label: 'Number of Pages per Row',
 	submenu: [
 	  { label: '2', click: 'row1' },
@@ -164,12 +155,6 @@ const otherMenuTemplate = [
       }
     ],
   },
-/*  
-  { label: 'Window',
-    submenu: [
-    ],
-  },
-*/
   { type: "separator" },
   { label: 'Settings ...', click: 'settings' },
   { label: 'Tablet Settings ...', click: 'tabletSettings' },
@@ -185,4 +170,4 @@ const sidebarMenuTemplate = [
   },
 ]
 
-export { menuTemplate, fileMenuTemplate, otherMenuTemplate, sidebarMenuTemplate }
+export { menuTemplate, fileMenuTemplate, sidebarMenuTemplate }

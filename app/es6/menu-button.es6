@@ -27,14 +27,14 @@ class MenuButton {
       click: function(e) { this.select(e) }.bind(this),
       content: htmlMenu.make(fileMenuTemplate, 'file')
     })[0]
-
+/*
     otherButton = $('#other-menu-button').imageButton({
       src: 'img/menu-button.png',
       float: 'right',
       click: function(e) { this.select(e) }.bind(this),
       content: htmlMenu.make(otherMenuTemplate, 'other')
     })[0]
-
+*/
     sidebarButton = $('#sidebar-menu-button').imageButton({
       src: 'img/menu-button.png',
       float: 'right',
@@ -43,7 +43,7 @@ class MenuButton {
       contentParent: $('body')[0]
     })[0]
 
-    this.buttons.push(fileButton, otherButton, sidebarButton)
+    this.buttons.push(fileButton, sidebarButton)
   }
 
   update() {

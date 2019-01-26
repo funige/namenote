@@ -87,6 +87,7 @@ class HTMLMenu {
   }
 
   open(element) {
+    element.style.opacity = '1'
     element.style.display = 'block'
   }
 
@@ -135,6 +136,7 @@ class HTMLMenu {
 
   collapse(menu, id) {
     $(menu).menu('collapseAll', null, true)
+    menu.parentNode.style.opacity = '0.01'
     setTimeout(() => {
       this.close(menu.parentNode)
       buttons[id].imageButton('locked', false)
@@ -155,9 +157,21 @@ class HTMLMenu {
     $(menu).menu('refresh')
   }
 
+  isSeparator(item) {
+    if (item) {
+      if (item.childNodes[0] && item.childNodes[0].innerHTML != '-') {
+        return false
+      }
+    }
+    return true
+  }
+  
   updateRecents(menu) {
-    while (menu.childNodes.length > 3) {
-      menu.removeChild(menu.childNodes[menu.childNodes.length - 1])
+//  while (menu.childNodes.length > 3) {
+//    menu.removeChild(menu.childNodes[menu.childNodes.length - 1])
+
+    while (!this.isSeparator(menu.childNodes[2])) {
+      menu.removeChild(menu.childNodes[2])
     }
     
     const df = document.createDocumentFragment()
@@ -168,7 +182,8 @@ class HTMLMenu {
       li.appendChild(appendAttribute(div, item, 'openURL'))
       df.appendChild(li)
     }
-    menu.appendChild(df)
+    //  menu.appendChild(df)
+    menu.insertBefore(df, menu.childNodes[2])
   }
 
   updateStates(menu) {

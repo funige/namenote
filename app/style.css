@@ -106,6 +106,7 @@ body {
     width: 100%;
     height: calc(100% - 37px);
     overflow: hidden;
+    background-color: #7a7b7e; //#f0f0f0;
 }
 
 .split-pane {
@@ -113,7 +114,6 @@ body {
 }
 
 #left-component {
-    background-color: #f0f0f0;
     width: 200px;
     -webkit-overflow-scrolling: touch;
 }
@@ -122,7 +122,7 @@ body {
     width: 1px;
 }
 #right-component {
-    background-color: #f0f0f0;
+//  background-color: #7a7b7e; //#f0f0f0;
     left: 200px;       /* Same as left component initial width */
     margin-left: 1px;  /* Same as divider width */
     -webkit-overflow-scrolling: touch;
@@ -307,42 +307,6 @@ form .preview { width: 500px; height: 150px; } /* 350px */
 }
 
 /**
- * Scrollbar
- */
-
-/*
-::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 12px; 
-    height: 12px; 
-}
-
-::-webkit-scrollbar-track-piece {
-    background-color: #c0c0c0;   
-}
-
-::-webkit-scrollbar-corner {
-    background-color: #a0a0a0;
-}
-
-::-webkit-scrollbar-thumb {
-    border-radius: 5px; //4px;
-    background-clip: content-box;
-    background-color: rgba(0,0,0,.5); 
-    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
-}
-
-::-webkit-scrollbar-thumb:horizontal {
-    border-top: 2px solid transparent;
-    border-bottom: 2px solid transparent;
-}
-::-webkit-scrollbar-thumb:vertical {
-    border-left: 2px solid transparent;
-    border-right: 2px solid transparent;
-}
-*/
-
-/**
  * jQuery ui
  *
  */
@@ -366,14 +330,21 @@ form .preview { width: 500px; height: 150px; } /* 350px */
     margin-right: 14px;
 }
 
+.ui-dialog {
+//  box-shadow: 0px 15px 25px 0px rgba(50, 50, 50, 0.7);
+//  box-shadow: 0px 5px 25px rgba(50, 50, 50, 0.7);  
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.4);
+}
+
 .ui-dialog-titlebar-close {
     visibility: hidden;
 }
 
 .ui-widget-overlay {
-    opacity: 0.5 !important;
-    filter: Alpha(Opacity=50) !important;
-    background-color: black !important;
+    opacity: 0.01 !important;
+//  opacity: 0.5 !important;
+//  filter: Alpha(Opacity=50) !important;
+//  background-color: black !important;
 }
 
 .ui-draggable, .ui-droppable {

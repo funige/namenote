@@ -1,7 +1,7 @@
 'use strict'
 
 import { config } from './config.es6'
-import { scaleButton } from './scale-button.es6'
+import { viewButton } from './view-button.es6'
 import { historyButton } from './history-button.es6'
 import { toolButton } from './tool-button.es6'
 import { menuButton } from './menu-button.es6'
@@ -11,7 +11,7 @@ class ToolBar {
   }
 
   init() {
-    scaleButton.init()
+    viewButton.init()
     historyButton.init()
     toolButton.init()
     menuButton.init()
@@ -21,7 +21,7 @@ class ToolBar {
   }
   
   updateButtons() {
-    scaleButton.update()
+    viewButton.update()
     historyButton.update()
     toolButton.update()
     menuButton.update()

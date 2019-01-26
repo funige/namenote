@@ -140,6 +140,10 @@ class Command {
   quit() {
     _runMain('quit')
   }
+
+  reload() {
+    location.reload()
+  }
 }
 
 const command = new Command()

@@ -1,6 +1,7 @@
 'use strict'
 
 import { config } from './config.es6'
+import { viewButton } from './view-button.es6'
 
 let minWidth = 180
 
@@ -19,6 +20,8 @@ class Divider {
   }
 
   update(value) {
+    log('[update]')
+    
     if (value == undefined) value = config.data.sideBar
     config.data.sideBar = value
     config.save()
@@ -33,7 +36,9 @@ class Divider {
       if (width < minWidth) width = minWidth
       if (width > maxWidth) width = maxWidth
     }
+
     $('.split-pane').splitPane('firstComponentSize', width)
+    viewButton.update()
   }
 
   toggle() {
@@ -60,6 +65,7 @@ class Divider {
   }
   
   onDividerDragEnd() {
+    log("[divider drag end]")
     let width = $('.sidebar').width()
 
     const maxWidth = $('.split-pane').width() - minWidth - 1

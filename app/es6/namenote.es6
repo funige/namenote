@@ -17,7 +17,7 @@ import { projectManager } from './project-manager.es6'
 
 class Namenote {
   constructor() {
-    this.version = "2.0.0-alpha.1-debug"
+    this.version = "2.0.0-alpha.2-debug"
     this.trial = false
 
     this.config = config
