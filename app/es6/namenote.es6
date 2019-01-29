@@ -62,8 +62,27 @@ class Namenote {
     }
   }
 
+  /*
+  preventScrollFreeze(view) {
+    const scroller = $(view.element).parent()
+    view.lastY = 0
+
+    scroller.on('touchstart', function(e) {
+      view.lastY = e.touches[0].clientY
+      log('start')
+    })
+    
+    scroller.on('touchmove', function(e) {
+      const top = e.touches[0].clientY
+      const scrollTop = $(e.currentTarget).scrollTop()
+      const direction = (view.lastY - top) < 0 ? 'up': 'down'
+      log(direction)
+    })
+  }
+  */  
+
   isMac() {
-    return true
+    return navigator.platform.indexOf('Mac')
   }
 }
 

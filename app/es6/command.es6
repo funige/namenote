@@ -71,7 +71,7 @@ class Command {
   openDialog() {
     if (namenote.app) {
       namenote.app.openDialog().then((url) => {
-        warn(`open '${url}'...`)
+        warn(`openDialog '${url}'...`)
         projectManager.open(url)
 
       }).then((project) => {
@@ -86,6 +86,11 @@ class Command {
         }
       })
     }
+  }
+
+  open(url) {
+    log('open...')
+    projectManager.open(url)
   }
 
   openNewDialog() {

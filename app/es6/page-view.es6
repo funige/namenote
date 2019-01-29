@@ -1,14 +1,17 @@
 'use strict'
 
-import { namenote } from './namenote.es6'
+import { View } from './view.es6'
 
 ////////////////////////////////////////////////////////////////
 
-class PageView {
+class PageView extends View {
   constructor() {
+    super()
   }
 
   init() {
+    this.element = $('.page-view')[0]
+    this.preventScrollFreeze()
   }
 }
 

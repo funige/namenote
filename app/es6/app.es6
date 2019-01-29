@@ -22,10 +22,24 @@ class App {
   constructor() {
   }
 
-  showMessageBox(options) {
+  loadJSON(url) {
     return new Promise((resolve, reject) => {
-      dialog.showMessageBox(options, (response) => {
-        resolve(response)
+      fs.readFile(url, 'utf8', (err, json) => {
+        if (err) {
+          return reject(err)
+        }
+        resolve(JSON.parse(json))
+      })
+    })
+  }
+
+  saveJSON(url, data) {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(url, JSON.stringify(data), 'utf8', (err) => {
+        if (err) {
+          return reject(err)
+        }
+        resolve()
       })
     })
   }
@@ -78,6 +92,16 @@ class App {
     config.save()
   }
   
+  showMessageBox(options) {
+    return new Promise((resolve, reject) => {
+      dialog.showMessageBox(options, (response) => {
+        resolve(response)
+      })
+    })
+  }
+  
+  ////////////////
+
   rebuildMenu(data) {
     ipcRenderer.send('rebuild-menu', JSON.stringify(data))
   }

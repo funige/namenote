@@ -5,8 +5,9 @@ import { locale } from './locale.es6'
 
 
 window.namenote = namenote
-
 window.T = locale.translate
+window.PX = (x) => x + 'px'
+
 window.log = console.log.bind(window.console)
 window.warn = console.warn.bind(window.console)
 window.error = console.error.bind(window.console)

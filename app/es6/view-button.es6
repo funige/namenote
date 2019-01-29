@@ -45,12 +45,13 @@ class ViewButton {
 
   update() {
     const project = projectManager.current
-    const quickZoom = (project) ? project.view.quickZoom : false
+    const quickZoom = project //(project) ? project.view.quickZoom : false
     
-    $(quickZoomButton).imageButton('locked', quickZoom)
     $(zoomButton).imageButton('disabled', !project)
-    $(unzoomButton).imageButton('disabled', !quickZoom)
+    $(unzoomButton).imageButton('disabled', !project)
+    $(quickZoomButton).imageButton('disabled', !project)
 
+    $(quickZoomButton).imageButton('locked', quickZoom)
     $(splitButton).imageButton('locked', config.data.sideBar)
   }
 }

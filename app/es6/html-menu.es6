@@ -167,9 +167,6 @@ class HTMLMenu {
   }
   
   updateRecents(menu) {
-//  while (menu.childNodes.length > 3) {
-//    menu.removeChild(menu.childNodes[menu.childNodes.length - 1])
-
     while (!this.isSeparator(menu.childNodes[2])) {
       menu.removeChild(menu.childNodes[2])
     }
@@ -178,8 +175,8 @@ class HTMLMenu {
     for (const item of recentURL.data) {
       const li = document.createElement('li')
       const div = document.createElement('div')
-      div.innerHTML = item
-      li.appendChild(appendAttribute(div, item, 'openURL'))
+      div.innerHTML = '<span class="ui-icon ui-icon-note"></span>' + item
+      li.appendChild(appendAttribute(div, item, 'open'))
       df.appendChild(li)
     }
     //  menu.appendChild(df)

@@ -4,6 +4,7 @@ import { Project } from './project.es6'
 import { recentURL } from './recent-url.es6'
 import { menu } from './menu.es6'
 import { title } from './title.es6'
+import { viewButton } from './view-button.es6'
 
 import { mainView } from './main-view.es6'
 
@@ -27,7 +28,9 @@ class ProjectManager {
     this.current = project
     mainView.setProject(project)
     title.set(project ? project.name() : null)
+
     menu.update()
+    viewButton.update()
   }
 
   findIndex(url) {
@@ -46,7 +49,7 @@ class ProjectManager {
     this.select(project)
     return Promise.resolve(project)
   }
-
+  
   close(project) {
     warn('[close]', project)
     if (!project) project = this.current
