@@ -140,6 +140,14 @@ const dictionary = {
     "Click OK to restore default settings.": "デフォルトの設定に戻します",
     "Pen pressure": "筆圧",
     "Output": "出力",
+
+    "Menu": "メニュー",
+    "Pen": "ペン",
+    "Eraser": "消しゴム",
+    "Text": "テキスト",
+    "Zoom In": "ズームイン",
+    "Zoom Out": "ズームアウト",
+    "Quick Zoom": "クイックズーム",
     
     "Enable Japanese Options": "日本語用のオプションを有効にする"
   }

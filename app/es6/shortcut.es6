@@ -26,7 +26,7 @@ class Shortcut {
     Mousetrap.prototype.stopCallback = function(e, element, combo) {
 /*
       if (Text.isEditable(element)) {
-        log('keycode=', e.keyCode, e)
+        LOG('keycode=', e.keyCode, e)
 
 	if (e.ctrlKey && !e.shiftKey && !e.metaKey) {
 	  switch (e.keyCode) {
@@ -75,12 +75,12 @@ class Shortcut {
       if (item == 'developerTools') continue
 
       if (handler) {
-	log(`'${item}`)
+	LOG(`'${item}`)
         
 	Mousetrap.bind(key, (e) => {
 	  command.prev = command.current
 	  command.current = item
-	  log(`*${item}*`)
+	  LOG(`*${item}*`)
           
 	  handler()
 	  return (ui.dialog.isOpen()) ? true : false
@@ -88,7 +88,7 @@ class Shortcut {
 	}, 'keydown')
 
       } else {
-	log(`'${item}': no such command`)
+	LOG(`'${item}': no such command`)
       }
     }
 

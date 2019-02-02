@@ -210,7 +210,7 @@ class HTMLMenu {
       const click = p.title
 
       if (click) {
-        error(`${click}`, `${data}`)
+        LOG(`${click}`, `${data}`)
         command.do(`${click}`, `${data}`)
         return true
       }

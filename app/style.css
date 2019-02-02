@@ -57,10 +57,13 @@ body {
     font-size: 0px;
 }
 
-#sidebar-header .img-button,
+#sidebar-header .img-button { margin: 0px 2px; }
 #sidebar-header .separator { margin: 2px 4px; }
 #sidebar-header .img-button.locked,
-#sidebar-header .img-button:active { background-position: 0% 0%; }
+#sidebar-header .img-button:hover,
+#sidebar-header .img-button:active {
+    background: rgba(0,0,0,0);
+}
 
 #sidebar-dropdown { width: 150px; }
 
@@ -447,26 +450,45 @@ span .ui-icon {
  */
 
 .img-button {
-    margin: 6px 4px; ////6px; // 4px;
+//  margin: 6px 4px; ////6px; // 4px;
+    margin: 4px 2px;
     background-position: 0% 0%;
     opacity: 1.0;
+
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
+    background: rgba(0,0,0,0);
+    transition: 0.5s;
+}
+
+.img-button img {
+    pointer-events: none;
+    margin: 3px 2px;
 }
 
 .img-button:hover {
-    background-position: 0% 33.3333%;
+    background: rgba(0,0,0,0.05);
+//  transition: 0.5s;
 }
 
 .img-button:active {
-    background-position: 0% 66.6666%;
+    background: rgba(0,0,0,0.05);
 }
 
 .img-button.locked {
-    background-position: 0% 100%;
+    background: rgba(0,0,0,0.14);
 }
 
-.img-button.off { opacity: 0.3; }
-.img-button.off:hover { background-position: 0% 0%; }
-.img-button.off:active { background-position: 0% 0%; }
+.img-button.off,
+.img-button.off:hover,
+.img-button.off:active {
+    background: rgba(0,0,0,0);
+}
+
+.img-button.off img {
+    opacity: 0.3;
+}
 
 .separator {
     background-color: #ccc;

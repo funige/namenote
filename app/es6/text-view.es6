@@ -6,16 +6,13 @@ import { View } from './view.es6'
 ////////////////////////////////////////////////////////////////
 
 class TextView extends View {
-  constructor() {
-    super()
+  constructor(element) {
+    super(element)
+    this.init()
   }
 
   init() {
-    this.element = $('.text-view')[0]
-    this.preventScrollFreeze()
   }
 }
 
-const textView = new TextView()
-
-export { textView }
+export { TextView }

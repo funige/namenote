@@ -17,7 +17,7 @@ class Dialog {
     return false
   }
   
-  open(widget) {
+  open(widget, options) {
     if (this.current) this.close()
     this.current = widget
     
@@ -29,7 +29,7 @@ class Dialog {
       $('body')[0].appendChild(element)
       widget.element = element
     }
-    widget.init()
+    return widget.init(options)
   }
 
   close() {

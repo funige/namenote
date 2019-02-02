@@ -41,19 +41,25 @@ class Widget {
     $.widget('namenote.imageButton', {
       options: {
         float: 'left',
-        width: '24px',
-        height: '24px',
+        width: '28px',
+        height: '28px',
         locked: false,
         disabled: false,
       },
   
       _create: function() {
         this.element.addClass('img-button')
-        this.element.css('background-image', `url(${this.options.src})`)
+//      this.element.css('background-image', `url(${this.options.src})`)
+//      this.element.css('background', '#eeffdd')
         this.element.css('float', this.options.float)
         this.element.css('width', this.options.width)
         this.element.css('height', this.options.height)
 
+        this.element.attr('title', T(this.element.attr('title')))
+
+        this.element.html(`<img src='${this.options.src}' />`)
+//      WARN(this.element.html())
+        
         this.locked(this.options.locked)
         this.disabled(this.options.disabled)
         

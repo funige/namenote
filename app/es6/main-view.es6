@@ -8,15 +8,15 @@ import { View } from './view.es6'
 ////////////////////////////////////////////////////////////////
 
 class MainView extends View {
-  constructor() {
-    super()
+  constructor(element) {
+    super(element)
+    this.init()
   }
 
   init() {
-    this.element = $('.main-view')[0]
-    this.preventScrollFreeze()
     this.scale = 1
 
+/*    
     const pageWidth = 1000
     const pageHeight = 768
 
@@ -45,9 +45,9 @@ class MainView extends View {
 
         page.appendChild(pageNumber)
         this.element.appendChild(page)
-      }
     }
-
+    }
+*/
   }
 
   update() {
@@ -62,6 +62,4 @@ class MainView extends View {
   }
 }
 
-const mainView = new MainView()
-
-export { mainView }
+export { MainView }

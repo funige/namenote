@@ -20,7 +20,7 @@ class Divider {
   }
 
   update(value) {
-    log('[update]')
+    LOG('[update]')
     
     if (value == undefined) value = config.data.sideBar
     config.data.sideBar = value
@@ -65,7 +65,7 @@ class Divider {
   }
   
   onDividerDragEnd() {
-    log("[divider drag end]")
+    LOG("[divider drag end]")
     let width = $('.sidebar').width()
 
     const maxWidth = $('.split-pane').width() - minWidth - 1

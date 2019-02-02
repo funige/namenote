@@ -21,7 +21,7 @@ const openParams = {
 class App {
   constructor() {
   }
-
+/*
   loadJSON(url) {
     return new Promise((resolve, reject) => {
       fs.readFile(url, 'utf8', (err, json) => {
@@ -43,6 +43,7 @@ class App {
       })
     })
   }
+*/
   
   openDialog(defaultPath) {
     defaultPath = defaultPath || config.data.defaultPath
@@ -63,7 +64,7 @@ class App {
             resolve(dirname)
 
           } else {
-            reject(`${T('File open error.')}`)
+            reject(`${T("File open error.")}`)
           }
           return
         }

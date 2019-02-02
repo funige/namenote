@@ -3,6 +3,7 @@
 import { namenote } from './namenote.es6'
 import { dialog } from './dialog.es6'
 import { aboutDialog } from './about-dialog.es6'
+import { messageBox } from './message-box.es6'
 import { divider } from './divider.es6'
 import { toolButton } from './tool-button.es6'
 import { sideBarTab } from './side-bar-tab.es6'
@@ -10,11 +11,11 @@ import { projectManager } from './project-manager.es6'
 
 const _runMain = (message, data) => {
   if (namenote.app) {
-    log('runMain', message, data)
+    LOG('runMain', message, data)
     namenote.app.runMain(message, data)
 
   } else {
-    log(`${message}: can\`t execute this command on browser.`)
+    LOG(`${message}: can\`t execute this command on browser.`)
   }
 }
 
@@ -25,34 +26,62 @@ class Command {
   }
 
   undo() {
-    log('undo')
+    LOG('undo')
   }
 
   redo() {
-    log('redo')
+    LOG('redo')
   }
 
   about() {
-    dialog.open(aboutDialog)
+    LOG('[about]')
+/*    
+    var fetch = require('isomorphic-fetch'); // or another library of choice.
+    var Dropbox = require('dropbox').Dropbox;
+    var dbx = new Dropbox({ accessToken: 'xzg77AnvTaAAAAAAAAAAJ64v0EczA3xqe-H-fZOLi6aBKp6oNmw3I-fH1eSuHmBz', fetch: fetch });
+    dbx.filesListFolder({path: ''})
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    return
+*/
+
+//  dialog.open(aboutDialog)
+//  return
+    
+    dialog.open(messageBox, {
+      title: '認証',
+      message: 'ノートの保存にはDropboxのアカウントが必要です。<br>ログインしますか？',
+      ok: 'ログイン',
+      cancel: 'キャンセル',
+    }).then((responce) => {
+      WARN('...', responce)
+      location.href='http://www.asahi.com'
+    }).catch((error) => {
+      ERROR('...', error)
+    })
   }
 
   pen(e) {
-    log('pen')
+    LOG('pen')
     toolButton.select('pen')
   }
 
   eraser(e) {
-    log('eraser')
+    LOG('eraser')
     toolButton.select('eraser')
   }
 
   text(e) {
-    log('text')
+    LOG('text')
     toolButton.select('text')
   }
 
   sideBar() {
-    log('sideBar')
+    LOG('sideBar')
     divider.toggle()
   }
 
@@ -71,15 +100,15 @@ class Command {
   openDialog() {
     if (namenote.app) {
       namenote.app.openDialog().then((url) => {
-        warn(`openDialog '${url}'...`)
+        WARN(`openDialog '${url}'...`)
         projectManager.open(url)
 
       }).then((project) => {
-        //warn('project=', project)
+        //WARN('project=', project)
         
       }).catch((error) => {
         if (error) {
-          namenote.app.showMessageBox({
+          dialog.open(messageBox, {
             type: 'error',
             message: error
           })
@@ -89,12 +118,12 @@ class Command {
   }
 
   open(url) {
-    log('open...')
+    LOG('open...')
     projectManager.open(url)
   }
 
   openNewDialog() {
-    warn('open new dialog..')
+    WARN('open new dialog..')
   }
   
   close() {
@@ -102,11 +131,11 @@ class Command {
   }
 
   zoom() {
-    log('zoom')
+    LOG('zoom')
   }
 
   unzoom() {
-    log('unzoom')
+    LOG('unzoom')
   }
 
   dockLeft() {
