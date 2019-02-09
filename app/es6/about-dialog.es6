@@ -15,11 +15,8 @@ class AboutDialog {
   init(version) {
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons['Ok'] = () => {
-        dialog.close()
-        resolve()
-      }
-      
+      buttons[T('Ok')] = resolve
+    
       const string = locale.translateHTML(`
         <center>
           <img src='./img/namenote1024.png' width="100px" />
@@ -31,8 +28,8 @@ class AboutDialog {
 
       $(this.element).html(string)
       $(this.element).dialog({
-        autoOpen: true,
-        position: { my:'center bottom', at:'center center' },
+        autoOpen: false,
+        position: { my:'center center', at:'center center' },
         title: T('About Namenote'),
         modal: true,
         width: 600,

@@ -48,7 +48,7 @@ class Widget {
       },
   
       _create: function() {
-        this.element.addClass('img-button')
+//      this.element.addClass('img-button')
 //      this.element.css('background-image', `url(${this.options.src})`)
 //      this.element.css('background', '#eeffdd')
         this.element.css('float', this.options.float)

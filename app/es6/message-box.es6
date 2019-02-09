@@ -22,37 +22,32 @@ class MessageBox {
 
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons[(options.ok || 'Ok')] = () => {
-        dialog.close()
-        resolve()
-      }
+      buttons[T(options.ok || 'Ok')] = resolve
       if (options.cancel) {
-        buttons[(options.cancel || 'Cancel')] = () => {
-          dialog.close()
-          reject()
-        }
+        buttons[T(options.cancel || 'Cancel')] = reject
       }
       
       const string = locale.translateHTML(`
         <div class='message-box'><p>
           ${this.getHeader(options)}
           ${this.getMessage(options)}
-        </p></div>`
-      )
+        </p></div>
+        <div class='dialog-message'></div>`)
+      
       $(this.element).html(string)
       $(this.element).dialog({
-        autoOpen: true,
-        position: { my:'center bottom', at:'center center' },
-        title: T(options.title) || '',
+        autoOpen: false,
+        position: { my:'center center', at:'center center' },
+        title: T(options.title || ''),
         modal: true,
-        width: options.width || 400,
+        width: options.width || 350,
         buttons: buttons,
       })
     })
   }
 
   getMessage(options) {
-    return options.message || ''
+    return T(options.message) || ''
   }
   
   getHeader(options) {
@@ -62,6 +57,11 @@ class MessageBox {
     } else {
       return ''
     }
+  }
+
+  showProgress(message) {
+    const div = $(this.element).find('.dialog-message')
+    div.html(message)
   }
 }
 

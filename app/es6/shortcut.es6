@@ -9,7 +9,7 @@ import { Text } from './text.es6'
 import { Controller } from './controller.es6'
 */
 
-import { ui } from './ui.es6'
+import { dialog } from './dialog.es6'
 
 class Shortcut {
   constructor() {
@@ -80,10 +80,14 @@ class Shortcut {
 	Mousetrap.bind(key, (e) => {
 	  command.prev = command.current
 	  command.current = item
-	  LOG(`*${item}*`)
-          
-	  handler()
-	  return (ui.dialog.isOpen()) ? true : false
+
+          if (!dialog.isOpen()) {
+	    LOG(`*${item}*`)
+            handler()
+          }
+          return false
+//	  handler()
+//	  return (dialog.isOpen()) ? true : false
 
 	}, 'keydown')
 
@@ -98,7 +102,7 @@ class Shortcut {
 //  })
 
 //  Mousetrap.bind('enter', (e) => {
-//    if (ui.dialog.isOpen()) return true
+//    if (dialog.isOpen()) return true
 //    command.quickZoom()
 //    return false
 //  })

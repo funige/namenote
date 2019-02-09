@@ -6,6 +6,7 @@ import { recentURL } from './recent-url.es6'
 
 import { command } from './command.es6'
 import { ui } from './ui.es6'
+import { flash } from './flash.es6'
 
 import { MainView } from './main-view.es6'
 import { PageView } from './page-view.es6'
@@ -17,7 +18,7 @@ import { projectManager } from './project-manager.es6'
 
 class Namenote {
   constructor() {
-    this.version = "2.0.0-alpha.2-debug"
+    this.version = "2.0.0-alpha.3-debug"
     this.trial = false
 
     this.config = config
@@ -32,12 +33,15 @@ class Namenote {
     config.load()
     shortcut.load()
     recentURL.load()
+
     ui.init()
 
     this.initBaseHandlers()
     this.mainView = new MainView($('.main-view')[0])
     this.pageView = new PageView($('.page-view')[0])
     this.textView = new TextView($('.text-view')[0])
+
+    flash.load()
   }
 
   initBaseHandlers() {
@@ -46,6 +50,7 @@ class Namenote {
         LOG('onresize',
             document.body.clientWidth,
             document.body.clientHeight);
+        ui.update()
       }, 100)
     }
 

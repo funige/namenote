@@ -57,8 +57,6 @@ const dictionary = {
     "Full Screen": "フルスクリーン",
     "Page Margin": "余白",
     "Number of Pages per Row": "1行あたりのページ数",
-    "Zoom In": "拡大",
-    "Zoom Out": "縮小",
     
     "Window": "ウィンドウ",
     "Extract Text": "テキストを抽出",
@@ -68,7 +66,12 @@ const dictionary = {
     "Making CSNF ...": "CSNFファイルを作成中 ...",
     "Online Storage": "オンラインストレージ",
 
-    "Pages": "ページ",
+    "Namenote would like access to the files in your Dropbox.": "Namenote は Dropbox にデータを保存します。<br>接続しますか？",
+    "Authenticate": "認証",
+    "Connect to Dropbox": "Dropbox に接続",
+    "Cancel": "キャンセル",
+    "Connecting ...": "接続中 ...",
+    
     "Texts": "テキスト",
 
     "Side Bar Position": "サイドバーの位置",

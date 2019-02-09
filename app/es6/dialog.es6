@@ -29,6 +29,11 @@ class Dialog {
       $('body')[0].appendChild(element)
       widget.element = element
     }
+
+    setTimeout(function() {
+      $(widget.element).dialog('open')
+    }, 200)
+
     return widget.init(options)
   }
 

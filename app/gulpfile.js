@@ -24,6 +24,8 @@ gulp.task('browser', function(done) {
     pipe(gulp.dest('../funige.github.io/namenote'))
   gulp.src('index.html').
     pipe(gulp.dest('../funige.github.io/namenote'))
+  gulp.src('js/lib/dictionary.js').
+    pipe(gulp.dest('../funige.github.io/namenote/js/lib'))
 
   done();
 });
@@ -45,7 +47,10 @@ gulp.task('desktop', function(done) {
 gulp.task('build', gulp.parallel('browser', 'desktop'));
 
 gulp.task('default', function() {
-  gulp.watch(['index.html', './style.css', './es6/*.es6', './js/lib/*.js', './*.js'], gulp.task('build'))
+  gulp.watch(['index.html',
+              './style.css',
+              './es6/*.es6',
+              './js/lib/*.js', './*.js'], gulp.task('build'))
 });
 
 

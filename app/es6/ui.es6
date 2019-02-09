@@ -32,6 +32,9 @@ class UI {
   }
 
   update() {
+    WARN('[ui update]')
+    divider.update()
+    
 //  toolBar.update()
 //  sideBar.update()
 

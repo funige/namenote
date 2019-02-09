@@ -73,7 +73,7 @@ class Menu {
     const isApp = (namenote.app) ? true : false
     setState(template, 'Full Screen', isApp || window.chrome)
     setState(template, 'Developer Tools', isApp)
-    setState(template, 'Open ...', isApp)
+//  setState(template, 'Open ...', isApp)
 
     const project = projectManager.current
     const isProject = (project) ? true : false

@@ -264,14 +264,26 @@ form td:first-child {
 
 form input {
     padding: 2px;
+    border: 1px solid #ccc;
+}
+
+form input[type=button] {
+    font-size: 12px;
+    border-radius: 2px;
+    padding: 1px 5px;
+}
+
+form option {
+    font-size: 12px;
 }
 
 form input[type=radio] {
     margin-right: 5px;
 }
 
-form label {
-    margin-right: 5px;
+form label,
+form input {
+    margin-right: 10px;
 }
 
 form .name    { width: 250px; text-overflow: ellipsis;}
@@ -331,6 +343,12 @@ form .preview { width: 500px; height: 150px; } /* 350px */
     text-align: right;
     margin-top: 14px;
     margin-right: 14px;
+    min-height: 24px;
+}
+
+.ui-button {
+    min-height: 36px;
+    vertical-align: middle;
 }
 
 .ui-dialog {
@@ -460,16 +478,19 @@ span .ui-icon {
     border-radius: 14px;
     background: rgba(0,0,0,0);
     transition: 0.5s;
+
+    user-select: none;
+    -moz-user-select: none;
 }
 
 .img-button img {
     pointer-events: none;
     margin: 3px 2px;
+
 }
 
 .img-button:hover {
     background: rgba(0,0,0,0.05);
-//  transition: 0.5s;
 }
 
 .img-button:active {
@@ -593,5 +614,9 @@ span .ui-icon {
     color: #ccc;
     width: 1px;
     height: 32px;
+}
+
+:focus {
+    outline-color: rgb(59, 153, 252)
 }
 

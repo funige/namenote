@@ -1,99 +1,97 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 
-  <!--
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data:;">
-  -->
+    <!--
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+    -->
   
-  <link rel="shortcut icon" href="favicon.ico">
-  <link rel="stylesheet" type="text/css" media="all" href="style.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="js/lib/jquery-ui.min.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="js/lib/split-pane.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="js/lib/spectrum.css" />
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" media="all" href="style.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="js/lib/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="js/lib/split-pane.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="js/lib/spectrum.css" />
 
-  <script>
-    if (typeof module === 'object') { window.module = module; module = undefined }
-  </script>
+    <script>
+     if (typeof module === 'object') { window.module = module; module = undefined }
+    </script>
   
-  <script src="js/lib/jquery.min.js"></script>
-  <script src="js/lib/jquery-ui.min.js"></script>
-  <script src="js/lib/jquery.ui.touch-punch.min.js"></script>
-  <script src="js/lib/split-pane.js"></script>
-  <script src="js/lib/spectrum.js"></script>
-  <script src="js/lib/mousetrap.js"></script>
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/jquery-ui.min.js"></script>
+    <script src="js/lib/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/lib/split-pane.js"></script>
+    <script src="js/lib/spectrum.js"></script>
+    <script src="js/lib/mousetrap.js"></script>
 
-  <script src="js/bundle-browser.js"></script>
+    <script src="js/bundle-browser.js"></script>
 
-  <script>
-    if (window.module) module = window.module
-  </script>
+    <script>
+     if (window.module) module = window.module
+    </script>
   
-  <title>Namenote</title>
-</head>
+    <title>Namenote</title>
+  </head>
 
-<body>
-  <div id="save-indicator" title="save indicator" style="display:none">
-    <img src='img/save-indicator.png'>
-  </div>
+  <body>
+    <div id="save-indicator" title="save indicator" style="display:none">
+      <img src='img/save-indicator.png'>
+    </div>
   
-  <div id="toolbar">
-    <div id="file-menu-button" title="Menu" style="margin-left:5px;"></div>
+    <div id="toolbar">
+      <div class="img-button" id="file-menu-button" title="Menu" style="margin-left:5px;"></div>
 
-    <div class="separator left"></div>
-    <div id="pen-button" title="Pen"></div>
-    <div id="eraser-button" title="Eraser"></div>
-    <div id="text-button" title="Text"></div>
+      <div class="separator left"></div>
+      <div class="img-button" id="pen-button" title="Pen"></div>
+      <div class="img-button" id="eraser-button" title="Eraser"></div>
+      <div class="img-button" id="text-button" title="Text"></div>
 
-    <div class="separator left"></div>
-    <div id="undo-button" title="Undo"></div>
-    <div id="redo-button" title="Redo"></div>
+      <div class="separator left"></div>
+      <div class="img-button" id="undo-button" title="Undo"></div>
+      <div class="img-button" id="redo-button" title="Redo"></div>
 
-    <!--input class='clipboard' id="clipboard" type="text" value=" " disabled /-->
-    
-    <div id="split-button" title="Side Bar" style="margin-right:8px;"></div>
-    <div class="separator right"></div>
+      <!--input class='clipboard' id="clipboard" type="text" value=" " disabled /-->
+      
+      <div class="img-button" id="split-button" title="Side Bar" style="margin-right:8px;"></div>
+      <div class="separator right"></div>
 
-    
-    <div id="unzoom-button" title="Zoom Out"></div>
-    <div id="zoom-button" title="Zoom In" style=""></div>
-    <div id="row-button" title="Quick Zoom" style=""></div>
+      <div class="img-button" id="unzoom-button" title="Zoom Out"></div>
+      <div class="img-button" id="zoom-button" title="Zoom In" style=""></div>
+      <div class="img-button" id="row-button" title="Quick Zoom" style=""></div>
+    </div>
 
-  </div>
-
-  <div id="main">
-    <div class="split-pane fixed-left" style="opacity:0;">
-      <div class="split-pane-component" id="left-component">
-        <div class="sidebar">
+    <div id="main">
+      <div class="split-pane fixed-left" style="opacity:0;">
+        <div class="split-pane-component" id="left-component">
+          <div class="sidebar">
           
-          <div id="sidebar-header">
-            <div class="text-button" id="page-view-button"></div>
-            <div class="text-button" id="text-view-button"></div>
-            <div id="sidebar-menu-button"></div>
-            <div class="separator right"></div>
-          </div>
-          <div id="sidebar-container">
-            <div class="page-view">
-              page view
+            <div id="sidebar-header">
+              <div class="text-button" id="page-view-button"></div>
+              <div class="text-button" id="text-view-button"></div>
+              <div class="img-button" id="sidebar-menu-button"></div>
+              <div class="separator right"></div>
             </div>
-            <div class="text-view" style="display:none;">
-              text view
+            <div id="sidebar-container">
+              <div class="page-view">
+                page view
+              </div>
+              <div class="text-view" style="display:none;">
+                text view
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="split-pane-divider" id="divider"></div>
-      <div class="split-pane-component" id="right-component">
-	<div class="main-view">
-	  This is the right component...<br>
+        <div class="split-pane-divider" id="divider"></div>
+        <div class="split-pane-component" id="right-component">
+	  <div class="main-view">
+	    main view<br>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="text-buffer" style="display:none;"></div>
-</body>
+    <div id="text-buffer" style="display:none;"></div>
+  </body>
 
 </html>

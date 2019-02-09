@@ -24,7 +24,7 @@ const menuTemplate = [
       { label: 'Open Recent', submenu: [] },
 
       { type: 'separator' },
-      { label: 'Close', click: 'close' },
+//    { label: 'Close', click: 'close' },
 //    { label: 'Close All', click: 'closeAll' },
 	
 //    { type: 'separator' },
@@ -103,7 +103,7 @@ const fileMenuTemplate = [
   { type: 'separator' },
   { label: 'Note',
     submenu: [
-      { label: 'Close', click: 'close' },
+//    { label: 'Close', click: 'close' },
 //    { label: 'Close All', click: 'closeAll' },
       { label: 'Save Snapshot As ...', click: 'snapshot' },
       { type: 'separator' },
@@ -158,7 +158,7 @@ const fileMenuTemplate = [
   { type: "separator" },
   { label: 'Settings ...', click: 'settings' },
   { label: 'Tablet Settings ...', click: 'tabletSettings' },
-  { label: 'Help', click: 'about' },
+  { label: 'About Namenote ...', click: 'about' },
 ]
 
 const sidebarMenuTemplate = [

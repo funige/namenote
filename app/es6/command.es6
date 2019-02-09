@@ -1,13 +1,18 @@
 'use strict'
 
 import { namenote } from './namenote.es6'
-import { dialog } from './dialog.es6'
-import { aboutDialog } from './about-dialog.es6'
-import { messageBox } from './message-box.es6'
+
 import { divider } from './divider.es6'
 import { toolButton } from './tool-button.es6'
 import { sideBarTab } from './side-bar-tab.es6'
 import { projectManager } from './project-manager.es6'
+import { flash } from './flash.es6'
+
+import { dialog } from './dialog.es6'
+import { aboutDialog } from './about-dialog.es6'
+import { messageBox } from './message-box.es6'
+import { openNewDialog } from './open-new-dialog.es6'
+import { tabletSettingsDialog } from './tablet-settings-dialog.es6'
 
 const _runMain = (message, data) => {
   if (namenote.app) {
@@ -33,35 +38,30 @@ class Command {
     LOG('redo')
   }
 
-  about() {
-    LOG('[about]')
-/*    
-    var fetch = require('isomorphic-fetch'); // or another library of choice.
-    var Dropbox = require('dropbox').Dropbox;
-    var dbx = new Dropbox({ accessToken: 'xzg77AnvTaAAAAAAAAAAJ64v0EczA3xqe-H-fZOLi6aBKp6oNmw3I-fH1eSuHmBz', fetch: fetch });
-    dbx.filesListFolder({path: ''})
-      .then(function(response) {
-        console.log(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    return
-*/
-
-//  dialog.open(aboutDialog)
-//  return
-    
+  auth(options) {
     dialog.open(messageBox, {
-      title: '認証',
-      message: 'ノートの保存にはDropboxのアカウントが必要です。<br>ログインしますか？',
-      ok: 'ログイン',
-      cancel: 'キャンセル',
+      title: 'Authenticate',
+      message: 'Namenote would like access to the files in your Dropbox.',
+      ok: 'Connect to Dropbox',
+      cancel: 'Cancel',
+
     }).then((responce) => {
-      WARN('...', responce)
-      location.href='http://www.asahi.com'
+      dialog.current.showProgress(T('Connecting ...'))
+      var Dropbox = require('dropbox').Dropbox;
+      var dbx = new Dropbox({ clientId: 'cex5vkoxd9nwj48'})
+      var authUrl = dbx.getAuthenticationUrl('http://localhost:8080/namenote/auth');
+
+      flash.save(options)
+      location.href = authUrl
+
     }).catch((error) => {
-      ERROR('...', error)
+      if (error) dialog.open(messageBox, { type: 'error', message: error })
+    })
+  }
+  
+  about() {
+    dialog.open(aboutDialog).then(() => {
+      dialog.close()
     })
   }
 
@@ -97,6 +97,19 @@ class Command {
     sideBarTab.select('text')
   }
   
+  openNewDialog() {
+    dialog.open(openNewDialog).then(() => {
+      dialog.close()
+
+    }).catch((error) => {
+      if (error) {
+        dialog.open(messageBox, { type: 'error', message: error }).then(() => {
+          dialog.close()
+        })
+      }
+    })
+  }
+  
   openDialog() {
     if (namenote.app) {
       namenote.app.openDialog().then((url) => {
@@ -104,28 +117,52 @@ class Command {
         projectManager.open(url)
 
       }).then((project) => {
-        //WARN('project=', project)
+        WARN('[project]', project)
         
       }).catch((error) => {
-        if (error) {
-          dialog.open(messageBox, {
-            type: 'error',
-            message: error
-          })
-        }
+        if (error) dialog.open(messageBox, { type: 'error', message: error })
       })
+
+    } else {
+      const accessToken = localStorage.getItem('namenote/raw_token')
+
+      if (accessToken) {
+        var fetch = require('isomorphic-fetch'); // or another library of choice.
+        var Dropbox = require('dropbox').Dropbox;
+        var dbx = new Dropbox({
+          fetch: fetch,
+          accessToken: accessToken
+        })
+
+        dbx.filesListFolder({path: ''}).then((response) => {
+          console.log(response);
+        }).catch((error) => {
+          console.log(error);
+        });
+        return
+        ///////////////////////////////////////////////////////////////
+
+      } else {
+        return this.auth(['openDialog'])
+      }
     }
   }
 
   open(url) {
-    LOG('open...')
-    projectManager.open(url)
+    if (namenote.app) {
+      WARN(`open '${url}'...`)
+      projectManager.open(url).then((project) => {
+        WARN('[project]', project)
+        
+      }).catch((error) => {
+        if (error) dialog.open(messageBox, { type: 'error', message: error })
+      })
+      
+    } else {
+      return this.auth(['open', url])
+    }
   }
 
-  openNewDialog() {
-    WARN('open new dialog..')
-  }
-  
   close() {
     projectManager.close()
   }
@@ -145,14 +182,22 @@ class Command {
   dockRight() {
     divider.setPosition('right')
   }
-
   
   toggleEditMode() {}
+
+  tabletSettings() {
+    dialog.open(tabletSettingsDialog).then(() => {
+      dialog.close()
+
+    }).catch(() => {
+      dialog.close()
+    })
+  }
   
   //////////////////
   
   do(item, data) {
-    if (this[item]) {
+    if (item && this[item]) {
       this[item](data)
     }
   }
