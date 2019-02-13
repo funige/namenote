@@ -49,10 +49,12 @@ class Command {
       dialog.current.showProgress(T('Connecting ...'))
       var Dropbox = require('dropbox').Dropbox;
       var dbx = new Dropbox({ clientId: 'cex5vkoxd9nwj48'})
-      var authUrl = dbx.getAuthenticationUrl('http://localhost:8080/namenote/auth');
+      var authUrl = (location.href.indexOf('localhost') < 0) ?
+          'https://funige.github.io/namenote/auth':
+          'http://localhost:8080/namenote/auth'
 
       flash.save(options)
-      location.href = authUrl
+      location.href = dbx.getAuthenticationUrl(authUrl)
 
     }).catch((error) => {
       if (error) dialog.open(messageBox, { type: 'error', message: error })
@@ -124,22 +126,20 @@ class Command {
       })
 
     } else {
-      const accessToken = localStorage.getItem('namenote/raw_token')
-
+      const accessToken = namenote.accessToken()
       if (accessToken) {
+        ///////////////////////////////////////////////////////////////
         var fetch = require('isomorphic-fetch'); // or another library of choice.
         var Dropbox = require('dropbox').Dropbox;
         var dbx = new Dropbox({
           fetch: fetch,
           accessToken: accessToken
         })
-
         dbx.filesListFolder({path: ''}).then((response) => {
           console.log(response);
         }).catch((error) => {
           console.log(error);
         });
-        return
         ///////////////////////////////////////////////////////////////
 
       } else {
@@ -149,8 +149,8 @@ class Command {
   }
 
   open(url) {
-    if (namenote.app) {
-      WARN(`open '${url}'...`)
+    WARN(`open '${url}'...`)
+    if (namenote.accessToken()) {
       projectManager.open(url).then((project) => {
         WARN('[project]', project)
         
@@ -189,8 +189,8 @@ class Command {
     dialog.open(tabletSettingsDialog).then(() => {
       dialog.close()
 
-    }).catch(() => {
-      dialog.close()
+    }).catch((error) => {
+      if (error) dialog.open(messageBox, { type: 'error', message: error })
     })
   }
   

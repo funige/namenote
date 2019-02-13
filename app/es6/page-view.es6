@@ -5,13 +5,16 @@ import { View } from './view.es6'
 ////////////////////////////////////////////////////////////////
 
 class PageView extends View {
-  constructor(element) {
-    super(element)
-    this.init()
+  constructor() {
+    super()
   }
 
-  init() {
+  init(element) {
+    this.element = element
+    this.preventScrollFreeze()
   }
 }
 
-export { PageView }
+const pageView = new PageView()
+
+export { pageView }

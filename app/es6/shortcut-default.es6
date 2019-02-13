@@ -12,7 +12,7 @@ const shortcutDefault = {
   
   close: ['command+w', 'alt+w'],
   quit: ['command+q', 'alt+q'],
-  reload: ['command+shift+r'],
+  reload: ['command+r', 'alt+r'],
 
   exportCSNFDialog: ['command+p', 'alt+p'],
   exportPDFDialog: ['command+shift+p', 'alt+shift+p'],

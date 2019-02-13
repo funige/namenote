@@ -6,10 +6,12 @@ import { Page } from './page.es6'
 
 class Project {
   constructor(url) {
-    this.url = url.replace(/\\/g, '/')
-
+//  url = url.replace(/\\/g, '/') //TODO:ここは不適当
+    this.url = url
     this.pages = []
-    this.current = null
+    this.currentPage = null
+    this.maxPID = 0
+    this.dirty = true
   }
 
   destructor() {
@@ -20,18 +22,32 @@ class Project {
     })
   }
 
-  findIndex(page) {
-    for (let i = 0; i < this.pages.length; i++) {
-      if (this.pages[i].pid == page.pid) {
-        return i
-      }
-    }
-    return -1
-  }
+  init(data) {
+    this.params = $.extend({}, data.params)
 
-  name() {
-    return (this.url) ? this.url.replace(/^.*\//, '') : T('Untitled')
+    const pageCount = this.params.page_count
+    for (const i = 0; i < pageCount; i++) {
+      const pid = (data.pids) ? data.pids[i] : null
+      this.currentPage = this.appendPage(pid)
+      this.currentPage.updateIndex(i + 1)
+      if (this.maxPID < (pid || 0)) this.maxPID = pid
+    }
+    this.selectPage(this.pages[0].pid)
+    return this
   }
+  
+//findIndex(page) {
+//  for (let i = 0; i < this.pages.length; i++) {
+//    if (this.pages[i].pid == page.pid) {
+//      return i
+//    }
+//  }
+// return -1
+//}
+//
+//name() {
+//  return (this.url) ? this.url.replace(/^.*\//, '') : T('Untitled')
+//}
 }
 
 export { Project }

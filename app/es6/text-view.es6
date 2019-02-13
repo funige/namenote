@@ -1,18 +1,20 @@
 'use strict'
 
-import { namenote } from './namenote.es6'
 import { View } from './view.es6'
 
 ////////////////////////////////////////////////////////////////
 
 class TextView extends View {
-  constructor(element) {
-    super(element)
-    this.init()
+  constructor() {
+    super()
   }
 
-  init() {
+  init(element) {
+    this.element = element
+    this.preventScrollFreeze()
   }
 }
 
-export { TextView }
+const textView = new TextView()
+
+export { textView }

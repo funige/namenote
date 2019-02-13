@@ -1,12 +1,13 @@
 'use strict'
 
+import { namenote } from './namenote.es6'
+
 import { Project } from './project.es6'
 import { recentURL } from './recent-url.es6'
 import { menu } from './menu.es6'
 import { title } from './title.es6'
 import { viewButton } from './view-button.es6'
 
-import { mainView } from './main-view.es6'
 
 ////////////////////////////////////////////////////////////////
 
@@ -26,22 +27,13 @@ class ProjectManager {
     }
     
     this.current = project
-    mainView.setProject(project)
+    namenote.mainView.setProject(project)
     title.set(project ? project.name() : null)
 
     menu.update()
     viewButton.update()
   }
 
-  findIndex(url) {
-    for (let i = 0; i < this.projects.length; i++) {
-      if (this.projects[i].url == url) {
-        return i
-      }
-    }
-    return -1
-  }
-  
   open(url) {
     const index = this.findIndex(url)
     const project = (index >= 0) ? this.projects[index] : new Project(url)
@@ -63,6 +55,15 @@ class ProjectManager {
       }
       project.destructor()
     }
+  }
+
+  findIndex(url) {
+    for (let i = 0; i < this.projects.length; i++) {
+      if (this.projects[i].url == url) {
+        return i
+      }
+    }
+    return -1
   }
 }
 

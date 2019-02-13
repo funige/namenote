@@ -32,7 +32,7 @@ class AboutDialog {
         position: { my:'center center', at:'center center' },
         title: T('About Namenote'),
         modal: true,
-        width: 600,
+        width: 360,
         buttons: buttons,
       })
     })
