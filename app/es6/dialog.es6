@@ -1,5 +1,7 @@
 'use strict'
 
+import { messageBox } from './message-box.es6'
+
 class Dialog {
   constructor() {
     this.current = null
@@ -46,6 +48,17 @@ class Dialog {
     }
     widget.element = null
     this.current = null
+  }
+
+  alert(error) {
+    if (error) {
+      ERROR(error)
+      this.open(messageBox, { type: 'error', message: error }).then(() => {
+        this.close()
+      })
+    } else {
+      this.close()
+    }
   }
 }
 

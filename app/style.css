@@ -346,10 +346,13 @@ form .preview { width: 500px; height: 150px; } /* 350px */
     min-height: 24px;
 }
 
+/* 
+   May break html menu, but seems good so far..
 .ui-button {
     min-height: 36px;
     vertical-align: middle;
 }
+*/
 
 .ui-dialog {
 //  box-shadow: 0px 15px 25px 0px rgba(50, 50, 50, 0.7);

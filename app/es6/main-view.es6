@@ -8,13 +8,12 @@ import { View } from './view.es6'
 
 class MainView extends View {
   constructor(element) {
-    super()
+    super(element)
+
+    this.init(element)
   }
 
   init(element) {
-    this.element = element
-    this.preventScrollFreeze()
-    
     this.scale = 1
 
     const pageWidth = 1000
@@ -61,6 +60,4 @@ class MainView extends View {
   }
 }
 
-const mainView = new MainView()
-
-export { mainView }
+export { MainView }

@@ -99,6 +99,16 @@ class App {
       })
     })
   }
+
+  ////////////////
+
+  stat(path, callback) {
+    fs.stat(path, callback)
+  }
+
+  readdir(path, callback) {
+    fs.readdir(path, callback)
+  }
   
   ////////////////
 

@@ -24,7 +24,9 @@ class MessageBox {
       const buttons = {}
       buttons[T(options.ok || 'Ok')] = resolve
       if (options.cancel) {
-        buttons[T(options.cancel || 'Cancel')] = reject
+        buttons[T(options.cancel || 'Cancel')] = (e) => {
+          reject()
+        }
       }
       
       const string = locale.translateHTML(`

@@ -25,13 +25,12 @@ class RecentURL {
   resetStorage() {
     this.data = []
     this.save()
-
-//  setTimeout(() => {
     menu.update()
-//  }, 500)
   }
 
   add(url) {
+    if (!url) return
+    
     this.data = this.data.filter((value) => value != url)
     this.data.unshift(url)
 

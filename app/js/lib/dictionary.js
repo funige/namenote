@@ -71,6 +71,8 @@ const dictionary = {
     "Connect to Dropbox": "Dropbox に接続",
     "Cancel": "キャンセル",
     "Connecting ...": "接続中 ...",
+    "Logout": "ログアウト",
+    "Disconnected.": "接続を解除しました。",
     
     "Texts": "テキスト",
 

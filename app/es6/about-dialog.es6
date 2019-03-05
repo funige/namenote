@@ -24,17 +24,47 @@ class AboutDialog {
           Namenote v${namenote.version}
           <br><br>
           <small>Copyright (c) Funige</small>
+<br>
+<br>
+<p>
+<style>
+</style>
+
+<label for='hoge'>hogehoge...
+<select name='hoge' id='hoge'>
+<option>Hoge<p>Hoge2</option>
+<option>Foge</option>
+<option>Gege</option>
+</select>
+</label>
+
+
+    <label for="salutation">Select a title</label>
+    <select name="salutation" id="salutation">
+      <option disabled selected>Please pick one</option>
+      <option>Mr.</option>
+      <option>Mrs.</option>
+      <option>Dr.</option>
+      <option>Prof.</option>
+      <option>Other</option>
+    </select></p>
         </center>`)
 
       $(this.element).html(string)
       $(this.element).dialog({
         autoOpen: false,
+        open: function() {
+        },
         position: { my:'center center', at:'center center' },
         title: T('About Namenote'),
         modal: true,
         width: 360,
         buttons: buttons,
       })
+
+      $('#hoge').selectmenu()
+      $('#salutation').selectmenu()
+
     })
   }
 }

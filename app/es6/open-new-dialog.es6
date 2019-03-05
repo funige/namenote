@@ -17,7 +17,7 @@ class OpenNewDialog {
       const buttons = {}
       buttons[T('Ok')] = resolve
       buttons[T('Cancel')] = reject
-      
+
       const string = locale.translateHTML(`
         <table>
           <tr><td>T(Notebook name):

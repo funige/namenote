@@ -5,8 +5,10 @@ import { View } from './view.es6'
 ////////////////////////////////////////////////////////////////
 
 class TextView extends View {
-  constructor() {
-    super()
+  constructor(element) {
+    super(element)
+
+    this.init(element)
   }
 
   init(element) {
@@ -15,6 +17,4 @@ class TextView extends View {
   }
 }
 
-const textView = new TextView()
-
-export { textView }
+export { TextView }

@@ -16,7 +16,104 @@ class ProjectManager {
     this.projects = []
     this.current = null
   }
+/*
+  project.verify(url) {
+    return Promise.resolve()
+  }
 
+  
+  open(url) {
+    return new Promise((resolve, reject)) => {
+      const project =find(url)
+      if (project) {
+        //メモリにあれば最新か確認
+        project.verify(() => {
+          resolve(project)
+        }, () => {
+          project = new Project(url)
+          resolve(project)
+        })
+      }
+      
+      //メモリにない/最新でない時はnew
+      project = new Project(url)
+      resolve(project)
+    }
+  }
+
+  //apiの設計・・・
+
+  command.openDialog().then((url) => {
+    const project = projectManager.open(url)
+    resolve(project)
+
+  }).then((project) => {
+    project.load()
+    resolve()
+
+  }).then((project) => {
+    Promise.all(project.pages.map(getPage))
+}).then(page) {
+  }).catch((error) => {
+    //error
+  )}
+
+  command.open(raw_url).then((url) => {
+    const project = projectManager.open(url)
+    resolve(project)
+
+  }).then((project) => {
+    project.load()
+    resolve()
+
+  }).catch((error) => {
+    //error
+  )}
+
+  ////command.open(raw_url).then((url) => {
+  ////  projectManager.open(url).then((project) => {
+  ////  project.load()})
+  ////})
+  ////command.openDialog().then((url) => {
+  ////  projectManager.open(url).then((project) => {
+  ////  project.load()})
+  ////})
+*/
+  
+  open(url) {
+    return new Promise((resolve, reject) => {
+      let project = this.find(url)
+      if (!project) {
+        project = new Project(url)
+        this.projects.push(project)
+      }
+      if (project) {
+        resolve(this.select(project))
+      }
+      reject("maybe bad url..")
+    })
+  }
+
+  find(url) {
+    for (const project of this.projects) {
+      if (prject.url == url) {
+        return project
+      }
+    }
+    return null
+  }
+
+  select(project) {
+    this.current = project
+    title.set(project ? project.name() : null)
+    recentURL.add(project)
+
+    mainView.setProject(project)
+    menu.update()
+    viewButton.update()
+  }
+  
+  /*
   select(project) {
     if (project) {
       const index = this.findIndex(project.url)
@@ -65,6 +162,30 @@ class ProjectManager {
     }
     return -1
   }
+  */
+
+  /*
+  findProjectName(url) {
+    return new Promise((resolve, reject) => {
+      if (url.match(/.namenote$/)) {
+        resolve(url)
+
+      } else {
+        if (namenote.app) {
+          namenote.app.readdir(url, (err, files) => {
+            for (const item of files) {
+              if (item.lastIndexOf('.namenote') == 1) {
+                return resolve(`${url}/${item}`)
+              }
+            }
+          })
+        } else {
+          reject('not implemented yet.')
+        }
+      }
+    })
+  }
+  */
 }
 
 const projectManager = new ProjectManager
