@@ -28,7 +28,6 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
-      //blinkFeatures: 'PreciseMemoryInfo',
     }
   })
   global.win = win
@@ -41,7 +40,6 @@ function createWindow () {
   win.loadURL(`file://${__dirname}/index-desktop.html`)
   
   if (debug) win.webContents.openDevTools()
-//win.webContents.openDevTools()
 
   win.on('closed', function () {
     win = null
@@ -107,11 +105,21 @@ ipcMain.on('set-title', (event, arg) => {
 })
 
 ipcMain.on('quit', (event) => {
+  console.log('[QUIT..]')
+  event.preventDefault()
+  
   app.quit()
   event.returnValue = "ok"
 })
 
+/*
+app.on('before-quit', function() {
+  console.log('before-quit')
+})
+*/
+
 ipcMain.on('developerTools', (event) => {
+  console.log('[DEVELOPER TOOLS]')
   win.webContents.toggleDevTools()
   event.returnValue = "ok"
 })

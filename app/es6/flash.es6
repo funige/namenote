@@ -1,5 +1,6 @@
 'use strict'
 
+import { namenote } from './namenote.es6'
 import { command } from './command.es6'
 
 ////////////////////////////////////////////////////////////////
@@ -19,8 +20,7 @@ class Flash {
     const json = localStorage.getItem('namenote/flash')
     localStorage.removeItem('namenote/flash')
 
-    WARN('[flash.load()]', json)
-    
+    //WARN('flash', json)
     if (json) {
       const options = JSON.parse(json)
       command.do(...options)
@@ -30,15 +30,13 @@ class Flash {
   }
 
   setUnloadWarning() {
-    if (this.app) return
-
-    window.onbeforeunload = (e) => {
+    if (!namenote.app) window.onbeforeunload = (e) => {
       return('Your data will be lost.')
     }
   }
 
   removeUnloadWarning() {
-    window.onbeforeunload = null
+    if (!namenote.app) window.onbeforeunload = null
   }
 }
 

@@ -122,6 +122,10 @@ class HTMLMenu {
       }.bind(this),
     })
 
+    //TODO
+    //file-menu-buttonまたはfile-dropdownをクリックした場合は消えない
+    //それ以外がクリックされたらcollapse
+    
     $(menu).on('menufocus', () => {
       clearTimeout(timers[id])
     })

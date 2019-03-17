@@ -78,7 +78,8 @@ class Command {
   }
   
   openNewDialog() {
-    namenote.fs.openNewDialog()
+    LOG('open new dialog')
+//  namenote.fileSystem.openNewDialog()
   }
 
   /*
@@ -94,11 +95,11 @@ class Command {
   }*/
 
   openDialog() {
-    namenote.fs.openDialog()
+    namenote.fileSystem.openDialog()
   }
 
   open(url) {
-    namenote.fs.open(url)
+    namenote.fileSystem.open(url)
   }
 
   close() {
@@ -131,7 +132,10 @@ class Command {
   }
 
   logout() {
-    namenote.fs.logout()
+    namenote.fileSystem.logout()
+  }
+
+  hoge() {
   }
   
   //////////////////

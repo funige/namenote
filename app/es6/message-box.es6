@@ -30,10 +30,10 @@ class MessageBox {
       }
       
       const string = locale.translateHTML(`
-        <div class='message-box'><p>
+        <div class='message-box'>
           ${this.getHeader(options)}
-          ${this.getMessage(options)}
-        </p></div>
+          <p>${this.getMessage(options)}</p>
+        </div>
         <div class='dialog-message'></div>`)
       
       $(this.element).html(string)
@@ -54,7 +54,7 @@ class MessageBox {
   
   getHeader(options) {
     if (headerImage[options.type]) {
-      return `<img src="${headerImage[options.type]}" width="48px" /><br><br>`
+      return `<img src="${headerImage[options.type]}" width="48px"/>`
 
     } else {
       return ''

@@ -21,6 +21,12 @@ function encodePosition(id) {
   return `${x},${1.0 - y}`
 }
 
+function limit(value, min, max) {
+  if (value < min) value = min
+  if (value > max) value = max
+  return value
+}
+
 ////////////////////////////////////////////////////////////////
 
 class TabletSettingsDialog {
@@ -32,8 +38,8 @@ class TabletSettingsDialog {
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons[T('Ok')] = resolve
-      buttons[T('Cancel')] = reject
+      buttons[T('Ok')] = () => { this.saveParams(); resolve() }
+      buttons[T('Cancel')] = () => { reject() }
 
       const string = locale.translateHTML(`
         <div style="width:300px; height:250px; font-size:12px;">
@@ -54,7 +60,7 @@ class TabletSettingsDialog {
           </div>
         </div>
         <input type='submit' style='display: none' />
-        <input name='reset' class='reset' type='button' value='T(Reset Settings to Default)' />`)
+        <input name='reset' type='button' value='T(Reset Settings to Default)' />`)
       
       $(this.element).html(`<form id='tablet-settings'>${string}</form>`)
       $(this.element).dialog({
@@ -69,130 +75,47 @@ class TabletSettingsDialog {
         }
       })
 
+      document.forms['tablet-settings'].reset.onclick = () => {
+        this.resetSettings()
+      }
+
+      this.initForm()
     })
   }
 
-  saveParams() {}
-}
-
-const tabletSettingsDialog = new TabletSettingsDialog()
-
-export { tabletSettingsDialog }
-
-/*
-const tabletSettingsDialog = {
-  
-  init: () => {
-    $('#tablet-settings-dialog').dialog({
-      autoOpen: true,
-      position: { at:'center top+150px' },
-      title: T('Tablet Settings'),
-      modal: true,
-      width: 360,
-      buttons: { Ok: tabletSettingsDialog.ok, Cancel: tabletSettingsDialog.cancel },
-      open: function() {
-        $(this).parent().find('button:nth-child(1)').focus();
-      }
-o    })
-
-    const string = locale.translateHTML(`
-    <div style="width:300px; height:250px; font-size:12px;">
-      <div id="tablet-curve-container">
-        <canvas id="tablet-curve" width="${width}px" height="${width}px" style="width:${width}px; height:${width}px; border: 1px solid black"></canvas>
-
-        <div style="top:-15px; left:-205px; width: 200px; text-align:right;">100%</div>
-        <div style="top:85px; left:-205px; width: 200px; text-align:right;">T(Output)</div>
-        <div style="top:185px; left:-205px; width: 200px; text-align:right;">0%</div>
-
-        <div style="left:0px; top:200px;">0%</div>
-        <div style="left:100px; top:200px;">T(Pen pressure)</div>
-        <div style="left:200px; top:200px;">100%</div>
-
-        <div class="control-point" id="tablet-curve-left" style="left:100px; top:-10px"><div></div></div>
-        <div class="control-point" id="tablet-curve-right" style="left:200px; top:-20px;"><div></div></div>
-        <div class="control-point" id="tablet-curve-center" style="left:0px; top:0px"><div></div></div>
-      </div>
-    </div>
-    <input type='submit' style='display: none' />
-    <input name='reset' class='reset' type='button' value='T(Reset Settings to Default)' />
-    `)
-
-    $('#tablet-settings-dialog').html(`<form id='tablet'>${string}</form>`)
-    $('#tablet').on('submit', function() { return tabletSettingsDialog.ok() })
-    document.forms['tablet'].reset.onclick = () => {
-      tabletSettingsDialog.resetSettings()
-    }
-    
+  initForm() {
     $('#tablet-curve-left').draggable({
       axis: "y",
       drag: function(event, ui) {
-        ui.position.top = helper.limit(ui.position.top, - d, width - d)
-        tabletSettingsDialog.updateCanvas()
-      }
+        ui.position.top = limit(ui.position.top, - d, width - d)
+        this.updateCanvas()
+      }.bind(this)
     })
     $('#tablet-curve-right').draggable({
       axis: "y",
       drag: function(event, ui) {
-        ui.position.top = helper.limit(ui.position.top, -d, width - d)
-        tabletSettingsDialog.updateCanvas()
-      }
+        ui.position.top = limit(ui.position.top, -d, width - d)
+        this.updateCanvas()
+      }.bind(this)
     })
     $('#tablet-curve-center').draggable({
       drag: function(event, ui) {
-        ui.position.top = helper.limit(ui.position.top, -d, width - d)
-        ui.position.left = helper.limit(ui.position.left, -d, width - d)
-        tabletSettingsDialog.updateCanvas()
-      }
+        ui.position.top = limit(ui.position.top, -d, width - d)
+        ui.position.left = limit(ui.position.left, -d, width - d)
+        this.updateCanvas()
+      }.bind(this)
     })
 
-    tabletSettingsDialog.initForm()
-  },
-
-  ok: () => {
-    const curveLeft = encodePosition('tablet-curve-left')
-    const curveRight = encodePosition('tablet-curve-right')
-    const curveCenter = encodePosition('tablet-curve-center')
-    config.data.tabletCurveLeft = curveLeft
-    config.data.tabletCurveRight = curveRight
-    config.data.tabletCurveCenter = curveCenter
-    config.save()
-
-    config.precalculatePressure();
-    
-    helper.closeDialog(tabletSettingsDialog)
-    //$(tabletSettingsDialog.element).dialog('close')
-    return false
-  },
-
-  cancel: () => {
-    helper.closeDialog(tabletSettingsDialog)
-    //$(tabletSettingsDialog.element).dialog('close')
-  },
-
-  initForm: () => {
     const curveLeft = config.getValue('tabletCurveLeft', '0,0')
     const curveRight = config.getValue('tabletCurveRight', '1,1')
     const curveCenter = config.getValue('tabletCurveCenter', '0.5,0.5')
     $('#tablet-curve-left').css(decodePosition(curveLeft))
     $('#tablet-curve-right').css(decodePosition(curveRight))
     $('#tablet-curve-center').css(decodePosition(curveCenter))
-    tabletSettingsDialog.updateCanvas()
-  },
+    this.updateCanvas()
+  }
 
-  resetSettings: () => {
-    config.data.tabletCurveLeft = '0,0'
-    config.data.tabletCurveRight = '1,1'
-    config.data.tabletCurveCenter = '0.5,0.5'
-    config.save()
-    
-    tabletSettingsDialog.initForm()
-  },
-  
-  show: () => {
-    helper.openDialog(tabletSettingsDialog)
-  },
-
-  updateCanvas: () => {
+  updateCanvas() {
     const canvas = $('#tablet-curve')[0]
     const ctx = canvas.getContext('2d')
 
@@ -221,9 +144,26 @@ o    })
     ctx.moveTo(x0, y0)
     ctx.quadraticCurveTo(x1, y1, x2, y2)
     ctx.stroke()
-  },
+  }
+  
+  saveParams() {
+    const curveLeft = encodePosition('tablet-curve-left')
+    const curveRight = encodePosition('tablet-curve-right')
+    const curveCenter = encodePosition('tablet-curve-center')
+    config.data.tabletCurveLeft = curveLeft
+    config.data.tabletCurveRight = curveRight
+    config.data.tabletCurveCenter = curveCenter
+    config.save()
+  }
+
+  resetSettings() {
+    $('#tablet-curve-left').css(decodePosition('0,0'))
+    $('#tablet-curve-right').css(decodePosition('1,1'))
+    $('#tablet-curve-center').css(decodePosition('0.5,0.5'))
+    setTimeout(this.updateCanvas, 100)
+  }
 }
 
+const tabletSettingsDialog = new TabletSettingsDialog()
 
 export { tabletSettingsDialog }
-*/

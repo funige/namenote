@@ -34,11 +34,11 @@ class Namenote {
   init() {
     if (this.app) {
       const LocalFileSystem = require('./local-file-system.es6').LocalFileSystem
-      this.fs = new LocalFileSystem()
+      this.fileSystem = new LocalFileSystem()
 
     } else {
       const DropboxFileSystem = require('./dropbox-file-system.es6').DropboxFileSystem
-      this.fs = new DropboxFileSystem()
+      this.fileSystem = new DropboxFileSystem()
     }
 
     config.load()
@@ -68,6 +68,15 @@ class Namenote {
       LOG('contextmenu')
       return false
     }
+
+    document.addEventListener('click', (e) => {
+      let element = e.target
+      console.log('-------------')
+      while (element) {
+        console.log('>', element.id || 'null')
+        element = element.parentNode
+      }
+    })
   }
 
   ////////////////

@@ -327,14 +327,6 @@ form .preview { width: 500px; height: 150px; } /* 350px */
  */
 
 .dialog {
-    /*
-    position: fixed; 
-    top: 50% !important;
-    left: 50% !important; 
-    margin-top: -0px !important;
-    margin-left: -0px !important;
-   */
-    
     margin-top: 1em;
     font-size: 14px;
 }
@@ -344,6 +336,20 @@ form .preview { width: 500px; height: 150px; } /* 350px */
     margin-top: 14px;
     margin-right: 14px;
     min-height: 24px;
+}
+
+.message-box {
+    display: table;
+}
+
+.message-box img {
+    display: table-cell;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.message-box p {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 /* 

@@ -22,57 +22,35 @@ class App {
   constructor() {
   }
 
-  loadJSON(url) {
-    return new Promise((resolve, reject) => {
-      fs.readFile(url, 'utf8', (err, json) => {
-        if (err) {
-          return reject(err)
-        }
-        resolve(JSON.parse(json))
-      })
-    })
-  }
-
-  saveJSON(url, data) {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(url, JSON.stringify(data), 'utf8', (err) => {
-        if (err) {
-          return reject(err)
-        }
-        resolve()
-      })
-    })
-  }
-  
   openDialog(defaultPath) {
     defaultPath = defaultPath || config.data.defaultPath
-    if (!fs.existsSync(config.data.defaultPath)) {
+    if (!fs.existsSync(defaultPath)) {
       defaultPath = null
     }
     
     return new Promise((resolve, reject) => {
-      const params = JSON.parse(JSON.stringify(openParams))
-      params.defaultPath = defaultPath
-      
+      const params = {
+        defaultPath: defaultPath,
+        properties: ['openDirectory', 'openFile'],
+        filters: [
+          { name: 'Namenote', extensions: ['namenote'] }
+        ]
+      }
       dialog.showOpenDialog(params, (filenames) => {
         if (filenames) {
-          const filename = this.getFilename(filenames[0])
-          if (filename) {
-            const dirname = path.dirname(filename)
-            this.updateDefaultPath(dirname)
-            resolve(dirname)
-
-          } else {
-            reject(`${T("File open error.")}`)
-          }
-          return
+          //const filename = this.getFilename(filenames[0])
+          namenote.fileSystem.completePath(filenames[0]).then((url) => {
+            WARN('-...', url)
+            const baseURL = path.dirname(url)
+            this.updateDefaultPath(baseURL)
+            resolve(url)
+          })
         }
-        reject()
       }) 
     })
   }
 
-  getFilename(filename) {
+/*  getFilename(filename) {
     if (filename.match(/\.namenote$/i)) {
       return filename
     }
@@ -85,7 +63,7 @@ class App {
       }
     }
     return null
-  }
+  }*/
   
   updateDefaultPath(url) {
     config.data.defaultPath = path.dirname(url) //.replace(/\/[^/]+?$/, '')
@@ -100,7 +78,7 @@ class App {
     })
   }
 
-  ////////////////
+  /*////////////////
 
   stat(path, callback) {
     fs.stat(path, callback)
@@ -111,7 +89,8 @@ class App {
   }
   
   ////////////////
-
+  */
+  
   rebuildMenu(data) {
     ipcRenderer.send('rebuild-menu', JSON.stringify(data))
   }

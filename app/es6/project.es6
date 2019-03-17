@@ -5,13 +5,20 @@ import { Page } from './page.es6'
 ////////////////////////////////////////////////////////////////
 
 class Project {
-  constructor(url) {
-//  url = url.replace(/\\/g, '/') //TODO:ここは不適当
+  constructor(url, json) {
+//  url = url.replace(/\\/g, '/') //TODO:Windows対応は必要だがここは不適当
+
     this.url = url
+    this.baseURL = url.replace(/\/[^/]*$/, '')
+
     this.pages = []
     this.currentPage = null
     this.maxPID = 0
     this.dirty = true
+
+    if (json) {
+      this.init(json)
+    }
   }
 
   destructor() {
@@ -24,7 +31,9 @@ class Project {
 
   init(data) {
     this.params = $.extend({}, data.params)
+    this._pids = $.extend([], data.pids)
 
+/*
     const pageCount = this.params.page_count
     for (const i = 0; i < pageCount; i++) {
       const pid = (data.pids) ? data.pids[i] : null
@@ -33,6 +42,7 @@ class Project {
       if (this.maxPID < (pid || 0)) this.maxPID = pid
     }
     this.selectPage(this.pages[0].pid)
+*/
     return this
   }
   

@@ -6,8 +6,7 @@ import { FileSystem } from './file-system.es6'
 import { flash } from './flash.es6'
 import { dialog } from './dialog.es6'
 import { messageBox } from './message-box.es6'
-
-let fs = null
+import { openDialog } from './open-dialog.es6'
 
 ////////////////////////////////////////////////////////////////
 
@@ -17,28 +16,59 @@ class DropboxFileSystem extends FileSystem {
     this.type = "dropbox"
   }
 
+  openDialog() {
+    if (!this.auth('openDialog')) return
+    WARN(`openDialog..`)
+    
+    dialog.open(openDialog).then((url) => {
+      return this.readProject(url)
+
+    }).then((project) => {
+
+      /*
+      project._pids.forEach((pid, index) => {
+        const pageURL = `${project.baseURL}/${pid}.json`
+        this.readPage(pageURL).then((page) => {
+          page.pid = pid
+          project.pages[index] = page
+          
+        }).catch((error) => { WARN(error) })
+      })
+      return project
+*/
+    }).catch((error) => dialog.alert(error))
+  }
+  
+  ////////////////
+
   stat(url, callback) {
-    if (!fs) return
-    return fs.stat(url, callback)
+    if (!this.auth()) return
+    return this.fs.stat(url, callback)
   }
   
   readdir(url, callback) {
-    if (!fs) return
-    return fs.readdir(url, { mode: 'stat' }, callback)
+    if (!this.auth()) return
+    return this.fs.readdir(url, { mode: 'stat' }, callback)
   }
-    
-  open(url) {
-    if (!fs && !this.auth('open', url)) return
 
-    this.completePath(url).then((url) => {
-      WARN(`open ${url}..`)
-    }).catch((error) => dialog.alert(error))
+  readFile(url, callback) {
+    if (!this.auth()) return
+    return this.fs.readFile(url, 'utf8', callback)
   }
+
+  writeFile(url, data, callback) {
+    if (!this.auth()) return
+    return this.fs.writeFile(url, data, 'utf8', callback)
+  }
+  
+  ////////////////
 
   auth(item, data) {
     const accessToken = localStorage.getItem('namenote/raw_token')
     if (accessToken) {
-      fs = require('dropbox-fs')({ apiKey: accessToken })
+      if (!this.fs) {
+        this.fs = require('dropbox-fs')({ apiKey: accessToken })
+      }
       return true
     }
 
@@ -65,7 +95,7 @@ class DropboxFileSystem extends FileSystem {
   }
 
   logout() {
-    fs = null
+    this.fs = null
     localStorage.removeItem('namenote/raw_token')
     dialog.open(messageBox, {
       title: 'Logout',

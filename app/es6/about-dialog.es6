@@ -27,16 +27,13 @@ class AboutDialog {
 <br>
 <br>
 <p>
-<style>
-</style>
 
-<label for='hoge'>hogehoge...
+<label for='hoge'>hogehoge...</label>
 <select name='hoge' id='hoge'>
 <option>Hoge<p>Hoge2</option>
 <option>Foge</option>
 <option>Gege</option>
 </select>
-</label>
 
 
     <label for="salutation">Select a title</label>

@@ -5,46 +5,39 @@ import { dialog } from './dialog.es6'
 import { openNewDialog } from './open-new-dialog.es6'
 import { openDialog } from './open-dialog.es6'
 
-const fs = window.require('fs-extra')
-
 ////////////////////////////////////////////////////////////////
 
 class LocalFileSystem extends FileSystem {
   constructor() {
     super()
+    this.fs = window.require('fs-extra')
     this.type = "local"
   }
 
+  openDialog() {
+    namenote.app.openDialog().then((path) => {
+      WARN(path)
+      this.open(path)
+    })
+  }
+  
+  ////////////////
+
   stat(url, callback) {
-    return fs.stat(url, callback)
+    return this.fs.stat(url, callback)
   }
 
   readdir(url, callback) {
-    return fs.readdir(url, { withFileTypes: true }, callback)
+    return this.fs.readdir(url, { withFileTypes: true }, callback)
   }
 
-  openNewDialog() {
-    dialog.open(openNewDialog).then((url) => {
-      WARN(`open new ${url}..`)
-      dialog.close()
-    }).catch((error) => dialog.alert(error))
-  }
-  
-  openDialog() {
-    dialog.open(openDialog).then((url) => {
-      WARN(`open ${url}..`)
-      dialog.close()
-    }).catch((error) => dialog.alert(error))
-  }
-  
-  open(url) {
-    this.completePath(url).then((url) => {
-      WARN(`open ${url}..`)
-    }).catch((error) => dialog.alert(error))
+  readFile(url, callback) {
+    return this.fs.readFile(url, 'utf8', callback)
   }
 
-  accessToken() { return null }
-  logout() {}
+  writeFile(url, data, callback) {
+    return this.fs.writeFile(url, data, 'utf8', callback)
+  }
 }
 
 export { LocalFileSystem }

@@ -3,12 +3,17 @@
 ////////////////////////////////////////////////////////////////
 
 class Page {
-  constructor() {
-    this.pid = 0
+  constructor(json) {
+    this.init(json)
   }
 
   destructor() {
     log('page destructor', this.pid)
+  }
+
+  init(data) {
+    this.tmp = $.extend({}, data)
+    return this
   }
 }
 
