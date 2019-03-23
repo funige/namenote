@@ -29,8 +29,6 @@ class RecentURL {
   }
 
   add(url) {
-    if (!url) return
-    
     this.data = this.data.filter((value) => value != url)
     this.data.unshift(url)
 

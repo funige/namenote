@@ -19,7 +19,7 @@ import { TextView } from './text-view.es6'
 
 class Namenote {
   constructor() {
-    this.version = "2.0.0-alpha.4-debug"
+    this.version = "2.0.0-alpha.5-debug"
     this.trial = false
 
     this.config = config
@@ -57,9 +57,7 @@ class Namenote {
   initBaseHandlers() {
     window.onresize = (e) => {
       setTimeout(function() {
-        LOG('onresize',
-            document.body.clientWidth,
-            document.body.clientHeight);
+        LOG('onresize', document.body.clientWidth, document.body.clientHeight);
         ui.update()
       }, 100)
     }
@@ -68,15 +66,6 @@ class Namenote {
       LOG('contextmenu')
       return false
     }
-
-    document.addEventListener('click', (e) => {
-      let element = e.target
-      console.log('-------------')
-      while (element) {
-        console.log('>', element.id || 'null')
-        element = element.parentNode
-      }
-    })
   }
 
   ////////////////

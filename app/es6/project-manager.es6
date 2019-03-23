@@ -8,7 +8,6 @@ import { menu } from './menu.es6'
 import { title } from './title.es6'
 import { viewButton } from './view-button.es6'
 
-
 ////////////////////////////////////////////////////////////////
 
 class ProjectManager {
@@ -16,121 +15,43 @@ class ProjectManager {
     this.projects = []
     this.current = null
   }
-/*
-  project.verify(url) {
-    return Promise.resolve()
-  }
-
-  
-  open(url) {
-    return new Promise((resolve, reject)) => {
-      const project =find(url)
-      if (project) {
-        //メモリにあれば最新か確認
-        project.verify(() => {
-          resolve(project)
-        }, () => {
-          project = new Project(url)
-          resolve(project)
-        })
-      }
-      
-      //メモリにない/最新でない時はnew
-      project = new Project(url)
-      resolve(project)
-    }
-  }
-
-  //apiの設計・・・
-
-  command.openDialog().then((url) => {
-    const project = projectManager.open(url)
-    resolve(project)
-
-  }).then((project) => {
-    project.load()
-    resolve()
-
-  }).then((project) => {
-    Promise.all(project.pages.map(getPage))
-}).then(page) {
-  }).catch((error) => {
-    //error
-  )}
-
-  command.open(raw_url).then((url) => {
-    const project = projectManager.open(url)
-    resolve(project)
-
-  }).then((project) => {
-    project.load()
-    resolve()
-
-  }).catch((error) => {
-    //error
-  )}
-
-  ////command.open(raw_url).then((url) => {
-  ////  projectManager.open(url).then((project) => {
-  ////  project.load()})
-  ////})
-  ////command.openDialog().then((url) => {
-  ////  projectManager.open(url).then((project) => {
-  ////  project.load()})
-  ////})
-*/
-  
-  open(url) {
-    return new Promise((resolve, reject) => {
-      let project = this.find(url)
-      if (!project) {
-        project = new Project(url)
-        this.projects.push(project)
-      }
-      if (project) {
-        resolve(this.select(project))
-      }
-      reject("maybe bad url..")
-    })
-  }
-
-  find(url) {
-    for (const project of this.projects) {
-      if (prject.url == url) {
-        return project
-      }
-    }
-    return null
-  }
 
   select(project) {
-    this.current = project
-    title.set(project ? project.name() : null)
-    recentURL.add(project)
-
-    mainView.setProject(project)
-    menu.update()
-    viewButton.update()
-  }
-  
-  /*
-  select(project) {
+    LOG('[projetManager select]', project)
+    
     if (project) {
-      const index = this.findIndex(project.url)
-      if (index < 0) {
+      if (!this.find(project.url)) {
         this.projects.push(project)
       }
       recentURL.add(project.url)
     }
     
     this.current = project
-    namenote.mainView.setProject(project)
-    title.set(project ? project.name() : null)
-
+    namenote.mainView.init()
+    
     menu.update()
     viewButton.update()
+
+    title.set(project ? project.name() : null)
+  }
+  
+  find(url) {
+    for (const project of this.projects) {
+      if (project.url == url) {
+        return project
+      }
+    }
+    return null
   }
 
+  truncateURL(url) {
+    url = url.replace(/[^/]*\.namenote$/, '')
+    url = url.replace(/\/$/, '')
+    url = url.replace(/^.*\//, '')
+    return url
+  }
+
+  /*
   open(url) {
     const index = this.findIndex(url)
     const project = (index >= 0) ? this.projects[index] : new Project(url)

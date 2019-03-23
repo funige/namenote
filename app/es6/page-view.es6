@@ -8,10 +8,10 @@ class PageView extends View {
   constructor(element) {
     super(element)
 
-    this.init(element)
+    this.init()
   }
 
-  init(element) {
+  init() {
   }
 }
 

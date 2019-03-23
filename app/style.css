@@ -161,7 +161,18 @@ body {
 .page {
     position: absolute;
     box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.2);
-    z-index: 0
+    z-index: 0;
+    outline: 1px solid rgba(0,0,0,0.3);
+    background-color: white;
+
+    transform-origin: top left;
+    transform: scale(1.0);
+}
+
+.page.preload {
+    box-shadow: none;
+    outline: none;
+    opacity: 0.3;
 }
 
 .page.selected {
@@ -188,9 +199,14 @@ body {
     opacity: 1.0
 }
 
+/*
 .project {
     -webkit-font-smoothing: subpixel-antialiased;
     font-smoothing: subpixel-antialiased;
+}*/
+
+.project {
+    position: absolute;
 }
 
 .texts {

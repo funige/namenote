@@ -14,19 +14,22 @@ const headerImage = {
 class MessageBox {
   constructor() {
     this.id = 'message-box'
-    this.element = null
   }
 
+  destructor() {
+    this.element = null
+  }
+  
   init(options) {
     options = options || {}
 
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons[T(options.ok || 'Ok')] = resolve
+      if (options.ok) {
+        buttons[T(options.ok || 'Ok')] = (e) => { resolve() }
+      }
       if (options.cancel) {
-        buttons[T(options.cancel || 'Cancel')] = (e) => {
-          reject()
-        }
+        buttons[T(options.cancel || 'Cancel')] = (e) => { reject() }
       }
       
       const string = locale.translateHTML(`
@@ -67,6 +70,4 @@ class MessageBox {
   }
 }
 
-const messageBox = new MessageBox()
-
-export { messageBox }
+export { MessageBox }

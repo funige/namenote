@@ -9,11 +9,12 @@ import { projectManager } from './project-manager.es6'
 import { flash } from './flash.es6'
 
 import { dialog } from './dialog.es6'
-import { aboutDialog } from './about-dialog.es6'
-import { messageBox } from './message-box.es6'
-import { openNewDialog } from './open-new-dialog.es6'
-import { openDialog } from './open-dialog.es6'
-import { tabletSettingsDialog } from './tablet-settings-dialog.es6'
+
+import { AboutDialog } from './about-dialog.es6'
+import { TabletSettingsDialog } from './tablet-settings-dialog.es6'
+
+//import { openNewDialog } from './open-new-dialog.es6'
+//import { OpenDialog } from './open-dialog.es6'
 
 const _runMain = (message, data) => {
   if (namenote.app) {
@@ -40,7 +41,7 @@ class Command {
   }
 
   about() {
-    dialog.open(aboutDialog).then(() => {
+    dialog.open(new AboutDialog()).then(() => {
       dialog.close()
     })
   }
@@ -125,7 +126,7 @@ class Command {
   toggleEditMode() {}
 
   tabletSettings() {
-    dialog.open(tabletSettingsDialog).then(() => {
+    dialog.open(new TabletSettingsDialog()).then(() => {
       dialog.close()
 
     }).catch((error) => { dialog.alert(error) })

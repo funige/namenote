@@ -9,6 +9,9 @@ import { dialog } from './dialog.es6'
 class OpenDialog {
   constructor() {
     this.id = 'open-dialog'
+  }
+
+  destructor() {
     this.element = null
   }
 
@@ -37,8 +40,6 @@ class OpenDialog {
   saveParams() {}
 }
 
-const openDialog = new OpenDialog()
-
-export { openDialog }
+export { OpenDialog }
 
 

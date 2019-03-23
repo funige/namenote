@@ -32,9 +32,12 @@ function limit(value, min, max) {
 class TabletSettingsDialog {
   constructor() {
     this.id = 'tablet-settings-dialog'
-    this.element = null
   }
 
+  destructor() {
+    this.element = null
+  }
+  
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {}
@@ -164,6 +167,4 @@ class TabletSettingsDialog {
   }
 }
 
-const tabletSettingsDialog = new TabletSettingsDialog()
-
-export { tabletSettingsDialog }
+export { TabletSettingsDialog }

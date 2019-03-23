@@ -5,8 +5,9 @@ import { FileSystem } from './file-system.es6'
 
 import { flash } from './flash.es6'
 import { dialog } from './dialog.es6'
-import { messageBox } from './message-box.es6'
-import { openDialog } from './open-dialog.es6'
+
+import { MessageBox } from './message-box.es6'
+import { OpenDialog } from './open-dialog.es6'
 
 ////////////////////////////////////////////////////////////////
 
@@ -20,7 +21,7 @@ class DropboxFileSystem extends FileSystem {
     if (!this.auth('openDialog')) return
     WARN(`openDialog..`)
     
-    dialog.open(openDialog).then((url) => {
+    dialog.open(new OpenDialog()).then((url) => {
       return this.readProject(url)
 
     }).then((project) => {
@@ -72,7 +73,7 @@ class DropboxFileSystem extends FileSystem {
       return true
     }
 
-    dialog.open(messageBox, {
+    dialog.open(new MessageBox(), {
       title: 'Authenticate',
       message: 'Namenote would like access to the files in your Dropbox.',
       ok: 'Connect to Dropbox',
@@ -80,6 +81,7 @@ class DropboxFileSystem extends FileSystem {
 
     }).then((responce) => {
       dialog.current.showProgress(T('Connecting ...'))
+      
       var Dropbox = require('dropbox').Dropbox;
       var dbx = new Dropbox({ clientId: 'cex5vkoxd9nwj48'})
       var authUrl = (location.href.indexOf('localhost') < 0) ?
@@ -97,8 +99,9 @@ class DropboxFileSystem extends FileSystem {
   logout() {
     this.fs = null
     localStorage.removeItem('namenote/raw_token')
-    dialog.open(messageBox, {
+    dialog.open(new MessageBox(), {
       title: 'Logout',
+      ok: 'Ok',
       message: 'Disconnected.',
     }).then(() => {
       dialog.close()

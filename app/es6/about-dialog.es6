@@ -9,9 +9,12 @@ import { dialog } from './dialog.es6'
 class AboutDialog {
   constructor() {
     this.id = 'about-dialog'
-    this.element = null
   }
 
+  destructor() {
+    this.element = null
+  }
+  
   init(version) {
     return new Promise((resolve, reject) => {
       const buttons = {}
@@ -66,6 +69,4 @@ class AboutDialog {
   }
 }
 
-const aboutDialog = new AboutDialog()
-
-export { aboutDialog }
+export { AboutDialog }

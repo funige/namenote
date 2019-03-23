@@ -8,12 +8,10 @@ class TextView extends View {
   constructor(element) {
     super(element)
 
-    this.init(element)
+    this.init()
   }
 
-  init(element) {
-    this.element = element
-    this.preventScrollFreeze()
+  init() {
   }
 }
 

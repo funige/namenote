@@ -70,7 +70,9 @@ const dictionary = {
     "Authenticate": "認証",
     "Connect to Dropbox": "Dropbox に接続",
     "Cancel": "キャンセル",
+    "Abort": "中断",
     "Connecting ...": "接続中 ...",
+    "Loading ...": "読み込み中 ...",
     "Logout": "ログアウト",
     "Disconnected.": "接続を解除しました。",
     

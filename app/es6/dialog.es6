@@ -1,6 +1,6 @@
 'use strict'
 
-import { messageBox } from './message-box.es6'
+import { MessageBox } from './message-box.es6'
 
 class Dialog {
   constructor() {
@@ -21,6 +21,7 @@ class Dialog {
   
   open(widget, options) {
     if (this.current) this.close()
+
     this.current = widget
     
     if (!widget.element) {
@@ -31,7 +32,6 @@ class Dialog {
       $('body')[0].appendChild(element)
       widget.element = element
     }
-
     setTimeout(function() {
       $(widget.element).dialog('open')
     }, 200)
@@ -40,20 +40,27 @@ class Dialog {
   }
 
   close() {
+    if (!this.current) return
+
     const widget = this.current
     const element = widget.element
     if (element) {
       $('#' + widget.id).dialog('close')
       element.parentNode.removeChild(element)
     }
-    widget.element = null
+    widget.destructor()
     this.current = null
   }
 
   alert(error) {
     if (error) {
       ERROR(error)
-      this.open(messageBox, { type: 'error', message: error }).then(() => {
+      this.open(new MessageBox(), {
+        type: 'error',
+        ok: 'Ok',
+        message: error,
+
+      }).then(() => {
         this.close()
       })
     } else {

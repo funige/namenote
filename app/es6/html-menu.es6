@@ -3,11 +3,11 @@
 import { namenote } from './namenote.es6'
 import { command } from './command.es6'
 import { recentURL } from './recent-url.es6'
+import { projectManager } from './project-manager.es6'
 import { menu as nativeMenu } from './menu.es6'
 
 let buttons = {}
-let timers = {}
-let blurDelay = 500
+let listeners = {}
 
 const addItems = (node, items) => {
   const ul = document.createElement('ul')
@@ -77,6 +77,10 @@ const convertKey = (key) => {
   return key
 }
 
+const getLabel = (item) => {
+  return projectManager.truncateURL(item)
+}
+
 ////////////////////////////////////////////////////////////////
 
 class HTMLMenu {
@@ -89,6 +93,9 @@ class HTMLMenu {
   open(element) {
     element.style.opacity = '1'
     element.style.display = 'block'
+
+    const id = element.id.replace(/-.*$/, '')
+    document.addEventListener('click', listeners[id])
   }
 
   close(element) {
@@ -111,7 +118,7 @@ class HTMLMenu {
   activate(menu, id) {
     menu.id = id + '-menu'
     buttons[id] = $('#' + id + '-menu-button')
-    timers[id] = null
+    listeners[id] = this.getListener(menu, id)
 
     $(menu).menu({
       select: function(event, ui) {
@@ -119,23 +126,9 @@ class HTMLMenu {
           this.collapse(menu, id)
           buttons[id].imageButton('locked', false)
         }
-      }.bind(this),
+      }.bind(this)
     })
 
-    //TODO
-    //file-menu-buttonまたはfile-dropdownをクリックした場合は消えない
-    //それ以外がクリックされたらcollapse
-    
-    $(menu).on('menufocus', () => {
-      clearTimeout(timers[id])
-    })
-    
-    $(menu).on('menublur', () => {
-      if (!buttons[id].imageButton('locked')) return
-      timers[id] = setTimeout(() => {
-        this.collapse(menu, id)
-      }, blurDelay)
-    })
   }
 
   collapse(menu, id) {
@@ -145,6 +138,23 @@ class HTMLMenu {
       this.close(menu.parentNode)
       buttons[id].imageButton('locked', false)
     }, 500)
+  }
+  
+  getListener(menu, id) {
+    return function(e) {
+      let element = e.target
+      while (element) {
+        if (element.id == id + '-menu' ||
+            element.id == id + '-menu-button') {
+          return
+        }
+        element = element.parentNode
+      }
+      
+      WARN('collapse', id + '-menu')
+      this.collapse(menu, id)
+      document.removeEventListener('click', listeners[id])
+    }.bind(this)
   }
   
   ////////////////
@@ -179,7 +189,8 @@ class HTMLMenu {
     for (const item of recentURL.data) {
       const li = document.createElement('li')
       const div = document.createElement('div')
-      div.innerHTML = '<span class="ui-icon ui-icon-note"></span>' + item
+      div.innerHTML = '<span class="ui-icon ui-icon-note"></span>' + getLabel(item)
+      li.title = item
       li.appendChild(appendAttribute(div, item, 'open'))
       df.appendChild(li)
     }
