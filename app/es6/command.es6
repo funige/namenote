@@ -108,11 +108,11 @@ class Command {
   }
 
   zoom() {
-    LOG('zoom')
+    namenote.mainView.zoom()
   }
 
   unzoom() {
-    LOG('unzoom')
+    namenote.mainView.unzoom()
   }
 
   dockLeft() {
@@ -137,6 +137,34 @@ class Command {
   }
 
   hoge() {
+    namenote.command.open('/Namenoteサンプル') //テスト用
+  }
+  funi() {
+    namenote.command.open('/てすと') //テスト用
+  }
+
+  __hoge() {
+    const project = namenote.projectManager.current
+    const page = project.pages[1]
+    const canvas = page.canvas
+
+    const thumbnail = document.createElement('canvas')
+    thumbnail.width = canvas.width
+    thumbnail.height = canvas.height
+
+    const ctx2 = thumbnail.getContext('2d')
+    ctx2.filter = 'blur(4px)'
+    ctx2.drawImage(canvas, 0, 0)
+
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(thumbnail,
+                  0, 0, canvas.width, canvas.height,
+                  0, 0, canvas.width / 8, canvas.height / 8)
+    ctx.drawImage(canvas,
+                  0, 0, canvas.width, canvas.height,
+                  canvas.width / 8 + 10, 0, canvas.width / 8, canvas.height / 8)
+
+    LOG('blur test..', canvas.width, canvas.height)
   }
   
   //////////////////

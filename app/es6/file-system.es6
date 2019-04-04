@@ -62,7 +62,7 @@ class FileSystem {
 
           if (!page.width) page.width = project.pageSize[0]
           if (!page.height) page.height = project.pageSize[1]
-          page.render()
+          page.initElements()
 
           LOG('=page=', pid, page)
           messageBox.showProgress(`${pageURL}`)
@@ -77,7 +77,8 @@ class FileSystem {
   }
   
   open(url) {
-    WARN(`open ${url}..`)
+    const u = require('url').parse(url)
+    WARN(`open ${url}..${u.protocol} ${u.pathname}`)
     if (!this.auth('open', url)) return
 
     this.completePath(url, 'namenote').then((url) => {
@@ -135,6 +136,10 @@ class FileSystem {
     })
   }
 
+  parse(url) {
+    const arr = url.split(':')
+  }
+  
   auth() { return true }
   logout() {}
 }

@@ -156,6 +156,8 @@ const fileMenuTemplate = [
     ],
   },
   { type: "separator" },
+  { label: 'File Manager ...', click: 'fileManager' },
+  { type: "separator" },
   { label: 'Settings ...', click: 'settings' },
   { label: 'Tablet Settings ...', click: 'tabletSettings' },
   { label: 'About Namenote ...', click: 'about' },

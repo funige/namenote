@@ -3,6 +3,7 @@
 import { config } from './config.es6'
 import { shortcut } from './shortcut.es6'
 import { recentURL } from './recent-url.es6'
+import { controller } from './controller.es6'
 
 import { command } from './command.es6'
 import { ui } from './ui.es6'
@@ -25,6 +26,7 @@ class Namenote {
     this.config = config
     this.shortcut = shortcut
     this.recentURL = recentURL
+    this.controller = controller
     this.command = command
     this.projectManager = projectManager
 
@@ -45,7 +47,9 @@ class Namenote {
     shortcut.load()
     recentURL.load()
 
+    controller.init()
     ui.init()
+    
     this.mainView = new MainView($('.main-view')[0])
     this.pageView = new PageView($('.page-view')[0])
     this.textView = new TextView($('.text-view')[0])

@@ -26,17 +26,8 @@ class DropboxFileSystem extends FileSystem {
 
     }).then((project) => {
 
-      /*
-      project._pids.forEach((pid, index) => {
-        const pageURL = `${project.baseURL}/${pid}.json`
-        this.readPage(pageURL).then((page) => {
-          page.pid = pid
-          project.pages[index] = page
-          
-        }).catch((error) => { WARN(error) })
-      })
-      return project
-*/
+      //...
+      
     }).catch((error) => dialog.alert(error))
   }
   

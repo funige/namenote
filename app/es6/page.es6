@@ -14,13 +14,14 @@ class Page {
   }
 
   init(data) {
-    this.params = data //$.extend({}, data)
-    
+    this.params = data
+    console.warn(data)
     return this
   }
 
-  render() {
+  initElements() {
     this.canvas = this.createCanvas()
+    this.texts = this.createTexts()
     this.ctx = this.canvas.getContext('2d')
     this.unzip()
 
@@ -29,8 +30,7 @@ class Page {
 
     // とりあえず表示してみるテスト
     element.appendChild(this.canvas)
-    this.canvas.style.transformOrigin = 'top left'
-    this.canvas.style.transform = 'scale(0.3)'
+    element.appendChild(this.texts)
   }
 
   unzip() {
@@ -50,9 +50,17 @@ class Page {
   createCanvas() {
     const canvas = document.createElement('canvas')
     canvas.className = 'canvas'
+    canvas.style.backgroundColor = 'yellow'
     canvas.width = this.width
     canvas.height = this.height
     return canvas
+  }
+
+  createTexts() {
+    const texts = document.createElement('div')
+    texts.className = 'texts'
+    texts.innerHTML = this.params.text
+    return texts
   }
   
   getElement() {

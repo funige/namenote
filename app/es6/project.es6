@@ -32,8 +32,8 @@ class Project {
   }
 
   init(data) {
-    this.params = data.params //$.extend({}, data.params)
-    this._pids = data.pids //$.extend([], data.pids)
+    this.params = data.params
+    this._pids = data.pids
 
     this.setDPI(this.params.dpi)
     this.pageSize = this.topx(this.params.page_size)

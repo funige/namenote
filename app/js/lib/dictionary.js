@@ -11,6 +11,7 @@ const dictionary = {
     "Tablet Settings": "筆圧調整",
     "Tablet Settings ...": "筆圧調整 ...",
     "Quit Namenote": "Namenote を終了",
+    "File Manager ...": "ファイルマネージャー ...",
     "Note": "ノート",
     "File": "ファイル",
     "Open ...": "開く ...",

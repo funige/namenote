@@ -143,6 +143,9 @@ body {
 
     min-width: 100%;
     min-height: 100%;
+
+    overflow: scroll;
+    transform: translate3d(0,0,0);
 }
  
 /*
@@ -160,13 +163,13 @@ body {
 
 .page {
     position: absolute;
-    box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.2);
+    box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.1);
     z-index: 0;
     outline: 1px solid rgba(0,0,0,0.3);
     background-color: white;
 
     transform-origin: top left;
-    transform: scale(1.0);
+    overflow: hidden;
 }
 
 .page.preload {
@@ -210,6 +213,7 @@ body {
 }
 
 .texts {
+    transform-origin: top left;
 }
 
 .text {
@@ -222,6 +226,7 @@ body {
     background: rgba(255,255,255,0)
     z-index: 1000;
     color: #bf0058;
+    transform-origin: top left;
 }
 
 .text * {
@@ -254,10 +259,16 @@ body {
     z-index: 2000;
 }
 
-canvas {
+.canvas {
+    position: absolute;
+    transform-origin: top left;
+    overflow: hidden;
+}
+
+/*canvas {
     position: absolute;
 //  imageRendering: pixelated;
-}
+}*/
 
 canvas .scratch {
     z-index :100;
@@ -375,6 +386,10 @@ form .preview { width: 500px; height: 150px; } /* 350px */
     vertical-align: middle;
 }
 */
+
+.ui-button.ui-widget {
+    min-height: 36px;
+}
 
 .ui-dialog {
 //  box-shadow: 0px 15px 25px 0px rgba(50, 50, 50, 0.7);
@@ -645,3 +660,6 @@ span .ui-icon {
     outline-color: rgb(59, 153, 252)
 }
 
+::-webkit-scrollbar-thumb {
+    z-index: 10000;
+}
