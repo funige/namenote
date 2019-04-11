@@ -26,10 +26,10 @@ class MessageBox {
     return new Promise((resolve, reject) => {
       const buttons = {}
       if (options.ok) {
-        buttons[T(options.ok || 'Ok')] = (e) => { resolve() }
+        buttons[T(options.ok || 'Ok')] = (e) => { resolve(true) }
       }
       if (options.cancel) {
-        buttons[T(options.cancel || 'Cancel')] = (e) => { reject() }
+        buttons[T(options.cancel || 'Cancel')] = (e) => { resolve(false) }
       }
       
       const string = locale.translateHTML(`

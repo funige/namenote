@@ -80,20 +80,7 @@ class Command {
   
   openNewDialog() {
     LOG('open new dialog')
-//  namenote.fileSystem.openNewDialog()
   }
-
-  /*
-  openDialogApp() {
-    namenote.app.openDialog().then((url) => {
-      WARN(`openDialog '${url}'...`)
-      projectManager.open(url)
-
-    }).then((project) => {
-      WARN('[project]', project)
-        
-    }).catch((error) => { dialog.alert(error) })
-  }*/
 
   openDialog() {
     namenote.fileSystem.openDialog()
@@ -128,7 +115,6 @@ class Command {
   tabletSettings() {
     dialog.open(new TabletSettingsDialog()).then(() => {
       dialog.close()
-
     }).catch((error) => { dialog.alert(error) })
   }
 
@@ -136,11 +122,18 @@ class Command {
     namenote.fileSystem.logout()
   }
 
-  hoge() {
-    namenote.command.open('/Namenoteサンプル') //テスト用
+  /*async sleep(delay, result) {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(result), delay)
+    })
   }
-  funi() {
-    namenote.command.open('/てすと') //テスト用
+  
+  async hoge() {
+    await this.sleep(1000)
+    console.log(1)
+
+    let result = await this.sleep(2000, 42)
+    console.log(result)
   }
 
   __hoge() {
@@ -165,7 +158,7 @@ class Command {
                   canvas.width / 8 + 10, 0, canvas.width / 8, canvas.height / 8)
 
     LOG('blur test..', canvas.width, canvas.height)
-  }
+  }*/
   
   //////////////////
   

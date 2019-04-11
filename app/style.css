@@ -387,7 +387,7 @@ form .preview { width: 500px; height: 150px; } /* 350px */
 }
 */
 
-.ui-button.ui-widget {
+button.ui-button.ui-widget {
     min-height: 36px;
 }
 

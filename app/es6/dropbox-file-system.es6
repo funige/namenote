@@ -71,19 +71,23 @@ class DropboxFileSystem extends FileSystem {
       cancel: 'Cancel',
 
     }).then((responce) => {
-      dialog.current.showProgress(T('Connecting ...'))
+      if (responce) {
+        dialog.current.showProgress(T('Connecting ...'))
       
-      var Dropbox = require('dropbox').Dropbox;
-      var dbx = new Dropbox({ clientId: 'cex5vkoxd9nwj48'})
-      var authUrl = (location.href.indexOf('localhost') < 0) ?
-          'https://funige.github.io/namenote/auth':
-          'http://localhost:8080/namenote/auth'
+        var Dropbox = require('dropbox').Dropbox;
+        var dbx = new Dropbox({ clientId: 'cex5vkoxd9nwj48'})
+        var authUrl = (location.href.indexOf('localhost') < 0) ?
+            'https://funige.github.io/namenote/auth':
+            'http://localhost:8080/namenote/auth'
 
-      flash.save(item, data)
-      location.href = dbx.getAuthenticationUrl(authUrl)
+        flash.save(item, data)
+        location.href = dbx.getAuthenticationUrl(authUrl)
 
-    }).catch((error) => { dialog.alert(error) })
-
+      } else {
+        dialog.close()
+      }
+    })
+    
     return false
   }
 
@@ -94,6 +98,7 @@ class DropboxFileSystem extends FileSystem {
       title: 'Logout',
       ok: 'Ok',
       message: 'Disconnected.',
+
     }).then(() => {
       dialog.close()
     })

@@ -9,7 +9,8 @@ var uglify = require('gulp-uglify')
 
 gulp.task('browser', function(done) {
   browserify('./es6/browser.es6', { debug: true })
-    .transform(babelify, {presets: ['@babel/preset-env']})
+    .transform(babelify, {presets: [['@babel/preset-env',
+                                    {"useBuiltIns": "usage"}]]})
     .bundle()
     .on("error", function (err) {
       console.log("Error : " + err.message);
@@ -32,7 +33,8 @@ gulp.task('browser', function(done) {
 
 gulp.task('desktop', function(done) {
   browserify('./es6/desktop.es6', { debug: true })
-    .transform(babelify, {presets: ['@babel/preset-env']})
+    .transform(babelify, {presets: [['@babel/preset-env',
+                                    {"useBuiltIns": "usage"}]]})
     .bundle()
     .on("error", function (err) {
       console.log("Error : " + err.message);

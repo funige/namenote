@@ -50,6 +50,7 @@ class Page {
   createCanvas() {
     const canvas = document.createElement('canvas')
     canvas.className = 'canvas'
+
     canvas.style.backgroundColor = 'yellow'
     canvas.width = this.width
     canvas.height = this.height

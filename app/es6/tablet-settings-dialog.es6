@@ -42,7 +42,7 @@ class TabletSettingsDialog {
     return new Promise((resolve, reject) => {
       const buttons = {}
       buttons[T('Ok')] = () => { this.saveParams(); resolve() }
-      buttons[T('Cancel')] = () => { reject() }
+      buttons[T('Cancel')] = () => { resolve() }
 
       const string = locale.translateHTML(`
         <div style="width:300px; height:250px; font-size:12px;">

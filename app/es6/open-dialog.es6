@@ -18,8 +18,8 @@ class OpenDialog {
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons[T('Ok')] = resolve
-      buttons[T('Cancel')] = reject
+      buttons[T('Ok')] = () => { LOG('ok!'); resolve() }
+      buttons[T('Cancel')] = () => { LOG('cancel!'); resolve() }
 
       const string = locale.translateHTML(`
         [open dialog]

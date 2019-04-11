@@ -77,8 +77,8 @@ class FileSystem {
   }
   
   open(url) {
-    const u = require('url').parse(url)
-    WARN(`open ${url}..${u.protocol} ${u.pathname}`)
+    const tmp = require('url').parse(url)
+    WARN(`open ${url}..${tmp.protocol} ${tmp.pathname}`)
     if (!this.auth('open', url)) return
 
     this.completePath(url, 'namenote').then((url) => {
