@@ -3,6 +3,7 @@
 import { namenote } from './namenote.es6'
 import { Page } from './page.es6'
 import { projectManager } from './project-manager.es6'
+import { file } from './file.es6'
 
 ////////////////////////////////////////////////////////////////
 
@@ -15,7 +16,9 @@ class Project {
     this.pages = []
     this.currentPage = null
 
-    this.finishPageRead = false
+    this.views = []
+    
+//  this.finishPageRead = false
 //  this.maxPID = 0
 //  this.dirty = true
 
@@ -29,6 +32,8 @@ class Project {
     this.pages.forEach(page => {
       page.destructor()
     })
+
+    this.views = []
   }
 
   init(data) {
@@ -47,11 +52,23 @@ class Project {
   }
   
   name() {
-    return projectManager.truncateURL(this.url)
+    return file.truncateURL(this.url)
   }
 
   getElement() {
     return namenote.mainView.projectElement
+  }
+
+  addView(view) {
+    if (this.views.indexOf(view) < 0) {
+      this.views.push(view)
+    }
+  }
+  
+  removeView(view) {
+    this.views = this.views.filter((item) => {
+      return item !== view
+    })
   }
 
   ////////////////

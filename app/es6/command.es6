@@ -7,14 +7,14 @@ import { toolButton } from './tool-button.es6'
 import { sideBarTab } from './side-bar-tab.es6'
 import { projectManager } from './project-manager.es6'
 import { flash } from './flash.es6'
+import { file } from './file.es6'
 
 import { dialog } from './dialog.es6'
-
 import { AboutDialog } from './about-dialog.es6'
 import { TabletSettingsDialog } from './tablet-settings-dialog.es6'
+import { OpenDialog } from './open-dialog.es6'
 
 //import { openNewDialog } from './open-new-dialog.es6'
-//import { OpenDialog } from './open-dialog.es6'
 
 const _runMain = (message, data) => {
   if (namenote.app) {
@@ -83,11 +83,15 @@ class Command {
   }
 
   openDialog() {
-    namenote.fileSystem.openDialog()
+    file.openDialog().catch((error) => {
+      dialog.alert(error)
+    })
   }
 
   open(url) {
-    namenote.fileSystem.open(url)
+    file.open(url).catch((error) => {
+      dialog.alert(error)
+    })
   }
 
   close() {
@@ -118,47 +122,13 @@ class Command {
     }).catch((error) => { dialog.alert(error) })
   }
 
-  logout() {
-    namenote.fileSystem.logout()
+  logout(scheme) {
+    file.logout(scheme)
   }
 
-  /*async sleep(delay, result) {
-    return new Promise(resolve => {
-      setTimeout(() => resolve(result), delay)
-    })
+  hoge() {
+    LOG('hoge.')
   }
-  
-  async hoge() {
-    await this.sleep(1000)
-    console.log(1)
-
-    let result = await this.sleep(2000, 42)
-    console.log(result)
-  }
-
-  __hoge() {
-    const project = namenote.projectManager.current
-    const page = project.pages[1]
-    const canvas = page.canvas
-
-    const thumbnail = document.createElement('canvas')
-    thumbnail.width = canvas.width
-    thumbnail.height = canvas.height
-
-    const ctx2 = thumbnail.getContext('2d')
-    ctx2.filter = 'blur(4px)'
-    ctx2.drawImage(canvas, 0, 0)
-
-    const ctx = canvas.getContext('2d')
-    ctx.drawImage(thumbnail,
-                  0, 0, canvas.width, canvas.height,
-                  0, 0, canvas.width / 8, canvas.height / 8)
-    ctx.drawImage(canvas,
-                  0, 0, canvas.width, canvas.height,
-                  canvas.width / 8 + 10, 0, canvas.width / 8, canvas.height / 8)
-
-    LOG('blur test..', canvas.width, canvas.height)
-  }*/
   
   //////////////////
   
@@ -194,3 +164,44 @@ class Command {
 const command = new Command()
 
 export { command }
+
+
+
+  /*async sleep(delay, result) {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(result), delay)
+    })
+  }
+  
+  async hoge() {
+    await this.sleep(1000)
+    console.log(1)
+
+    let result = await this.sleep(2000, 42)
+    console.log(result)
+  }
+
+
+  __hoge() {
+    const project = namenote.projectManager.current
+    const page = project.pages[1]
+    const canvas = page.canvas
+
+    const thumbnail = document.createElement('canvas')
+    thumbnail.width = canvas.width
+    thumbnail.height = canvas.height
+
+    const ctx2 = thumbnail.getContext('2d')
+    ctx2.filter = 'blur(4px)'
+    ctx2.drawImage(canvas, 0, 0)
+
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(thumbnail,
+                  0, 0, canvas.width, canvas.height,
+                  0, 0, canvas.width / 8, canvas.height / 8)
+    ctx.drawImage(canvas,
+                  0, 0, canvas.width, canvas.height,
+                  canvas.width / 8 + 10, 0, canvas.width / 8, canvas.height / 8)
+
+    LOG('blur test..', canvas.width, canvas.height)
+  }*/

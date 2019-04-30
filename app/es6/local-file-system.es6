@@ -10,15 +10,8 @@ import { openDialog } from './open-dialog.es6'
 class LocalFileSystem extends FileSystem {
   constructor() {
     super()
-    this.fs = window.require('fs-extra')
+    this.fs = window.require('fs')
     this.type = "local"
-  }
-
-  openDialog() {
-    namenote.app.openDialog().then((path) => {
-      WARN(path)
-      this.open(path)
-    })
   }
   
   ////////////////

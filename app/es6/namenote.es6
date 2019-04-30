@@ -9,6 +9,7 @@ import { command } from './command.es6'
 import { ui } from './ui.es6'
 import { dialog } from './dialog.es6'
 import { flash } from './flash.es6'
+import { file } from './file.es6'
 
 import { projectManager } from './project-manager.es6'
 
@@ -20,7 +21,7 @@ import { TextView } from './text-view.es6'
 
 class Namenote {
   constructor() {
-    this.version = "2.0.0-alpha.5-debug"
+    this.version = "2.0.0-alpha.7-debug"
     this.trial = false
 
     this.config = config
@@ -29,27 +30,18 @@ class Namenote {
     this.controller = controller
     this.command = command
     this.projectManager = projectManager
-
+    this.file = file
     this.ui = ui
   }
 
   init() {
-    if (this.app) {
-      const LocalFileSystem = require('./local-file-system.es6').LocalFileSystem
-      this.fileSystem = new LocalFileSystem()
-
-    } else {
-      const DropboxFileSystem = require('./dropbox-file-system.es6').DropboxFileSystem
-      this.fileSystem = new DropboxFileSystem()
-    }
-
     config.load()
     shortcut.load()
     recentURL.load()
 
     controller.init()
     ui.init()
-    
+
     this.mainView = new MainView($('.main-view')[0])
     this.pageView = new PageView($('.page-view')[0])
     this.textView = new TextView($('.text-view')[0])

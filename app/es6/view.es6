@@ -3,11 +3,24 @@
 ////////////////////////////////////////////////////////////////
 
 class View {
-  constructor(element) {
+  constructor(element, dialogElement) {
     this.element = element
+    this.dialogElement = dialogElement
+
     this.preventScrollFreeze()
   }
 
+  destructor() {
+    LOG(`view destructor ${this.id}`)
+    this.element = null
+    this.dialogElement = null
+
+    this.projects = null
+    this.pageData = {}
+  }
+
+  ////////////////
+  
   preventScrollFreeze() {
     this.lastX = 0
     this.lastY = 0

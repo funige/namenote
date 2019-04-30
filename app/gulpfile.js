@@ -10,7 +10,7 @@ var uglify = require('gulp-uglify')
 gulp.task('browser', function(done) {
   browserify('./es6/browser.es6', { debug: true })
     .transform(babelify, {presets: [['@babel/preset-env',
-                                    {"useBuiltIns": "usage"}]]})
+                                     { "useBuiltIns": "usage", "corejs": 2 }]]})
     .bundle()
     .on("error", function (err) {
       console.log("Error : " + err.message);

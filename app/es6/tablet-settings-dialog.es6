@@ -63,7 +63,8 @@ class TabletSettingsDialog {
           </div>
         </div>
         <input type='submit' style='display: none' />
-        <input name='reset' type='button' value='T(Reset Settings to Default)' />`)
+        <button name='reset' class='ui-button'>T(Reset Settings to Default)</button>
+      `)
       
       $(this.element).html(`<form id='tablet-settings'>${string}</form>`)
       $(this.element).dialog({

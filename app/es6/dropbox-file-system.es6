@@ -7,7 +7,6 @@ import { flash } from './flash.es6'
 import { dialog } from './dialog.es6'
 
 import { MessageBox } from './message-box.es6'
-import { OpenDialog } from './open-dialog.es6'
 
 ////////////////////////////////////////////////////////////////
 
@@ -17,20 +16,6 @@ class DropboxFileSystem extends FileSystem {
     this.type = "dropbox"
   }
 
-  openDialog() {
-    if (!this.auth('openDialog')) return
-    WARN(`openDialog..`)
-    
-    dialog.open(new OpenDialog()).then((url) => {
-      return this.readProject(url)
-
-    }).then((project) => {
-
-      //...
-      
-    }).catch((error) => dialog.alert(error))
-  }
-  
   ////////////////
 
   stat(url, callback) {
@@ -47,7 +32,7 @@ class DropboxFileSystem extends FileSystem {
     if (!this.auth()) return
     return this.fs.readFile(url, 'utf8', callback)
   }
-
+  
   writeFile(url, data, callback) {
     if (!this.auth()) return
     return this.fs.writeFile(url, data, 'utf8', callback)
@@ -87,7 +72,6 @@ class DropboxFileSystem extends FileSystem {
         dialog.close()
       }
     })
-    
     return false
   }
 

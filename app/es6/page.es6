@@ -26,44 +26,29 @@ class Page {
     this.unzip()
 
     const element = this.getElement()
-    $(element).removeClass('preload')
+    if (element) {
+      $(element).removeClass('preload')
 
-    // とりあえず表示してみるテスト
-    element.appendChild(this.canvas)
-    element.appendChild(this.texts)
+      // とりあえず表示してみるテスト
+      element.appendChild(this.canvas)
+      element.appendChild(this.texts)
+    }
   }
 
-  unzip() {
+  unzip(ctx) {
     const base64 = this.params.base64
     if (!base64) return
 
     const zip = new JSZip()
     zip.loadAsync(base64, { base64:true }).then((zip) => {
       zip.file('image').async('uint8Array').then((data) => {
-        const imageData = this.ctx.createImageData(this.width, this.height)
+        const imageData = ctx.createImageData(this.width, this.height)
         imageData.data.set(data);
-        this.ctx.putImageData(imageData, 0, 0)
+        ctx.putImageData(imageData, 0, 0)
       })
     })
   }
 
-  createCanvas() {
-    const canvas = document.createElement('canvas')
-    canvas.className = 'canvas'
-
-    canvas.style.backgroundColor = 'yellow'
-    canvas.width = this.width
-    canvas.height = this.height
-    return canvas
-  }
-
-  createTexts() {
-    const texts = document.createElement('div')
-    texts.className = 'texts'
-    texts.innerHTML = this.params.text
-    return texts
-  }
-  
   getElement() {
     LOG(document.getElementById('page-' + this.pid))
     return document.getElementById('page-' + this.pid)

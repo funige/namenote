@@ -20,51 +20,9 @@ const openParams = {
 
 class App {
   constructor() {
+    this.initPath()
   }
 
-  openDialog(defaultPath) {
-    defaultPath = defaultPath || config.data.defaultPath
-    if (!fs.existsSync(defaultPath)) {
-      defaultPath = null
-    }
-    
-    return new Promise((resolve, reject) => {
-      const params = {
-        defaultPath: defaultPath,
-        properties: ['openDirectory', 'openFile'],
-        filters: [
-          { name: 'Namenote', extensions: ['namenote'] }
-        ]
-      }
-      dialog.showOpenDialog(params, (filenames) => {
-        if (filenames) {
-          //const filename = this.getFilename(filenames[0])
-          namenote.fileSystem.completePath(filenames[0]).then((url) => {
-            WARN('-...', url)
-            const baseURL = path.dirname(url)
-            this.updateDefaultPath(baseURL)
-            resolve(url)
-          })
-        }
-      }) 
-    })
-  }
-
-/*  getFilename(filename) {
-    if (filename.match(/\.namenote$/i)) {
-      return filename
-    }
-    // get any *.namenote file under the folder
-    if (fs.statSync(filename).isDirectory()) {
-      for (const item of fs.readdirSync(filename)) {
-        if (item.match(/\.namenote$/i)) {
-          return path.resolve(filename, item)
-        }
-      }
-    }
-    return null
-  }*/
-  
   updateDefaultPath(url) {
     config.data.defaultPath = path.dirname(url) //.replace(/\/[^/]+?$/, '')
     config.save()
@@ -77,19 +35,6 @@ class App {
       })
     })
   }
-
-  /*////////////////
-
-  stat(path, callback) {
-    fs.stat(path, callback)
-  }
-
-  readdir(path, callback) {
-    fs.readdir(path, callback)
-  }
-  
-  ////////////////
-  */
   
   rebuildMenu(data) {
     ipcRenderer.send('rebuild-menu', JSON.stringify(data))
@@ -101,6 +46,10 @@ class App {
 
   runMain(message, data) {
     ipcRenderer.send(message, data)
+  }
+
+  initPath() {
+    ipcRenderer.send('init-path')
   }
 }
 

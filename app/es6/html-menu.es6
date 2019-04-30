@@ -5,6 +5,7 @@ import { command } from './command.es6'
 import { recentURL } from './recent-url.es6'
 import { projectManager } from './project-manager.es6'
 import { menu as nativeMenu } from './menu.es6'
+import { file } from './file.es6'
 
 let buttons = {}
 let listeners = {}
@@ -77,8 +78,9 @@ const convertKey = (key) => {
   return key
 }
 
-const getLabel = (item) => {
-  return projectManager.truncateURL(item)
+const getLabel = (url) => {
+  const label = file.getLabel(url)
+  return `<span class="ui-icon ${label.icon}"></span>${label.text}`
 }
 
 ////////////////////////////////////////////////////////////////
@@ -124,6 +126,7 @@ class HTMLMenu {
       select: function(event, ui) {
         if (this.select(event, ui)) {
           this.collapse(menu, id)
+          //document.removeEventListener('click', listeners[id])
           buttons[id].imageButton('locked', false)
         }
       }.bind(this)
@@ -138,10 +141,15 @@ class HTMLMenu {
       this.close(menu.parentNode)
       buttons[id].imageButton('locked', false)
     }, 500)
+
+    if (listeners[id]) {
+      document.removeEventListener('click', listeners[id])
+      listeners[id] = null
+    }
   }
   
   getListener(menu, id) {
-    return function(e) {
+    return (e) => {
       let element = e.target
       while (element) {
         if (element.id == id + '-menu' ||
@@ -151,10 +159,10 @@ class HTMLMenu {
         element = element.parentNode
       }
       
-      WARN('collapse', id + '-menu')
+      WARN('collapse', id + '-menu', this, menu)
       this.collapse(menu, id)
-      document.removeEventListener('click', listeners[id])
-    }.bind(this)
+      //document.removeEventListener('click', listeners[id])
+    }
   }
   
   ////////////////
@@ -162,7 +170,6 @@ class HTMLMenu {
   update(element) {
     const menu = element.childNodes[0]
     const id = element.id.replace(/-.*$/, '')
-//  warn('[html menu update]', id)
 
     if (id == 'file') {
       this.updateRecents(menu)
@@ -179,7 +186,7 @@ class HTMLMenu {
     }
     return true
   }
-  
+
   updateRecents(menu) {
     while (!this.isSeparator(menu.childNodes[2])) {
       menu.removeChild(menu.childNodes[2])
@@ -189,7 +196,7 @@ class HTMLMenu {
     for (const item of recentURL.data) {
       const li = document.createElement('li')
       const div = document.createElement('div')
-      div.innerHTML = '<span class="ui-icon ui-icon-note"></span>' + getLabel(item)
+      div.innerHTML = getLabel(item)
       li.title = item
       li.appendChild(appendAttribute(div, item, 'open'))
       df.appendChild(li)
@@ -215,7 +222,7 @@ class HTMLMenu {
       }
     }
   }
-  
+
   ////////////////
   
   select(event, ui) {

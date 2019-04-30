@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' api.dropboxapi.com 'unsafe-inline'; img-src 'self' data:;">
-  
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' api.dropboxapi.com content.dropboxapi.com 'unsafe-inline'; img-src 'self' data:;">
+    
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" type="text/css" media="all" href="style.css" />
     <link rel="stylesheet" type="text/css" media="all" href="js/lib/jquery-ui.min.css" />
@@ -62,7 +63,7 @@
       <div class="split-pane fixed-left" style="opacity:0;">
         <div class="split-pane-component" id="left-component">
           <div class="sidebar">
-          
+            
             <div id="sidebar-header">
               <div class="text-button" id="page-view-button"></div>
               <div class="text-button" id="text-view-button"></div>

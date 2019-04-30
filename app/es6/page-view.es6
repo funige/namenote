@@ -7,7 +7,7 @@ import { View } from './view.es6'
 class PageView extends View {
   constructor(element) {
     super(element)
-
+    this.id = 'page'
     this.init()
   }
 

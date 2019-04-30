@@ -4,6 +4,7 @@ class Widget {
   constructor() {
     this.initImageButton()
     this.initTextButton()
+    this.initIconSelectMenu()
   }
 
   initTextButton() {
@@ -48,17 +49,12 @@ class Widget {
       },
   
       _create: function() {
-//      this.element.addClass('img-button')
-//      this.element.css('background-image', `url(${this.options.src})`)
-//      this.element.css('background', '#eeffdd')
         this.element.css('float', this.options.float)
         this.element.css('width', this.options.width)
         this.element.css('height', this.options.height)
 
         this.element.attr('title', T(this.element.attr('title')))
-
         this.element.html(`<img src='${this.options.src}' />`)
-//      WARN(this.element.html())
         
         this.locked(this.options.locked)
         this.disabled(this.options.disabled)
@@ -113,6 +109,28 @@ class Widget {
         content.style.left = (left - 2) + 'px'
         content.style.top = (64 + 2) + 'px'
       },
+    })
+  }
+  
+  initIconSelectMenu() {
+    $.widget( "namenote.iconselectmenu", $.ui.selectmenu, {
+      _renderItem: function( ul, item ) {
+        var li = $("<li>")
+        var wrapper = $("<div>", {text: item.label})
+ 
+        if (item.disabled) {
+          li.addClass("ui-state-disabled")
+        }
+
+        if (item.element.attr("data-class")) {
+          $("<span>", {
+            style: item.element.attr("data-style"),
+            "class": "ui-icon " + item.element.attr("data-class")
+          }).appendTo(wrapper)
+        }
+ 
+        return li.append(wrapper).appendTo(ul)
+      }
     })
   }
 }

@@ -53,8 +53,13 @@ class Dialog {
   }
 
   alert(error) {
+    ERROR('[dialog.alert]')
     if (error) {
       ERROR(error)
+      if (typeof error == 'object' && error.error) {
+        error = error.error
+      }
+      
       this.open(new MessageBox(), {
         type: 'error',
         ok: 'Ok',

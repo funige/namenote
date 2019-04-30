@@ -27,41 +27,6 @@ class AboutDialog {
           Namenote v${namenote.version}
           <br><br>
           <small>Copyright (c) Funige</small>
-<br>
-<br>
-<p>
-
-    <select size="3">
-      <option>Hoge</option>
-      <option>Funi</option>
-      <option>Gegege</option>
-      <option>Hoge</option>
-      <option>Funi</option>
-      <option>Gegege</option>
-      <option>Hoge</option>
-      <option>Funi</option>
-      <option>Gegege</option>
-      <option>Gegege</option>
-      <option>Gegege</option>
-      <option>Gegege</option>
-    </select>
-
-    <label for='hoge'>hogehoge...</label>
-    <select name='hoge' id='hoge'>
-      <option>Hoge<p>Hoge2</option>
-      <option>Foge</option>
-      <option>Gege</option>
-    </select>
-
-    <label for="salutation">Select a title</label>
-    <select name="salutation" id="salutation">
-      <option disabled selected>Please pick one</option>
-      <option>Mr.</option>
-      <option>Mrs.</option>
-      <option>Dr.</option>
-      <option>Prof.</option>
-      <option>Other</option>
-    </select></p>
         </center>`)
 
       $(this.element).html(string)

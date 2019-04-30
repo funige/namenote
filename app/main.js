@@ -105,18 +105,16 @@ ipcMain.on('set-title', (event, arg) => {
 })
 
 ipcMain.on('quit', (event) => {
-  console.log('[QUIT..]')
   event.preventDefault()
   
   app.quit()
   event.returnValue = "ok"
 })
 
-/*
-app.on('before-quit', function() {
-  console.log('before-quit')
+ipcMain.on('init-path', (event) => {
+  run('namenote.homePath="' + app.getPath('home') + '";')
+  event.returnValue = "ok"
 })
-*/
 
 ipcMain.on('developerTools', (event) => {
   console.log('[DEVELOPER TOOLS]')
