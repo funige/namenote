@@ -3,6 +3,11 @@
 import { View } from './view.es6'
 import { projectManager } from './project-manager.es6'
 
+import { recentURL } from './recent-url.es6'
+import { menu } from './menu.es6'
+import { title } from './title.es6'
+import { viewButton } from './view-button.es6'
+
 // $('.main-view')[0].parentNode.scrollTop = ...
 
 ////////////////////////////////////////////////////////////////
@@ -18,15 +23,26 @@ class MainView extends View {
   }
   
   async loadProject(project) {
+    LOG('mainView loadProject', project)
     if (this.project) this.project.removeView(this)
     this.project = project
+    if (!project) return
     project.addView(this)
 
-    if (!project) return
-    this.element.innerHTML = ''
+    recentURL.add(project.url)
+    menu.update()
+    viewButton.update()
+    title.set(project ? project.name() : null)
+
+    ////////////////
+    
     this.scale = 1
     this.pageData = {}
-    
+    this.initProject(project)
+  }
+
+  initProject(project) {
+    this.element.innerHTML = ''
     project.pids().forEach((pid, index) => {
       const pageElement = this.createPageElement(pid)
       this.element.appendChild(pageElement)
@@ -41,7 +57,7 @@ class MainView extends View {
       }
     })
   }
-
+  
   initPage(page) {
     const pd = this.pageData[page.pid]
     pd.canvas = this.createCanvas(page)
@@ -57,6 +73,7 @@ class MainView extends View {
       pd.element.appendChild(pd.texts)
     }
   }
+
 
   ////////////////
   

@@ -10,16 +10,18 @@ class Page {
   }
 
   destructor() {
-    log('page destructor', this.pid)
+    LOG('page destructor', this.pid)
   }
 
   init(data) {
     this.params = data
-    console.warn(data)
+
+    this.canvas = document.createElement('canvas')
+    this.thumbnail = document.createElement('canvas')
     return this
   }
 
-  initElements() {
+  /*initElements() {
     this.canvas = this.createCanvas()
     this.texts = this.createTexts()
     this.ctx = this.canvas.getContext('2d')
@@ -33,7 +35,7 @@ class Page {
       element.appendChild(this.canvas)
       element.appendChild(this.texts)
     }
-  }
+  }*/
 
   unzip(ctx) {
     const base64 = this.params.base64
@@ -50,7 +52,7 @@ class Page {
   }
 
   getElement() {
-    LOG(document.getElementById('page-' + this.pid))
+    //LOG(document.getElementById('page-' + this.pid))
     return document.getElementById('page-' + this.pid)
   }
 }

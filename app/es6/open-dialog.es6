@@ -60,6 +60,4 @@ class OpenDialog {
 
 export { OpenDialog }
 
-
-
-//    $('.ui-dialog-buttonpane button:last').css('float', 'left') //てすと
+//    $('.ui-dialog-buttonpane button:last').css('float', 'left')

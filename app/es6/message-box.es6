@@ -4,7 +4,7 @@ import { namenote } from './namenote.es6'
 import { locale } from './locale.es6'
 import { dialog } from './dialog.es6'
 
-const headerImage = {
+const images = {
   confirm: './img/checked.png',
   error: './img/exclamation-mark.png',
 }
@@ -56,8 +56,8 @@ class MessageBox {
   }
   
   getHeader(options) {
-    if (headerImage[options.type]) {
-      return `<img src="${headerImage[options.type]}" width="48px"/>`
+    if (images[options.type]) {
+      return `<img src="${images[options.type]}" width="48px"/>`
 
     } else {
       return ''

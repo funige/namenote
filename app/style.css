@@ -424,44 +424,6 @@ button.ui-button.ui-widget {
     visibility: hidden;
 }
 
-.folders {
-}
-
-.files {
-    width: 100%;
-    height: calc(100% - 40px);
-    overflow: scroll;
-    border: 1px solid #aaa;
-    background-color: white;
-}
-
-.files li span {
-    min-width: 16px;
-    margin-right: 5px;
-}
-
-.files li {
-    font-size: 13px;
-    padding: 1px 13px 3px 13px; //3px 13px 3px 26px;
-    height: 21px;
-    border: none;
-}
-
-.files li.ui-selected,.files li.ui-selecting {
-    color: white;
-    background-color: #297efd;
-}
-
-.files li.disabled {
-    opacity: 0.3;
-}
-
-.file-view .preview {
-    width: 100%;
-    height: calc(100% - 40px);
-    background-color: yellow;
-}
-
 .ui-widget-overlay {
     opacity: 0.01 !important;
 //  opacity: 0.5 !important;
@@ -562,6 +524,71 @@ span .ui-icon {
     height: 4px;
     border: 1px solid black;
     background-color: white;
+}
+
+.folders {
+}
+
+/**
+ * FileView
+ */
+
+.files {
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow: scroll;
+    border: 1px solid #aaa;
+    background-color: white;
+}
+
+.files li span {
+    min-width: 16px;
+    margin-right: 5px;
+}
+
+.files li {
+    font-size: 13px;
+    padding: 1px 13px 3px 13px; //3px 13px 3px 26px;
+    height: 21px;
+    border: none;
+}
+
+.files li.ui-selected,.files li.ui-selecting {
+    color: white;
+    background-color: #297efd;
+}
+
+.files li.disabled {
+    opacity: 0.3;
+}
+
+.items {
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow: scroll;
+    border: 1px solid #aaa;
+}
+
+.items li span {
+    min-width: 16px;
+    margin-right: 5px;
+}
+
+.items li {
+    font-size: 13px;
+    padding: 1px 13px 3px 13px; //3px 13px 3px 26px;
+    height: 80px; //21px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+.items li.ui-selected,.files li.ui-selecting {
+    color: white;
+    background-color: #297efd;
+}
+
+.items li.disabled {
+    opacity: 0.3;
 }
 
 /**

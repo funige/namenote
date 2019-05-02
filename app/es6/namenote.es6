@@ -21,7 +21,7 @@ import { TextView } from './text-view.es6'
 
 class Namenote {
   constructor() {
-    this.version = "2.0.0-alpha.7-debug"
+    this.version = "2.0.0-alpha.8-debug"
     this.trial = false
 
     this.config = config

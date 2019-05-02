@@ -1,12 +1,9 @@
 'use strict'
 
 import { namenote } from './namenote.es6'
-
 import { Project } from './project.es6'
-import { recentURL } from './recent-url.es6'
-import { menu } from './menu.es6'
-import { title } from './title.es6'
-import { viewButton } from './view-button.es6'
+import { file } from './file.es6'
+import { dialog } from './dialog.es6'
 
 ////////////////////////////////////////////////////////////////
 
@@ -15,25 +12,19 @@ class ProjectManager {
     this.projects = []
   }
 
-  select(project) {
-    LOG('[projetManager select]', project)
-    
-    if (project) {
-      if (!this.find(project.url)) {
-        this.projects.push(project)
-      }
-      recentURL.add(project.url)
+  async get(url, monitor) {
+    let project = this.find(url)
+    if (!project) {
+      project = await file.readProject(url, monitor)
+      file.readPages(project, monitor).then(() => {
+        LOG('readPages finishded')
+        if (monitor && monitor == dialog.current) {
+          dialog.close()
+        }
+      })
+      this.projects.push(project)
     }
-
-    //namenote.views.forEach((view) => {
-    //  view.loadProject(project)
-    //})
-    namenote.mainView.loadProject(project)
-    
-    menu.update()
-    viewButton.update()
-
-    title.set(project ? project.name() : null)
+    return project
   }
   
   find(url) {
