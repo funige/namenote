@@ -14,7 +14,7 @@ import { file } from './file.es6'
 import { projectManager } from './project-manager.es6'
 
 import { MainView } from './main-view.es6'
-import { PageView } from './page-view.es6'
+import { FileView } from './file-view.es6'
 import { TextView } from './text-view.es6'
 
 ////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ class Namenote {
     ui.init()
 
     this.mainView = new MainView($('.main-view')[0])
-    this.pageView = new PageView($('.page-view')[0])
+    this.pageView = new FileView($('.file-view')[0])
     this.textView = new TextView($('.text-view')[0])
     this.initBaseHandlers()
 
@@ -53,7 +53,12 @@ class Namenote {
   initBaseHandlers() {
     window.onresize = (e) => {
       setTimeout(function() {
-        LOG('onresize', document.body.clientWidth, document.body.clientHeight);
+        if (dialog.current && dialog.current.id == 'open-dialog') {
+          dialog.current.onresize(e)
+          
+        } else {
+          LOG('onresize', document.body.clientWidth, document.body.clientHeight);
+        }
         ui.update()
       }, 100)
     }
@@ -65,6 +70,10 @@ class Namenote {
   }
 
   ////////////////
+
+  currentProject() {
+    return this.mainView && this.mainView.project
+  }
   
   isMac() {
     return navigator.platform.indexOf('Mac')

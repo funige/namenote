@@ -10,6 +10,11 @@ import { DropboxFileSystem } from './dropbox-file-system.es6'
 
 import { MessageBox } from './message-box.es6'
 import { OpenDialog } from './open-dialog.es6'
+import { OpenNewDialog } from './open-new-dialog.es6'
+
+import { SavePageImageDialog } from './save-page-image-dialog.es6'
+import { ExportPDFDialog } from './export-pdf-dialog.es6'
+import { ExportCSNFDialog } from './export-csnf-dialog.es6'
 
 ////////////////////////////////////////////////////////////////
 
@@ -27,6 +32,7 @@ class File {
 
     if (project) {
       namenote.mainView.loadProject(project)
+      namenote.pageView.loadProject(project)
     }
   }
 
@@ -38,6 +44,7 @@ class File {
     let project = projectManager.find(url)
     if (project) {
       namenote.mainView.loadProject(project)
+      namenote.pageView.loadProject(project)
 
     } else {
       const messageBox = new MessageBox()
@@ -49,9 +56,36 @@ class File {
 
       project = await projectManager.get(url, messageBox)
       namenote.mainView.loadProject(project)
+      namenote.pageView.loadProject(project)
     }
   }
 
+  async savePageImageDialog() {
+    await dialog.open(new SavePageImageDialog())
+    dialog.close()
+  }
+  async exportPDFDialog() {
+    await dialog.open(new ExportPDFDialog())
+    dialog.close()
+  }
+  async exportCSNFDialog() {
+    await dialog.open(new ExportCSNFDialog())
+    dialog.close()
+  }
+    
+  async openNewDialog() {
+    const fileSystem = this.getFileSystem(this.getDefaultScheme())
+    if (!fileSystem.auth('openNewDialog')) return
+    
+    const project = await dialog.open(new OpenNewDialog())
+    dialog.close()
+
+    if (project) {
+      namenote.mainView.loadProject(project)
+      namenote.pageView.loadProject(project)
+    }
+  }
+  
   async logout(scheme) {
     const fileSystem = this.getFileSystem(scheme)
     LOG('logout', scheme, fileSystem)
@@ -115,15 +149,18 @@ class File {
         const pageURL = `${project.baseURL}/${pid}.json`
         this.readPage(pageURL).then((page) => {
           page.pid = pid
+          page.width = project.pageSize[0]
+          page.height = project.pageSize[1]
+
           project.pages[index] = page
-
-          if (!page.width) page.width = project.pageSize[0]
-          if (!page.height) page.height = project.pageSize[1]
-          project.views.forEach((view) => {
-            view.initPage(page)
+          page.initElements(project).then(() => {
+            project.views.forEach((view) => {
+              view.initPage(page)
+            })
           })
-
-          if (monitor) monitor.showProgress(`${pageURL}`)
+          if (monitor) {
+            monitor.showProgress(`${pageURL}`)
+          }
 
         }).catch((error) => {
           ERROR('=page=', pid, error)

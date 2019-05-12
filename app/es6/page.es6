@@ -2,6 +2,7 @@
 
 const JSZip = require('JSZip')
 
+
 ////////////////////////////////////////////////////////////////
 
 class Page {
@@ -15,45 +16,61 @@ class Page {
 
   init(data) {
     this.params = data
-
-    this.canvas = document.createElement('canvas')
-    this.thumbnail = document.createElement('canvas')
     return this
   }
 
-  /*initElements() {
-    this.canvas = this.createCanvas()
-    this.texts = this.createTexts()
-    this.ctx = this.canvas.getContext('2d')
-    this.unzip()
+  async initElements(project) {
+    this.width = project.pageSize[0]
+    this.height = project.pageSize[1]
 
-    const element = this.getElement()
-    if (element) {
-      $(element).removeClass('preload')
+    this.canvas = this.createCanvasElement(this.width, this.height)
+    this.canvasCtx = this.canvas.getContext('2d')
 
-      // とりあえず表示してみるテスト
-      element.appendChild(this.canvas)
-      element.appendChild(this.texts)
-    }
-  }*/
-
+    const rect = project.getThumbnailSize()
+    this.thumbnail = this.createCanvasElement(rect.width, rect.height)
+    this.thumbnailCtx = this.thumbnail.getContext('2d')
+    this.thumbnailCtx.filter = `none`
+    this.thumbnailCtx.imageSmoothingQuality = 'high'
+    
+    await this.unzip(this.canvasCtx)
+    this.thumbnailCtx.drawImage(this.canvas,
+                                project.canvasSize[2]||0, project.canvasSize[3]||0,
+                                project.canvasSize[0], project.canvasSize[1],
+                                0, 0, rect.width, rect.height)
+  }
+  
+  createCanvasElement(width, height) {
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+    return canvas
+  }
+  
   unzip(ctx) {
-    const base64 = this.params.base64
-    if (!base64) return
+    return new Promise((resolve, reject) => {
+      const base64 = this.params.base64
+      if (!base64) return resolve()
 
-    const zip = new JSZip()
-    zip.loadAsync(base64, { base64:true }).then((zip) => {
-      zip.file('image').async('uint8Array').then((data) => {
-        const imageData = ctx.createImageData(this.width, this.height)
-        imageData.data.set(data);
-        ctx.putImageData(imageData, 0, 0)
+      const zip = new JSZip()
+      zip.loadAsync(base64, { base64:true }).then((zip) => {
+        zip.file('image').async('uint8Array').then((data) => {
+          const imageData = ctx.createImageData(this.width, this.height)
+          imageData.data.set(data);
+          ctx.putImageData(imageData, 0, 0)
+          resolve()
+        })
       })
     })
   }
 
-  getElement() {
-    //LOG(document.getElementById('page-' + this.pid))
-    return document.getElementById('page-' + this.pid)
+  digest() {
+    if (this.params && this.params.text) {
+      return this.params.text
+        .replace(/(<([^>]+)>)/ig, '/')
+        .replace(/\/+/g, '/')
+        .replace(/^\//, '').replace(/\/$/, '')
+    }
+    return ''
   }
 }
 

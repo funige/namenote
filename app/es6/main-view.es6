@@ -61,9 +61,13 @@ class MainView extends View {
   initPage(page) {
     const pd = this.pageData[page.pid]
     pd.canvas = this.createCanvas(page)
-    pd.texts = this.createTexts(page)
+    pd.texts = this.createTexts(page, page.params.text)
+    pd.canvas.className = 'canvas'
+    pd.texts.className = 'texts'
+    
     pd.ctx = pd.canvas.getContext('2d')
-    page.unzip(pd.ctx)
+    pd.ctx.filter = 'none'
+    pd.ctx.drawImage(page.canvas, 0, 0)
 
     if (pd.element) {
       $(pd.element).removeClass('preload')
@@ -84,27 +88,9 @@ class MainView extends View {
     return element
   }
   
-  createCanvas(page) {
-    const canvas = document.createElement('canvas')
-    canvas.className = 'canvas'
-
-    canvas.style.backgroundColor = 'white'
-    canvas.width = page.width
-    canvas.height = page.height
-    return canvas
-  }
-
-  createTexts(page) {
-    const texts = document.createElement('div')
-    texts.className = 'texts'
-    texts.innerHTML = page.params.text
-    return texts
-  }
-  
   getPageRect(index) {
-    const exportSize = this.project.exportSize
-    const width = parseInt(exportSize[0] * this.scale)
-    const height = parseInt(exportSize[1] * this.scale)
+    const width = parseInt(this.project.canvasSize[0] * this.scale)
+    const height = parseInt(this.project.canvasSize[1] * this.scale)
     const margin = 50
 
     const x = index * (width + margin) + margin
@@ -127,6 +113,7 @@ class MainView extends View {
       pd.element.style.height = PX(rect.height)
       pd.element.style.left = PX(rect.x)
       pd.element.style.top = PX(rect.y)
+      //pd.element.style.display = (index == 0) ? "block" : "none" //debug
     }
     if (pd.canvas) pd.canvas.style.transform = `scale(${this.scale})`
     if (pd.texts) pd.texts.style.transform = `scale(${this.scale})`

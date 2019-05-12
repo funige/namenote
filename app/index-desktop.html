@@ -21,11 +21,12 @@
     <script src="js/lib/split-pane.js"></script>
     <script src="js/lib/spectrum.js"></script>
     <script src="js/lib/mousetrap.js"></script>
+    <script src="js/lib/Sortable.min.js"></script>
 
     <script src="js/bundle-desktop.js"></script>
 
     <script>
-     $("#menu").menu();
+//   $("#menu").menu();
      if (window.module) module = window.module
     </script>
 
@@ -71,8 +72,8 @@
               <div class="separator right"></div>
             </div>
             <div id="sidebar-container">
-              <div class="page-view">
-                page view
+              <div class="file-view">
+                file view
               </div>
               <div class="text-view" style="display:none;">
                 text view
@@ -82,9 +83,7 @@
         </div>
         <div class="split-pane-divider" id="divider"></div>
         <div class="split-pane-component" id="right-component">
-	  <div class="main-view">
-	    main view<br>
-          </div>
+	  <div class="main-view"></div>
         </div>
       </div>
     </div>
@@ -92,3 +91,9 @@
     <div id="text-buffer" style="display:none;"></div>
   </body>
 </html>
+
+
+
+
+
+

@@ -30,7 +30,10 @@
     "gulp-notify": "^3.2.0",
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^3.0.2",
-    "vinyl-source-stream": "^2.0.0"
+    "vinyl-source-stream": "^2.0.0",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
     "bl": "^3.0.0",

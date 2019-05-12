@@ -2,6 +2,7 @@
 
 import { command } from './command.es6'
 import { projectManager } from './project-manager.es6'
+import { namenote } from './namenote.es6'
 
 let undoButton
 let redoButton
@@ -33,7 +34,7 @@ class HistoryButton {
   }
 
   update() {
-    const project = projectManager.current
+    const project = namenote.currentProject()
     
     if (project) {
       const hasUndo = (project) ? project.history.hasUndo() : false

@@ -40,8 +40,8 @@ const menuTemplate = [
 //    },
       { label: 'Export',
 	submenu: [
-	  { label: '.csnf (CLIP STUDIO Storyboard) ...', click: 'exportCSNFDialog' },
-	  { label: '.pdf (PDF) ...', click: 'exportPDFDialog' },
+	  { label: '.csnf (CLIP STUDIO Storyboard) ...', click: 'exportCSNF' },
+	  { label: '.pdf (PDF) ...', click: 'exportPDF' },
 	],
       },
     ],
@@ -115,8 +115,8 @@ const fileMenuTemplate = [
 //    },
       { label: 'Export',
 	submenu: [
-	  { label: '.csnf (CLIP STUDIO Storyboard) ...', click: 'exportCSNFDialog' },
-	  { label: '.pdf (PDF) ...', click: 'exportPDFDialog' },
+	  { label: '.csnf (CLIP STUDIO Storyboard) ...', click: 'exportCSNF' },
+	  { label: '.pdf (PDF) ...', click: 'exportPDF' },
 	],
       },
     ],

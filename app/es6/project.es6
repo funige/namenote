@@ -4,6 +4,7 @@ import { namenote } from './namenote.es6'
 import { Page } from './page.es6'
 import { projectManager } from './project-manager.es6'
 import { file } from './file.es6'
+import { config } from './config.es6'
 
 ////////////////////////////////////////////////////////////////
 
@@ -41,9 +42,8 @@ class Project {
     this._pids = data.pids
 
     this.setDPI(this.params.dpi)
-    this.pageSize = this.topx(this.params.page_size)
-    this.exportSize = this.topx(this.params.export_size)
-    
+    this.pageSize = this.topx(this.params.page_size || [364, 364])
+    this.canvasSize = this.topx(this.params.canvas_size || this.params.export_size || [257, 364])
     return this
   }
 
@@ -91,6 +91,15 @@ class Project {
     } else {
       return px.map((x) => Math.round(x * (25.4 / this.dpi)))
     }
+  }
+
+  getThumbnailSize() {
+    const thumbnailWidth = config.getValue('thumbnailWith', 75)
+    const scale = thumbnailWidth / this.canvasSize[0]
+
+    const width = Math.ceil(this.canvasSize[0] * scale)
+    const height = Math.ceil(this.canvasSize[1] * scale)
+    return { width:width, height:height }
   }
 }
 

@@ -93,7 +93,8 @@ const dictionary = {
 
     "New notebook": "新規ノート",
     "Notebook name": "ノート名",
-    "Folder": "保存先",
+//  "Folder": "保存先",
+    "Location": "場所",
     "Choose folder...": "参照...",
     "Number of pages": "ページ数",
     "Template": "テンプレート",

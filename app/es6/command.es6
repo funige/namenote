@@ -67,19 +67,21 @@ class Command {
   }
 
   showPageView() {
-    $('.page-view').show()
-    $('.text-view').hide()
+    $(namenote.pageView.element).show()
+    $(namenote.textView.element).hide()
     sideBarTab.select('page')
   }
 
   showTextView() {
-    $('.page-view').hide()
-    $('.text-view').show()
+    $(namenote.pageView.element).hide()
+    $(namenote.textView.element).show()
     sideBarTab.select('text')
   }
   
   openNewDialog() {
-    LOG('open new dialog')
+    file.openNewDialog().catch((error) => {
+      dialog.alert(error)
+    })
   }
 
   openDialog() {
@@ -94,9 +96,27 @@ class Command {
     })
   }
 
-  close() {
-    projectManager.close()
+  exportCSNF() {
+    file.exportCSNFDialog().catch((error) => {
+      dialog.alert(error)
+    })
   }
+
+  exportPDF() {
+    file.exportPDFDialog().catch((error) => {
+      dialog.alert(error)
+    })
+  }
+  
+  savePageImage() {
+    file.savePageImageDialog().catch((error) => {
+      dialog.alert(error)
+    })
+  }
+  
+  /*close() {
+    projectManager.close()
+  }*/
 
   zoom() {
     namenote.mainView.zoom()
@@ -164,44 +184,3 @@ class Command {
 const command = new Command()
 
 export { command }
-
-
-
-  /*async sleep(delay, result) {
-    return new Promise(resolve => {
-      setTimeout(() => resolve(result), delay)
-    })
-  }
-  
-  async hoge() {
-    await this.sleep(1000)
-    console.log(1)
-
-    let result = await this.sleep(2000, 42)
-    console.log(result)
-  }
-
-
-  __hoge() {
-    const project = namenote.projectManager.current
-    const page = project.pages[1]
-    const canvas = page.canvas
-
-    const thumbnail = document.createElement('canvas')
-    thumbnail.width = canvas.width
-    thumbnail.height = canvas.height
-
-    const ctx2 = thumbnail.getContext('2d')
-    ctx2.filter = 'blur(4px)'
-    ctx2.drawImage(canvas, 0, 0)
-
-    const ctx = canvas.getContext('2d')
-    ctx.drawImage(thumbnail,
-                  0, 0, canvas.width, canvas.height,
-                  0, 0, canvas.width / 8, canvas.height / 8)
-    ctx.drawImage(canvas,
-                  0, 0, canvas.width, canvas.height,
-                  canvas.width / 8 + 10, 0, canvas.width / 8, canvas.height / 8)
-
-    LOG('blur test..', canvas.width, canvas.height)
-  }*/

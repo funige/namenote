@@ -3,7 +3,7 @@
 const configDefault = {
   toolBar: true,
   sideBar: false,
-  sideBarWidth: 200,
+  sideBarWidth: 250,
   sideBarPosition: 'right',
   
   defaultPath: null,

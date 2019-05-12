@@ -3,7 +3,7 @@
 import { config } from './config.es6'
 import { viewButton } from './view-button.es6'
 
-let minWidth = 180
+let minWidth = 250
 
 ////////////////////////////////////////////////////////////////
 

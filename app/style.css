@@ -27,6 +27,10 @@ body {
     position: fixed;
 }
 
+ul, li {
+    list-style: none;
+}
+
 /**
  * ToolBar
  */
@@ -75,41 +79,14 @@ body {
     width: 100%;
     height:calc(100% - 29px);
     overflow: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.file-view {
-}
-
-/*
-.file-view select {
-//  border: 1px solid #aaa;
-}
-.file-view select option {
-    font-size: 13px;
-    padding: 5px;
-}
-*/
-
-.page-view {
-    background-color: #f6f6f6;
-//  font-size: 14px;
-
-    width: 2000px;
-    height: 2000px;
-
-//  user-select: text;
 }
 
 .text-view {
-    background-color: #f6f6f6;
-//  font-size: 14px;
+    background-color: white; //#eee;
 
     position: absolute;
     min-width: 100%;
     min-height: 100%;
-
-//  user-select: text;
 }
 
 /**
@@ -131,7 +108,6 @@ body {
 
 #left-component {
     width: 200px;
-    -webkit-overflow-scrolling: touch;
 }
 #divider {
     left: 200px;       /* Same as left component initial width */
@@ -141,7 +117,6 @@ body {
 //  background-color: #7a7b7e; //#f0f0f0;
     left: 200px;       /* Same as left component initial width */
     margin-left: 1px;  /* Same as divider width */
-    -webkit-overflow-scrolling: touch;
 }
 
 .sidebar {
@@ -150,30 +125,15 @@ body {
 }
 
 .main-view {
-//  font-size: 14px;
-    
     position: absolute;
 
     min-width: 100%;
     min-height: 100%;
 
-    overflow: scroll;
+    overflow: auto; //scroll;
     transform: translate3d(0,0,0);
 }
  
-/*
-.view {
-    position: absolute;
-}
-
-.view-frame {
-    position: absolute;
-//  border: 1px solid blue;
-    border-bottom: 1px solid rgba(0,0,0,0.01)
-    pointer-events: none;
-}
-*/
-
 .page {
     position: absolute;
     box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.1);
@@ -215,12 +175,6 @@ body {
     opacity: 1.0
 }
 
-/*
-.project {
-    -webkit-font-smoothing: subpixel-antialiased;
-    font-smoothing: subpixel-antialiased;
-}*/
-
 .project {
     position: absolute;
 }
@@ -230,7 +184,6 @@ body {
 }
 
 .text {
-//  position: absolute;
     min-width: 1em;
     min-height: 1em;
     white-space: nowrap;
@@ -277,11 +230,6 @@ body {
     transform-origin: top left;
     overflow: hidden;
 }
-
-/*canvas {
-    position: absolute;
-//  imageRendering: pixelated;
-}*/
 
 canvas .scratch {
     z-index :100;
@@ -392,14 +340,6 @@ form .preview { width: 500px; height: 150px; } /* 350px */
     vertical-align: middle;
 }
 
-/* 
-   May break html menu, but seems good so far..
-.ui-button {
-    min-height: 36px;
-    vertical-align: middle;
-}
-*/
-
 button.ui-button.ui-widget {
     min-height: 36px;
 }
@@ -426,9 +366,6 @@ button.ui-button.ui-widget {
 
 .ui-widget-overlay {
     opacity: 0.01 !important;
-//  opacity: 0.5 !important;
-//  filter: Alpha(Opacity=50) !important;
-//  background-color: black !important;
 }
 
 .ui-draggable, .ui-droppable {
@@ -482,16 +419,6 @@ span .ui-icon {
 .ui-menu div.label { text-align:left; float: left; }
 .ui-menu div.key   { text-align: right; margin-right: -8px; font-size: 13px; }
 
-/*
-.ui-menu-item > .ui-state-active {
-    background-color: #e8eaed !important;
-    color: black !important;
-    border: 1px solid rgba(0,0,0,0.05) !important;
-    border-left: 1px solid rgba(0,0,0,0.2) !important;
-    border-right: 1px solid rgba(0,0,0,0.2) !important;
-}
-*/
-
 #menu {
     background-color: #f6f6f6;
 }
@@ -529,67 +456,93 @@ span .ui-icon {
 .folders {
 }
 
-/**
- * FileView
- */
-
-.files {
+.file-list {
     width: 100%;
-    height: calc(100% - 40px);
-    overflow: scroll;
+//  height: calc(100% - 40px);
+//  overflow: scroll;
     border: 1px solid #aaa;
     background-color: white;
 }
 
-.files li span {
+.file-list li span {
     min-width: 16px;
     margin-right: 5px;
 }
 
-.files li {
+.file-list li {
     font-size: 13px;
     padding: 1px 13px 3px 13px; //3px 13px 3px 26px;
     height: 21px;
     border: none;
 }
 
-.files li.ui-selected,.files li.ui-selecting {
+.file-list li.ui-selected,.file-list li.ui-selecting {
     color: white;
     background-color: #297efd;
 }
 
-.files li.disabled {
+.file-list li.disabled {
     opacity: 0.3;
 }
 
-.items {
+/**
+ * FileView
+ */
+
+.file-view {
     width: 100%;
-    height: calc(100% - 40px);
-    overflow: scroll;
+    height: 100%;
+    overflow-x: hidden;
+
+    background-color: #eee;
+//  overflow-y: scroll;
+}
+
+.file-view .sort-handle {
+//  pointer-events: auto;
+//  user-select: none;
+}
+
+.dialog .file-view {
     border: 1px solid #aaa;
+    background-color: #f6f6f6;
 }
 
-.items li span {
-    min-width: 16px;
-    margin-right: 5px;
-}
-
-.items li {
-    font-size: 13px;
-    padding: 1px 13px 3px 13px; //3px 13px 3px 26px;
-    height: 80px; //21px;
+.file-view li {
+    position: relative;
+//  height: 80px; //21px;
+    width: 100%;
     border: none;
+    border-bottom: 1px solid #ccc;
+//  overflow: hidden;
+
+}
+
+.file-view li img {
+    margin: 5px;
+    border: 1px solid #aaa;
+    background-color: white;
+}
+
+.file-view li div {
+    position: absolute;
+    top: 0;
+}
+
+.file-view li.ui-selected,.file-view li.ui-selecting {
+    color: white;
+    background-color: #297efd;
+}
+
+.file-view li.disabled {
+    opacity: 0.3;
+}
+
+.file-view li.placeholder {
+    background-color: #eee;
     border-bottom: 1px solid #ccc;
 }
 
-.items li.ui-selected,.files li.ui-selecting {
-    color: white;
-    background-color: #297efd;
-}
-
-.items li.disabled {
-    opacity: 0.3;
-}
 
 /**
  * Widget
@@ -748,6 +701,22 @@ span .ui-icon {
     outline-color: rgb(59, 153, 252)
 }
 
+/*
 ::-webkit-scrollbar-thumb {
     z-index: 10000;
+}
+*/
+
+.sortable-drag div {
+    //outline: 1px solid #3a98fc;
+    //background-color: rgba(133,191,253,0.5);
+    opacity: 1;
+}
+
+.sortable-drag {
+    opacity: 1;
+}
+
+.sortable-ghost {
+    opacity: 0.1;
 }

@@ -16,20 +16,26 @@ class SideBarTab {
     pageButton = $('#page-view-button').textButton({
       text: T('Pages'),
       locked: true,
-      click: function(e) {
+      click: (e) => {
         if ($(e.target).textButton('instance')) {
           command.showPageView()
         }
-      }.bind(this),
+      },
+      dblclick: (e) => {
+        LOG('dblclick page tab')
+      },
     })[0]
 
     textButton = $('#text-view-button').textButton({
       text: T('Texts'),
-      click: function(e) {
+      click: (e) => {
         if ($(e.target).textButton('instance')) {
           command.showTextView()
         }
-      }.bind(this),
+      },
+      dblclick: (e) => {
+        LOG('dblclick text tab')
+      },
     })[0]
 
     this.buttons.push(pageButton, textButton)

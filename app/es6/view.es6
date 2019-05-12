@@ -7,9 +7,15 @@ class View {
     this.element = element
     this.dialogElement = dialogElement
 
-    this.preventScrollFreeze()
-  }
+//  this.preventScrollFreeze()
+//  this.element.style.backgroundColor = "yellow"
 
+    setTimeout(() => {
+      this.element.parentNode.style.WebkitOverflowScrolling = "touch"
+      this.element.style.WebkitPerspective = "0"
+    }, 1)
+  }
+  
   destructor() {
     LOG(`view destructor ${this.id}`)
     this.element = null
@@ -20,6 +26,19 @@ class View {
   }
 
   ////////////////
+
+  createCanvas(page, width, height) {
+    const canvas = document.createElement('canvas')
+    canvas.width = width || page.width
+    canvas.height = height || page.height
+    return canvas
+  }
+
+  createTexts(page, text) {
+    const texts = document.createElement('div')
+    texts.innerHTML = page.params.text
+    return texts
+  }
   
   preventScrollFreeze() {
     this.lastX = 0
@@ -44,16 +63,28 @@ class View {
       const dirX = (this.lastX - x) < 0 ? 'left': 'right'
 
       if (scrollTop === 0) {
-        if (dirY === "up") e.preventDefault();
+        if (dirY === "up") {
+          LOG('up')
+          e.preventDefault();
+        }
 
       } else if (scrollTop >= e.currentTarget.scrollHeight - height) {
-        if (dirY === "down") e.preventDefault();
+        if (dirY === "down") {
+          LOG('down')
+          e.preventDefault();
+        }
       }
       if (scrollLeft === 0) {
-        if (dirX === "left") e.preventDefault();
+        if (dirX === "left") {
+          LOG('left')
+          e.preventDefault();
+        }
 
       } else if (scrollLeft >= e.currentTarget.scrollWidth - width) {
-        if (dirX === "right") e.preventDefault();
+        if (dirX === "right") {
+          LOG('right')
+          e.preventDefault();
+        }
       }
       this.lastX = x;
       this.lastY = y;

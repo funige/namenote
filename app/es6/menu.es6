@@ -75,10 +75,10 @@ class Menu {
     setState(template, 'Developer Tools', isApp)
 //  setState(template, 'Open ...', isApp)
 
-    const project = projectManager.current
+    const project = namenote.currentProject()
     const isProject = (project) ? true : false
-    setState(template, 'Close', isProject)
-    setState(template, 'Close All', isProject)
+//  setState(template, 'Close', isProject)
+//  setState(template, 'Close All', isProject)
     setState(template, 'Save Snapshot As ...', isProject)
     setState(template, '.txt (Plain Text) ...', isProject)
     setState(template, '.csnf (CLIP STUDIO Storyboard) ...', isProject)

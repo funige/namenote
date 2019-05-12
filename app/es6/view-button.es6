@@ -1,6 +1,7 @@
 'use strict'
 
 import { command } from './command.es6'
+import { namenote } from './namenote.es6'
 import { projectManager } from './project-manager.es6'
 import { config } from './config.es6'
 
@@ -44,7 +45,7 @@ class ViewButton {
   }
 
   update() {
-    const project = projectManager.current
+    const project = namenote.currentProject()
     const quickZoom = project //(project) ? project.view.quickZoom : false
     
     $(zoomButton).imageButton('disabled', !project)

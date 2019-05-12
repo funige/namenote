@@ -21,8 +21,12 @@ class Widget {
         this.locked(this.options.locked)
         this.element.text(this.options.text)
 
-        const click = this.options.click
-        if (click) this.element.on('click', click)
+        if (this.options.click) {
+          this.element.on('click', this.options.click)
+        }
+        if (this.options.dblclick) {
+          this.element.on('dblclick', this.options.dblclick)
+        }
       },
 
       locked: function(value) {

@@ -29,6 +29,10 @@ class RecentURL {
   }
 
   add(url) {
+    if (!url.match(/:\/\/\//)) {
+      ERROR('irregal url!!!', url) //TODO
+    }
+    
     this.data = this.data.filter((value) => value != url)
     this.data.unshift(url)
 

@@ -3,27 +3,31 @@
 import { namenote } from './namenote.es6'
 import { locale } from './locale.es6'
 import { dialog } from './dialog.es6'
+import { file } from './file.es6'
 
 ////////////////////////////////////////////////////////////////
 
 class OpenNewDialog {
   constructor() {
     this.id = 'open-new-dialog'
-    this.element = null
   }
 
+  destructor() {
+    this.element = null
+  }
+  
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons[T('Ok')] = resolve
-      buttons[T('Cancel')] = reject
+      buttons[T('Ok')] = () => { resolve(true) }
+      buttons[T('Cancel')] = () => { resolve() }
 
       const string = locale.translateHTML(`
         <table>
           <tr><td>T(Notebook name):
             <td><input name='name' class='name' type='text' value='' />
 	  
-          <tr><td>T(Folder):
+          <tr><td>T(Location):
             <td><input name='dir' class='dir' type='text' value='' disabled />
 	    <input name='ref' class='ref' type='button' value='T(Choose folder...)' />
 
@@ -54,6 +58,8 @@ class OpenNewDialog {
         modal: true,
         width: 550,
         buttons: buttons,
+        open: () => {
+        }
       })
     })
   }
@@ -61,6 +67,4 @@ class OpenNewDialog {
   saveParams() {}
 }
 
-const openNewDialog = new OpenNewDialog()
-
-export { openNewDialog }
+export { OpenNewDialog }
