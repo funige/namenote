@@ -39,9 +39,9 @@ if ARGV.length <= 0
 else
   new_version = ARGV[0]
   replace_version "app/package.json", new_version
-  replace_version "app/es6/namenote.es6", new_version
+  replace_version "app/src/namenote.js", new_version
 
-  wait_update("app/js/bundle-desktop.js")
+  wait_update("app/dist/bundle-desktop.js")
   exit 0
 end
 

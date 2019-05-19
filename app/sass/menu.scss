@@ -1,0 +1,42 @@
+.ui-menu .ui-menu-item {
+    margin:0;
+    padding:0;
+    width: 100%;
+}
+
+.ui-menu {
+    text-align: left;
+    width: 150px;
+}
+
+#file-dropdown .ui-menu {
+    width: 320px !important;
+}
+
+.ui-menu > li {
+    font-size: 13px;
+}
+
+.ui-menu > li > div {
+    position: relative;
+    line-height: 1.5em;
+    margin: 0;
+    padding: 0;
+}
+
+.ui-menu .ui-widget {
+    border: 1px solid #aaa;
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+
+    width: 320px;
+}
+
+.ui-menu-item-wrapper {
+    padding-left: 2em !important;
+    position: absolute;
+}
+
+
+.ui-menu div.check { position:absolute; left:5px; }
+.ui-menu div.label { text-align:left; float: left; }
+.ui-menu div.key   { text-align: right; margin-right: -8px; font-size: 13px; }

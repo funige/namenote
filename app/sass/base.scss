@@ -1,0 +1,559 @@
+@import "reset";
+
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+
+    caret-color: black;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    //min-height: 100%;
+    overflow: hidden;
+    position:fixed;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    
+    min-height: 100%;
+    overflow: auto;
+    
+    font-family: verdana;
+    font-size: 13px;
+
+    position: fixed;
+
+    line-height: 1.5;
+}
+
+ul, li {
+    list-style: none;
+}
+
+:focus {
+    outline-color: rgb(59, 153, 252)
+}
+
+////////////////////////////////////////////////////////////////
+
+/**
+ * ToolBar
+ */
+
+#header {
+    width: 100%;
+    
+    height: 36px;
+    line-height: 36px;
+    border: 0px solid black;
+    border-bottom: 1px solid #aaa;
+    background-color: #f6f6f6;
+    user-select: none;
+    text-align: center;
+}
+
+
+.text-view {
+    background-color: white; //#eee;
+
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+/**
+ * Main
+ */
+
+#main {
+    position: absolute;
+    top: 37px;
+    width: 100%;
+    height: calc(100% - 37px);
+    overflow: hidden;
+    background-color: #7a7b7e; //#f0f0f0;
+}
+
+.split-pane {
+    background: #a3a3a3;
+}
+
+.split-pane-divider {
+    left: 200px;       /* Same as left component initial width */
+    width: 1px;
+    background-color: #aaa;
+}
+
+#right-component {
+    left: 200px;       /* Same as left component initial width */
+    margin-left: 1px;  /* Same as divider width */
+}
+
+#left-component {
+    width: 200px;
+}
+
+.sidebar {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.main-view {
+    position: absolute;
+
+    min-width: 100%;
+    min-height: 100%;
+
+    overflow: auto; //scroll;
+    transform: translate3d(0,0,0);
+}
+ 
+.page {
+    position: absolute;
+    box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.1);
+    z-index: 0;
+    outline: 1px solid rgba(0,0,0,0.3);
+    background-color: white;
+
+    transform-origin: top left;
+    overflow: hidden;
+}
+
+.page.preload {
+    box-shadow: none;
+    outline: none;
+    opacity: 0.3;
+}
+
+.page.selected {
+    z-index: 1;
+    outline: 3px solid rgba(133,191,253,1.0);
+}
+
+.page-mask {
+    position: absolute;
+    overflow: hidden;
+}
+
+.page-root {
+    position: absolute;
+}
+
+.number {
+    margin-top: 6px; //8px;
+    color: #555;
+    opacity: 1.0
+}
+.number.selected {
+    color: #3a98fc; //#85bffd;
+    opacity: 1.0
+}
+
+.project {
+    position: absolute;
+}
+
+.texts {
+    transform-origin: top left;
+}
+
+.text {
+    min-width: 1em;
+    min-height: 1em;
+    white-space: nowrap;
+    cursor: default;
+    outline: 1px solid #eee; //85bffd;
+    background: rgba(255,255,255,0);
+    z-index: 1000;
+    color: #bf0058;
+    transform-origin: top left;
+}
+
+.text * {
+    user-select: element;
+}
+
+.text.selected {
+    border: none;
+    outline: 1px solid #3a98fc; //#3a98fc;
+    background: rgba(133,191,253,0.5); //rgba(58,152,252,1.0);
+}
+
+.text.editable {
+//  outline: 2px solid #3a98fc; //orange; //#ff0084;
+//  box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.2);
+    outline: none;
+    box-shadow: 0px 0px 0px 0.3em white,
+                0px 0px 0px calc(0.3em + 2px) #3a98fc;
+                //3px 3px 5px 0.4em rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.9);
+}
+
+.text-node {
+    position: absolute;
+//  border: 1px solid red; //background: rgba(255,255,0.5)
+}
+
+.selection {
+    position: absolute;
+    z-index: 2000;
+}
+
+.canvas {
+    position: absolute;
+    transform-origin: top left;
+    overflow: hidden;
+}
+
+canvas .scratch {
+    z-index :100;
+}
+
+.wand {
+    position: absolute;
+    background-color: rgba(133,191,253,0.5);
+    z-index: 10;
+}
+
+
+.preview2 {
+    width: 500px; height: 250px;
+    color: #555;
+    background-color: white;
+    border: 1px solid #aaa;
+    margin-left: 5px;
+
+    overflow: auto;
+    overflow-y: scroll;
+}
+
+.preview2 div {
+    padding: 2px;
+}
+
+.preview2 hr {
+    border: 0;
+    border-top: 1px dashed #ccc;
+    width: 100%;
+    height: 0px;
+//  background-color: #aaa;
+}
+
+/**
+ * jQuery ui
+ *
+ */
+
+.dialog {
+    margin-top: 1em;
+//  font-size: 14px;
+}
+
+.dialog-message {
+    text-align: right;
+    margin-top: 1em;
+    margin-right: 1em;
+    min-height: 24px;
+}
+
+.message-box {
+    display: table;
+}
+
+.message-box img {
+    display: table-cell;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.message-box p {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+button.ui-button.ui-widget {
+    min-height: 36px;
+}
+
+.ui-selectmenu-button {
+    background-color: white !important;
+    min-height: 20px;
+}
+
+.ui-dialog {
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.4);
+}
+
+.ui-dialog-buttonset {
+    width: calc(100% - 15px);
+}
+.ui-dialog-buttonpane button {
+    float: right;
+}
+
+.ui-dialog-titlebar-close {
+    visibility: hidden;
+}
+
+.ui-widget-overlay {
+    opacity: 0.01 !important;
+}
+
+.ui-menu .ui-menu-item {
+    margin:0;
+    padding:0;
+    width: 100%;
+}
+
+.ui-menu {
+    text-align: left;
+    width: 200px;
+}
+
+#file-dropdown .ui-menu {
+    width: 320px !important;
+}
+
+span .ui-icon {
+    display: none;
+}
+
+.ui-menu > li {
+    font-size: 13px;
+}
+
+.ui-menu > li > div {
+    position: relative;
+    line-height: 1.5em;
+    margin: 0;
+    padding: 0;
+}
+
+.ui-menu .ui-widget {
+    border: 1px solid #aaa;
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+
+    width: 320px;
+}
+
+.ui-menu-item-wrapper {
+    padding-left: 2em !important;
+    position: absolute;
+}
+
+
+.ui-menu div.check { position:absolute; left:5px; }
+.ui-menu div.label { text-align:left; float: left; }
+.ui-menu div.key   { text-align: right; margin-right: -8px; font-size: 13px; }
+
+#menu {
+    background-color: #f6f6f6;
+}
+
+////////////////
+
+.folders {
+}
+
+.file-list {
+    width: 100%;
+    border: 1px solid #aaa;
+    background-color: white;
+}
+
+.file-list li span {
+    min-width: 16px;
+    margin-right: 5px;
+}
+
+.file-list li {
+    font-size: 13px;
+    padding: 1px 13px 3px 13px; //3px 13px 3px 26px;
+    height: 21px;
+    border: none;
+}
+
+.file-list li.ui-selected,.file-list li.ui-selecting {
+    color: white;
+    background-color: #297efd;
+}
+
+.file-list li.disabled {
+    opacity: 0.3;
+}
+
+/**
+ * FileView
+ */
+
+.file-view {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background-color: #eee;
+}
+
+.dialog .file-view {
+    border: 1px solid #aaa;
+    background-color: white;
+}
+
+.file-view li {
+    position: relative;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    overflow: hidden;
+    background-color: #eee;
+}
+
+.file-view li img.thumbnail {
+    margin: 5px;
+    border: 1px solid #555; //#aaa;
+    background-color: white;
+
+    pointer-events: none;
+    //user-select: none;
+}
+
+.file-view li div {
+    position: absolute;
+    top: 0;
+}
+
+.file-view li.ui-selected,.file-view li.ui-selecting {
+    color: white;
+    background-color: #297efd;
+}
+
+.file-view li.disabled {
+    opacity: 0.3;
+}
+
+.file-view li.placeholder {
+    background-color: #white;
+    border-bottom: 1px solid #ccc;
+}
+
+.file-view .content {
+    height: calc(100% - 27px); //26px+borderTop
+    width: 100%;
+    overflow: scroll;
+    background-color: white;
+}
+
+
+.text-button {
+    padding: 0px 10px 0 10px;
+    font-size: 12px;
+    float: left;
+    background-color: #f6f6f6;
+}
+
+.text-button.locked {
+    box-shadow: 0 -2px 0 rgba(4,169,244,1) inset;
+}
+
+.text-button:hover { background-color: #eaeaea; }
+.text-button.locked:hover { background-color: #f6f6f6; }
+.text-button.right { float: right; }
+
+.clipboard {
+    width: 14px;
+    height: 14px;
+    border: none;
+    margin: 6px 4px;
+    margin-top: 12px;
+    background-color: #f6f6f6;
+}
+
+#save-indicator {
+    position: absolute;
+    left: 0px;
+    bottom: 0px; //7px;
+    z-index: 3000;
+    opacity: 0.8; //0.4
+    pointer-events: none;
+}
+
+/**
+ * Dropdown Button 
+ */
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 33px;
+    background-color: white; //#f6f6f6; 
+                                                       
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.4);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+
+.dropdown-form {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.dropdown-form-separator {
+    color: #ccc;
+    width: 1px;
+    height: 32px;
+}
+
+.sortable-drag div {
+    //outline: 1px solid #3a98fc;
+    //background-color: rgba(133,191,253,0.5);
+    opacity: 1;
+}
+
+.sortable-drag {
+    opacity: 1;
+}
+
+.sortable-ghost {
+    opacity: 0.1;
+}
+
+////////////////////////////////////////////////////////////////
+
+@import "widget";
+@import "tablet-settings";
+@import "form";
+@import "sidebar"; 

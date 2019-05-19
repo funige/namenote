@@ -1,14 +1,30 @@
-var gulp = require('gulp');
-var browserify = require('browserify');
-var babelify = require('babelify');
-var source = require('vinyl-source-stream');
-var streamify = require('gulp-streamify')
-var notify = require('gulp-notify')
-var uglify = require('gulp-uglify')
+const gulp = require('gulp')
+const browserify = require('browserify')
+const babelify = require('babelify')
+const source = require('vinyl-source-stream')
+const streamify = require('gulp-streamify')
+const notify = require('gulp-notify')
+const uglify = require('gulp-uglify-es').default
 
+const sass = require('gulp-sass')
+const autoprefixer = require('gulp-autoprefixer')
+const plumber = require('gulp-plumber')
+
+gulp.task('sass', function() {
+  return gulp.src('./sass/base.scss')
+    .pipe(plumber())
+    .pipe(sass({ outputStyle: 'expanded' }))
+    .pipe(autoprefixer({
+      browsers: ["last 2 versions", "ie >= 9", "Android >= 4","ios_saf >= 8"],
+      cascade: false
+    }))
+    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('../funige.github.io/namenote'))
+//  .pipe(notify({title:'sass ok', sound:'Hero'}))
+});
 
 gulp.task('browser', function(done) {
-  browserify('./es6/browser.es6', { debug: true })
+  browserify('./src/browser.js', { debug: true })
     .transform(babelify, {presets: [['@babel/preset-env',
                                      { "useBuiltIns": "usage", "corejs": 2 }]]})
     .bundle()
@@ -17,12 +33,12 @@ gulp.task('browser', function(done) {
     })
     .pipe(source('bundle-browser.js'))
 //  .pipe(streamify(uglify()))  // comment out when deguging
-    .pipe(gulp.dest('./js'))
-    .pipe(gulp.dest('../funige.github.io/namenote/js'))
+    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest('../funige.github.io/namenote/dist'))
     .pipe(notify({title:'browser ok', sound:'Hero'}))
 
-  gulp.src('style.css').
-    pipe(gulp.dest('../funige.github.io/namenote'))
+//gulp.src('style.css').
+//  pipe(gulp.dest('../funige.github.io/namenote'))
   gulp.src('index.html').
     pipe(gulp.dest('../funige.github.io/namenote'))
   gulp.src('js/lib/dictionary.js').
@@ -32,27 +48,30 @@ gulp.task('browser', function(done) {
 });
 
 gulp.task('desktop', function(done) {
-  browserify('./es6/desktop.es6', { debug: true })
+  browserify('./src/desktop.js', { debug: true })
     .transform(babelify, {presets: [['@babel/preset-env',
-                                    {"useBuiltIns": "usage"}]]})
+                                     { "useBuiltIns": "usage", "corejs": 2 }]]})
     .bundle()
     .on("error", function (err) {
       console.log("Error : " + err.message);
     })
     .pipe(source('bundle-desktop.js'))
 //  .pipe(streamify(uglify()))  // comment out when deguging
-    .pipe(gulp.dest('./js'))
-    .pipe(notify({title:'desktop ok', sound:'Hero'}))
+    .pipe(gulp.dest('./dist'))
+//  .pipe(notify({title:'desktop ok', sound:'Hero'}))
   done();
 });
 
-gulp.task('build', gulp.parallel('browser', 'desktop'));
+gulp.task('build', gulp.parallel('browser', 'desktop', 'sass'));
 
 gulp.task('default', function() {
-  gulp.watch(['index.html',
-              './style.css',
-              './es6/*.es6',
-              './js/lib/*.js', './*.js'], gulp.task('build'))
+  gulp.watch([
+    'index.html',
+    './sass/*.scss',
+    './src/*.js',
+    './js/lib/*.js',
+    './*.js'
+  ], gulp.task('build'))
 });
 
 

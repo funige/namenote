@@ -56,8 +56,12 @@ const dictionary = {
     "Side Bar": "サイドバー",
     "Developer Tools": "デベロッパー ツール",
     "Full Screen": "フルスクリーン",
-    "Page Margin": "余白",
-    "Number of Pages per Row": "1行あたりのページ数",
+    "Print Preview": "印刷プレビュー",
+    "Multipage": "マルチページ",
+    "Thumbnail Size": "サムネールのサイズ",
+    "Small": "小",
+    "Middle": "中",
+    "Large": "大",
     
     "Window": "ウィンドウ",
     "Extract Text": "テキストを抽出",
@@ -80,13 +84,14 @@ const dictionary = {
     
     "Texts": "テキスト",
 
-    "Side Bar Position": "サイドバーの位置",
+    "Dock Side": "サイドバーの位置",
     "Left": "左",
     "Right": "右",
+
+    //"S": "小",
+    //"M": "中",
+    //"L": "大",
     
-    "S": "小",
-    "M": "中",
-    "L": "大",
     "Pressure": "筆圧",
     "Vertical": "縦書き",
     "Horizontal": "横書き",

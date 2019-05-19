@@ -1,0 +1,41 @@
+.texts {
+    transform-origin: top left;
+}
+
+.text {
+    min-width: 1em;
+    min-height: 1em;
+    white-space: nowrap;
+    cursor: default;
+    outline: 1px solid #eee; //85bffd;
+    background: rgba(255,255,255,0);
+    z-index: 1000;
+    color: #bf0058;
+    transform-origin: top left;
+}
+
+.text * {
+    user-select: element;
+}
+
+.text.selected {
+    border: none;
+    outline: 1px solid #3a98fc; //#3a98fc;
+    background: rgba(133,191,253,0.5); //rgba(58,152,252,1.0);
+}
+
+.text.editable {
+//  outline: 2px solid #3a98fc; //orange; //#ff0084;
+//  box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.2);
+    outline: none;
+    box-shadow: 0px 0px 0px 0.3em white,
+                0px 0px 0px calc(0.3em + 2px) #3a98fc;
+                //3px 3px 5px 0.4em rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.9);
+}
+
+.text-node {
+    position: absolute;
+//  border: 1px solid red; //background: rgba(255,255,0.5)
+}
+

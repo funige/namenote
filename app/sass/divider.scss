@@ -1,0 +1,20 @@
+.split-pane {
+    background: #a3a3a3;
+}
+
+#left-component {
+    width: 200px;
+}
+#divider {
+    left: 200px;       /* Same as left component initial width */
+    width: 1px;
+    background-color: #aaa;
+//  box-shadow: -1px 0px 2px rgba(0,0,0,0.3); /* drop shadow test */
+}
+
+#right-component {
+//  background-color: #7a7b7e; //#f0f0f0;
+    left: 200px;       /* Same as left component initial width */
+    margin-left: 1px;  /* Same as divider width */
+}
+
