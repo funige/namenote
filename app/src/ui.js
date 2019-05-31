@@ -4,7 +4,7 @@ import { dialog } from './dialog.js'
 import { menu } from './menu.js'
 import { title } from './title.js'
 
-import { toolBar } from './tool-bar.js'
+import { header } from './header.js'
 import { sideBar } from './side-bar.js'
 
 class UI {
@@ -13,7 +13,7 @@ class UI {
     this.divider = divider
     this.dialog = dialog
 
-    this.toolBar = toolBar
+    this.header = header
     this.sideBar = sideBar
   }
   
@@ -23,7 +23,7 @@ class UI {
     divider.init()
     dialog.init()
 
-    toolBar.init()
+    header.init()
     sideBar.init()
 
     $('.split-pane').css('opacity', 1)
@@ -33,7 +33,7 @@ class UI {
     WARN('[ui update]')
     divider.update()
     
-//  toolBar.update()
+//  header.update()
 //  sideBar.update()
   }
 

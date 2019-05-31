@@ -4,7 +4,7 @@ import { historyButton } from './history-button.js'
 import { toolButton } from './tool-button.js'
 import { menuButton } from './menu-button.js'
 
-class ToolBar {
+class Header {
   constructor() {
   }
 
@@ -26,22 +26,20 @@ class ToolBar {
   }
   
   update(value) {
-    if (value == undefined) value = config.data.toolBar
-    config.data.toolBar = value
+    if (!value) value = config.data.header || true
+    config.data.header = value
     config.save()
 
     $('#header').css('display', value ? 'block' : 'none')
     $('#main').css('height', value ? 'calc(100% - 37px)' : '100%')
     $('#main').css('top', value ? '37px' : '0')
-
-    //View.onResize()
   }
 
   toggle() {
-    this.update(!config.data.toolBar)
+    this.update(!config.data.header)
   }
 }
 
-const toolBar = new ToolBar();
+const header = new Header();
 
-export { toolBar }
+export { header }

@@ -2,12 +2,13 @@ import { widget } from './widget.js'
 
 ////////////////////////////////////////////////////////////////
 
-class Footer {
+class ViewFooter {
   constructor(element) {
     this.element = element
     this.init()
   }
 
+  
   init() {
     this.element.innerHTML = ''
 
@@ -18,6 +19,7 @@ class Footer {
       },
       float: 'left',
     })
+    
     const appendButton = widget.createImageButton({
       src: 'img/redo-button.png',
       click: (e) => {
@@ -31,4 +33,4 @@ class Footer {
   }
 }
 
-export { Footer }
+export { ViewFooter }

@@ -24,15 +24,7 @@ class Page {
     this.canvasCtx = this.canvas.getContext('2d')
     await this.unzip(this.canvasCtx)
 
-    const rect = project.getThumbnailSize()
-    this.thumbnail = this.createCanvasElement(rect.width, rect.height)
-    this.thumbnailCtx = this.thumbnail.getContext('2d')
-    this.thumbnailCtx.filter = `none`
-    this.thumbnailCtx.imageSmoothingQuality = 'high'
-    this.thumbnailCtx.drawImage(this.canvas,
-                                project.canvasSize[2]||0, project.canvasSize[3]||0,
-                                project.canvasSize[0], project.canvasSize[1],
-                                0, 0, rect.width, rect.height)
+    this.updateThumbnail(project)
   }
 
   updateThumbnail(project) {

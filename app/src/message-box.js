@@ -32,7 +32,7 @@ class MessageBox {
       
       const string = locale.translateHTML(`
         <div class='message-box'>
-          ${this.getHeader(options)}
+          ${this.getMessageIcon(options)}
           <p>${this.getMessage(options)}</p>
         </div>
         <div class='dialog-message'></div>`)
@@ -53,13 +53,11 @@ class MessageBox {
     return T(options.message) || ''
   }
   
-  getHeader(options) {
+  getMessageIcon(options) {
     if (images[options.type]) {
       return `<img src="${images[options.type]}" width="48px"/>`
-
-    } else {
-      return ''
     }
+    return ''
   }
 
   showProgress(message) {

@@ -1,6 +1,7 @@
 import { shortcutDefault } from './shortcut-default.js'
 import { command } from './command.js'
 import { dialog } from './dialog.js'
+import { controller } from './controller.js'
 
 class Shortcut {
   constructor() {
@@ -15,8 +16,7 @@ class Shortcut {
     })
 
     Mousetrap.prototype.stopCallback = function(e, element, combo) {
-/*
-      if (Text.isEditable(element)) {
+      if (controller.isEditable(element)) {
         LOG('keycode=', e.keyCode, e)
 
 	if (e.ctrlKey && !e.shiftKey && !e.metaKey) {
@@ -35,7 +35,6 @@ class Shortcut {
 	return true
       }
       return false
-*/
     }
   }
 

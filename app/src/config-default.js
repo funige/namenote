@@ -1,5 +1,5 @@
 const configDefault = {
-  toolBar: true,
+  header: true,
   sideBar: false,
   sideBarWidth: 250,
   sideBarPosition: 'right',

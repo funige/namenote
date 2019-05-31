@@ -23,7 +23,7 @@ function fixCommand (item) {
 
 ipcMain.on('rebuild-menu', (event, arg) => {
   const template = getMenuTemplate(JSON.parse(arg))
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+//Menu.setApplicationMenu(Menu.buildFromTemplate(template))
   event.returnValue = "ok"
 })
 

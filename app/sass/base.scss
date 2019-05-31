@@ -23,7 +23,7 @@ body {
     min-height: 100%;
     overflow: auto;
     
-    font-family: verdana;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
 
     position: fixed;
@@ -55,15 +55,6 @@ ul, li {
     background-color: #f6f6f6;
     user-select: none;
     text-align: center;
-}
-
-
-.text-view {
-    background-color: white; //#eee;
-
-    position: absolute;
-    min-width: 100%;
-    min-height: 100%;
 }
 
 /**
@@ -133,6 +124,11 @@ ul, li {
 .page.selected {
     z-index: 1;
     outline: 3px solid rgba(133,191,253,1.0);
+}
+
+.page .marks {
+    position: absolute;
+    transform-origin: top left;
 }
 
 .page-mask {
@@ -314,6 +310,11 @@ button.ui-button.ui-widget {
     width: 200px;
 }
 
+// IconSelectMenu
+li.ui-state-disabled {
+    border-top: 1px solid #aaa;
+}
+
 #file-dropdown .ui-menu {
     width: 320px !important;
 }
@@ -362,7 +363,7 @@ span .ui-icon {
 .file-list {
     width: 100%;
     border: 1px solid #aaa;
-    background-color: white;
+    overflow: auto;
 }
 
 .file-list li span {
@@ -387,23 +388,58 @@ span .ui-icon {
 }
 
 /**
- * FileView
+ * TextView
  */
 
-.file-view {
+
+.text-view {
+    position: absolute;
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    background-color: #eee;
+    background-color: #f6f6f6; //white;
 }
 
-.dialog .file-view {
-    border: 1px solid #aaa;
+.text-view .content {
+    height: calc(100% - 27px); //26px+borderTop
+    width: 100%;
+    overflow: scroll;
+}
+
+.text-view .content ul {
+    position: relative;
+    background-color: #f6f6f6;
+    border-bottom: 1px solid black;
+    padding-bottom: 1em;
+    margin-left: 30px;
+}
+
+.text-view li {
+    position: relative;
+    border-bottom: 1px solid #999;
+    padding-left: 20px;
     background-color: white;
 }
 
-.file-view li {
+/**
+ * PageView
+ */
+
+.page-view {
+    width: 100%;
+    height: 100%;
+//  overflow-x: hidden;
+    background-color: #f6f6f6;
+}
+
+.dialog .page-view {
+    border: 1px solid #aaa;
+    background-color: white; //#f6f6f6;
+}
+
+.page-view li {
     position: relative;
+    display: table;
     width: 100%;
     border: none;
     border-bottom: 1px solid #ccc;
@@ -411,7 +447,7 @@ span .ui-icon {
     background-color: #eee;
 }
 
-.file-view li img.thumbnail {
+.page-view li img.thumbnail {
     margin: 5px;
     border: 1px solid #555; //#aaa;
     background-color: white;
@@ -420,32 +456,54 @@ span .ui-icon {
     //user-select: none;
 }
 
-.file-view li div {
-    position: absolute;
-    top: 0;
+.page-view li div {
+//  position: absolute;
+//  top: 0;
 }
 
-.file-view li.ui-selected,.file-view li.ui-selecting {
+.page-view li.ui-selected,.page-view li.ui-selecting {
     color: white;
     background-color: #297efd;
 }
 
-.file-view li.disabled {
+.page-view li.disabled {
     opacity: 0.3;
 }
 
-.file-view li.placeholder {
-    background-color: #white;
+.page-view li.placeholder {
+    background-color: white;
     border-bottom: 1px solid #ccc;
 }
 
-.file-view .content {
+.page-view .content {
     height: calc(100% - 27px); //26px+borderTop
     width: 100%;
     overflow: scroll;
-    background-color: white;
+    overflow-x: hidden;
 }
 
+.page-view .index {
+    display: table-cell;
+    vertical-align: middle;
+    width: 22px;
+    height: 100%;
+    border-right: 1px solid #ccc;
+    overflow-x: hidden;
+    font-size: 12px;
+}
+
+.page-view .digest {
+    display: table-cell;
+    white-space: nowrap;
+    bottom: 0;
+    left: 0px;
+}
+
+.page-view .sort-handle {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
 
 .text-button {
     padding: 0px 10px 0 10px;

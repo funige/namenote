@@ -12,7 +12,7 @@ import { file } from './file.js'
 import { projectManager } from './project-manager.js'
 
 import { MainView } from './main-view.js'
-import { FileView } from './file-view.js'
+import { PageView } from './page-view.js'
 import { TextView } from './text-view.js'
 
 ////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ class Namenote {
     ui.init()
 
     this.mainView = new MainView($('.main-view')[0])
-    this.pageView = new FileView($('.file-view')[0])
+    this.pageView = new PageView($('.page-view')[0])
     this.textView = new TextView($('.text-view')[0])
     this.initBaseHandlers()
 

@@ -31,6 +31,7 @@ class File {
     if (project) {
       namenote.mainView.loadProject(project)
       namenote.pageView.loadProject(project)
+      namenote.textView.loadProject(project)
     }
   }
 
@@ -38,28 +39,24 @@ class File {
     const fileSystem = this.getFileSystem(this.getScheme(url))
     if (!fileSystem.auth('open', url)) return
 
-    url = await this.completePath(url)
-    let project = projectManager.find(url)
-    if (project) {
-      namenote.mainView.loadProject(project)
-      namenote.pageView.loadProject(project)
-
-    } else {
+    const projectURL = await this.getProjectURL(url)
+    if (projectURL) {
       const messageBox = new MessageBox()
       dialog.open(messageBox, {
         title: 'Open',
         message: `Loading ...`,
         cancel: 'Cancel'
-      }).then(() => { dialog.close() }) // when cancel pressed
+      }).then(() => { dialog.close() })
 
-      project = await projectManager.get(url, messageBox)
+      const project = await projectManager.get(projectURL, messageBox)
       namenote.mainView.loadProject(project)
       namenote.pageView.loadProject(project)
+      namenote.textView.loadProject(project)
     }
   }
 
   async savePageImageDialog() {
-    await dialog.open(new SavePageImageDialog())
+    const result = await dialog.open(new SavePageImageDialog())
     dialog.close()
   }
   async exportPDFDialog() {
@@ -81,6 +78,7 @@ class File {
     if (project) {
       namenote.mainView.loadProject(project)
       namenote.pageView.loadProject(project)
+      namenote.textView.loadProject(project)
     }
   }
   
@@ -170,31 +168,18 @@ class File {
 
   ////////////////
 
-  async completePath(url) {
-    if (url.match(/\.namenote$/i)) {
-      return Promise.resolve(url)
+  async getProjectURL(url) {
+    if (url.match(/\.namenote$/i)) return url
 
-    } else return new Promise((resolve, reject) => {
-      const fileSystem = this.getFileSystem(this.getScheme(url))
-      const path = this.getPath(url)
-      fileSystem.stat(path, (err, stats) => {
-        if (err || stats.isFile()) {
-          return reject('todo:error in stat')
-
-        } else {
-          fileSystem.readdir(path, (err, dirents) => {
-            if (err) return reject('todo:error in readdir')
-            
-            for (const dirent of dirents) {
-              if (!dirent.isDirectory() && dirent.name.match(/namenote$/i)) {
-                return resolve(`${url}/${dirent.name}`)
-              }
-            }
-            return reject('todo:no namenote file in this directory')
-          })
+    try {
+      const dirents = await file.readdir(url)
+      for (const dirent of dirents) {
+        if (!dirent.isDirectory() && dirent.name.match(/\.namenote$/i)) {
+          return `${url}${dirent.name}`
         }
-      })
-    })
+      }
+    } catch (e) { ERROR(e) }
+    return null
   }
   
   getScheme(url) {

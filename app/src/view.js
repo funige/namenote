@@ -1,15 +1,15 @@
 ////////////////////////////////////////////////////////////////
 
 class View {
-  constructor(element, dialogElement) {
+  constructor(element, options) {
     this.element = element
-    this.dialogElement = dialogElement
+    this.options = options || {}
   }
   
   destructor() {
     LOG(`view destructor ${this.id}`)
     this.element = null
-    this.dialogElement = null
+    this.options = null
 
     this.projects = null
     this.pageData = {}
@@ -24,6 +24,12 @@ class View {
 //  this.element.style.backgroundColor = "yellow"
   }
 
+  createButtonElement() {
+    const li = document.createElement('li')
+    
+    return li
+  }
+  
   createCanvas(page, width, height) {
     const canvas = document.createElement('canvas')
     canvas.width = width || page.width

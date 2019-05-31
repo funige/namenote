@@ -31,7 +31,6 @@ const shortcutDefault = {
   
   sideBar: '1',
   developerTools: 'command+alt+j',
-  toolBar: 'command+alt+h',
 
   pen: 'p',
   eraser: 'e',

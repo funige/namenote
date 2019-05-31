@@ -1,19 +1,18 @@
 import { View } from './view.js'
-import { Footer } from './footer.js'
-import { config } from './config.js'
+import { ViewFooter } from './view-footer.js'
 
 ////////////////////////////////////////////////////////////////
 
-class FileView extends View {
-  constructor(element, dialogElement) {
-    super(element, dialogElement)
-    this.id = 'file'
+class PageView extends View {
+  constructor(element, options) {
+    super(element, options)
+    this.id = 'page'
 
     $(this.element).html(`
       <div class='content'></div>
       <ul class='thin-toolbar border-top'></ul>`)
     this.content = $(this.element).find('.content')[0]
-    this.footer = new Footer($(this.element).find('.thin-toolbar')[0])
+    this.footer = new ViewFooter($(this.element).find('.thin-toolbar')[0])
     
     this.enableSmoothScroll(this.content)
     this.init()
@@ -39,11 +38,11 @@ class FileView extends View {
       this.pageData[pid] = {
         element: pageElement
       }
-      if (project.pages[index]) {
-        const page = project.pages[index]
+
+      const page = project.pages[index]
+      if (page) {
         this.initPage(page)
       }
-      
       this.updatePage(pid, index)
     })
   }
@@ -61,11 +60,13 @@ class FileView extends View {
     pd.thumbnail.className = 'thumbnail'
     pd.thumbnail.style.marginLeft = '27px'
 
-    const text = $(`<div style='width:22px;height:100%;border-right:1px solid #ccc; overflow-x:hidden;font-size:10px;'>830</div><div>${page.digest()}</div>`)
+    const text = $(`
+      <div class='index'>830</div>
+      <div class='digest'>${page.digest()}</div>`)
     const handle = $('<div class="sort-handle">[handle]</div>')
-    $(pd.element).append(text)
-    $(pd.element).append(pd.thumbnail)
     $(pd.element).append(handle)
+    $(pd.element).append(pd.thumbnail)
+    $(pd.element).append(text)
   }
   
   createPageElement(pid) {
@@ -88,25 +89,27 @@ class FileView extends View {
     }
   }
   
-  async loadProject(project) {
+  loadProject(project) {
     if (this.project) this.project.removeView(this)
     this.project = project
     if (!project) return
     project.addView(this)
 
-    WARN(`[load project] ${project.url}`)
+    WARN(`pageView: loadProject ${project.url}`)
     
     this.pageData = {}
     this.initProject(project)
 
     const url = project.url.replace(/[^/]+\/[^/]+$/, '')
-    if (this.dialogElement) this.dialogElement.updateFolders(url, project.url)
+
+    WARN(this.options)
+    if (this.options.loaded) this.options.loaded(url, project.url)
   }
 
   ////////////////
   
   showProgress(message) {
-    WARN('fileView: show progress', message)
+    WARN('pageView: show progress', message)
   }
 
   showSpinner() {
@@ -118,4 +121,5 @@ class FileView extends View {
   }
 }
 
-export { FileView }
+
+export { PageView }

@@ -75,31 +75,14 @@ const menuTemplate = [
   { label: 'View',
     submenu: [
       { label: 'Full Screen', click: 'fullScreen' }, 
-//    { label: 'Tool Bar', click: 'toolBar' },
       { label: 'Side Bar', click: 'sideBar' }, 
       { label: 'Developer Tools', click: 'developerTools' },
       { type: 'separator' },
       { label: 'Zoom In', click: 'zoom' }, 
       { label: 'Zoom Out', click: 'unzoom' }, 
       { type: 'separator' },
-      { label: 'Thumbnail Size',
-	submenu: [
-	  { label: 'Small', click: 'row1' },
-	  { label: 'Middle', click: 'row2' },
-	  { label: 'Large', click: 'row3' },
-	],
-      },
-      { type: 'separator' },
-      { label: 'Page Margin', click: 'showMargin' },
-      { label: 'View Mode',
-	submenu: [
-	  { label: 'Simple View', click: 'row1' },
-	  { label: '2', click: 'row1' },
-	  { label: '4', click: 'row2' },
-	  { label: '6', click: 'row3' },
-	  { label: '8', click: 'row4' },
-	],
-      }
+      { label: 'Print Preview', click: 'printPreview' },
+      { label: 'Multipage View', click: 'multipage' },
     ],
   },
 ]
@@ -151,8 +134,8 @@ const fileMenuTemplate = [
       { label: 'Zoom In', click: 'zoom' }, 
       { label: 'Zoom Out', click: 'unzoom' }, 
       { type: 'separator' },
-      { label: 'Print Preview', click: 'showMargin' },
-      { label: 'Multipage', click: 'multiPage' },
+      { label: 'Print Preview', click: 'printPreview' },
+      { label: 'Multipage', click: 'multipage' },
     ],
   },
   { label: 'File Manager ...', click: 'fileManager' },
@@ -163,13 +146,21 @@ const fileMenuTemplate = [
 ]
 
 const sidebarMenuTemplate = [
-  { label: 'サイドバーの位置',
+  { label: 'Dock Side',
     submenu: [
-      { label: '左', click: 'dock.left' },
-      { label: '右', click: 'dock.right' },
+      { label: 'Left', click: 'dock.left' },
+      { label: 'Right', click: 'dock.right' },
     ],
   },
   { label: 'Thumbnail Size',
+    submenu: [
+      { label: 'Small', click: 'thumbnailSize.small' },
+      { label: 'Middle', click: 'thumbnailSize.middle' },
+      { label: 'Large', click: 'thumbnailSize.large' },
+    ],
+  },
+  { type: "separator" },
+  { label: 'Font Size',
     submenu: [
       { label: 'Small', click: 'thumbnailSize.small' },
       { label: 'Middle', click: 'thumbnailSize.middle' },

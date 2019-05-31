@@ -14,7 +14,7 @@ const addItems = (node, items) => {
     const li = document.createElement('li')
     const div = document.createElement('div')
     if (item.label) {
-      div.innerHTML = appendKey(T(item.label), item.accelerator)
+      div.innerHTML = appendKey(T(item.label), item.accelerator, item.checked)
     } else {
       div.innerHTML = '-'
     }
@@ -138,11 +138,6 @@ class HTMLMenu {
       this.close(menu.parentNode)
       buttons[id].imageButton('locked', false)
     }, 500)
-
-//  if (listeners[id]) {
-//    document.removeEventListener('click', listeners[id])
-//    listeners[id] = null
-//  }
   }
   
   getListener(menu, id) {
@@ -208,7 +203,7 @@ class HTMLMenu {
       const name = $(item).find('p')
       if (name && name.length == 1) {
         const label = name[0].innerHTML
-        const state = nativeMenu.getState(label)
+        const state = nativeMenu.getEnabled(label)
         if (state !== undefined) {
           if (state) {
             item.classList.remove('ui-state-disabled')

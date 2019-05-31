@@ -89,6 +89,20 @@ class Controller {
   clearMove() {
     if (!this.spaceKey) moved = false
   }
+
+  ////////////////
+
+  isEditable(e) {
+    if (e) {
+      if (e.tagName == 'INPUT' ||
+          e.tagName == 'SELECT' ||
+          e.tagName == 'TEXTAREA' ||
+          (e.contentEditable && e.contentEditable == 'true')) {
+        return true
+      }
+    }
+    return false
+  }
 }
 
 const controller = new Controller()

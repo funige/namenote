@@ -20,7 +20,7 @@ const findSubmenu = (template, label) => {
   return null
 }
 
-const setState = (template, label, value) => {
+const setEnabled = (template, label, value) => {
   const item = findSubmenu(template, label)
   if (item) {
     value = (value) ? true : false
@@ -30,6 +30,18 @@ const setState = (template, label, value) => {
       if (!value) delete(item.submenu)
     }
     states[label] = value
+  }
+}
+
+const setChecked = (template, label, value) => {
+  const item = findSubmenu(template, label)
+  if (item) {
+    value = (value) ? true : false
+    
+    if (value) {
+      item.type ='checkbox'
+      item.checked = true
+    }
   }
 }
 
@@ -69,33 +81,35 @@ class Menu {
 
   updateStates(template) {
     const isApp = (namenote.app) ? true : false
-    setState(template, 'Full Screen', isApp || window.chrome)
-    setState(template, 'Developer Tools', isApp)
-//  setState(template, 'Open ...', isApp)
+    setEnabled(template, 'Full Screen', isApp || window.chrome)
+    setEnabled(template, 'Developer Tools', isApp)
+//  setEnabledd(template, 'Open ...', isApp)
 
     const project = namenote.currentProject()
     const isProject = (project) ? true : false
-//  setState(template, 'Close', isProject)
-//  setState(template, 'Close All', isProject)
-    setState(template, 'Save Snapshot As ...', isProject)
-    setState(template, '.txt (Plain Text) ...', isProject)
-    setState(template, '.csnf (CLIP STUDIO Storyboard) ...', isProject)
-    setState(template, '.pdf (PDF) ...', isProject)
+//  setEnabled(template, 'Close', isProject)
+//  setEnabled(template, 'Close All', isProject)
+    setEnabled(template, 'Save Snapshot As ...', isProject)
+    setEnabled(template, '.txt (Plain Text) ...', isProject)
+    setEnabled(template, '.csnf (CLIP STUDIO Storyboard) ...', isProject)
+    setEnabled(template, '.pdf (PDF) ...', isProject)
     
-    setState(template, 'Add', isProject)
-    setState(template, 'Move to Buffer', isProject)
-    setState(template, 'Put Back from Buffer', isProject)
-    setState(template, 'Empty Buffer', isProject)
-    setState(template, 'Move Forward', isProject)
-    setState(template, 'Move Backward', isProject)
-    setState(template, 'Extract Text', isProject)
-    setState(template, 'Save Image As ...', isProject)
+    setEnabled(template, 'Add', isProject)
+    setEnabled(template, 'Move to Buffer', isProject)
+    setEnabled(template, 'Put Back from Buffer', isProject)
+    setEnabled(template, 'Empty Buffer', isProject)
+    setEnabled(template, 'Move Forward', isProject)
+    setEnabled(template, 'Move Backward', isProject)
+    setEnabled(template, 'Extract Text', isProject)
+    setEnabled(template, 'Save Image As ...', isProject)
 
-    setState(template, 'Undo', isProject) // && project.history.hasUndo())
-    setState(template, 'Redo', isProject) // && project.history.hasRedo())
+    setEnabled(template, 'Undo', isProject) // && project.history.hasUndo())
+    setEnabled(template, 'Redo', isProject) // && project.history.hasRedo())
+
+//  setChecked(template, 'Full Screen', true) // test
   }
 
-  getState(label) {
+  getEnabled(label) {
     return states[label]
   }
 }
