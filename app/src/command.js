@@ -115,6 +115,7 @@ class Command {
   }*/
 
   flipView() {
+    LOG('flipView')
     namenote.mainView.flipView()
   }
 

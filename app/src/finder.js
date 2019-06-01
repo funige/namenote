@@ -82,26 +82,27 @@ class Finder {
   updateFolders(url, projectURL) {
     this.url = url
     
-    const ancestors = this.getAncestors(url)
     const tmp = []
-    WARN('finder', ancestors)
       
     if (projectURL) {
       const label = file.getLabel(projectURL)
       tmp.push(`<option data-class='${label.icon}' value='${projectURL}'>${label.text}</option>`)
     }
     
+    const ancestors = this.getAncestors(url)
     for (const item of ancestors) {
       const label = file.getLabel(item)
       tmp.push(`<option value='${item}'>${label.path}</option>`)
     }
 
-    const str = T("Recent Notes")
-    tmp.push(`<option disabled style="border-top:1px solid red;">${str}</option>`)
+    if (!this.options.noRecents) {
+      const str = T("Recent Notes")
+      tmp.push(`<option disabled style="border-top:1px solid red;">${str}</option>`)
 
-    for (const item of recentURL.data) {
-      const label = file.getLabel(item)
-      tmp.push(`<option data-class='${label.icon}' value='${item}'>${label.text}</option>`)
+      for (const item of recentURL.data) {
+        const label = file.getLabel(item)
+        tmp.push(`<option data-class='${label.icon}' value='${item}'>${label.text}</option>`)
+      }
     }
     
     $(this.folders).html(tmp.join(''))

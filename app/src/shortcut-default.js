@@ -30,7 +30,7 @@ const shortcutDefault = {
   mergeText: 'ctrl+e',
   
   dock: '1',
-  developerTools: 'command+alt+j',
+  developerTools: 'command+alt+i',
 
   pen: 'p',
   eraser: 'e',
@@ -44,7 +44,7 @@ const shortcutDefault = {
   duplicatePage: 'shift+d',
 
   showMargin: 'r',
-//flipPage: 'h',
+  flipView: 'h',
   appendPage: 'shift+a',
   cutPage: 'shift+k',
   pastePage: 'shift+y',

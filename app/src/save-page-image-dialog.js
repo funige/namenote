@@ -40,16 +40,25 @@ class SavePageImageDialog {
         buttons: buttons,
         open: () => {
           this.initParams()
-          $(this.element).find('.folders').focus()
+          $(this.element).keydown((e) => {
+            if (e.keyCode == 13) {
+              e.preventDefault()
+              LOG('enter pressed')
+              this.saveParams()
+              resolve(this.result)
+            }
+          })
+//        $(this.element).find('.folders').focus()
         }
       })
 
       const folders = $(this.element).find('.folders')[0]
       const fileList = $(this.element).find('.file-list')[0]
       this.finder = new Finder(folders, fileList, {
+        noRecents: true,
         selected: (url) => {
           this.load(url)
-        }
+        },
       })
       
       this.load(file.getHome())
