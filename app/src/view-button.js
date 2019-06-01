@@ -6,7 +6,7 @@ import { config } from './config.js'
 let quickZoomButton
 let zoomButton
 let unzoomButton
-let splitButton
+let dockButton
 
 ////////////////////////////////////////////////////////////////
 
@@ -35,10 +35,10 @@ class ViewButton {
       click: function(e) { command.unzoom() }
     })[0]
 
-    splitButton = $('#split-button').imageButton({
+    dockButton = $('#dock-button').imageButton({
       src: 'img/unzoom-button.png',
       float: 'right',
-      click: function(e) { command.sideBar() }
+      click: function(e) { command.dock() }
     })[0]
   }
 
@@ -51,7 +51,7 @@ class ViewButton {
     $(quickZoomButton).imageButton('disabled', !project)
 
     $(quickZoomButton).imageButton('locked', quickZoom)
-    $(splitButton).imageButton('locked', config.data.sideBar)
+    $(dockButton).imageButton('locked', config.data.sideBar)
   }
 }
 

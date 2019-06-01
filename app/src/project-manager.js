@@ -21,6 +21,11 @@ class ProjectManager {
         }
       })
       this.projects.push(project)
+
+    } else {
+      if (monitor && monitor == dialog.current) {
+        dialog.close()
+      }
     }
     return project
   }

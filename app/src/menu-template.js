@@ -65,8 +65,6 @@ const menuTemplate = [
       { label: 'Move to Buffer', click: 'cutPage' },
       { label: 'Put Back from Buffer', click: 'pastePage' },
       { label: 'Empty Buffer', click: 'emptyPage' },
-//    { type: "separator" },
-//    { label: 'Flip', click: 'flipPage' },
       { type: "separator" },
       { label: 'Extract Text', click: 'extractText' },
       { label: 'Save Image As ...', click: 'savePageImage' },
@@ -75,9 +73,10 @@ const menuTemplate = [
   { label: 'View',
     submenu: [
       { label: 'Full Screen', click: 'fullScreen' }, 
-      { label: 'Side Bar', click: 'sideBar' }, 
+      { label: 'Dock', click: 'dock' }, 
       { label: 'Developer Tools', click: 'developerTools' },
       { type: 'separator' },
+      { label: 'Flip', click: 'flipView' },
       { label: 'Zoom In', click: 'zoom' }, 
       { label: 'Zoom Out', click: 'unzoom' }, 
       { type: 'separator' },
@@ -128,9 +127,10 @@ const fileMenuTemplate = [
   { label: 'View',
     submenu: [
       { label: 'Full Screen', click: 'fullScreen' }, 
-      { label: 'Side Bar', click: 'sideBar' }, 
+      { label: 'Dock', click: 'dock' }, 
       { label: 'Developer Tools', click: 'developerTools' },
       { type: 'separator' },
+      { label: 'Flip', click: 'flipView' },
       { label: 'Zoom In', click: 'zoom' }, 
       { label: 'Zoom Out', click: 'unzoom' }, 
       { type: 'separator' },
@@ -145,11 +145,11 @@ const fileMenuTemplate = [
   { label: 'About Namenote ...', click: 'about' },
 ]
 
-const sidebarMenuTemplate = [
+const dockMenuTemplate = [
   { label: 'Dock Side',
     submenu: [
-      { label: 'Left', click: 'dock.left' },
-      { label: 'Right', click: 'dock.right' },
+      { label: 'Left', click: 'dockSide.left' },
+      { label: 'Right', click: 'dockSide.right' },
     ],
   },
   { label: 'Thumbnail Size',
@@ -169,4 +169,4 @@ const sidebarMenuTemplate = [
   },
 ]
 
-export { menuTemplate, fileMenuTemplate, sidebarMenuTemplate }
+export { menuTemplate, fileMenuTemplate, dockMenuTemplate }

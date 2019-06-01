@@ -123,7 +123,7 @@ class Widget {
         var wrapper = $("<div>", {text: item.label})
  
         if (item.disabled) {
-          li.addClass("ui-state-disabled")
+          li.addClass("ui-state-disabled border-top")
         }
 
         if (item.element.attr("data-class")) {

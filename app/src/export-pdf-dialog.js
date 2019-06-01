@@ -1,6 +1,7 @@
 import { dialog } from './dialog.js'
 import { file } from './file.js'
 import { locale } from './locale.js'
+import { Finder } from './finder.js'
 
 ////////////////////////////////////////////////////////////////
 
@@ -25,7 +26,7 @@ class ExportPDFDialog {
         </div>`)
       
 
-      $(this.element).html(`<form id='open-new'>${string}</form>`)
+      $(this.element).html(`<form id='export-pdf'>${string}</form>`)
       $(this.element).dialog({
         autoOpen: false,
         position: { my:'center center', at:'center center' },

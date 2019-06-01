@@ -18,9 +18,9 @@ class Divider {
   }
 
   update(value) {
-    LOG('[update]')
+    LOG('[update]', value)
     
-    if (value == undefined) value = config.data.sideBar
+    if (value === undefined) value = config.data.sideBar
     config.data.sideBar = value
     config.save()
 
@@ -50,14 +50,14 @@ class Divider {
     config.save()
 
     const mainView = $('.main-view')
-    const sideBar = $('.sidebar')
+    const dock = $('.sidebar')
 
     if (value == 'left') {
-      $('#left-component').append(sideBar)
+      $('#left-component').append(dock)
       $('#right-component').append(mainView)
 
     } else {
-      $('#right-component').append(sideBar)
+      $('#right-component').append(dock)
       $('#left-component').append(mainView)
     }
     this.update()

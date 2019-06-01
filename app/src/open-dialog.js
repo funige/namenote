@@ -21,8 +21,6 @@ class OpenDialog {
   }
 
   init() {
-    this.url = null
-    
     return new Promise((resolve, reject) => {
       const buttons = {}
       buttons[T('Ok')] = () => { resolve(this.pageView.project) }

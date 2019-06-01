@@ -2,7 +2,7 @@ import { namenote } from './namenote.js'
 
 import { divider } from './divider.js'
 import { toolButton } from './tool-button.js'
-import { sideBarTab } from './side-bar-tab.js'
+import { dockTab } from './dock-tab.js'
 import { projectManager } from './project-manager.js'
 import { flash } from './flash.js'
 import { file } from './file.js'
@@ -57,21 +57,21 @@ class Command {
     toolButton.select('text')
   }
 
-  sideBar() {
-    LOG('sideBar')
+  dock() {
+    LOG('dock')
     divider.toggle()
   }
 
   showPageView() {
     $(namenote.pageView.element).show()
     $(namenote.textView.element).hide()
-    sideBarTab.select('page')
+    dockTab.select('page')
   }
 
   showTextView() {
     $(namenote.pageView.element).hide()
     $(namenote.textView.element).show()
-    sideBarTab.select('text')
+    dockTab.select('text')
   }
   
   openNewDialog() {
@@ -114,6 +114,10 @@ class Command {
     projectManager.close()
   }*/
 
+  flipView() {
+    namenote.mainView.flipView()
+  }
+
   zoom() {
     namenote.mainView.zoom()
   }
@@ -138,15 +142,7 @@ class Command {
     LOG('hoge.')
   }
 
-  /*dockLeft() {
-    divider.setPosition('left')
-  }
-
-  dockRight() {
-    divider.setPosition('right')
-  }*/
-
-  dock(side) {
+  dockSide(side) {
     divider.setPosition(side)
   }
   

@@ -57,14 +57,17 @@ class File {
 
   async savePageImageDialog() {
     const result = await dialog.open(new SavePageImageDialog())
+    WARN('save page image', result)
     dialog.close()
   }
   async exportPDFDialog() {
-    await dialog.open(new ExportPDFDialog())
+    const result = await dialog.open(new ExportPDFDialog())
+    WARN('export pdf', result)
     dialog.close()
   }
   async exportCSNFDialog() {
-    await dialog.open(new ExportCSNFDialog())
+    const result = await dialog.open(new ExportCSNFDialog())
+    WARN('export csnf', result)
     dialog.close()
   }
     

@@ -4,12 +4,10 @@ import { htmlMenu } from './html-menu.js'
 import { menu } from './menu.js'
 
 import { fileMenuTemplate,
-         otherMenuTemplate,
-         sidebarMenuTemplate } from './menu-template.js'
+         dockMenuTemplate } from './menu-template.js'
 
 let fileButton
-let otherButton
-let sidebarButton
+let dockButton
 
 ////////////////////////////////////////////////////////////////
 
@@ -22,26 +20,19 @@ class MenuButton {
     fileButton = $('#file-menu-button').imageButton({
       src: 'img/file-button.png',
       float: 'left',
-      click: function(e) { this.select(e) }.bind(this),
+      click: (e) => { this.select(e) },
       content: htmlMenu.make(fileMenuTemplate, 'file')
     })[0]
-/*
-    otherButton = $('#other-menu-button').imageButton({
+
+    dockButton = $('#dock-menu-button').imageButton({
       src: 'img/menu-button.png',
       float: 'right',
-      click: function(e) { this.select(e) }.bind(this),
-      content: htmlMenu.make(otherMenuTemplate, 'other')
-    })[0]
-*/
-    sidebarButton = $('#sidebar-menu-button').imageButton({
-      src: 'img/menu-button.png',
-      float: 'right',
-      click: function(e) { this.select(e) }.bind(this),
-      content: htmlMenu.make(sidebarMenuTemplate, 'sidebar'),
+      click: (e) => { this.select(e) },
+      content: htmlMenu.make(dockMenuTemplate, 'dock'),
       contentParent: $('body')[0]
     })[0]
 
-    this.buttons.push(fileButton, sidebarButton)
+    this.buttons.push(fileButton, dockButton)
   }
 
   update() {

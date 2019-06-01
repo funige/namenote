@@ -5,7 +5,7 @@ import { menu } from './menu.js'
 import { title } from './title.js'
 
 import { header } from './header.js'
-import { sideBar } from './side-bar.js'
+import { dock } from './dock.js'
 
 class UI {
   constructor() {
@@ -14,7 +14,7 @@ class UI {
     this.dialog = dialog
 
     this.header = header
-    this.sideBar = sideBar
+    this.dock = dock
   }
   
   init() {
@@ -24,7 +24,7 @@ class UI {
     dialog.init()
 
     header.init()
-    sideBar.init()
+    dock.init()
 
     $('.split-pane').css('opacity', 1)
   }
@@ -34,7 +34,7 @@ class UI {
     divider.update()
     
 //  header.update()
-//  sideBar.update()
+//  dock.update()
   }
 
 }

@@ -19,7 +19,7 @@ import { TextView } from './text-view.js'
 
 class Namenote {
   constructor() {
-    this.version = "2.0.0-alpha.10-debug"
+    this.version = "2.0.0-alpha.11-debug"
     this.trial = false
 
     this.config = config
@@ -51,7 +51,7 @@ class Namenote {
   initBaseHandlers() {
     window.onresize = (e) => {
       setTimeout(function() {
-        if (dialog.current && dialog.current.id == 'open-dialog') {
+        if (dialog.isOpen() && dialog.current.onresize) {
           dialog.current.onresize(e)
           
         } else {

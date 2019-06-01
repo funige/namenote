@@ -29,7 +29,7 @@ const shortcutDefault = {
   unselect: 'ctrl+d',
   mergeText: 'ctrl+e',
   
-  sideBar: '1',
+  dock: '1',
   developerTools: 'command+alt+j',
 
   pen: 'p',

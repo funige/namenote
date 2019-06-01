@@ -5,7 +5,7 @@ let textButton
 
 ////////////////////////////////////////////////////////////////
 
-class SideBarTab {
+class DockTab {
   constructor() {
     this.buttons = []
   }
@@ -59,6 +59,6 @@ class SideBarTab {
   }
 }
 
-const sideBarTab = new SideBarTab()
+const dockTab = new DockTab()
 
-export { sideBarTab }
+export { dockTab }

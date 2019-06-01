@@ -29,7 +29,14 @@ class View {
     
     return li
   }
+
+  createFrame() {
+    const frame = document.createElement('div')
+    frame.className = 'frame'
+    return frame
+  }
   
+
   createCanvas(page, width, height) {
     const canvas = document.createElement('canvas')
     canvas.width = width || page.width

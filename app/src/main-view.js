@@ -38,6 +38,7 @@ class MainView extends View {
     
     this.scale = 1
     this.steps = this.getSteps()
+    this.flip = false
     
     this.pageData = {}
     this.initProject(project)
@@ -62,6 +63,7 @@ class MainView extends View {
   
   initPage(page) {
     const pd = this.pageData[page.pid]
+    pd.frame = this.createFrame()
     pd.canvas = this.createCanvas(page)
     pd.texts = this.createTexts(page, page.params.text)
     pd.canvas.className = 'canvas'
@@ -77,9 +79,10 @@ class MainView extends View {
             </svg>`)[0] */
     pd.marks = this.project.createDraftMarksElement()
 
-    pd.element.appendChild(pd.marks)
-    pd.element.appendChild(pd.canvas)
-    pd.element.appendChild(pd.texts)
+    pd.frame.appendChild(pd.marks)
+    pd.frame.appendChild(pd.canvas)
+    pd.frame.appendChild(pd.texts)
+    pd.element.appendChild(pd.frame)
     $(pd.element).removeClass('preload')
   }
 
@@ -137,6 +140,12 @@ class MainView extends View {
   
   getSteps() {
     return (1.0 / this.scale) >> 1
+  }
+
+  flipView() {
+    if (!this.project) return
+    this.flip = ~this.flip
+    this.element.style.transform = (this.flip) ? 'scale(-1, 1)' : ''
   }
   
   zoom() {

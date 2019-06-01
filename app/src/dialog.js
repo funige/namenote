@@ -32,6 +32,11 @@ class Dialog {
     }
     setTimeout(function() {
       $(widget.element).dialog('open')
+
+      $(".ui-widget-overlay").click(() => {
+        LOG('[overlay clicked]')
+      })
+      
     }, 200)
 
     return widget.init(options)

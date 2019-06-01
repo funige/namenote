@@ -53,7 +53,7 @@ const dictionary = {
     "Untitled": "名称未設定",
     "View": "表示",
     "Tool Bar": "ツールバー",
-    "Side Bar": "サイドバー",
+    "Dock": "サイドバー",
     "Developer Tools": "デベロッパー ツール",
     "Full Screen": "フルスクリーン",
     "Multipage": "複数ページ",
@@ -89,17 +89,12 @@ const dictionary = {
     "Left": "左",
     "Right": "右",
 
-    //"S": "小",
-    //"M": "中",
-    //"L": "大",
-    
     "Pressure": "筆圧",
     "Vertical": "縦書き",
     "Horizontal": "横書き",
 
     "New notebook": "新規ノート",
     "Notebook name": "ノート名",
-//  "Folder": "保存先",
     "Location": "場所",
     "Choose folder...": "参照...",
     "Number of pages": "ページ数",
