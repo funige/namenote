@@ -1,16 +1,14 @@
-import { dialog } from './dialog.js'
 import { file } from './file.js'
 import { locale } from './locale.js'
+import { Finder } from './finder.js'
+import { Form } from './form.js'
 
 ////////////////////////////////////////////////////////////////
 
-class ExportCSNFDialog {
+class ExportCSNFForm extends Form {
   constructor() {
-    this.id = 'export-csnf-dialog'
-  }
-
-  destructor() {
-    this.element = null
+    super()
+    this.id = 'export-csnf'
   }
 
   init() {
@@ -20,16 +18,16 @@ class ExportCSNFDialog {
       buttons[T('Cancel')] = () => { resolve() }
 
       const string = locale.translateHTML(`
-        <div>
+        <div class='form'>
           save page image dialog
         </div>`)
       
 
-      $(this.element).html(`<form id='open-new'>${string}</form>`)
+      $(this.element).html(`<form id='${this.id}'>${string}</form>`)
       $(this.element).dialog({
         autoOpen: false,
         position: { my:'center center', at:'center center' },
-        title: T('Save Image'),
+        title: T('Export CSNF'),
         modal: true,
         width: 550,
         buttons: buttons,
@@ -40,5 +38,5 @@ class ExportCSNFDialog {
   }
 }
 
-export { ExportCSNFDialog }
+export { ExportCSNFForm }
 

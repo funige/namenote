@@ -1,4 +1,4 @@
-import { MessageBox } from './message-box.js'
+import { MessageForm } from './message-form.js'
 
 class Dialog {
   constructor() {
@@ -63,7 +63,7 @@ class Dialog {
         error = error.error
       }
       
-      this.open(new MessageBox(), {
+      this.open(new MessageForm(), {
         type: 'error',
         ok: 'Ok',
         message: error,

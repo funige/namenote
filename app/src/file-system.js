@@ -4,7 +4,7 @@ import { Page } from './page.js'
 
 import { projectManager } from './project-manager.js'
 
-import { MessageBox } from './message-box.js'
+import { MessageForm } from './message-form.js'
 
 ////////////////////////////////////////////////////////////////
 

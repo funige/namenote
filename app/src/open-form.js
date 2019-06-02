@@ -7,12 +7,14 @@ import { recentURL } from './recent-url.js'
 import { projectManager } from './project-manager.js'
 import { PageView } from './page-view.js'
 import { Finder } from './finder.js'
+import { Form } from './form.js'
 
 ////////////////////////////////////////////////////////////////
 
-class OpenDialog {
+class OpenForm extends Form {
   constructor() {
-    this.id = 'open-dialog'
+    super()
+    this.id = 'open'
   }
 
   destructor() {
@@ -23,11 +25,11 @@ class OpenDialog {
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons[T('Ok')] = () => { resolve(this.pageView.project) }
+      buttons[T('Ok')] = () => { resolve(this.saveForm()) }
       buttons[T('Cancel')] = () => { resolve() }
       
       const string = locale.translateHTML(`
-        <div class='file-dialog' style='height:400px;'>
+        <div class='form' style='height:400px;'>
           <center style='height:40px;'>
             <select class='folders'></select>
           </center>
@@ -35,7 +37,7 @@ class OpenDialog {
           <ul class='page-view' style='height: calc(100% - 40px); display:none;'></ul>
         </div>`)
       
-      $(this.element).html(`<form id='open'>${string}</form>`)
+      $(this.element).html(`<form id='${this.id}'>${string}</form>`)
       $(this.element).dialog({
         autoOpen: false,
         position: { my:'center center', at:'center center' },
@@ -44,7 +46,7 @@ class OpenDialog {
         width: 550,
         buttons: buttons,
         open: () => {
-          $(this.element).find('.folders').focus()
+          //$(this.element).find('.folders').focus()
         }
       })
 
@@ -63,6 +65,7 @@ class OpenDialog {
         }
       })
 
+      this.initForm()
       this.load(file.getHome())
     })
   }
@@ -86,13 +89,9 @@ class OpenDialog {
 
   ////////////////
 
-  onresize(e) {
-    const height = $(this.element).height()
-    $('.file-dialog').height(height)
-  }
+  initForm() {}
+  saveForm() { return this.pageView.project }
   
-  ////////////////
-
   showPreview() {
     $(this.element).find('.page-view').show()
     $(this.element).find('.file-list').hide()
@@ -104,18 +103,6 @@ class OpenDialog {
     $(this.element).find('.page-view').hide()
     this.disable()
   }
-  
-  enable() {
-    $(this.element).parent()
-      .find('.ui-dialog-buttonpane button:first')
-      .button('enable')
-  }
-
-  disable() {
-    $(this.element).parent()
-      .find('.ui-dialog-buttonpane button:first')
-      .button('disable')
-  }
 }
 
-export { OpenDialog }
+export { OpenForm }

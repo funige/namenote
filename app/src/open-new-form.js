@@ -2,22 +2,20 @@ import { dialog } from './dialog.js'
 import { file } from './file.js'
 import { locale } from './locale.js'
 import { Finder } from './finder.js'
+import { Form } from './form.js'
 
 ////////////////////////////////////////////////////////////////
 
-class ExportPDFDialog {
+class OpenNewForm extends Form {
   constructor() {
-    this.id = 'export-pdf-dialog'
-  }
-
-  destructor() {
-    this.element = null
+    super()
+    this.id = 'open-new'
   }
 
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons[T('Ok')] = () => { resolve(true) }
+      buttons[T('Ok')] = () => { resolve(this.saveForm()) }
       buttons[T('Cancel')] = () => { resolve() }
 
       const string = locale.translateHTML(`
@@ -25,12 +23,11 @@ class ExportPDFDialog {
           save page image dialog
         </div>`)
       
-
-      $(this.element).html(`<form id='export-pdf'>${string}</form>`)
+      $(this.element).html(`<form id='${this.id}'>${string}</form>`)
       $(this.element).dialog({
         autoOpen: false,
         position: { my:'center center', at:'center center' },
-        title: T('Save Image'),
+        title: T('Open New'),
         modal: true,
         width: 550,
         buttons: buttons,
@@ -39,7 +36,10 @@ class ExportPDFDialog {
       })
     })
   }
+
+  saveForm() {
+  }
 }
 
-export { ExportPDFDialog }
+export { OpenNewForm }
 

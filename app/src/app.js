@@ -6,13 +6,13 @@ const path = window.require('path')
 
 const { dialog } = window.require('electron').remote
 
-const openParams = {
+/*const openParams = {
   defaultPath: null,
   properties: ['openDirectory', 'openFile'],
   filters: [
     { name: 'Namenote', extensions: ['namenote'] }
   ],
-}
+}*/
 
 ////////////////////////////////////////////////////////////////
 
@@ -26,9 +26,9 @@ class App {
     config.save()
   }
   
-  showMessageBox(options) {
+  showMessageForm(options) {
     return new Promise((resolve, reject) => {
-      dialog.showMessageBox(options, (response) => {
+      dialog.showMessageForm(options, (response) => {
         resolve(response)
       })
     })

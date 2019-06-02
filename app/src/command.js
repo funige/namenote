@@ -8,9 +8,10 @@ import { flash } from './flash.js'
 import { file } from './file.js'
 
 import { dialog } from './dialog.js'
-import { AboutDialog } from './about-dialog.js'
-import { TabletSettingsDialog } from './tablet-settings-dialog.js'
-import { OpenDialog } from './open-dialog.js'
+
+import { AboutForm } from './about-form.js'
+import { OpenForm } from './open-form.js'
+import { TabletSettingsForm } from './tablet-settings-form.js'
 
 const _runMain = (message, data) => {
   if (namenote.app) {
@@ -37,7 +38,7 @@ class Command {
   }
 
   about() {
-    dialog.open(new AboutDialog()).then(() => {
+    dialog.open(new AboutForm()).then(() => {
       dialog.close()
     })
   }
@@ -130,7 +131,7 @@ class Command {
   toggleEditMode() {}
 
   tabletSettings() {
-    dialog.open(new TabletSettingsDialog()).then(() => {
+    dialog.open(new TabletSettingsForm()).then(() => {
       dialog.close()
     }).catch((error) => { dialog.alert(error) })
   }

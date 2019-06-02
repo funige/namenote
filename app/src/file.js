@@ -6,13 +6,13 @@ import { projectManager } from './project-manager.js'
 import { LocalFileSystem } from './local-file-system.js'
 import { DropboxFileSystem } from './dropbox-file-system.js'
 
-import { MessageBox } from './message-box.js'
-import { OpenDialog } from './open-dialog.js'
-import { OpenNewDialog } from './open-new-dialog.js'
+import { MessageForm } from './message-form.js'
+import { OpenForm } from './open-form.js'
+import { OpenNewForm } from './open-new-form.js'
 
-import { SavePageImageDialog } from './save-page-image-dialog.js'
-import { ExportPDFDialog } from './export-pdf-dialog.js'
-import { ExportCSNFDialog } from './export-csnf-dialog.js'
+import { SavePageImageForm } from './save-page-image-form.js'
+import { ExportPDFForm } from './export-pdf-form.js'
+import { ExportCSNFForm } from './export-csnf-form.js'
 
 ////////////////////////////////////////////////////////////////
 
@@ -25,7 +25,7 @@ class File {
     const fileSystem = this.getFileSystem(this.getDefaultScheme())
     if (!fileSystem.auth('openDialog')) return
     
-    const project = await dialog.open(new OpenDialog())
+    const project = await dialog.open(new OpenForm())
     dialog.close()
 
     if (project) {
@@ -41,14 +41,14 @@ class File {
 
     const projectURL = await this.getProjectURL(url)
     if (projectURL) {
-      const messageBox = new MessageBox()
-      dialog.open(messageBox, {
+      const messageForm = new MessageForm()
+      dialog.open(messageForm, {
         title: 'Open',
         message: `Loading ...`,
         cancel: 'Cancel'
       }).then(() => { dialog.close() })
 
-      const project = await projectManager.get(projectURL, messageBox)
+      const project = await projectManager.get(projectURL, messageForm)
       namenote.mainView.loadProject(project)
       namenote.pageView.loadProject(project)
       namenote.textView.loadProject(project)
@@ -56,17 +56,19 @@ class File {
   }
 
   async savePageImageDialog() {
-    const result = await dialog.open(new SavePageImageDialog())
+    const result = await dialog.open(new SavePageImageForm())
     WARN('save page image', result)
     dialog.close()
   }
+  
   async exportPDFDialog() {
-    const result = await dialog.open(new ExportPDFDialog())
+    const result = await dialog.open(new ExportPDFForm())
     WARN('export pdf', result)
     dialog.close()
   }
+  
   async exportCSNFDialog() {
-    const result = await dialog.open(new ExportCSNFDialog())
+    const result = await dialog.open(new ExportCSNFForm())
     WARN('export csnf', result)
     dialog.close()
   }
@@ -75,7 +77,7 @@ class File {
     const fileSystem = this.getFileSystem(this.getDefaultScheme())
     if (!fileSystem.auth('openNewDialog')) return
     
-    const project = await dialog.open(new OpenNewDialog())
+    const project = await dialog.open(new OpenNewForm())
     dialog.close()
 
     if (project) {

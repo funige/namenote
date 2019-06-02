@@ -142,11 +142,11 @@ class MainView extends View {
     return (1.0 / this.scale) >> 1
   }
 
-  flipView() {
+  /*flipView() {
     if (!this.project) return
     this.flip = ~this.flip
     this.element.style.transform = (this.flip) ? 'scale(-1, 1)' : ''
-  }
+  }*/
   
   zoom() {
     if (!this.project) return

@@ -1,6 +1,7 @@
 import { namenote } from './namenote.js'
 import { locale } from './locale.js'
 import { config } from './config.js'
+import { Form } from './form.js'
 
 const width = 200
 const d = 15
@@ -27,19 +28,16 @@ function limit(value, min, max) {
 
 ////////////////////////////////////////////////////////////////
 
-class TabletSettingsDialog {
+class TabletSettingsForm extends Form {
   constructor() {
-    this.id = 'tablet-settings-dialog'
+    super()
+    this.id = 'tablet-settings'
   }
 
-  destructor() {
-    this.element = null
-  }
-  
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons[T('Ok')] = () => { this.saveParams(); resolve() }
+      buttons[T('Ok')] = () => { resolve(this.saveForm()) }
       buttons[T('Cancel')] = () => { resolve() }
 
       const string = locale.translateHTML(`
@@ -64,7 +62,7 @@ class TabletSettingsDialog {
         <button name='reset' class='ui-button'>T(Reset Settings to Default)</button>
       `)
       
-      $(this.element).html(`<form id='tablet-settings'>${string}</form>`)
+      $(this.element).html(`<form id='${this.id}'>${string}</form>`)
       $(this.element).dialog({
         autoOpen: false,
         position: { my:'center center', at:'center center' },
@@ -77,7 +75,7 @@ class TabletSettingsDialog {
         }
       })
 
-      document.forms['tablet-settings'].reset.onclick = () => {
+      document.forms[this.id].reset.onclick = () => {
         this.resetSettings()
       }
 
@@ -148,7 +146,7 @@ class TabletSettingsDialog {
     ctx.stroke()
   }
   
-  saveParams() {
+  saveForm() {
     const curveLeft = encodePosition('tablet-curve-left')
     const curveRight = encodePosition('tablet-curve-right')
     const curveCenter = encodePosition('tablet-curve-center')
@@ -166,4 +164,4 @@ class TabletSettingsDialog {
   }
 }
 
-export { TabletSettingsDialog }
+export { TabletSettingsForm }

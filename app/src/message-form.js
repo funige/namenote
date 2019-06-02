@@ -1,6 +1,6 @@
 import { namenote } from './namenote.js'
 import { locale } from './locale.js'
-import { dialog } from './dialog.js'
+import { Form } from './form.js'
 
 const images = {
   confirm: './img/checked.png',
@@ -9,15 +9,12 @@ const images = {
 
 ////////////////////////////////////////////////////////////////
 
-class MessageBox {
+class MessageForm extends Form {
   constructor() {
-    this.id = 'message-box'
+    super()
+    this.id = 'message'
   }
 
-  destructor() {
-    this.element = null
-  }
-  
   init(options) {
     options = options || {}
 
@@ -31,7 +28,7 @@ class MessageBox {
       }
       
       const string = locale.translateHTML(`
-        <div class='message-box'>
+        <div class='form message-box'>
           ${this.getMessageIcon(options)}
           <p>${this.getMessage(options)}</p>
         </div>
@@ -66,4 +63,4 @@ class MessageBox {
   }
 }
 
-export { MessageBox }
+export { MessageForm }

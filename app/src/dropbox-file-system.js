@@ -4,7 +4,7 @@ import { FileSystem } from './file-system.js'
 import { flash } from './flash.js'
 import { dialog } from './dialog.js'
 
-import { MessageBox } from './message-box.js'
+import { MessageForm } from './message-form.js'
 
 ////////////////////////////////////////////////////////////////
 
@@ -47,7 +47,7 @@ class DropboxFileSystem extends FileSystem {
       return true
     }
 
-    dialog.open(new MessageBox(), {
+    dialog.open(new MessageForm(), {
       title: 'Authenticate',
       message: 'Namenote would like access to the files in your Dropbox.',
       ok: 'Connect to Dropbox',
@@ -76,7 +76,7 @@ class DropboxFileSystem extends FileSystem {
   logout() {
     this.fs = null
     localStorage.removeItem('namenote/raw_token')
-    dialog.open(new MessageBox(), {
+    dialog.open(new MessageForm(), {
       title: 'Logout',
       ok: 'Ok',
       message: 'Disconnected.',

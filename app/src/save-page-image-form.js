@@ -2,26 +2,24 @@ import { dialog } from './dialog.js'
 import { file } from './file.js'
 import { locale } from './locale.js'
 import { Finder } from './finder.js'
+import { Form } from './form.js'
 
 ////////////////////////////////////////////////////////////////
 
-class SavePageImageDialog {
+class SavePageImageForm extends Form {
   constructor() {
-    this.id = 'save-page-image-dialog'
-  }
-
-  destructor() {
-    this.element = null
+    super()
+    this.id = 'save-page-image-form'
   }
 
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {}
-      buttons[T('Ok')] = () => { this.saveParams(); resolve(this.result) }
+      buttons[T('Ok')] = () => { resolve(this.saveForm()) }
       buttons[T('Cancel')] = () => { resolve() }
 
       const string = locale.translateHTML(`
-        <div class='file-dialog' style='height:400px;'>
+        <div class='form' style='height:400px;'>
           <div style='height:80px;'>
             名前: <input class='filename' type='text' />
             <br/>
@@ -39,16 +37,10 @@ class SavePageImageDialog {
         width: 550,
         buttons: buttons,
         open: () => {
-          this.initParams()
-          $(this.element).keydown((e) => {
-            if (e.keyCode == 13) {
-              e.preventDefault()
-              LOG('enter pressed')
-              this.saveParams()
-              resolve(this.result)
-            }
+          this.onReturnPressed(() => {
+            LOG('enter pressed')
+            resolve(this.saveForm())
           })
-//        $(this.element).find('.folders').focus()
         }
       })
 
@@ -60,14 +52,13 @@ class SavePageImageDialog {
           this.load(url)
         },
       })
-      
+
+      this.initForm()
       this.load(file.getHome())
     })
   }
 
   async load(url) {
-    WARN('load', url)
-    
     const projectURL = await file.getProjectURL(url)
     if (projectURL) {
       alert(T('Folder open error.'))
@@ -77,37 +68,22 @@ class SavePageImageDialog {
     }
   }
 
-  initParams() {
+  initForm() {
     const filename = `${Date.now()}.png`
-    $(this.element).find('input.filename').val(filename)
-  }
+    $(this.element).find('input.filename')
+      .val(filename)
+      .on('keyup', (e) => {
+        (e.target.value) ? this.enable() : this.disable()
+      })
+  }    
 
-  saveParams() {
+  saveForm() {
     const filename = $(this.element).find('input.filename').val()
-    this.result = `${this.finder.url}${filename}`
-  }
-
-  ////////////////
-
-  onresize(e) {
-    const height = $(this.element).height()
-    $('.file-dialog').height(height)
-  }
-  
-  ////////////////
-
-  enable() {
-    $(this.element).parent()
-      .find('.ui-dialog-buttonpane button:first')
-      .button('enable')
-  }
-
-  disable() {
-    $(this.element).parent()
-      .find('.ui-dialog-buttonpane button:first')
-      .button('disable')
+    const result = `${this.finder.url}${filename}`
+    this.result = result
+    return result
   }
 }
 
-export { SavePageImageDialog }
+export { SavePageImageForm }
 
