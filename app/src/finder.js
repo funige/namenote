@@ -10,10 +10,11 @@ const MAX_FILES_IN_FOLDER = 1000
 ////////////////////////////////////////////////////////////////
 
 class Finder {
-  constructor(folders, fileList, options) {
+  constructor(folders, fileList, toggleButton, options) {
     this.folders = folders
     this.fileList = fileList
-    this.options = options
+    this.toggleButton = toggleButton
+    this.options = options || {}
 
     this.init()
   }
@@ -51,7 +52,24 @@ class Finder {
           if (this.options.selected) this.options.selected(newurl)
         }
       },
-    })    
+    })
+
+    if (this.toggleButton) {
+      $(this.toggleButton).toggleButton({
+        click: (e) => {
+          const toggle = $(this.toggleButton).toggleButton('open')
+          $(this.toggleButton).toggleButton('open', !toggle)
+        
+          if (toggle) {
+            this.fileList.style.height = this.options.height
+
+          } else {
+            this.options.height = this.fileList.style.height
+            this.fileList.style.height = '0'
+          }
+        }
+      })
+    }
   }
 
   async loadFolder(url) {
@@ -66,7 +84,7 @@ class Finder {
 
     for (const dirent of dirents) {
       if (dirent.name.match(/^\./)) continue
-      const icon = dirent.isDirectory() ? 'ui-icon-folder-open' : 'ui-icon-blank'
+      const icon = dirent.isDirectory() ? 'ui-icon-folder-collapsed' : 'ui-icon-blank'
       const disabled = dirent.isDirectory() ? '': 'disabled'
       tmp.push(`
         <li class='${disabled}' value='${dirent.name}'>

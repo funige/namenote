@@ -56,21 +56,37 @@ class File {
   }
 
   async savePageImageDialog() {
-    const result = await dialog.open(new SavePageImageForm())
-    WARN('save page image', result)
+    const url = await dialog.open(new SavePageImageForm())
     dialog.close()
+    if (url) {
+      WARN('save page image to', url)
+/*   
+      const project = namenote.currentProject()
+      if (project) {
+        project.pages[0].capture((data) => {
+          if (data) {
+            this.save(url, data)
+          }
+        })
+      }
+*/
+    }
   }
   
   async exportPDFDialog() {
     const result = await dialog.open(new ExportPDFForm())
-    WARN('export pdf', result)
     dialog.close()
+    if (result) {
+      WARN('export pdf', result)
+    }
   }
   
   async exportCSNFDialog() {
     const result = await dialog.open(new ExportCSNFForm())
-    WARN('export csnf', result)
     dialog.close()
+    if (result) {
+      WARN('export csnf', result)
+    }
   }
     
   async openNewDialog() {
@@ -120,10 +136,14 @@ class File {
   }
   
   async writeJSON(url, data) {
+    return writeFile(url, JSON.stringify(data))
+  }
+
+  async writeFile(url, data) {
     return new Promise((resolve, reject) => {
       const fileSystem = this.getFileSystem(this.getScheme(url))
       const path = this.getPath(url)
-      fileSystem.writeFile(path, JSON.stringify(data), (err) => {
+      fileSystem.writeFile(path, data, (err) => {
         if (err) {
           return reject(err)
         }
@@ -131,7 +151,7 @@ class File {
       }) 
     })
   }
-
+  
   async readProject(url) {
     return this.readJSON(url).then((json) => {
       return new Project(url, json)

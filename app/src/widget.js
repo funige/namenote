@@ -3,6 +3,7 @@ class Widget {
     this.initImageButton()
     this.initTextButton()
     this.initIconSelectMenu()
+    this.initToggleButton()
   }
 
   initTextButton() {
@@ -137,6 +138,37 @@ class Widget {
       }
     })
   }
+
+  initToggleButton() {
+    $.widget('namenote.toggleButton', {
+      options: {
+        open: false,
+      },
+
+      _create: function() {
+        this.element.addClass('toggle-button')
+        this.element.html('<span class="ui-icon ui-icon-caret-1-s"></span>')
+
+        this.open(this.options.open)
+        
+        const click = this.options.click
+        if (click) this.element.on('click', click)
+      },
+
+      open: function(value) {
+        if (value === undefined) return this.options.open
+
+        this.options.open = value
+        if (value) {
+          this.element.html('<span class="ui-icon ui-icon-caret-1-n"></span>')
+        } else {
+          this.element.html('<span class="ui-icon ui-icon-caret-1-s"></span>')
+        }
+      }
+    })
+  }
+  
+  ////////////////
 
   createImageButton(option) {
     const li = document.createElement('li')

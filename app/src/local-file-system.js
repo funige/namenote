@@ -1,7 +1,4 @@
 import { FileSystem } from './file-system.js'
-import { dialog } from './dialog.js'
-import { openNewDialog } from './open-new-dialog.js'
-import { openForm } from './open-form.js'
 
 ////////////////////////////////////////////////////////////////
 

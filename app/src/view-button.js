@@ -25,20 +25,20 @@ class ViewButton {
       src: 'img/zoom-button.png',
       disabled: true,
       float: 'right',
-      click: function(e) { command.zoom() }
+      click: (e) => { command.zoom() }
     })[0]
 
     unzoomButton = $('#unzoom-button').imageButton({
       src: 'img/unzoom-button.png',
       disabled: true,
       float: 'right',
-      click: function(e) { command.unzoom() }
+      click: (e) => { command.unzoom() }
     })[0]
 
     dockButton = $('#dock-button').imageButton({
       src: 'img/unzoom-button.png',
       float: 'right',
-      click: function(e) { command.dock() }
+      click: (e) => { command.dock() }
     })[0]
   }
 

@@ -24,9 +24,11 @@ class SavePageImageForm extends Form {
             名前: <input class='filename' type='text' />
             <br/>
             場所: <select class='folders'></select>
+                  <div class='toggle-button' style='display:none;'></div>
           </div>
           <ul class='file-list' style='height: calc(100% - 80px);'></ul>
-        </div>`)
+        </div>
+        <input type='submit' style='display: none' />`)
 
       $(this.element).html(`<form id='save-page-image'>${string}</form>`)
       $(this.element).dialog({
@@ -46,7 +48,7 @@ class SavePageImageForm extends Form {
 
       const folders = $(this.element).find('.folders')[0]
       const fileList = $(this.element).find('.file-list')[0]
-      this.finder = new Finder(folders, fileList, {
+      this.finder = new Finder(folders, fileList, null, {
         noRecents: true,
         selected: (url) => {
           this.load(url)

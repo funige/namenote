@@ -55,7 +55,7 @@ class TextView extends View {
       li.id = p.id + 't'
       li.innerHTML = p.innerHTML
       li.style.whiteSpace = 'nowrap'
-//    li.contentEditable = true
+      li.contentEditable = true
       li.addEventListener('input', (e) => { LOG(e) })
       pd.element.appendChild(li)
     })
