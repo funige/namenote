@@ -36,7 +36,7 @@ class Finder {
           .removeClass('ui-selected');
       },
       selected: (event, ui) => {
-        WARN('finder selected...')
+        WARN('finder selected...', this.options)
 
         const newurl = `${this.url}${ui.selected.getAttribute('value')}/`
         if (this.options.selected) this.options.selected(newurl)

@@ -52,7 +52,7 @@ class OpenForm extends Form {
 
       const folders = $(this.element).find('.folders')[0]
       const fileList = $(this.element).find('.file-list')[0]
-      this.finder = new Finder(folders, fileList, {
+      this.finder = new Finder(folders, fileList, null, {
         selected: (url) => {
           this.load(url)
         }
