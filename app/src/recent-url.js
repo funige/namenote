@@ -1,9 +1,8 @@
 import { projectManager } from './project-manager.js'
 import { menu } from './menu.js'
 
-const max = 10
+const MAX_RECENT_URL = 10
 
-////////////////////////////////////////////////////////////////
 
 class RecentURL {
   constructor() {
@@ -27,15 +26,15 @@ class RecentURL {
   }
 
   add(url) {
-    if (!url.match(/:\/\/\//)) {
+    /*if (!url.match(/:\/\/\//)) {
       ERROR('irregal url!!!', url) //TODO
-    }
+    }*/
     
     this.data = this.data.filter((value) => value != url)
     this.data.unshift(url)
 
-    if (this.data.length > max) {
-      this.data.length = max
+    if (this.data.length > MAX_RECENT_URL) {
+      this.data.length = MAX_RECENT_URL
     }
     this.save()
   }

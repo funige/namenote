@@ -8,7 +8,6 @@ let zoomButton
 let unzoomButton
 let dockButton
 
-////////////////////////////////////////////////////////////////
 
 class ViewButton {
   constructor() {

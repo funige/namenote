@@ -7,6 +7,7 @@ import { title } from './title.js'
 import { header } from './header.js'
 import { dock } from './dock.js'
 
+
 class UI {
   constructor() {
     this.menu = menu

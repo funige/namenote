@@ -28,8 +28,18 @@ class ViewFooter {
       float: 'left',
     })
 
+    // test
+    const sizeButton = widget.createImageButton({
+      src: 'img/flip-button.png',
+      click: (e) => {
+        LOG('size')
+      },
+      float: 'right',
+    })
+
     this.element.appendChild(trashButton)
     this.element.appendChild(appendButton)
+    this.element.appendChild(sizeButton)
   }
 }
 

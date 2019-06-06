@@ -8,6 +8,7 @@ import { ui } from './ui.js'
 import { dialog } from './dialog.js'
 import { flash } from './flash.js'
 import { file } from './file.js'
+import { history } from './history.js'
 
 import { projectManager } from './project-manager.js'
 
@@ -30,6 +31,7 @@ class Namenote {
     this.projectManager = projectManager
     this.file = file
     this.ui = ui
+    this.history = history
   }
 
   init() {

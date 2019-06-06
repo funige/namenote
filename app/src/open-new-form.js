@@ -12,6 +12,7 @@ class OpenNewForm extends Form{
     this.id = 'open-new'
   }
 
+  
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {}
