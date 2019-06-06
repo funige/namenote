@@ -43,6 +43,7 @@ class Finder {
       }
     })
 
+    
     $(this.folders).iconselectmenu({
       change: (event, ui) => {
         WARN('finder change...')
@@ -56,22 +57,29 @@ class Finder {
 
     if (this.toggleButton) {
       $(this.toggleButton).toggleButton({
-        click: (e) => {
-          const toggle = $(this.toggleButton).toggleButton('open')
-          $(this.toggleButton).toggleButton('open', !toggle)
+        autoOpen: this.options.autoOpen,
+        height: this.options.height,
         
-          if (toggle) {
-            this.fileList.style.height = this.options.height
-
-          } else {
-            this.options.height = this.fileList.style.height
-            this.fileList.style.height = '0'
-          }
+        click: (e) => {
+          const open = !$(this.toggleButton).toggleButton('open')
+          $(this.toggleButton).toggleButton('open', open)
+          this.toggle(open)
         }
       })
+      this.toggle(this.options.autoOpen)
     }
   }
 
+  toggle(open) {
+    if (open) {
+      this.fileList.style.height = this.options.height
+
+    } else {
+      this.options.height = this.fileList.style.height
+      this.fileList.style.height = '0'
+    }
+  }
+  
   async loadFolder(url) {
     WARN('loadFolder', url)
     const tmp = []

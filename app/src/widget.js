@@ -149,7 +149,7 @@ class Widget {
         this.element.addClass('toggle-button')
         this.element.html('<span class="ui-icon ui-icon-caret-1-s"></span>')
 
-        this.open(this.options.open)
+        this.open(this.options.autoOpen)
         
         const click = this.options.click
         if (click) this.element.on('click', click)

@@ -14,6 +14,7 @@ class Form {
   
   onReturnPressed(callback) {
     $(this.element).on('keydown', (e) => {
+      LOG('onreturnpressed')
       if (e.keyCode == 13) {
         e.preventDefault()
         callback()

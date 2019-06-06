@@ -46,8 +46,8 @@ class SavePageImageForm extends Form {
         }
       })
 
-      const folders = $(this.element).find('.folders')[0]
-      const fileList = $(this.element).find('.file-list')[0]
+      const folders = this.element.querySelector('.folders')
+      const fileList = this.element.querySelector('.file-list')
       this.finder = new Finder(folders, fileList, null, {
         noRecents: true,
         selected: (url) => {

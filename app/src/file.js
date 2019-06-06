@@ -93,9 +93,10 @@ class File {
     const fileSystem = this.getFileSystem(this.getDefaultScheme())
     if (!fileSystem.auth('openNewDialog')) return
     
-    const project = await dialog.open(new OpenNewForm())
+    const result = await dialog.open(new OpenNewForm())
     dialog.close()
 
+    const project = null //ここで新規プロジェクト作成……
     if (project) {
       namenote.mainView.loadProject(project)
       namenote.pageView.loadProject(project)
@@ -208,7 +209,6 @@ class File {
   }
   
   getScheme(url) {
-    LOG('getScheme', url)
     const arr = url.split(':')
     return (arr.length > 1 && arr[0]) ? arr[0] : 'file'
   }

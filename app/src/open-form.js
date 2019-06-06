@@ -50,15 +50,15 @@ class OpenForm extends Form {
         }
       })
 
-      const folders = $(this.element).find('.folders')[0]
-      const fileList = $(this.element).find('.file-list')[0]
+      const folders = this.element.querySelector('.folders')
+      const fileList = this.element.querySelector('.file-list')
       this.finder = new Finder(folders, fileList, null, {
         selected: (url) => {
           this.load(url)
         }
       })
       
-      const preview = $(this.element).find('.page-view')[0]
+      const preview = this.element.querySelector('.page-view')
       this.pageView = new PageView(preview, {
         loaded: (url, projectURL) => {
           this.finder.updateFolders(url, projectURL)

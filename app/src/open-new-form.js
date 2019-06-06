@@ -60,17 +60,19 @@ class OpenNewForm extends Form{
         width: 550,
         buttons: buttons,
         open: () => {
-          this.onReturnPressed(() => { //効いてない？
+          this.onReturnPressed(() => {
             LOG('enter pressed')
             resolve(this.saveForm())
           })
         }
       })
 
-      const folders = $(this.element).find('.folders')[0]
-      const fileList = $(this.element).find('.file-list')[0]
-      const toggleButton = $(this.element).find('.toggle-button')[0]
+      const folders = this.element.querySelector('.folders')
+      const fileList = this.element.querySelector('.file-list')
+      const toggleButton = this.element.querySelector('.toggle-button')
       this.finder = new Finder(folders, fileList, toggleButton, {
+        autoOpen: false,
+        height: 'calc(100% - 80px)',
         noRecents: true,
         selected: (url) => {
           this.load(url)
