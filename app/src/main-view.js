@@ -73,10 +73,6 @@ class MainView extends View {
     pd.ctx.filter = `blur(${this.getSteps()}px)`
     pd.ctx.drawImage(page.canvas, 0, 0)
 
-/*  pd.marks = $(`<svg class="marks" width="400" height="400">
-            <rect x="100" y="50" width="200" height="300" fill="none" stroke="#85bffd" stroke-width="1" />
-            <rect x="130" y="80" width="140" height="240" fill="none" stroke="#85bffd" stroke-width="1" />
-            </svg>`)[0] */
     pd.marks = this.project.createDraftMarksElement()
 
     pd.frame.appendChild(pd.marks)
@@ -160,13 +156,16 @@ class MainView extends View {
     this.updateScale()
   }
 
+  setMultiView(value) {
+    if (config.updateValue('multiView', value)) {
+      LOG('update multiPreview', config.getValue('multiView'))
+    }
+  }
+    
   setPrintPreview(value) {
-    if (value && value == config.data.printPreview) return
-    if (!value) value = config.data.printPreview || true
-    config.data.printPreview = value
-    config.save()
-
-    //update pages here
+    if (config.updateValue('printPreview', value)) {
+      LOG('update printPreview', config.getValue('printPreview'))
+    }
   }
 }
 

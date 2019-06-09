@@ -1,7 +1,6 @@
 import { View } from './view.js'
 import { ViewFooter } from './view-footer.js'
 
-////////////////////////////////////////////////////////////////
 
 class TextView extends View {
   constructor(element) {
@@ -48,9 +47,7 @@ class TextView extends View {
     }
 
     const texts = this.createTexts(page, page.params.text)
-    LOG('initPage', page.pid, texts.childNodes.length)
     texts.childNodes.forEach((p) => {
-      LOG(p.id)
       const li = document.createElement('li')
       li.id = p.id + 't'
       li.innerHTML = p.innerHTML

@@ -1,6 +1,7 @@
+import { namenote } from './namenote.js'
+
 const JSZip = require('JSZip')
 
-////////////////////////////////////////////////////////////////
 
 class Page {
   constructor(json) {
@@ -13,17 +14,17 @@ class Page {
 
   init(data) {
     this.params = data
+    this.cleanup()
     return this
   }
 
   async initElements(project) {
     this.width = project.pageSize[0]
     this.height = project.pageSize[1]
-
+    
     this.canvas = this.createCanvasElement(this.width, this.height)
     this.canvasCtx = this.canvas.getContext('2d')
     await this.unzip(this.canvasCtx)
-
     this.updateThumbnail(project)
   }
 
@@ -63,14 +64,38 @@ class Page {
     })
   }
 
-  digest() {
-    if (this.params && this.params.text) {
-      return this.params.text
-        .replace(/(<([^>]+)>)/ig, '/')
+  cleanup() {
+    if (!this.params || !this.params.text) return
+
+    const texts = document.createElement('div')
+    texts.innerHTML = this.params.text
+    texts.childNodes.forEach((p) => {
+      $(p).removeClass('editable')
+      $(p).removeClass('selected')
+      $(p).css('color', '')
+
+      p.id = namenote.getUniqueID()
+      p.innerHTML = p.innerHTML
+        .replace(/\r|\n/g, '')
+        .replace(/(<([^>]+)>)/g, '/')
         .replace(/\/+/g, '/')
         .replace(/^\//, '').replace(/\/$/, '')
-    }
-    return ''
+        .replace(/\//g, '<br>')
+
+      WARN(p.innerHTML)
+    })
+
+    this.params.text = texts.innerHTML
+    LOG(texts.innerHTML)
+  }
+  
+  digest() {
+    if (!this.params || !this.params.text) return ''
+
+    return this.params.text
+      .replace(/(<([^>]+)>)/ig, '/')
+      .replace(/\/+/g, '/')
+      .replace(/^\//, '').replace(/\/$/, '')
   }
 }
 

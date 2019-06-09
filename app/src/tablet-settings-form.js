@@ -106,9 +106,9 @@ class TabletSettingsForm extends Form {
       }.bind(this)
     })
 
-    const curveLeft = config.getValue('tabletCurveLeft', '0,0')
-    const curveRight = config.getValue('tabletCurveRight', '1,1')
-    const curveCenter = config.getValue('tabletCurveCenter', '0.5,0.5')
+    const curveLeft = config.getValue('tabletCurveLeft')
+    const curveRight = config.getValue('tabletCurveRight')
+    const curveCenter = config.getValue('tabletCurveCenter')
     $('#tablet-curve-left').css(decodePosition(curveLeft))
     $('#tablet-curve-right').css(decodePosition(curveRight))
     $('#tablet-curve-center').css(decodePosition(curveCenter))

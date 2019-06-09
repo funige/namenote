@@ -63,16 +63,25 @@ class Command {
     divider.toggle()
   }
 
+  showTextView() {
+    $(namenote.noteView.element).hide()
+    $(namenote.pageView.element).hide()
+    $(namenote.textView.element).show()
+    dockTab.select('text')
+  }
+  
   showPageView() {
+    $(namenote.noteView.element).hide()
     $(namenote.pageView.element).show()
     $(namenote.textView.element).hide()
     dockTab.select('page')
   }
 
-  showTextView() {
+  showNoteView() {
+    $(namenote.noteView.element).show()
     $(namenote.pageView.element).hide()
-    $(namenote.textView.element).show()
-    dockTab.select('text')
+    $(namenote.textView.element).hide()
+    dockTab.select('note')
   }
   
   openNewDialog() {
@@ -151,7 +160,7 @@ class Command {
   thumbnailSize(size) {
     namenote.setThumbnailSize(size)
   }
-  
+
   //////////////////
   
   do(item, data) {

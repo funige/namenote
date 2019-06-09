@@ -163,7 +163,7 @@ class Project {
   }
   
   getThumbnailSize() {
-    const size = config.getValue('thumbnailSize', 'middle')
+    const size = config.getValue('thumbnailSize')
     const thumbnailWidth = thumbnailWidths[size]
     const scale = thumbnailWidth / this.canvasSize[0]
 

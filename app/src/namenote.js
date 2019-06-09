@@ -4,6 +4,7 @@ import { recentURL } from './recent-url.js'
 import { controller } from './controller.js'
 
 import { command } from './command.js'
+import { action } from './action.js'
 import { ui } from './ui.js'
 import { dialog } from './dialog.js'
 import { flash } from './flash.js'
@@ -13,14 +14,17 @@ import { history } from './history.js'
 import { projectManager } from './project-manager.js'
 
 import { MainView } from './main-view.js'
+import { NoteView } from './note-view.js'
 import { PageView } from './page-view.js'
 import { TextView } from './text-view.js'
+
+let maxID = 0
 
 ////////////////////////////////////////////////////////////////
 
 class Namenote {
   constructor() {
-    this.version = "2.0.0-alpha.11-debug"
+    this.version = "2.0.0-alpha.12-debug"
     this.trial = false
 
     this.config = config
@@ -28,10 +32,12 @@ class Namenote {
     this.recentURL = recentURL
     this.controller = controller
     this.command = command
+    this.action = action
+    this.history = history
+
     this.projectManager = projectManager
     this.file = file
     this.ui = ui
-    this.history = history
   }
 
   init() {
@@ -43,6 +49,7 @@ class Namenote {
     ui.init()
 
     this.mainView = new MainView($('.main-view')[0])
+    this.noteView = new NoteView($('.note-view')[0])
     this.pageView = new PageView($('.page-view')[0])
     this.textView = new TextView($('.text-view')[0])
     this.initBaseHandlers()
@@ -75,12 +82,26 @@ class Namenote {
     return this.mainView && this.mainView.project
   }
 
-
-  
   isMac() {
     return navigator.platform.indexOf('Mac')
   }
 
+  isMobile() {
+    return false
+  }
+  
+  getUniqueID() {
+    return 'p' + maxID++
+  }
+
+  findDuplicateID() {
+    $('[id]').each(function(){
+      var ids = $('[id="'+this.id+'"]')
+      if(ids.length>1 && ids[0]==this)
+        console.warn('Multiple IDs #'+this.id);
+    })
+  }
+  
   setThumbnailSize(value) {
     if (value && value == config.data.thumbnailSize) return
     if (!value) value = config.data.thumbnailSize || 'middle'

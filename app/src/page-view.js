@@ -24,6 +24,10 @@ class PageView extends View {
     new Sortable(this.content, {
       animation: 150,
       handle: '.sort-handle',
+      onEnd: (e) => {
+        LOG('pageView onEnd:', e)
+        LOG(e.oldIndex, '->', e.newIndex)
+      }
     })
   }
 

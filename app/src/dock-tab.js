@@ -1,8 +1,5 @@
 import { command } from './command.js'
 
-let pageButton
-let textButton
-
 ////////////////////////////////////////////////////////////////
 
 class DockTab {
@@ -11,21 +8,9 @@ class DockTab {
   }
 
   init() {
-    pageButton = $('#page-view-button').textButton({
-      text: T('Pages'),
-      locked: true,
-      click: (e) => {
-        if ($(e.target).textButton('instance')) {
-          command.showPageView()
-        }
-      },
-      dblclick: (e) => {
-        LOG('dblclick page tab')
-      },
-    })[0]
-
-    textButton = $('#text-view-button').textButton({
+    const textButton = $('#text-view-button').textButton({
       text: T('Texts'),
+      locked: true,
       click: (e) => {
         if ($(e.target).textButton('instance')) {
           command.showTextView()
@@ -36,7 +21,31 @@ class DockTab {
       },
     })[0]
 
-    this.buttons.push(pageButton, textButton)
+    const pageButton = $('#page-view-button').textButton({
+      text: T('Pages'),
+      click: (e) => {
+        if ($(e.target).textButton('instance')) {
+          command.showPageView()
+        }
+      },
+      dblclick: (e) => {
+        LOG('dblclick page tab')
+      },
+    })[0]
+
+    const noteButton = $('#note-view-button').textButton({
+      text: T('Notes'),
+      click: (e) => {
+        if ($(e.target).textButton('instance')) {
+          command.showNoteView()
+        }
+      },
+      dblclick: (e) => {
+        LOG('dblclick note tab')
+      },
+    })[0]
+
+    this.buttons.push(textButton, pageButton, noteButton)
   }
 
   update() {

@@ -20,13 +20,23 @@ class Config {
     this.save()
   }
 
-  getValue(key, defaultValue) {
+  getValue(key) {
     if (this.data[key] !== undefined) {
       return this.data[key]
 
     } else {
-      return defaultValue
+      return conifgDefault[key]
     }
+  }
+
+  updateValue(key, value) {
+    const oldValue = this.getValue(key)
+    if (value !== oldValue) {
+      this.data[key] = value
+      this.save()
+      return true //changed
+    } 
+    return false //not changed
   }
 }
 

@@ -84,6 +84,7 @@ const dictionary = {
     "Disconnected.": "接続を解除しました。",
     
     "Texts": "テキスト",
+    "Notes": "ノート",
 
     "Dock Side": "サイドバーの位置",
     "Left": "左",

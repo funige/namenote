@@ -399,9 +399,25 @@ span .ui-icon {
 }
 
 /**
- * TextView
+ * NoteView
  */
 
+.note-view {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #f6f6f6;
+}
+
+.note-view .content {
+  height: calc(100% - 27px);
+  width: 100%;
+  overflow: scroll;
+}
+
+/**
+ * TextView
+ */
 
 .text-view {
     position: absolute;
