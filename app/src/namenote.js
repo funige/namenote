@@ -49,9 +49,9 @@ class Namenote {
     ui.init()
 
     this.mainView = new MainView($('.main-view')[0])
-    this.noteView = new NoteView($('.note-view')[0])
-    this.pageView = new PageView($('.page-view')[0])
     this.textView = new TextView($('.text-view')[0])
+    this.pageView = new PageView($('.page-view')[0])
+    this.noteView = new NoteView($('.note-view')[0])
     this.initBaseHandlers()
 
     flash.load()

@@ -1,0 +1,141 @@
+/**
+ * TextView
+ */
+
+.text-view {
+    position: absolute;
+
+    min-width: 100%; //TODO...ここをwidthにすればfooterは直るが罫線が……
+    height: 100%;
+    background-color: #f6f6f6;
+}
+
+.text-view .content {
+    position: relative;
+
+    height: calc(100% - 27px); //26px+borderTop
+    min-width: 100%;
+    min-height: 1em;
+    overflow: scroll;
+
+    background-color: white; //#f6f6f6;
+}
+
+.text-view .content > li {
+    display: table;
+    table-layout: fixed;
+    min-width: 100%;
+}
+
+.text-view .content > li > div.count {
+    display: table-cell;
+
+    background-color: #f6f6f6;
+    vertical-align: top;
+    text-align: center;
+    min-width: 16px; // !
+    width: 16px;     // !
+    height: 100%;
+    
+    border-right: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    overflow-x: hidden;
+    font-size: 12px;
+    padding-top: 4px;
+}
+
+.text-view .content > li > ul {
+    display: table-cell;
+    border-bottom: 1px solid #aaa;
+}
+
+.text-view .content > li > ul > li {
+    &:not(:last-child) {
+        border-bottom: 1px dotted #aaa;
+    }
+}
+
+.text-view .content > li > ul > li > div.sort-handle {
+    display: table-cell;
+    vertical-align: middle;
+    
+    color: #eee;
+    width: 16px;
+    height: 100%;
+}
+
+.text-view .content > li > ul > li > div.dock-text {
+    display: table-cell;
+    white-space: nowrap;
+    min-width: 100%;
+    color: #000; //#333;
+
+    padding: 5px 20px 5px 10px;
+
+    //TODO...padding-rightでごまかしてるけど右端までcontentEditableにするべき
+}
+
+/*
+.text-view .content li ul {
+    display: table-cell;
+    min-width: 100%;
+
+    margin-left: 16px;
+    background-color: sepia;
+
+    border-bottom: 1px solid #aaa;
+
+    //&:not(:last-child) {
+    //    border-bottom: 1px dotted #aaa;
+    //}
+
+}
+
+.text-view .content li ul li {
+    display: table-cell;
+    background-color: pink;
+//    table-layout: fixed;
+//    padding: 5px 0 5px 0;
+}
+
+
+/*
+.text-view .content li {
+    position: relative;
+    border-left: 1px solid #aaa;
+    background-color: white;
+
+    margin-left: 16px;
+    
+    &:not(:last-child) {
+        border-bottom: 1px dotted #aaa;
+    }
+
+    padding: 5px 0 5px 0;
+    //padding-top: 5px;
+}
+
+.text-view .content li .dock-text {
+    display: table-cell;
+    white-space: nowrap;
+    min-width: 100%;
+    color: #000; //#333;
+    padding-left: 10px;
+    padding-right: 20px;
+}
+
+.text-view .content li div .count {
+    display: table-cell;
+    vertical-align: top;
+    text-align: center;
+
+    width: 16px;
+    height: 100%;
+
+    border-right: 1px solid #ccc;
+    overflow-x: hidden;
+    font-size: 12px;
+    padding-top: 4px;
+    background-color: red;
+}
+*/

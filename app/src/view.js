@@ -36,7 +36,6 @@ class View {
     return frame
   }
   
-
   createCanvas(page, width, height) {
     const canvas = document.createElement('canvas')
     canvas.width = width || page.width
@@ -49,6 +48,11 @@ class View {
     texts.innerHTML = page.params.text
     return texts
   }
+}
+
+export { View }
+
+
 
   /*
   preventScrollFreeze() {
@@ -101,6 +105,3 @@ class View {
       this.lastY = y;
     }.bind(this))
   }*/
-}
-
-export { View }

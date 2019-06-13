@@ -1,5 +1,6 @@
 import { View } from './view.js'
 import { ViewFooter } from './view-footer.js'
+import { projectManager } from './project-manager.js'
 
 
 class NoteView extends View {
@@ -17,6 +18,31 @@ class NoteView extends View {
   }
 
   init() {
+    new Sortable(this.content, {
+      animation: 150,
+      handle: '.sort-handle',
+      onEnd: (e) => {
+        LOG('noteView onEnd:', e)
+        LOG(e.oldIndex, '->', e.newIndex)
+      }
+    })
+  }
+
+  update() {
+    this.content.innerHTML = ''
+    projectManager.projects.forEach((project) => {
+      const projectElement = this.createProjectElement(project)
+      this.content.appendChild(projectElement)
+    })
+  }
+
+  createProjectElement(project) {
+    const li = document.createElement('li')
+    li.innerHTML = `[${project.url}]`
+    li.addEventListener('click', (e) => {
+      LOG('select', project.url)
+    })
+    return li
   }
 }
 

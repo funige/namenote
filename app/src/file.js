@@ -177,7 +177,7 @@ class File {
           project.pages[index] = page
           page.initElements(project).then(() => {
             project.views.forEach((view) => {
-              view.initPage(page)
+              view.initPage(page, index)
             })
           })
           if (monitor) {

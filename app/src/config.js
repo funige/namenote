@@ -25,7 +25,7 @@ class Config {
       return this.data[key]
 
     } else {
-      return conifgDefault[key]
+      return configDefault[key]
     }
   }
 

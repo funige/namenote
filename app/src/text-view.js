@@ -6,12 +6,12 @@ class TextView extends View {
   constructor(element) {
     super(element)
     this.id = 'text'
-
+    
     $(this.element).html(`
-      <div class='content'></div>
+      <ul class='content'></ul>
       <ul class='thin-toolbar border-top'></ul>`)
-    this.content = $(this.element).find('.content')[0]
-    this.footer = new ViewFooter($(this.element).find('.thin-toolbar')[0])
+    this.content = this.element.querySelector('.content')
+    this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'))
 
     this.enableSmoothScroll(this.content)
     this.init()
@@ -26,8 +26,15 @@ class TextView extends View {
 
     this.content.innerHTML = ''
     project.pids().forEach((pid, index) => {
-      const pageElement = this.createPageElement(pid)
+      const pageElement = $(`
+        <li>
+          <div class="count">${index + 1}</div>
+          <ul class="dock-texts"></ul>
+        </li>`)[0]
+                     //this.createPageElement(pid)
       this.content.appendChild(pageElement)
+      WARN('=>', pageElement)
+      
       this.pageData[pid] = {
         element: pageElement
       }
@@ -40,6 +47,7 @@ class TextView extends View {
     })
   }
 
+
   initPage(page) {
     const pd = this.pageData[page.pid]
     if (!pd || !pd.element) {
@@ -48,16 +56,33 @@ class TextView extends View {
 
     const texts = this.createTexts(page, page.params.text)
     texts.childNodes.forEach((p) => {
-      const li = document.createElement('li')
-      li.id = p.id + 't'
-      li.innerHTML = p.innerHTML
-      li.style.whiteSpace = 'nowrap'
-      li.contentEditable = true
-      li.addEventListener('input', (e) => { LOG(e) })
-      pd.element.appendChild(li)
+      const text = $(`<div class="dock-text"></div>`)[0]
+      const handle = $(`
+        <div class="sort-handle">
+          <span class="ui-icon ui-icon-grip-dotted-vertical"></span>
+        </div>`)[0]
+      
+      text.id = p.id + 't'
+      text.innerHTML = p.innerHTML
+      text.style.whiteSpace = 'nowrap'
+      text.contentEditable = true
+      text.addEventListener('input', (e) => {
+        const id = e.target.id.replace(/t$/, '')
+        const element = document.getElementById(id)
+        if (element) {
+          element.innerHTML = e.target.innerHTML
+        }
+      })
+
+      const li = $('<li></li>')
+      li.append($(handle))
+      li.append($(text))
+      $(pd.element.getElementsByTagName('ul')[0]).append(li)
     })
 
-    new Sortable(pd.element, {
+    LOG('..', pd.element.getElementsByTagName('ul')[0])
+    
+    new Sortable(pd.element.getElementsByTagName('ul')[0], {
       animation: 150,
       group: 'text-view',
     })

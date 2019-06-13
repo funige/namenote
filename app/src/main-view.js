@@ -65,7 +65,11 @@ class MainView extends View {
     const pd = this.pageData[page.pid]
     pd.frame = this.createFrame()
     pd.canvas = this.createCanvas(page)
+
     pd.texts = this.createTexts(page, page.params.text)
+    pd.texts.childNodes.forEach((p) => {
+    })
+    
     pd.canvas.className = 'canvas'
     pd.texts.className = 'texts'
     

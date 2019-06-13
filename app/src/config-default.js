@@ -1,3 +1,4 @@
+
 const configDefault = {
   defaultPath: null,
   defaultName: null,
@@ -21,4 +22,5 @@ const configDefault = {
   printPreview: false,
 }
 
-export default { configDefault }
+
+export { configDefault }

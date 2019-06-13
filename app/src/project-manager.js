@@ -20,7 +20,7 @@ class ProjectManager {
           dialog.close()
         }
       })
-      this.projects.push(project)
+      this.addProject(project)
 
     } else {
       if (monitor && monitor == dialog.current) {
@@ -37,6 +37,11 @@ class ProjectManager {
       }
     }
     return null
+  }
+
+  addProject(project) {
+    this.projects.push(project)
+    namenote.noteView.update(project)
   }
 }
 

@@ -9,10 +9,10 @@ class PageView extends View {
     this.id = 'page'
 
     $(this.element).html(`
-      <div class='content'></div>
+      <ul class='content'></ul>
       <ul class='thin-toolbar border-top'></ul>`)
-    this.content = $(this.element).find('.content')[0]
-    this.footer = new ViewFooter($(this.element).find('.thin-toolbar')[0])
+    this.content = this.element.querySelector('.content')
+    this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'))
     
     this.enableSmoothScroll(this.content)
     this.init()
@@ -45,33 +45,43 @@ class PageView extends View {
 
       const page = project.pages[index]
       if (page) {
-        this.initPage(page)
+        this.initPage(page, index)
       }
       this.updatePage(pid, index)
     })
   }
   
-  initPage(page) {
+  initPage(page, index) {
     const pd = this.pageData[page.pid]
     if (!pd || !pd.element) {
       ERROR('abort init page', page.pid)
       return
     }
-
+    
     const rect = this.project.getThumbnailSize()
     pd.thumbnail = new Image(rect.width, rect.height)
     pd.thumbnail.src = page.thumbnail.toDataURL('image/png')
-    pd.thumbnail.className = 'thumbnail'
-    pd.thumbnail.style.marginLeft = '27px'
+//  pd.thumbnail.style.margin = '4px'
+//  pd.thumbnail.className = 'thumbnail'
 
-    const text = $(`
-      <div class='index'>830</div>
-      <div class='digest'>${page.digest()}</div>`)
-    const handle = $('<div class="sort-handle">[handle]</div>')
+    const thumbnail = $(`<div class='thumbnail'></div>`)
+    thumbnail.width(rect.width + 10) //[0].style.width = '40px'
+    thumbnail.append(pd.thumbnail)
+
+
+    const count = $(`<div class='count'>${index + 1}</div>`)
+    const digest = $(`<div class='digest'>${page.digest()}</div>`)
+    const handle = $(`
+      <div class="sort-handle">
+        <span class="ui-icon ui-icon-grip-dotted-vertical"></span>
+      </div>`)
+    
+    $(pd.element).append(count)
     $(pd.element).append(handle)
-    $(pd.element).append(pd.thumbnail)
-    $(pd.element).append(text)
+    $(pd.element).append(thumbnail)
+    $(pd.element).append(digest)
   }
+
   
   createPageElement(pid) {
     const element = document.createElement('li')
@@ -87,7 +97,7 @@ class PageView extends View {
       pd.thumbnail.src = page.thumbnail.toDataURL('image/png')
 
       const rect = this.project.getThumbnailSize()
-      pd.thumbnail.style.width = rect.width
+      pd.thumbnail.style.width = 30 //rect.width
       pd.thumbnail.style.height = rect.height
       pd.element.style.height = PX(rect.height + 10)
     }
