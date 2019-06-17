@@ -6,12 +6,12 @@ const configDefault = {
 
   // project.js
   thumbnailSize: 'middle',
-  
+
   // divider.js
   sideBar: false,
   sideBarWidth: 250,
   sideBarPosition: 'right',
-  
+
   // tablet-settings-form.js
   tabletCurveLeft: '0,0',
   tabletCurveRight: '1,1',
@@ -19,8 +19,8 @@ const configDefault = {
 
   // main-view.js
   multiView: true,
-  printPreview: false,
-}
+  printPreview: false
+};
 
 
-export { configDefault }
+export { configDefault };

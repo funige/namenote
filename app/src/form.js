@@ -1,43 +1,43 @@
-import { dialog } from './dialog.js'
-import { file } from './file.js'
-import { locale } from './locale.js'
+import { dialog } from './dialog.js';
+import { file } from './file.js';
+import { locale } from './locale.js';
 
-////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 
 class Form {
   constructor() {
   }
 
   destructor() {
-    this.element = null
+    this.element = null;
   }
-  
+
   onReturnPressed(callback) {
     $(this.element).on('keydown', (e) => {
-      LOG('onreturnpressed')
+      LOG('onreturnpressed');
       if (e.keyCode == 13) {
-        e.preventDefault()
-        callback()
+        e.preventDefault();
+        callback();
       }
-    })
+    });
   }
 
   onresize(e) {
-    const height = $(this.element).height()
-    $('.form').height(height)
+    const height = $(this.element).height();
+    $('.form').height(height);
   }
 
   enable() {
     $(this.element).parent()
       .find('.ui-dialog-buttonpane button:first')
-      .button('enable')
+      .button('enable');
   }
 
   disable() {
     $(this.element).parent()
       .find('.ui-dialog-buttonpane button:first')
-      .button('disable')
+      .button('disable');
   }
 }
 
-export { Form }
+export { Form };

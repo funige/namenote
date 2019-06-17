@@ -241,6 +241,10 @@ class File {
       return 'dropbox:///'
     }
   }
+
+  getUniqueName(name) {
+    return name
+  }
   
   truncateURL(url) {
     url = url.replace(/[^/]*\.namenote$/, '')

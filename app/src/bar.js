@@ -1,7 +1,7 @@
 function bar() {
-    console.log('bar')
+  console.log('bar');
 }
 
-//test
+// test
 
-export default bar
+export default bar;

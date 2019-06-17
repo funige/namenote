@@ -1,176 +1,125 @@
-import { namenote } from './namenote.js'
-import { Page } from './page.js'
-import { projectManager } from './project-manager.js'
-import { file } from './file.js'
-import { config } from './config.js'
+import { namenote } from './namenote.js';
+import { Page } from './page.js';
+import { projectManager } from './project-manager.js';
+import { file } from './file.js';
+import { config } from './config.js';
+import { shape } from './shape.js';
 
 const thumbnailWidths = {
-  'small': 50, //75,
-  'middle': 100, //106,
-  'large': 150,
-}
+  small: 50, // 75,
+  middle: 100, // 106,
+  large: 150
+};
 
-////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 
 class Project {
   constructor(url, json) {
-//  url = url.replace(/\\/g, '/') //TODO:Windows対応は必要だがここは不適当
-    this.url = url
-    this.baseURL = url.replace(/\/[^/]*$/, '')
+    //  url = url.replace(/\\/g, '/') //TODO:Windows対応は必要だがここは不適当
+    this.url = url;
+    this.baseURL = url.replace(/\/[^/]*$/, '');
 
-    this.pages = []
-    this.currentPage = null
+    this.pages = [];
+    this.currentPage = null;
 
-    this.views = []
-    
-//  this.finishPageRead = false
-//  this.maxPID = 0
-//  this.dirty = true
+    this.views = [];
+
+    //  this.finishPageRead = false
+    //  this.maxPID = 0
+    //  this.dirty = true
 
     if (json) {
-      this.init(json)
+      this.init(json);
     }
   }
 
   destructor() {
-    log('project destructor', this.url)
+    log('project destructor', this.url);
     this.pages.forEach(page => {
-      page.destructor()
-    })
+      page.destructor();
+    });
 
-    this.views = []
+    this.views = [];
   }
 
   init(data) {
-    this.params = data.params
-    this._pids = data.pids
+    this.params = data.params;
+    this._pids = data.pids;
 
-    this.setDPI(this.params.dpi)
-    this.pageSize = this.topx(this.params.page_size || [257, 364])
-    this.canvasSize = this.topx(this.params.canvas_size || this.params.export_size || [257, 364])
-
-    //this.draftMarks = this.createDraftMarksElement()
-    return this
+    shape.setDPI(this.params.dpi);
+    this.pageSize = shape.topx(this.params.page_size || [257, 364]);
+    this.canvasSize = shape.topx(this.params.canvas_size || this.params.export_size || [257, 364]);
+    return this;
   }
 
-  pids() {
-    return this._pids //ここは挿入とか削除のたびにあれしないとだめだ
+  pids(update) {
+    /*
+    if (update) {
+      this._pids = []
+      this.pages.forEach((page, index) => {
+        this._pids.push(page.pid)
+        WARN(index, page.pid)
+      })
+      }
+    */
+    return this._pids; // ここは挿入とか削除のたびにあれしないとだめだ
   }
-  
+
   name() {
-    return file.truncateURL(this.url)
+    return file.truncateURL(this.url);
   }
-
-  /*getElement() {
-    return namenote.mainView.projectElement
-  }*/
 
   addView(view) {
     if (this.views.indexOf(view) < 0) {
-      this.views.push(view)
+      this.views.push(view);
     }
   }
-  
+
   removeView(view) {
     this.views = this.views.filter((item) => {
-      return item !== view
-    })
+      return item !== view;
+    });
   }
 
-  ////////////////
+  setCurrentPage(pid) {
+    LOG('setCurrentPage', pid)
 
-  createDraftMarksElement() {
-    // type(100=rectangle), lineWidth(px), x,y,width,height(mm)
-
-    const options = { color: '#85bffd' }
-    const arr = this.parseShape([
-      [100, 1, 0,  0,  257, 364],
+    if (this.currentPage) {
+      $('#page-' + this.currentPage).removeClass('selected');
+    }
+    this.currentPage = pid;
+    $('#page-' + pid).addClass('selected');
+  }
+  
+  draftMarks() {
+    const options = { color: '#85bffd', dpi: this.dpi };
+    const arr = shape.parse([
+      // 100=rectangle
+      // 1=lineWidth(px)
+      // x,y,width,height(mm)
+      [100, 1, 0, 0, 257, 364],
       [100, 1, 19, 27, 220, 310],
-      [100, 1, 39, 47, 180, 270],
-    ], options)
+      [100, 1, 39, 47, 180, 270]
+    ], options);
 
-    const width = this.topx(this.canvasSize[0])
-    const height = this.topx(this.canvasSize[1])
+    const width = shape.topx(this.canvasSize[0]);
+    const height = shape.topx(this.canvasSize[1]);
     const string = `
       <svg class="marks" width="${width}" height="${height}">
         ${arr.join('')}
-      </svg>`
-    return $(string)[0]
+      </svg>`;
+    return $(string)[0];
   }
 
-  parseShape(shape, options) {
-    if (!options) options = {}
-    if (!options.color) options.color = '#85bffd'
-      
-    const result = []
-    shape.forEach((line) => {
-      const type = line[0]
-
-      switch(type) {
-      case 1: //line
-        break;
-
-      case 2: //rect
-        break;
-
-      case 4: //polyline
-        break;
-
-      case 5: //text
-        break;
-
-      case 100: //rectangle
-        result.push(this.parseRectangle(line, options))
-        break;
-
-      default:
-        ERROR('unsupported shape found', shape)
-        break;
-      }
-    })
-    return result
-  }
-
-  parseRectangle(line, options) {
-    const lineWidth = line[1]
-    const x = this.topx(line[2])
-    const y = this.topx(line[3])
-    const width = this.topx(line[4])
-    const height = this.topx(line[5])
-    return `
-      <rect x="${x}" y="${y}" width="${width}" height="${height}"
-            fill="none" stroke="${options.color}" stroke-width="${lineWidth}" />`
-  }
-  
-  setDPI(dpi) {
-    this.dpi = dpi
-  }
-
-  topx(mm) {
-    if (typeof mm === 'number') {
-      return Math.round(mm * (this.dpi / 25.4))
-    } else {
-      return mm.map((x) => Math.round(x * (this.dpi / 25.4)))
-    }
-  }
-
-  tomm(px) {
-    if (typeof px === 'number') {
-      return Math.round(px * (25.4 / this.dpi))
-    } else {
-      return px.map((x) => Math.round(x * (25.4 / this.dpi)))
-    }
-  }
-  
   getThumbnailSize() {
-    const size = config.getValue('thumbnailSize')
-    const thumbnailWidth = thumbnailWidths[size]
-    const scale = thumbnailWidth / this.canvasSize[0]
+    const size = config.getValue('thumbnailSize');
+    const thumbnailWidth = thumbnailWidths[size];
+    const scale = thumbnailWidth / this.canvasSize[0];
 
-    const width = Math.ceil(this.canvasSize[0] * scale)
-    const height = Math.ceil(this.canvasSize[1] * scale)
-    return { width:width, height:height }
+    const width = Math.ceil(this.canvasSize[0] * scale);
+    const height = Math.ceil(this.canvasSize[1] * scale);
+    return { width: width, height: height };
   }
 }
 
-export { Project }
+export { Project };

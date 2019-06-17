@@ -1,25 +1,25 @@
-import { namenote } from './namenote.js'
+import { namenote } from './namenote.js';
 
 class Title {
-  constructor () {
+  constructor() {
   }
 
   init() {
-    this.set()
+    this.set();
   }
-  
+
   set(title) {
     if (!title) {
-      title = (namenote.trial) ? `${T('Namenote')} ${T('Trial')}` : T('Namenote')
+      title = (namenote.trial) ? `${T('Namenote')} ${T('Trial')}` : T('Namenote');
     }
     if (namenote.app) {
-      namenote.app.setTitle(title)
+      namenote.app.setTitle(title);
     } else {
-      document.title = title
+      document.title = title;
     }
   }
 }
 
-const title = new Title()
+const title = new Title();
 
-export { title }
+export { title };

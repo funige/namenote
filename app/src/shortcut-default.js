@@ -7,7 +7,7 @@ const shortcutDefault = {
 
   openNewDialog: ['command+n', 'alt+n'],
   openDialog: ['command+o', 'alt+o'],
-  
+
   close: ['command+w', 'alt+w'],
   quit: ['command+q', 'alt+q'],
   reload: ['command+r', 'alt+r'],
@@ -18,17 +18,17 @@ const shortcutDefault = {
   savePageImage: ['command+-', 'alt+-'],
   extractText: ['command+t', 'alt+t'],
 
-  //marginSettingsDialog: ['command+shift+i', 'alt+shift+i'],
-  
+  // marginSettingsDialog: ['command+shift+i', 'alt+shift+i'],
+
   pageLeft: 'left',
   pageRight: 'right',
-  pageUp: 'up',      
-  pageDown: 'down',  
+  pageUp: 'up',
+  pageDown: 'down',
 
   selectAll: 'ctrl+a',
   unselect: 'ctrl+d',
   mergeText: 'ctrl+e',
-  
+
   dock: '1',
   developerTools: 'command+alt+i',
 
@@ -39,7 +39,7 @@ const shortcutDefault = {
   //
   // Page shortcuts
   //
-  
+
   insertPage: 'shift+i',
   duplicatePage: 'shift+d',
 
@@ -59,14 +59,14 @@ const shortcutDefault = {
   //
   // Text shortcuts (can be used while text editing)
   //
-  
+
   toggleEditMode: 'ctrl+g',
   addFontSize: 'ctrl+.',
   subtractFontSize: 'ctrl+,',
   toggleDirection: 'ctrl+]',
   cutText: 'backspace',
   nextText: 'tab',
-  prevText: 'shift+tab',
-}
+  prevText: 'shift+tab'
+};
 
-export { shortcutDefault }
+export { shortcutDefault };

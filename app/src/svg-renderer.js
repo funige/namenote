@@ -1,6 +1,6 @@
-import { namenote } from './namenote.js'
+import { namenote } from './namenote.js';
 
-////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 
 class SVGRenderer {
   constructor() {
@@ -12,7 +12,7 @@ class SVGRenderer {
   capture() {
   }
 
-/*  
+/*
   fixTexts() {
     const array = this.texts.innerHTML.split(/<div class="text.*?"/)
     for (let i = 0; i < array.length; i++) {
@@ -44,14 +44,14 @@ class SVGRenderer {
     const texts = this.fixTexts()
 
     const width = this.canvas.width
-    const height = this.canvas.height    
+    const height = this.canvas.height
 
     const destCanvas = document.createElement('canvas')
     destCanvas.width = this.project.exportSize[0]
     destCanvas.height = this.project.exportSize[1]
     const ctx = destCanvas.getContext('2d')
     ctx.drawImage(this.bg, 0, 0)
-    
+
     const data = `
        <svg xmlns='http://www.w3.org/2000/svg' width='${width}' height='${height}'>
          <foreignObject width='100%' height='100%'>
@@ -63,7 +63,7 @@ class SVGRenderer {
            </div>
          </foreignObject>
        </svg>`
-    
+
     const img = new Image();
     img.onload = () => {
       ctx.drawImage(img, 0, 0)
@@ -82,7 +82,6 @@ class SVGRenderer {
 */
 }
 
-const svgRenderer = new SVGRenderer()
+const svgRenderer = new SVGRenderer();
 
-export { svgRenderer }
-
+export { svgRenderer };

@@ -1,45 +1,45 @@
-import { projectManager } from './project-manager.js'
-import { menu } from './menu.js'
+import { projectManager } from './project-manager.js';
+import { menu } from './menu.js';
 
-const MAX_RECENT_URL = 10
+const MAX_RECENT_URL = 10;
 
 
 class RecentURL {
   constructor() {
-    this.data = []
+    this.data = [];
   }
 
   load() {
-    const json = localStorage.getItem('namenote/recent-url')
-    this.data = (json) ? JSON.parse(json) : []
+    const json = localStorage.getItem('namenote/recent-url');
+    this.data = (json) ? JSON.parse(json) : [];
   }
 
   save() {
-    const json = JSON.stringify(this.data)
-    localStorage.setItem('namenote/recent-url', json)
+    const json = JSON.stringify(this.data);
+    localStorage.setItem('namenote/recent-url', json);
   }
 
   resetStorage() {
-    this.data = []
-    this.save()
-    menu.update()
+    this.data = [];
+    this.save();
+    menu.update();
   }
 
   add(url) {
-    /*if (!url.match(/:\/\/\//)) {
+    /* if (!url.match(/:\/\/\//)) {
       ERROR('irregal url!!!', url) //TODO
-    }*/
-    
-    this.data = this.data.filter((value) => value != url)
-    this.data.unshift(url)
+    } */
+
+    this.data = this.data.filter((value) => value != url);
+    this.data.unshift(url);
 
     if (this.data.length > MAX_RECENT_URL) {
-      this.data.length = MAX_RECENT_URL
+      this.data.length = MAX_RECENT_URL;
     }
-    this.save()
+    this.save();
   }
 }
 
-const recentURL = new RecentURL()
+const recentURL = new RecentURL();
 
-export { recentURL }
+export { recentURL };

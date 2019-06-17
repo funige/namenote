@@ -97,6 +97,7 @@ ul, li {
 .sidebar {
     min-width: 100%;
     min-height: 100%;
+    background-color: #f6f6f6;
 }
 
 .main-view {
@@ -128,7 +129,8 @@ ul, li {
 
 .page.selected {
     z-index: 1;
-    outline: 3px solid rgba(133,191,253,1.0);
+    outline: 2px solid rgba(133,191,253,1.0);
+    outline-offset: 2px;
 }
 
 .page .marks {
@@ -396,126 +398,6 @@ span .ui-icon {
     opacity: 0.3;
 }
 
-/**
- * NoteView
- */
-
-.note-view {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: #f6f6f6;
-}
-
-.note-view .content {
-  height: calc(100% - 27px);
-  width: 100%;
-  overflow: scroll;
-}
-
-.note-view .content li {
-    border-bottom: 1px solid black;
-    padding-bottom: 1em;
-}
-
-/**
- * PageView
- */
-
-.page-view {
-    width: 100%;
-    height: 100%;
-//  overflow-x: hidden;
-    background-color: #f6f6f6;
-}
-
-.dialog .page-view {
-    border: 1px solid #aaa;
-    background-color: white; //#f6f6f6;
-}
-
-
-.page-view li {
-    position: relative;
-    display: table;
-    table-layout: fixed;
-    
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    overflow: hidden;
-    background-color: #eee;
-}
-
-.page-view li.ui-selected,.page-view li.ui-selecting {
-    color: white;
-    background-color: #297efd;
-}
-
-.page-view li.disabled {
-    opacity: 0.3;
-}
-
-.page-view li.placeholder {
-    background-color: white;
-    border-bottom: 1px solid #ccc;
-}
-
-.page-view .content {
-    height: calc(100% - 27px); //26px+borderTop
-    vertical-align: middle;
-    text-align: center;
-
-    width: 100%;
-    overflow: scroll;
-    overflow-x: hidden;
-}
-
-.page-view .content li .count {
-    display: table-cell;
-    vertical-align: top;
-    text-align: center;
-
-    width: 16px;
-    height: 100%;
-
-    border-right: 1px solid #aaa;
-    overflow-x: hidden;
-    font-size: 12px;
-    padding-top: 4px;
-}
-
-.page-view .content li .sort-handle {
-    display: table-cell;
-    vertical-align: middle;
-    color: #eee;
-    
-    width: 16px;
-    height: 100%;
-}
-
-.page-view .content li .thumbnail {
-    display: table-cell;
-    vertical-align: middle;
-
-    //margin: 5px;
-    pointer-events: none;
-
-    img {
-        border: 1px solid #555; //#aaa;
-        background-color: white;
-        margin: 4px 4px 0px 0px;
-    }
-}
-
-.page-view .content li .digest {
-    display: table-cell;
-    vertical-align: bottom;
-    white-space: nowrap;
-    color: #999;
-    padding-bottom: 4px;
-}
-
 .text-button {
     padding: 0px 10px 0 10px;
     font-size: 12px;
@@ -642,3 +524,5 @@ span .ui-icon {
 @import "dock"; 
 
 @import "text-view";
+@import "page-view";
+@import "note-view";

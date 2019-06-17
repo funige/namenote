@@ -1,15 +1,14 @@
-import { command } from './command.js'
-import { htmlDropdown } from './html-dropdown.js'
+import { htmlDropdown } from './html-dropdown.js';
 
-let penButton
-let eraserButton
-let textButton
+let penButton;
+let eraserButton;
+let textButton;
 
-////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 
 class ToolButton {
   constructor() {
-    this.buttons = []
+    this.buttons = [];
   }
 
   init() {
@@ -17,59 +16,57 @@ class ToolButton {
       src: 'img/pen-button.png',
       locked: true,
       float: 'left',
-      click: function(e) {
+      click: function (e) {
         if ($(e.target).imageButton('instance')) {
-          this.select('pen')
+          this.select('pen');
         }
       }.bind(this),
       content: htmlDropdown.make('penDropDown', 'pen')
-    })[0]
-    
+    })[0];
+
     eraserButton = $('#eraser-button').imageButton({
       src: 'img/eraser-button.png',
       float: 'left',
-      click: function(e) {
+      click: function (e) {
         if ($(e.target).imageButton('instance')) {
-          this.select('eraser')
+          this.select('eraser');
         }
       }.bind(this),
       content: htmlDropdown.make('eraserDropDown', 'eraser')
-    })[0]
+    })[0];
 
     textButton = $('#text-button').imageButton({
       src: 'img/text-button.png',
       float: 'left',
-      click: function(e) {
+      click: function (e) {
         if ($(e.target).imageButton('instance')) {
-          this.select('text')
+          this.select('text');
         }
       }.bind(this),
       content: htmlDropdown.make('textDropDown', 'text')
-    })[0]
+    })[0];
 
-    this.buttons.push(penButton, eraserButton, textButton)
+    this.buttons.push(penButton, eraserButton, textButton);
   }
 
   update() {
   }
 
   select(name) {
-    for (const button of this.buttons) {
-      const locked = $(button).imageButton('locked')
-      
-      if (button && button.id.indexOf(name) == 0) {
+    this.buttons.forEach((button) => {
+      const locked = $(button).imageButton('locked');
+
+      if (button && button.id.indexOf(name) === 0) {
         if (!locked) {
-          $(button).imageButton('locked', true)
+          $(button).imageButton('locked', true);
         }
-      } else {
-        if (locked) {
-          $(button).imageButton('locked', false)
-        }
+      } else if (locked) {
+        $(button).imageButton('locked', false);
       }
-    }
+    });
   }
 }
 
-const toolButton = new ToolButton()
+const toolButton = new ToolButton();
 
-export { toolButton }
+export { toolButton };

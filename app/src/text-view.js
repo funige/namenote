@@ -85,6 +85,10 @@ class TextView extends View {
     new Sortable(pd.element.getElementsByTagName('ul')[0], {
       animation: 150,
       group: 'text-view',
+      onEnd: (e) => {
+        LOG(e)
+        LOG(e.oldIndex, e.newIndex, e.from, e.to)
+      }
     })
   }
 

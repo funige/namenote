@@ -1,46 +1,46 @@
-import { widget } from './widget.js'
+import { widget } from './widget.js';
 
-////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 
 class ViewFooter {
   constructor(element) {
-    this.element = element
-    this.init()
+    this.element = element;
+    this.init();
   }
 
-  
+
   init() {
-    this.element.innerHTML = ''
+    this.element.innerHTML = '';
 
     const trashButton = widget.createImageButton({
       src: 'img/zoom-button.png',
-      click: (e) => {
-        LOG('trash')
+      click: () => {
+        LOG('trash');
       },
-      float: 'left',
-    })
-    
+      float: 'left'
+    });
+
     const appendButton = widget.createImageButton({
       src: 'img/redo-button.png',
-      click: (e) => {
-        LOG('append')
+      click: () => {
+        LOG('append');
       },
-      float: 'left',
-    })
+      float: 'left'
+    });
 
     // test
     const sizeButton = widget.createImageButton({
       src: 'img/flip-button.png',
-      click: (e) => {
-        LOG('size')
+      click: () => {
+        LOG('size');
       },
-      float: 'right',
-    })
+      float: 'right'
+    });
 
-    this.element.appendChild(trashButton)
-    this.element.appendChild(appendButton)
-    this.element.appendChild(sizeButton)
+    this.element.appendChild(trashButton);
+    this.element.appendChild(appendButton);
+    this.element.appendChild(sizeButton);
   }
 }
 
-export { ViewFooter }
+export { ViewFooter };

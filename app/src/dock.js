@@ -1,20 +1,20 @@
-import { dockTab } from './dock-tab.js'
+import { dockTab } from './dock-tab.js';
 
-////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 
 class Dock {
   constructor() {
   }
 
   init() {
-    dockTab.init()
+    dockTab.init();
   }
-  
+
   update(value) {
-    dockTab.update()
+    dockTab.update();
   }
 }
 
-const dock = new Dock()
+const dock = new Dock();
 
-export { dock }
+export { dock };

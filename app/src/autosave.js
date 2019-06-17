@@ -1,5 +1,5 @@
 
-const worker = new Worker('./js/lib/autosave-worker.js')
+const worker = new Worker('./js/lib/autosave-worker.js');
 
 class AutoSave {
   constructor() {
@@ -9,6 +9,6 @@ class AutoSave {
   }
 }
 
-const autoSave = new AutoSave
+const autoSave = new AutoSave();
 
-export { autoSave }
+export { autoSave };

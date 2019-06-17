@@ -6,27 +6,35 @@ module.exports = {
     'jquery': true
   },
   'globals': {
-    'APP': true // グローバル変数を警告対象から外す
+    'T': true,
+    '$': true,
+    'LOG': true,
+    'WARN': true,
+    'ERROR': true,
   },
   'extends': [
     'airbnb-base/legacy',
   ],
+  
+  "env": {
+    "es6": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
   'rules': {
-    /*
+    'no-console': [ 'off' ],
     'func-names': [ 'off' ],
+    'no-param-reassign': ['error', { 'props': false }],
+
+    /*
     'linebreak-style': [ 'error', 'unix' ],
     'no-unused-vars': [ 'error', { 'args': 'none' } ],
-    'no-console': [ 'off' ],
     'no-use-before-define': [ 'off' ],
     'vars-on-top': [ 'off' ],
     'no-underscore-dangle': [ 'off' ],
     'no-plusplus': [ 'off' ],
     'spaced-comment': ['error', 'always', { 'markers': ['/'] }],
-    'no-param-reassign': ['error', { 'props': false }]
     */
   },
-  
-  "parserOptions": {
-    "sourceType": "module"
-  }
 };

@@ -86,7 +86,7 @@ class Page {
     })
 
     this.params.text = texts.innerHTML
-    LOG(texts.innerHTML)
+//  LOG(texts.innerHTML)
   }
   
   digest() {
