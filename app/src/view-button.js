@@ -12,7 +12,7 @@ class ViewButton {
 //  constructor() {
 //  }
 
-  static init() {
+  init() {
     quickZoomButton = $('#row-button').imageButton({
       src: 'img/magnifier-button.png',
       float: 'right',
@@ -40,7 +40,7 @@ class ViewButton {
     })[0];
   }
 
-  static update() {
+  update() {
     const project = namenote.currentProject();
     const quickZoom = project; // (project) ? project.view.quickZoom : false
 

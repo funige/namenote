@@ -3,7 +3,6 @@ import { ViewFooter } from './view-footer.js';
 import { command } from './command.js';
 
 
-
 class PageView extends View {
   constructor(element, options) {
     super(element, options);
@@ -22,11 +21,11 @@ class PageView extends View {
   init() {
     this.project = null;
 
-    new Sortable(this.content, {
+    Sortable.create(this.content, {
       animation: 150,
       handle: '.sort-handle',
       onEnd: (e) => {
-//      command.movePage(this, e.oldIndex, e.newIndex)
+        command.movePage(this, e.oldIndex, e.newIndex);
       }
     });
   }
@@ -36,7 +35,7 @@ class PageView extends View {
     if (!this.element) return;
 
     this.content.innerHTML = '';
-    project.pids().forEach((pid, index) => {
+    project.pids.forEach((pid, index) => {
       const pageElement = this.createPageElement(pid);
       this.content.appendChild(pageElement);
       this.pageData[pid] = {
@@ -61,8 +60,6 @@ class PageView extends View {
     const rect = this.project.getThumbnailSize();
     pd.thumbnail = new Image(rect.width, rect.height);
     pd.thumbnail.src = page.thumbnail.toDataURL('image/png');
-    //  pd.thumbnail.style.margin = '4px'
-    //  pd.thumbnail.className = 'thumbnail'
 
     const thumbnail = $('<div class=\'thumbnail\'></div>');
     thumbnail.width(rect.width + 10); // [0].style.width = '40px'
@@ -84,11 +81,13 @@ class PageView extends View {
     $(pd.element).append(count);
   }
 
-
   createPageElement(pid) {
     const element = document.createElement('li');
     const rect = this.project.getThumbnailSize();
     element.style.height = PX(rect.height + 10);
+
+    element.className = 'pageview-page';
+    element.id = 'pageview-page-' + pid;
     return element;
   }
 
@@ -106,13 +105,9 @@ class PageView extends View {
   }
 
   loadProject(project) {
-    if (this.project) this.project.removeView(this);
-    this.project = project;
-    if (!project) return;
-    project.addView(this);
-
-    WARN(`pageView: loadProject ${project.url}`);
-
+    super.loadProject(project);
+    
+    // Init project
     this.pageData = {};
     this.initProject(project);
 
@@ -120,16 +115,15 @@ class PageView extends View {
 
     WARN(this.options);
     if (this.options.loaded) this.options.loaded(url, project.url);
+
+    // Restore previous state
+    this.showCurrentPage();
   }
 
   movePage(oldIndex, newIndex) {
     LOG(oldIndex, '->', newIndex);
   }
 
-  showPage() {
-    const currentPage = this.project.currentPage;
-  }
-  
   showProgress(message) {
     WARN('pageView: show progress', message);
   }

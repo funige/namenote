@@ -1,4 +1,3 @@
-// //////////////////////////////////////////////////////////////
 
 class View {
   constructor(element, options) {
@@ -15,18 +14,22 @@ class View {
     this.pageData = {};
   }
 
-  // //////////////
+  loadProject(project) {
+    LOG('pageView loadProject', project.url);
+    if (this.project) this.project.removeView(this);
+    this.project = project;
+    if (!project) return;
+    project.addView(this);
+  }
 
   enableSmoothScroll(element) {
     element.parentNode.style.WebkitOverflowScrolling = 'touch';
     element.style.WebkitPerspective = '0';
-    //  this.preventScrollFreeze()
-    //  this.element.style.backgroundColor = "yellow"
   }
+
 
   createButtonElement() {
     const li = document.createElement('li');
-
     return li;
   }
 
@@ -52,59 +55,19 @@ class View {
   isDialog() {
     return false;
   }
+
+  showCurrentPage(pid) {
+    const oldPID = this.project.currentPage;
+    if (!pid) pid = oldPID;
+    
+    const oldPD = this.pageData[oldPID];
+    const newPD = this.pageData[pid];
+    if (oldPD) $(oldPD.element).removeClass('selected');
+    if (newPD) $(newPD.element).addClass('selected');
+
+    // TODO: scroll to newPID
+  }
+  
 }
 
 export { View };
-
-
-/*
-  preventScrollFreeze() {
-    this.lastX = 0
-    this.lastY = 0
-
-    const scroller = $(this.element).parent()
-    scroller.on('touchstart', function(e) {
-      this.lastX = e.touches[0].clientX
-      this.lastY = e.touches[0].clientY
-    }.bind(this))
-
-    scroller.on('touchmove', function(e) {
-      const x = e.touches[0].clientX
-      const y = e.touches[0].clientY
-
-      const width = this.element.offsetWidth
-      const height = this.element.offsetHeight
-
-      const scrollTop = $(e.currentTarget).scrollTop()
-      const scrollLeft = $(e.currentTarget).scrollLeft()
-      const dirY = (this.lastY - y) < 0 ? 'up': 'down'
-      const dirX = (this.lastX - x) < 0 ? 'left': 'right'
-
-      if (scrollTop === 0) {
-        if (dirY === "up") {
-          LOG('up')
-          e.preventDefault();
-        }
-
-      } else if (scrollTop >= e.currentTarget.scrollHeight - height) {
-        if (dirY === "down") {
-          LOG('down')
-          e.preventDefault();
-        }
-      }
-      if (scrollLeft === 0) {
-        if (dirX === "left") {
-          LOG('left')
-          e.preventDefault();
-        }
-
-      } else if (scrollLeft >= e.currentTarget.scrollWidth - width) {
-        if (dirX === "right") {
-          LOG('right')
-          e.preventDefault();
-        }
-      }
-      this.lastX = x;
-      this.lastY = y;
-    }.bind(this))
-  } */

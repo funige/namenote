@@ -1,102 +1,105 @@
-import { namenote } from './namenote.js'
+import { namenote } from './namenote.js';
 
-const JSZip = require('JSZip')
+const JSZip = require('JSZip');
 
 
 class Page {
   constructor(json) {
-    this.init(json)
+    this.init(json);
   }
 
   destructor() {
-    LOG('page destructor', this.pid)
+    LOG('page destructor', this.pid);
   }
 
   init(data) {
-    this.params = data
-    this.cleanup()
-    return this
+    this.params = data;
+    return this;
   }
 
+  /**
+   * Pageはnewしただけでは初期化できないのは間違い。
+   * この関数はあってはならない。
+   */
   async initElements(project) {
-    this.width = project.pageSize[0]
-    this.height = project.pageSize[1]
-    
-    this.canvas = this.createCanvasElement(this.width, this.height)
-    this.canvasCtx = this.canvas.getContext('2d')
-    await this.unzip(this.canvasCtx)
-    this.updateThumbnail(project)
+    this.width = project.pageSize[0];
+    this.height = project.pageSize[1];
+
+    this.canvas = this.createCanvasElement(this.width, this.height);
+    this.canvasCtx = this.canvas.getContext('2d');
+    await this.unzip(this.canvasCtx);
+    this.updateThumbnail(project);
+
+    this.texts = this.cleanup(this.params.text);
   }
 
   updateThumbnail(project) {
-    const rect = project.getThumbnailSize()
-    this.thumbnail = this.createCanvasElement(rect.width, rect.height)
-    this.thumbnailCtx = this.thumbnail.getContext('2d')
-    this.thumbnailCtx.filter = `none`
-    this.thumbnailCtx.imageSmoothingQuality = 'high'
+    const rect = project.getThumbnailSize();
+    this.thumbnail = this.createCanvasElement(rect.width, rect.height);
+    this.thumbnailCtx = this.thumbnail.getContext('2d');
+    this.thumbnailCtx.filter = 'none';
+    this.thumbnailCtx.imageSmoothingQuality = 'high';
     this.thumbnailCtx.drawImage(this.canvas,
-                                project.canvasSize[2]||0, project.canvasSize[3]||0,
-                                project.canvasSize[0], project.canvasSize[1],
-                                0, 0, rect.width, rect.height)
+      project.canvasSize[2] || 0, project.canvasSize[3] || 0,
+      project.canvasSize[0], project.canvasSize[1],
+      0, 0, rect.width, rect.height);
   }
-  
+
   createCanvasElement(width, height) {
-    const canvas = document.createElement('canvas')
-    canvas.width = width
-    canvas.height = height
-    return canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    return canvas;
   }
 
   unzip(ctx) {
     return new Promise((resolve, reject) => {
-      const base64 = this.params.base64
-      if (!base64) return resolve()
+      const base64 = this.params.base64;
+      if (!base64) return resolve();
 
-      const zip = new JSZip()
-      zip.loadAsync(base64, { base64:true }).then((zip) => {
+      const zip = new JSZip();
+      zip.loadAsync(base64, { base64: true }).then((zip) => {
         zip.file('image').async('uint8Array').then((data) => {
-          const imageData = ctx.createImageData(this.width, this.height)
+          const imageData = ctx.createImageData(this.width, this.height);
           imageData.data.set(data);
-          ctx.putImageData(imageData, 0, 0)
-          resolve()
-        })
-      })
-    })
+          ctx.putImageData(imageData, 0, 0);
+          resolve();
+        });
+      });
+    });
   }
 
-  cleanup() {
-    if (!this.params || !this.params.text) return
+  cleanup(text) {
+    const texts = document.createElement('div');
 
-    const texts = document.createElement('div')
-    texts.innerHTML = this.params.text
-    texts.childNodes.forEach((p) => {
-      $(p).removeClass('editable')
-      $(p).removeClass('selected')
-      $(p).css('color', '')
+    if (text) {
+      texts.innerHTML = text;
+      texts.childNodes.forEach((p) => {
+        $(p).removeClass('editable');
+        $(p).removeClass('selected');
+        $(p).css('color', '');
 
-      p.id = namenote.getUniqueID()
-      p.innerHTML = p.innerHTML
-        .replace(/\r|\n/g, '')
-        .replace(/(<([^>]+)>)/g, '/')
-        .replace(/\/+/g, '/')
-        .replace(/^\//, '').replace(/\/$/, '')
-        .replace(/\//g, '<br>')
-
-      WARN(p.innerHTML)
-    })
-
-    this.params.text = texts.innerHTML
-//  LOG(texts.innerHTML)
+        p.id = namenote.getUniqueID();
+        p.innerHTML = p.innerHTML
+          .replace(/\r|\n/g, '')
+          .replace(/(<([^>]+)>)/g, '/')
+          .replace(/\/+/g, '/')
+          .replace(/^\//, '')
+          .replace(/\/$/, '')
+          .replace(/\//g, '<br>');
+      });
+    }
+    return texts;
   }
-  
+
   digest() {
-    if (!this.params || !this.params.text) return ''
+    if (!this.params || !this.params.text) return '';
 
     return this.params.text
       .replace(/(<([^>]+)>)/ig, '/')
       .replace(/\/+/g, '/')
-      .replace(/^\//, '').replace(/\/$/, '')
+      .replace(/^\//, '').replace(/\/$/, '');
   }
 }
 
-export { Page }
+export { Page };

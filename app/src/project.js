@@ -44,25 +44,12 @@ class Project {
 
   init(data) {
     this.params = data.params;
-    this._pids = data.pids;
+    this.pids = data.pids;
 
     shape.setDPI(this.params.dpi);
     this.pageSize = shape.topx(this.params.page_size || [257, 364]);
     this.canvasSize = shape.topx(this.params.canvas_size || this.params.export_size || [257, 364]);
     return this;
-  }
-
-  pids(update) {
-    /*
-    if (update) {
-      this._pids = []
-      this.pages.forEach((page, index) => {
-        this._pids.push(page.pid)
-        WARN(index, page.pid)
-      })
-      }
-    */
-    return this._pids; // ここは挿入とか削除のたびにあれしないとだめだ
   }
 
   name() {
@@ -82,15 +69,12 @@ class Project {
   }
 
   setCurrentPage(pid) {
-    LOG('setCurrentPage', pid)
-
-    if (this.currentPage) {
-      $('#page-' + this.currentPage).removeClass('selected');
-    }
+    namenote.mainView.showCurrentPage(pid);
+    namenote.pageView.showCurrentPage(pid);
+    namenote.textView.showCurrentPage(pid);
     this.currentPage = pid;
-    $('#page-' + pid).addClass('selected');
   }
-  
+
   draftMarks() {
     const options = { color: '#85bffd', dpi: this.dpi };
     const arr = shape.parse([
@@ -119,6 +103,29 @@ class Project {
     const width = Math.ceil(this.canvasSize[0] * scale);
     const height = Math.ceil(this.canvasSize[1] * scale);
     return { width: width, height: height };
+  }
+
+  movePage(from, to) {
+    const page = this.pages.splice(from , 1)[0]
+    this.pages.splice(to, 0, page)
+
+    const pid = this.pids.splice(from, 1)[0]
+    this.pids.splice(to, 0, pid)
+  }
+
+  moveText(from, to, fromPID, toPID) {
+    const fromPage = this.pages.find(page => page.pid === fromPID)
+    const toPage = this.pages.find(page => page.pid === toPID)
+    if (!fromPage || !toPage) return
+
+    const text = fromPage.texts.childNodes[from]
+    fromPage.texts.removeChild(text)
+    toPage.texts.insertBefore(text, toPage.texts.childNodes[to])
+
+    //  const text = fromPage.texts.childNodes[from]
+    //if ((fromPage === toPage) && (from < to)) {
+    //  to += 1;
+    //}
   }
 }
 

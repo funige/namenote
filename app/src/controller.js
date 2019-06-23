@@ -1,10 +1,9 @@
-import { namenote } from './namenote.js'
+import { namenote } from './namenote.js';
 
 const MIN_MOVE = 5;
 
 let moved = false;
 let stroke = false;
-
 
 
 class Controller {
@@ -45,8 +44,8 @@ class Controller {
       if (this.pointerId != e.pointerId) return;
 
       this.updatePointer(e);
-      if (Math.abs(this.x - this.x0) >= MIN_MOVE ||
-          Math.abs(this.y - this.y0) >= MIN_MOVE) {
+      if (Math.abs(this.x - this.x0) >= MIN_MOVE
+          || Math.abs(this.y - this.y0) >= MIN_MOVE) {
         moved = true;
       }
       this.onMove(e);
@@ -73,11 +72,13 @@ class Controller {
 
   onDown(e) {
     const info = this.getTargetInfo(e);
+    LOG('[onDown]', info);
 
-    if (info.mainView && info.pid) {
-      const project = namenote.mainView.project;
-      project.setCurrentPage(info.pid)
-      namenote.pageView.showPage()
+    if (info.pid) {
+      if (info.mainView || info.pageView || info.textView) {
+        const project = namenote.mainView.project;
+        project.setCurrentPage(info.pid);
+      }
     }
   }
 
@@ -91,25 +92,31 @@ class Controller {
   getTargetInfo(e) {
     const info = {};
     info.parents = [];
-    
+
     let target = e.target;
     while (target) {
-      info.parents.push([target.className, target])
+      info.parents.push([target.className, target]);
       if (target.className === 'text') {
         info.text = true;
       }
-      if (target.className === 'page') {
-        info.pid = parseInt(target.id.replace(/^page-/, ''));
+      if (target.className === 'page'
+          || target.className === 'pageview-page'
+          || target.className === 'textview-page') {
+        info.pid = this.detectPID(target);
       }
-      if (target.className === 'main-view') {
-        info.mainView = true;
-        break;
-      }
+
+      if (target.className === 'main-view') { info.mainView = true; break; }
+      if (target.className === 'page-view') { info.pageView = true; break; }
+      if (target.className === 'text-view') { info.textView = true; break; }
       target = target.parentNode;
     }
     return info;
   }
-  
+
+  detectPID(element) {
+    return parseInt(element.id.replace(/^(pageview-|textview-)?page-/, ''));
+  }
+
   isMoved() {
     return moved;
   }

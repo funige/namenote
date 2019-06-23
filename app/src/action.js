@@ -24,11 +24,10 @@ class Action {
 /*
   movePage(oldIndex, newIndex, oldURL, newURL) {
     const project = projectManager.find(oldURL)
-    if (!project) return 
+    if (!project) return
 
     LOG('movePage', oldIndex, newIndex, oldURL, newURL)
     project.pages.move(oldIndex, newIndex)
-    project.pids(true)
   }
 
   removePage(pid, index, url) {
@@ -75,7 +74,7 @@ class Action {
       const [oldIndex, newIndex, oldURL, newURL] = item
       this.movePage(newIndex, oldIndex, newURL, oldURL)
       break;
-      
+
     default:
       LOG(action, 'not rewinded')
     }

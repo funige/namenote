@@ -1,50 +1,49 @@
-import { namenote } from './namenote.js'
-import { Project } from './project.js'
-import { file } from './file.js'
-import { dialog } from './dialog.js'
+import { namenote } from './namenote.js';
+import { Project } from './project.js';
+import { file } from './file.js';
+import { dialog } from './dialog.js';
 
-////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 
 class ProjectManager {
   constructor() {
-    this.projects = []
+    this.projects = [];
   }
 
   async get(url, monitor) {
-    let project = this.find(url)
+    let project = this.find(url);
     if (!project) {
-      project = await file.readProject(url, monitor)
+      project = await file.readProject(url, monitor);
       file.readPages(project, monitor).then(() => {
-        LOG('readPages finishded')
+        LOG('readPages finishded');
         if (monitor && monitor == dialog.current) {
-          dialog.close()
+          dialog.close();
         }
-      })
-      this.addProject(project)
-
-    } else {
-      if (monitor && monitor == dialog.current) {
-        dialog.close()
-      }
+      });
+      this.addProject(project);
+    } else if (monitor && monitor == dialog.current) {
+      dialog.close();
     }
-    return project
+    return project;
   }
-  
+
   find(url) {
-    for (const project of this.projects) {
+    return this.projects.find(project => project.url === url)
+
+/*  for (const project of this.projects) {
       if (project.url == url) {
-        return project
+        return project;
       }
     }
-    return null
+    return null;*/
   }
 
   addProject(project) {
-    this.projects.push(project)
-    namenote.noteView.update(project)
+    this.projects.push(project);
+    namenote.noteView.update(project);
   }
 }
 
-const projectManager = new ProjectManager
+const projectManager = new ProjectManager();
 
-export { projectManager }
+export { projectManager };

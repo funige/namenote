@@ -18,7 +18,7 @@ class NoteView extends View {
   }
 
   init() {
-    new Sortable(this.content, {
+    Sortable.create(this.content, {
       animation: 150,
       handle: '.sort-handle',
       onEnd: (e) => {

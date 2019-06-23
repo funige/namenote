@@ -1,4 +1,4 @@
-import { widget } from './widget.js';
+import { Widget } from './widget.js';
 
 // //////////////////////////////////////////////////////////////
 
@@ -12,7 +12,7 @@ class ViewFooter {
   init() {
     this.element.innerHTML = '';
 
-    const trashButton = widget.createImageButton({
+    const trashButton = Widget.createImageButton({
       src: 'img/zoom-button.png',
       click: () => {
         LOG('trash');
@@ -20,7 +20,7 @@ class ViewFooter {
       float: 'left'
     });
 
-    const appendButton = widget.createImageButton({
+    const appendButton = Widget.createImageButton({
       src: 'img/redo-button.png',
       click: () => {
         LOG('append');
@@ -29,7 +29,7 @@ class ViewFooter {
     });
 
     // test
-    const sizeButton = widget.createImageButton({
+    const sizeButton = Widget.createImageButton({
       src: 'img/flip-button.png',
       click: () => {
         LOG('size');

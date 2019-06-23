@@ -1,8 +1,8 @@
 
 const configDefault = {
-  defaultPath: null,
-  defaultName: null,
-  defaultAuthor: null,
+//defaultPath: null,
+//defaultName: null,
+//defaultAuthor: null,
 
   // project.js
   thumbnailSize: 'middle',

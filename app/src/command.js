@@ -150,25 +150,52 @@ class Command {
     file.logout(scheme);
   }
 
-/*
-  movePage(sender, oldIndex, newIndex, oldURL, newURL) {
-    const project = namenote.mainView.project
-    if (!project) return
+  // Basic actions
+  
+  movePage(sender, from, to) {
+    LOG(`${from}=>${to}`);
+    const project = namenote.mainView.project;
+    if (!project) return;
 
-    if (!oldURL) oldURL = project.url
-    if (!newURL) newURL = oldURL
-
-    const item = ['movePage', oldIndex, newIndex, oldURL, newURL]
-    history.pushUndo(item)
-    action.play(item)
-
-//  project.views.forEach((view) => {
-//    if (view !== sender) {
-//      view.update()
-//    }
-//  })
+    project.movePage(from, to);
+    
+    project.views.forEach((view) => {
+      if (view !== sender && view.onMovePage) {
+        view.onMovePage(from, to);
+      }
+    })
   }
-*/
+
+  moveText(sender, from, to, fromPID, toPID) {
+    LOG(`${from}(${fromPID})=>${to}(${toPID})`);
+    const project = namenote.mainView.project;
+    if (!project) return;
+
+    project.moveText(from, to, fromPID, toPID);
+    project.views.forEach((view) => {
+      if (view !== sender && view.onMoveText) {
+        view.onMoveText(from, to, fromPID, toPID);
+      }
+    })
+  }
+
+  addPage(sender, pid, index) {
+    LOG(`add "page"=>${index}(${pid})`)
+  }
+
+  removePage(sender, pid, index) {
+    LOG(`remove "page"<=${index}(${pid})`)
+  }
+  
+  addText(sender, text, index, pid) {
+    LOG(`add "text"=>${index}(${pid})`)
+  }
+
+  removeText(sender, text, index, pid) {
+    LOG(`remove "text"<=${index}(${pid})`)
+  }
+  
+  //
   
   dockSide(side) {
     divider.setPosition(side);
@@ -178,7 +205,7 @@ class Command {
     namenote.setThumbnailSize(size);
   }
 
-  // ////////////////
+  // 
 
   do(item, data) {
     const arr = item.split('.');
@@ -193,7 +220,7 @@ class Command {
     }
   }
 
-  // ////////////////
+  // 
 
   developerTools() {
     _runMain('developerTools');

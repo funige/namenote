@@ -64,4 +64,4 @@ class Shape {
 
 const shape = new Shape();
 
-export { shape }
+export { shape };

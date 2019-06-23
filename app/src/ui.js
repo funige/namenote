@@ -2,9 +2,9 @@ import { divider } from './divider.js';
 import { dialog } from './dialog.js';
 import { menu } from './menu.js';
 import { title } from './title.js';
-
 import { header } from './header.js';
 import { dock } from './dock.js';
+import { Widget } from './widget.js';
 
 
 class UI {
@@ -18,6 +18,8 @@ class UI {
   }
 
   init() {
+    Widget.init();
+
     menu.init();
     title.init();
     divider.init();
@@ -25,16 +27,14 @@ class UI {
 
     header.init();
     dock.init();
-
-    $('.split-pane').css('opacity', 1);
   }
 
   update() {
-    WARN('[ui update]');
-    divider.update();
-
+    // WARN('[ui update]');
     //  header.update()
     //  dock.update()
+
+    divider.update();
   }
 }
 

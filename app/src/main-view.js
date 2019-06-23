@@ -1,5 +1,4 @@
 import { View } from './view.js';
-import { projectManager } from './project-manager.js';
 
 import { recentURL } from './recent-url.js';
 import { menu } from './menu.js';
@@ -8,7 +7,6 @@ import { viewButton } from './view-button.js';
 
 // $('.main-view')[0].parentNode.scrollTop = ...
 
-// //////////////////////////////////////////////////////////////
 
 class MainView extends View {
   constructor(element) {
@@ -23,18 +21,13 @@ class MainView extends View {
   }
 
   loadProject(project) {
-    LOG('mainView loadProject', project);
-    if (this.project) this.project.removeView(this);
-    this.project = project;
-    if (!project) return;
-    project.addView(this);
+    super.loadProject(project);
 
+    //　Init project
     recentURL.add(project.url);
     menu.update();
     viewButton.update();
     title.set(project ? project.name() : null);
-
-    // //////////////
 
     this.scale = 1;
     this.steps = this.getSteps();
@@ -42,11 +35,14 @@ class MainView extends View {
 
     this.pageData = {};
     this.initProject(project);
+
+    // Restore previous state
+    this.showCurrentPage();
   }
 
   initProject(project) {
     this.element.innerHTML = '';
-    project.pids().forEach((pid, index) => {
+    project.pids.forEach((pid, index) => {
       const pageElement = this.createPageElement(pid);
       this.element.appendChild(pageElement);
       this.pageData[pid] = {
@@ -66,7 +62,7 @@ class MainView extends View {
     pd.frame = this.createFrame();
     pd.canvas = this.createCanvas(page);
 
-    pd.texts = this.createTexts(page, page.params.text);
+    pd.texts = this.createTexts(page, page.texts.innerHTML);
     pd.texts.childNodes.forEach((p) => {
     });
 
@@ -112,7 +108,7 @@ class MainView extends View {
     const updateSteps = (this.steps != this.getSteps());
     this.steps = this.getSteps();
 
-    this.project.pids().forEach((pid, index) => {
+    this.project.pids.forEach((pid, index) => {
       this.updatePage(pid, index, updateSteps);
     });
   }
@@ -144,10 +140,16 @@ class MainView extends View {
     return (1.0 / this.scale) >> 1;
   }
 
-  showPage() {
-    const currentPage = this.project.currentPage;
+  onMovePage(from, to) {
+    LOG('mainView movePage');
+    this.loadProject(this.project); //とりあえず 
   }
 
+  onMoveText(from, to, fromPID, toPID) {
+    LOG('mainView moveText');
+    this.loadProject(this.project); //とりあえず 
+  }
+  
   /* flipView() {
     if (!this.project) return
     this.flip = ~this.flip

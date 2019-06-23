@@ -1,12 +1,12 @@
 
-// //////////////////////////////////////////////////////////////
+// jQuery UI Custom Widgets
 
 class Widget {
-  constructor() {
-    this.initImageButton();
-    this.initTextButton();
-    this.initIconSelectMenu();
-    this.initToggleButton();
+  static init() {
+    Widget.initImageButton();
+    Widget.initTextButton();
+    Widget.initIconSelectMenu();
+    Widget.initToggleButton();
   }
 
   static initTextButton() {
@@ -181,15 +181,6 @@ class Widget {
     $(li).imageButton(option);
     return li;
   }
-
-  static createSeparator() {
-    const li = document.createElement('li');
-    //  const className = 'separator';
-    //  if (option.float) className += 'option.float';
-    return li;
-  }
 }
 
-const widget = new Widget();
-
-export { widget };
+export { Widget };

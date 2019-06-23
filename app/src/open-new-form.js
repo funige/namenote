@@ -1,23 +1,23 @@
-import { dialog } from './dialog.js'
-import { file } from './file.js'
-import { locale } from './locale.js'
-import { Finder } from './finder.js'
-import { Form } from './form.js'
+import { dialog } from './dialog.js';
+import { file } from './file.js';
+import { locale } from './locale.js';
+import { Finder } from './finder.js';
+import { Form } from './form.js';
 
-////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 
-class OpenNewForm extends Form{
+class OpenNewForm extends Form {
   constructor() {
-    super()
-    this.id = 'open-new'
+    super();
+    this.id = 'open-new';
   }
 
-  
+
   init() {
     return new Promise((resolve, reject) => {
-      const buttons = {}
-      buttons[T('Ok')] = () => { resolve(this.saevForm()) }
-      buttons[T('Cancel')] = () => { resolve() }
+      const buttons = {};
+      buttons[T('Ok')] = () => { resolve(this.saevForm()); };
+      buttons[T('Cancel')] = () => { resolve(); };
 
       const string = locale.translateHTML(`
         <div class='form' style='height:400px;'>
@@ -50,66 +50,65 @@ class OpenNewForm extends Form{
               <input type='submit' style='display: none' />
           </table>
         </div>
-`)
-      
-      $(this.element).html(`<form id='${this.id}'>${string}</form>`)
+`);
+
+      $(this.element).html(`<form id='${this.id}'>${string}</form>`);
       $(this.element).dialog({
         autoOpen: false,
-        position: { my:'center center', at:'center center' },
+        position: { my: 'center center', at: 'center center' },
         title: T('New'),
         modal: true,
         width: 550,
         buttons: buttons,
         open: () => {
           this.onReturnPressed(() => {
-            LOG('enter pressed')
-            resolve(this.saveForm())
-          })
+            LOG('enter pressed');
+            resolve(this.saveForm());
+          });
         }
-      })
+      });
 
-      const folders = this.element.querySelector('.folders')
-      const fileList = this.element.querySelector('.file-list')
-      const toggleButton = this.element.querySelector('.toggle-button')
+      const folders = this.element.querySelector('.folders');
+      const fileList = this.element.querySelector('.file-list');
+      const toggleButton = this.element.querySelector('.toggle-button');
       this.finder = new Finder(folders, fileList, toggleButton, {
         autoOpen: false,
         height: 'calc(100% - 80px)',
         noRecents: true,
         selected: (url) => {
-          this.load(url)
-        },
-      })
+          this.load(url);
+        }
+      });
 
-      this.initForm()
-      this.load(file.getHome())
-    })
+      this.initForm();
+      this.load(file.getHome());
+    });
   }
 
   async load(url) {
-    const projectURL = await file.getProjectURL(url)
+    const projectURL = await file.getProjectURL(url);
     if (projectURL) {
-      alert(T('Folder open error.'))
-
+      alert(T('Folder open error.'));
     } else {
-      this.finder.loadFolder(url)
+      this.finder.loadFolder(url);
     }
   }
 
   initForm() {
-    const filename = `${Date.now()}.png`
+    const filename = `${Date.now()}.png`;
     $(this.element).find('input.filename')
       .val(filename)
       .on('keyup', (e) => {
-        (e.target.value) ? this.enable() : this.disable()
-      })
+        (e.target.value) ? this.enable() : this.disable();
+      });
   }
-  
+
   saveForm() {
-    const filename = $(this.element).find('input.filename').val()
-    const result = `${this.finder.url}${filename}`
-    this.result = result
-    return result
+    const filename = $(this.element).find('input.filename').val();
+    const result = `${this.finder.url}${filename}`;
+    this.result = result;
+    return result;
   }
 }
 
-export { OpenNewForm }
+export { OpenNewForm };

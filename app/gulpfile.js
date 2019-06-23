@@ -37,8 +37,8 @@ gulp.task('browser', function(done) {
     .pipe(gulp.dest('../funige.github.io/namenote/dist'))
     .pipe(notify({title:'browser ok', sound:'Hero'}))
 
-//gulp.src('style.css').
-//  pipe(gulp.dest('../funige.github.io/namenote'))
+  gulp.src('base.css').
+    pipe(gulp.dest('../funige.github.io/namenote'))
   gulp.src('index.html').
     pipe(gulp.dest('../funige.github.io/namenote'))
   gulp.src('js/lib/dictionary.js').
@@ -58,7 +58,6 @@ gulp.task('desktop', function(done) {
     .pipe(source('bundle-desktop.js'))
 //  .pipe(streamify(uglify()))  // comment out when deguging
     .pipe(gulp.dest('./dist'))
-//  .pipe(notify({title:'desktop ok', sound:'Hero'}))
   done();
 });
 

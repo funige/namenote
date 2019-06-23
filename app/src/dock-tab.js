@@ -10,8 +10,8 @@ class DockTab {
   init() {
     $('.sidebar .thin-toolbar').on('dblclick', (e) => {
       LOG('dblclick sidebar');
-    })
-    
+    });
+
     const textButton = $('#text-view-button').textButton({
       text: T('Texts'),
       locked: true,

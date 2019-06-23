@@ -52,7 +52,7 @@ class Namenote {
     this.pageView = new PageView($('.page-view')[0]);
     this.noteView = new NoteView($('.note-view')[0]);
     this.initBaseHandlers();
-    
+
     flash.load();
   }
 
@@ -108,7 +108,7 @@ class Namenote {
 
     const tmp = [];
     this.projectManager.projects.forEach((project) => {
-      project.pids().forEach((pid, index) => {
+      project.pids.forEach((pid, index) => {
         if (project.pages[index]) {
           const page = project.pages[index];
           page.updateThumbnail(project);
