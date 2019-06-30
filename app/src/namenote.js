@@ -10,6 +10,7 @@ import { dialog } from './dialog.js';
 import { flash } from './flash.js';
 import { file } from './file.js';
 import { history } from './history.js';
+import { Text, text } from './text.js';
 
 import { projectManager } from './project-manager.js';
 
@@ -18,7 +19,7 @@ import { NoteView } from './note-view.js';
 import { PageView } from './page-view.js';
 import { TextView } from './text-view.js';
 
-let maxID = 0;
+let maxID = 1;
 
 
 class Namenote {
@@ -37,6 +38,8 @@ class Namenote {
     this.projectManager = projectManager;
     this.file = file;
     this.ui = ui;
+
+    this.text = text; //debug
   }
 
   init() {

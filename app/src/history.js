@@ -1,4 +1,7 @@
+import { historyButton } from './history-button.js';
+
 const MAX_HISTORY = 1000;
+
 
 class History {
   constructor() {
@@ -7,8 +10,9 @@ class History {
   }
 
   pushUndo(item, holdRedo) {
-    LOG('push undo');
     this.undoItems.push(item);
+    historyButton.update();
+
     if (this.undoItems.length > MAX_HISTORY) {
       this.undoItems.shift();
     }
@@ -19,15 +23,20 @@ class History {
 
   pushRedo(item) {
     this.redoItems.push(item);
+    historyButton.update();
   }
 
 
   popUndo() {
-    return this.undoItems.pop();
+    const item = this.undoItems.pop();
+    historyButton.update();
+    return item;
   }
 
   popRedo() {
-    return this.redoItems.pop();
+    const item = this.redoItems.pop();
+    historyButton.update();
+    return item;
   }
 
   hasUndo() {

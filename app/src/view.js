@@ -20,6 +20,8 @@ class View {
     this.project = project;
     if (!project) return;
     project.addView(this);
+
+    this.element.alt = project.url
   }
 
   enableSmoothScroll(element) {
@@ -56,6 +58,7 @@ class View {
     return false;
   }
 
+  /*
   showCurrentPage(pid) {
     const oldPID = this.project.currentPage;
     if (!pid) pid = oldPID;
@@ -66,8 +69,57 @@ class View {
     if (newPD) $(newPD.element).addClass('selected');
 
     // TODO: scroll to newPID
+  }*/
+
+  /*
+  showCurrentTexts(tids) {
+    const oldTIDs = this.project.currentTexts;
+    if (!tids) tids = oldTIDs;
+
+    oldTIDs.forEach((tid) => $(`#p${tid}`).removeClass('selected'))
+    oldTIDs.forEach((tid) => $(`#p${tid}t`).removeClass('selected'))
+    tids.forEach((tid) => $(`#p${tid}`).addClass('selected'))
+    tids.forEach((tid) => $(`#p${tid}t`).addClass('selected'))
+    
+    // TODO: scroll to newTIDs
+  }*/
+
+  // Default update methods
+
+  onMovePage(from, to) {
+    LOG('move page');
+    this.loadProject(this.project);
+  }
+
+  onMoveText(from, to, fromPID, toPID) {
+    LOG('move text');
+    this.loadProject(this.project);
+  }
+
+  onAddPage(pid, to) {
+    LOG('add page');
+    this.loadProject(this.project);
   }
   
+  onRemovePage(from) {
+    LOG('remove page');
+    this.loadProject(this.project);
+  }
+
+  onAddText(text, to, toPID) {
+    LOG('add text');
+    this.loadProject(this.project);
+  }
+
+  onRemoveText(from, fromPID) {
+    LOG('remove text');
+    this.loadProject(this.project);
+  }
+
+  onAddCurrentPage() {}
+  onAddCurrentText() {}
+  onClearCurrentPage() {}
+  onClearCurrentText() {}
 }
 
 export { View };

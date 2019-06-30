@@ -3,87 +3,87 @@ import { projectManager } from './project-manager.js';
 
 /*
 //DO
-item = ['addText', url, pid, index ]
-history.pushUndo(item)
-action.play(item)
+record = []
+record.push(['addText', url, pid, index ])
+history.pushUndo(record)
+action.play(record)
 => action.addText(url, pid, index, isReverse)
 
 //UNDO
-item = history.popUndo()
-action.rewind(item)
+record = history.popUndo()
+action.rewind(record)
 
 //REDO
-item = history.popRedo()
-action.play(item)
+record = history.popRedo()
+action.play(record)
 */
 
 class Action {
   constructor() {
   }
 
-/*
-  movePage(oldIndex, newIndex, oldURL, newURL) {
-    const project = projectManager.find(oldURL)
-    if (!project) return
-
-    LOG('movePage', oldIndex, newIndex, oldURL, newURL)
-    project.pages.move(oldIndex, newIndex)
+  play(record) {
+    record.forEach((item) => {
+      const action = item[0];
+      const handler = this.playHandler(action);
+      if (this[handler]) {
+        this[handler](item.slice(1))
+      }
+    })
   }
 
-  removePage(pid, index, url) {
-    LOG(pid, index, url)
-  }
-
-  addPage(pid, index, url) {
-  }
-
-  moveText(oldIndex, newIndex, oldPID, newPID, oldURL, newURL) {
-  }
-
-  removeText(text, index, pid, url) {
-  }
-
-  addText(text, index, pid, url) {
-  }
-
-  editText(oldText, newText, index, pid, url) {
-  }
-
-  editImage(oldImage, newImage, x, y, w, h, pid, url) {
-  }
-
-  play(item) {
-    const action = item.shift()
-    switch (action) {
-    case 'movePage':
-      const [oldIndex, newIndex, oldURL, newURL] = item
-      LOG('play-movePage', oldIndex, newIndex)
-      this.movePage(oldIndex, newIndex, oldURL, newURL)
-      break;
-
-    default:
-      LOG(action, 'not played')
-      break;
+  rewind(record) {
+    for (let i = record.length - 1; i >= 0; i--) {
+      const item = record[i];
+      const action = item[0];
+      const handler = this.rewindHandler(action);
+      if (this[handler]) {
+        this[handler](item.slice(1))
+      }
     }
   }
 
-  rewind(item) {
-    const action = item.shift()
-    switch (action) {
-    case 'movePage':
-      const [oldIndex, newIndex, oldURL, newURL] = item
-      this.movePage(newIndex, oldIndex, newURL, oldURL)
-      break;
+  doMovePage([from, to, url] = []) {
+    const project = projectManager.find(url)
+    if (!project) return;
 
-    default:
-      LOG(action, 'not rewinded')
-    }
+    project.movePage(from, to);
+    project.views.forEach((view) => {
+      view.onMovePage(from, to);
+    })
   }
 
-  //if (this[action]) {
-  //  this[action](...item)
-  //}
-*/
+  
+  undoMovePage([from, to, url] = []) {
+    this.doMovePage([to, from, url]);
+  }
+
+  doMoveText([from, to, fromPID, toPID, url] = []) {
+    const project = projectManager.find(url)
+    if (!project) return;
+    
+    project.moveText(from, to, fromPID, toPID);
+    project.views.forEach((view) => {
+      view.onMoveText(from, to, fromPID, toPID);
+    })
+  }
+
+  undoMoveText([from, to, fromPID, toPID, url] = []) {
+    this.doMoveText([to, from, toPID, fromPID, url]);
+  }
+
+
+  // Get hander names
+  
+  playHandler(action) {
+    const name = 'do' + action.charAt(0).toUpperCase() + action.slice(1);
+    return name; //this[name];
+  }
+
+  rewindHandler(action) {
+    const name = 'undo' + action.charAt(0).toUpperCase() + action.slice(1);
+    return name; //this[name];
+  }
 }
 
 const action = new Action();

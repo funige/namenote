@@ -153,31 +153,15 @@ class File {
     });
   }
 
-  async readProject(url) {
-    return this.readJSON(url).then((json) => {
-      return new Project(url, json);
-    });
-  }
-
-  async readPage(url) {
-    return this.readJSON(url).then((json) => {
-      return new Page(json);
-    });
-  }
-
   async readPages(project, monitor) {
-    return Promise.all(project.pids.map((pid, index) => {
+    project.pages = project.pids.map((pid) => new Page(project, pid))
+
+    return Promise.all(project.pages.map((page, index) => {
       return new Promise((resolve, reject) => {
-        const pageURL = `${project.baseURL}/${pid}.json`;
-        this.readPage(pageURL).then((page) => {
-          page.pid = pid;
-          page.width = project.pageSize[0];
-          page.height = project.pageSize[1];
+        const pageURL = `${project.baseURL}/${page.pid}.json`;
 
-          project.pages[index] = page;
-
-          // projectが引数になってるのがおかしいのでは……
-          page.initElements(project).then(() => {
+        this.readJSON(pageURL).then((json) => {
+          page.init(json).then(() => {
             project.views.forEach((view) => {
               view.initPage(page, index);
             });
@@ -186,13 +170,13 @@ class File {
             monitor.showProgress(`${pageURL}`);
           }
         }).catch((error) => {
-          ERROR('=page=', pid, error);
+          ERROR('=page=', page, error);
         }).then(resolve);
       });
     }));
   }
 
-  // //////////////
+  // 
 
   async getProjectURL(url) {
     if (url.match(/\.namenote$/i)) return url;
@@ -205,9 +189,26 @@ class File {
         }
       }
     } catch (e) { ERROR(e); }
-    return null;
+    return null; //???
   }
 
+  async getMaxPID(url) {
+    try {
+      let maxPID = -1;
+      const dirents = await file.readdir(url);
+      for (const dirent of dirents) {
+        if (!dirent.isDirectory() && dirent.name.match(/\.json$/i)) {
+          const pid = parseInt(dirent.name);
+          if (maxPID < pid) {
+            maxPID = pid;
+          }
+        }
+      }
+      return maxPID;
+    } catch (e) { ERROR(e); }
+    return null; //???
+  }
+  
   getScheme(url) {
     const arr = url.split(':');
     return (arr.length > 1 && arr[0]) ? arr[0] : 'file';

@@ -37,22 +37,23 @@ class MainView extends View {
     this.initProject(project);
 
     // Restore previous state
-    this.showCurrentPage();
+    this.initCurrentPage();
+    this.initCurrentText();
   }
 
   initProject(project) {
     this.element.innerHTML = '';
-    project.pids.forEach((pid, index) => {
+    project.pages.forEach((page, index) => {
+      const pid = page.pid;
       const pageElement = this.createPageElement(pid);
       this.element.appendChild(pageElement);
+
       this.pageData[pid] = {
         element: pageElement
       };
-      if (project.pages[index]) {
-        const page = project.pages[index];
+      if (page.loaded()) {
         this.initPage(page);
       }
-
       this.updatePage(pid, index);
     });
   }
@@ -108,13 +109,13 @@ class MainView extends View {
     const updateSteps = (this.steps != this.getSteps());
     this.steps = this.getSteps();
 
-    this.project.pids.forEach((pid, index) => {
-      this.updatePage(pid, index, updateSteps);
+    this.project.pages.forEach((page, index) => {
+      this.updatePage(page.pid, index, updateSteps);
     });
   }
 
   updatePage(pid, index, updateSteps) {
-    LOG('updatePage', pid, index, updateSteps);
+    //LOG('updatePage', pid, index, updateSteps);
     const pd = this.pageData[pid];
     const rect = this.getPageRect(index);
 
@@ -140,15 +141,6 @@ class MainView extends View {
     return (1.0 / this.scale) >> 1;
   }
 
-  onMovePage(from, to) {
-    LOG('mainView movePage');
-    this.loadProject(this.project); //とりあえず 
-  }
-
-  onMoveText(from, to, fromPID, toPID) {
-    LOG('mainView moveText');
-    this.loadProject(this.project); //とりあえず 
-  }
   
   /* flipView() {
     if (!this.project) return
@@ -178,6 +170,45 @@ class MainView extends View {
     if (config.updateValue('printPreview', value)) {
       LOG('update printPreview', config.getValue('printPreview'));
     }
+  }
+
+
+  initCurrentPage() {
+    this.project.currentPages.forEach((pid) => {
+      this.onAddCurrentPage(pid)
+    })
+  }
+
+  initCurrentText() {
+    this.project.currentTexts.forEach((tid) => {
+      this.onAddCurrentText(tid)
+    })
+  }
+  
+  onAddCurrentPage(pid) {
+    const pd = this.pageData[pid];
+    if (pd && pd.element) {
+      $(pd.element).addClass('selected');
+    }
+  }
+
+  onClearCurrentPage() {
+    this.project.currentPages.forEach((pid) => {
+      const pd = this.pageData[pid];
+      if (pd && pd.element) {
+        $(pd.element).removeClass('selected');
+      }
+    })
+  }
+
+  onAddCurrentText(tid) {
+    $('#p' + tid).addClass('selected');
+  }
+
+  onClearCurrentText() {
+    this.project.currentTexts.forEach((tid) => {
+      $('#p' + tid).removeClass('selected');
+    })
   }
 }
 

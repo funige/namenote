@@ -11,6 +11,8 @@ import { dialog } from './dialog.js';
 import { history } from './history.js';
 import { action } from './action.js';
 
+import { Page } from './page.js';
+
 import { AboutForm } from './about-form.js';
 import { OpenForm } from './open-form.js';
 import { TabletSettingsForm } from './tablet-settings-form.js';
@@ -32,10 +34,20 @@ class Command {
 
   undo() {
     LOG('undo');
+    if (history.hasUndo()) {
+      const record = history.popUndo();
+      history.pushRedo(record)
+      action.rewind(record);
+    }
   }
 
   redo() {
     LOG('redo');
+    if (history.hasRedo()) {
+      const record = history.popRedo();
+      history.pushUndo(record, true);
+      action.play(record);
+    }
   }
 
   about() {
@@ -154,48 +166,87 @@ class Command {
   
   movePage(sender, from, to) {
     LOG(`${from}=>${to}`);
-    const project = namenote.mainView.project;
-    if (!project) return;
+    const project = sender.project;
 
-    project.movePage(from, to);
-    
-    project.views.forEach((view) => {
-      if (view !== sender && view.onMovePage) {
-        view.onMovePage(from, to);
-      }
-    })
+    const record = []
+    record.push(['movePage', from, to, project.url])
+    history.pushUndo(record);
+    action.play(record);
   }
 
   moveText(sender, from, to, fromPID, toPID) {
     LOG(`${from}(${fromPID})=>${to}(${toPID})`);
+    const project = sender.project;
+
+    const record = [];
+    record.push(['moveText', from, to, fromPID, toPID, project.url])
+    history.pushUndo(record);
+    action.play(record);
+  }
+
+  async addPage() {
     const project = namenote.mainView.project;
     if (!project) return;
 
-    project.moveText(from, to, fromPID, toPID);
+    const pid = await project.getNewPID()
+    let index = project.currentPageIndex() + 1;
+    if (index <= 0) index = project.pages.length;
+
+    LOG(`add "page"=>${index}(${pid})`)
+    project.addPage(pid, index);
+    project.pages[index].initBlank();
     project.views.forEach((view) => {
-      if (view !== sender && view.onMoveText) {
-        view.onMoveText(from, to, fromPID, toPID);
+      if (view.onAddPage) view.onAddPage(pid, index);
+    })
+  }
+
+  async removePage() {
+    const project = namenote.mainView.project;
+    if (!project) return;
+    
+    const index = project.currentPageIndex();
+    //if (index < 0) index = 0;
+    
+    LOG(`remove "page"<=${index}`)
+    project.removePage(index);
+    project.views.forEach((view) => {
+      if (view.onRemovePage) view.onRemovePage(index);
+    })
+  }
+  
+  addText(text, to, toPID) {
+    const project = namenote.mainView.project;
+    if (!project || !project.currentPage) return;
+    if (to < 0) to = 0;
+    
+    LOG(`add "text"=>${to}(${toPID})`)
+    project.addText(text, to, toPID);
+    project.views.forEach((view) => {
+      if (view.onAddText) view.onAddText(text, to, toPID);
+    })
+  }
+
+  removeText() {
+    const project = namenote.mainView.project;
+    if (!project) return;
+
+    const pid = project.currentPages[0];
+    const tid = project.currentTexts[0];
+    if (!pid || !tid) return;
+
+    const page = project.pages.find((page) => page.pid === pid)
+    WARN(page.texts);
+    
+    page.texts.childNodes.forEach((node, index) => {
+      if (node.id === 'p' + tid) {
+        project.removeText(index, pid);
+        project.views.forEach((view) => {
+          if (view.onRemoveText) view.onRemoveText(index, pid);
+        })
       }
     })
   }
 
-  addPage(sender, pid, index) {
-    LOG(`add "page"=>${index}(${pid})`)
-  }
-
-  removePage(sender, pid, index) {
-    LOG(`remove "page"<=${index}(${pid})`)
-  }
-  
-  addText(sender, text, index, pid) {
-    LOG(`add "text"=>${index}(${pid})`)
-  }
-
-  removeText(sender, text, index, pid) {
-    LOG(`remove "text"<=${index}(${pid})`)
-  }
-  
-  //
   
   dockSide(side) {
     divider.setPosition(side);

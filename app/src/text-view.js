@@ -13,7 +13,17 @@ class TextView extends View {
       <ul class='content'></ul>
       <ul class='thin-toolbar border-top'></ul>`);
     this.content = this.element.querySelector('.content');
-    this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'));
+    this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'), {
+      append: () => {
+        LOG('add text');
+        command.addText();
+      },
+      trash: () => {
+        LOG('remove text');
+        command.removeText();
+      },
+      size: () => { LOG('text size'); },
+    });
 
     this.enableSmoothScroll(this.content);
     this.init();
@@ -27,17 +37,15 @@ class TextView extends View {
     if (!this.element) return;
 
     this.content.innerHTML = '';
-    project.pids.forEach((pid, index) => {
+    project.pages.forEach((page, index) => {
+      const pid = page.pid;
       const pageElement = this.createPageElement(pid, index);
       this.content.appendChild(pageElement);
-      WARN('=>', pageElement);
 
       this.pageData[pid] = {
         element: pageElement
       };
-
-      const page = project.pages[index];
-      if (page) {
+      if (page.loaded()) {
         this.initPage(page);
       }
       this.updatePage(pid, index);
@@ -50,24 +58,30 @@ class TextView extends View {
       ERROR('textView: abort init page');
     }
 
-    const texts = this.createTexts(page, page.texts.innerHTML);
-    texts.childNodes.forEach((p) => {
+//  const texts = this.createTexts(page, page.texts.innerHTML);
+    page.texts.childNodes.forEach((p) => {
       const text = $('<div class="dock-text"></div>')[0];
       const handle = $(`
         <div class="sort-handle">
           <span class="ui-icon ui-icon-grip-dotted-vertical"></span>
         </div>`)[0];
 
-      text.id = p.id + 't';
+      text.id = p.id.replace(/^p/, 't');
       text.innerHTML = p.innerHTML;
       text.style.whiteSpace = 'nowrap';
       text.contentEditable = true;
       text.addEventListener('input', (e) => {
-        const id = e.target.id.replace(/t$/, '');
+        const id = e.target.id.replace(/^t/, 'p');
         const element = document.getElementById(id);
         if (element) {
           element.innerHTML = e.target.innerHTML;
         }
+      });
+      text.addEventListener('focus', (e) => {
+        this.onFocus(e);
+      });
+      text.addEventListener('blur', (e) => {
+        this.onBlur(e);
       });
 
       const li = $('<li></li>');
@@ -75,8 +89,6 @@ class TextView extends View {
       li.append($(text));
       $(pd.element.getElementsByTagName('ul')[0]).append(li);
     });
-
-    LOG('..', pd.element.getElementsByTagName('ul')[0]);
 
     Sortable.create(pd.element.getElementsByTagName('ul')[0], {
       animation: 150,
@@ -113,19 +125,52 @@ class TextView extends View {
     this.initProject(project);
 
     // Restore previous state
-    this.showCurrentPage();
+    this.initCurrentPage();
   }
 
-  onMovePage(from, to) {
-    LOG('textView movePage');
-    this.loadProject(this.project); //とりあえず 
+  initCurrentPage() {
+    this.project.currentPages.forEach((pid) => {
+      this.onAddCurrentPage(pid)
+    })
   }
 
-  onMoveText(from, to, fromPID, toPID) {
-    LOG('textView moveText');
-    this.loadProject(this.project); //とりあえず 
+  onAddCurrentPage(pid) {
+    const pd = this.pageData[pid];
+    if (pd && pd.element) {
+      $(pd.element).addClass('selected');
+    }
   }
 
+  onClearCurrentPage() {
+    this.project.currentPages.forEach((pid) => {
+      const pd = this.pageData[pid];
+      if (pd && pd.element) {
+        $(pd.element).removeClass('selected');
+      }
+    })
+  }
+
+
+  onAddCurrentText(tid) {
+    $('#t' + tid).addClass('selected');
+  }
+
+  onClearCurrentText() {
+    this.project.currentTexts.forEach((tid) => {
+      $('#t' + tid).removeClass('selected');
+    })
+  }
+  
+  onFocus(e) {
+    const tid = e.target.id.replace(/^t/, '');
+    this.project.clearCurrentText();
+    this.project.addCurrentText(tid);
+  }
+  
+  onBlur(e) {
+    //this.project.clearCurrentText();
+  }
+  
 }
 
 export { TextView };

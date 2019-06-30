@@ -1,6 +1,7 @@
 import { command } from './command.js';
 import { projectManager } from './project-manager.js';
 import { namenote } from './namenote.js';
+import { history } from './history.js';
 
 let undoButton;
 let redoButton;
@@ -34,14 +35,10 @@ class HistoryButton {
   update() {
     const project = namenote.currentProject();
 
-    if (project) {
-      const hasUndo = (project) ? project.history.hasUndo() : false;
-      const hasRedo = (project) ? project.history.hasRedo() : false;
-      $(undoButton).imageButton('disabled', !hasUndo);
-      $(redoButton).imageButton('disabled', !hasRedo);
-
-      //    Menu.updateHistory()
-    }
+    const hasUndo = project && history.hasUndo()
+    const hasRedo = project && history.hasRedo()
+    $(undoButton).imageButton('disabled', !hasUndo);
+    $(redoButton).imageButton('disabled', !hasRedo);
   }
 }
 

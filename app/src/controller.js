@@ -1,4 +1,5 @@
 import { namenote } from './namenote.js';
+import { projectManager } from './project-manager.js';
 
 const MIN_MOVE = 5;
 
@@ -75,14 +76,21 @@ class Controller {
     LOG('[onDown]', info);
 
     if (info.pid) {
-      if (info.mainView || info.pageView || info.textView) {
-        const project = namenote.mainView.project;
-        project.setCurrentPage(info.pid);
+      if (info.view) {
+        const project = projectManager.find(info.projectURL);
+        if (project) {
+          project.setCurrentPage(info.pid);
+        }
       }
     }
   }
 
   onUp(e) {
+    const info = this.getTargetInfo(e);
+    if (info.view === 'main' && info.text) {
+      const tid = e.target.id;
+      LOG('constroller-- up', tid)
+    }
   }
 
   onMove(e) {
@@ -104,10 +112,14 @@ class Controller {
           || target.className === 'textview-page') {
         info.pid = this.detectPID(target);
       }
-
-      if (target.className === 'main-view') { info.mainView = true; break; }
-      if (target.className === 'page-view') { info.pageView = true; break; }
-      if (target.className === 'text-view') { info.textView = true; break; }
+      if (target.className === 'main-view'
+          || target.className === 'page-view'
+          || target.className === 'text-view') {
+        info.view = target.className.replace(/-view$/, '');
+        info.projectURL = target.alt;
+        break;
+      }
+      
       target = target.parentNode;
     }
     return info;

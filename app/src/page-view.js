@@ -4,7 +4,7 @@ import { command } from './command.js';
 
 
 class PageView extends View {
-  constructor(element, options) {
+  constructor(element, options = {}) {
     super(element, options);
     this.id = 'page';
 
@@ -12,7 +12,15 @@ class PageView extends View {
       <ul class='content'></ul>
       <ul class='thin-toolbar border-top'></ul>`);
     this.content = this.element.querySelector('.content');
-    this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'));
+    this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'), {
+      append: () => {
+        command.addPage();
+      },
+      trash: () => {
+        command.removePage();
+      },
+      size: () => { LOG('page size'); },
+    });
 
     this.enableSmoothScroll(this.content);
     this.init();
@@ -35,15 +43,15 @@ class PageView extends View {
     if (!this.element) return;
 
     this.content.innerHTML = '';
-    project.pids.forEach((pid, index) => {
+    project.pages.forEach((page, index) => {
+      const pid = page.pid;
       const pageElement = this.createPageElement(pid);
       this.content.appendChild(pageElement);
+
       this.pageData[pid] = {
         element: pageElement
       };
-
-      const page = project.pages[index];
-      if (page) {
+      if (page.loaded()) {
         this.initPage(page, index);
       }
       this.updatePage(pid, index);
@@ -117,11 +125,7 @@ class PageView extends View {
     if (this.options.loaded) this.options.loaded(url, project.url);
 
     // Restore previous state
-    this.showCurrentPage();
-  }
-
-  movePage(oldIndex, newIndex) {
-    LOG(oldIndex, '->', newIndex);
+    this.initCurrentPage();
   }
 
   showProgress(message) {
@@ -134,6 +138,28 @@ class PageView extends View {
 
   hideSpinner() {
     WARN('[hide spinner]');
+  }
+
+  initCurrentPage() {
+    this.project.currentPages.forEach((pid) => {
+      this.onAddCurrentPage(pid)
+    })
+  }
+
+  onAddCurrentPage(pid) {
+    const pd = this.pageData[pid];
+    if (pd && pd.element) {
+      $(pd.element).addClass('selected');
+    }
+  }
+
+  onClearCurrentPage() {
+    this.project.currentPages.forEach((pid) => {
+      const pd = this.pageData[pid];
+      if (pd && pd.element) {
+        $(pd.element).removeClass('selected');
+      }
+    })
   }
 }
 

@@ -13,7 +13,10 @@ class ProjectManager {
   async get(url, monitor) {
     let project = this.find(url);
     if (!project) {
-      project = await file.readProject(url, monitor);
+      //project = await file.readProject(url, monitor);
+      const json = await file.readJSON(url)
+      project = new Project(url, json)
+      
       file.readPages(project, monitor).then(() => {
         LOG('readPages finishded');
         if (monitor && monitor == dialog.current) {

@@ -1,36 +1,38 @@
 import { namenote } from './namenote.js';
+import { Text } from './text.js';
 
 const JSZip = require('JSZip');
 
 
 class Page {
-  constructor(json) {
-    this.init(json);
+  constructor(project, pid) {
+    this.pid = pid;
+    this.width = project.pageSize[0];
+    this.height = project.pageSize[1];
+
+    this.project = project; //updateThumbnailでしか使わない。削除できるはず
   }
 
   destructor() {
     LOG('page destructor', this.pid);
+    this.project = null;
   }
-
-  init(data) {
-    this.params = data;
-    return this;
-  }
-
-  /**
-   * Pageはnewしただけでは初期化できないのは間違い。
-   * この関数はあってはならない。
-   */
-  async initElements(project) {
-    this.width = project.pageSize[0];
-    this.height = project.pageSize[1];
-
+  
+  async init(data) {
+    this.params = data
     this.canvas = this.createCanvasElement(this.width, this.height);
     this.canvasCtx = this.canvas.getContext('2d');
     await this.unzip(this.canvasCtx);
-    this.updateThumbnail(project);
+    this.updateThumbnail(this.project);
+    this.texts = this.getTexts(this.params.text);
+  }
 
-    this.texts = this.cleanup(this.params.text);
+  initBlank() {
+    this.params = { text: "" };
+    this.canvas = this.createCanvasElement(this.width, this.height);
+    this.canvasCtx = this.canvas.getContext('2d');
+    this.updateThumbnail(this.project);
+    this.texts = this.getTexts(this.params.text);
   }
 
   updateThumbnail(project) {
@@ -69,29 +71,36 @@ class Page {
     });
   }
 
-  cleanup(text) {
-    const texts = document.createElement('div');
+  loaded() {
+    return (this.params) ? true : false;
+  }
+  
+  getTexts(text) {
+    const result = document.createElement('div');
 
     if (text) {
-      texts.innerHTML = text;
-      texts.childNodes.forEach((p) => {
+      result.innerHTML = text;
+      result.childNodes.forEach((p) => {
         $(p).removeClass('editable');
         $(p).removeClass('selected');
         $(p).css('color', '');
 
         p.id = namenote.getUniqueID();
-        p.innerHTML = p.innerHTML
-          .replace(/\r|\n/g, '')
-          .replace(/(<([^>]+)>)/g, '/')
-          .replace(/\/+/g, '/')
-          .replace(/^\//, '')
-          .replace(/\/$/, '')
-          .replace(/\//g, '<br>');
+        p.innerHTML = Text.cleanup(p.innerHTML)
+//      p.innerHTML = p.innerHTML
+//        .replace(/\r|\n/g, '')
+//        .replace(/(<([^>]+)>)/g, '/')
+//        .replace(/\/+/g, '/')
+//        .replace(/^\//, '')
+//        .replace(/\/$/, '')
+//        .replace(/\//g, '<br>');
       });
     }
-    return texts;
+    return result;
   }
 
+
+  
   digest() {
     if (!this.params || !this.params.text) return '';
 
