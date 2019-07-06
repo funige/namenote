@@ -87,7 +87,7 @@ const menuTemplate = [
       { label: 'Zoom Out', click: 'unzoom' },
       { type: 'separator' },
       { label: 'Print Preview', click: 'printPreview' },
-      { label: 'Multipage View', click: 'multipage' }
+      { label: 'Multipage', click: 'toggleMultipage' }
     ]
   }
 ];
@@ -145,7 +145,7 @@ const fileMenuTemplate = [
       { label: 'Zoom Out', click: 'unzoom' },
       { type: 'separator' },
       { label: 'Print Preview', click: 'printPreview' },
-      { label: 'Multipage', click: 'multipage' }
+      { label: 'Multipage', click: 'toggleMultipage' }
     ]
   },
   { label: 'File Manager ...', click: 'fileManager' },

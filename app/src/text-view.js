@@ -1,7 +1,7 @@
 import { View } from './view.js';
 import { ViewFooter } from './view-footer.js';
 import { command } from './command.js';
-import { controller } from './controller.js';
+import { Text } from './text.js';
 
 
 class TextView extends View {
@@ -15,12 +15,14 @@ class TextView extends View {
     this.content = this.element.querySelector('.content');
     this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'), {
       append: () => {
-        LOG('add text');
-        command.addText();
+        const toPID = this.project.currentPage;
+        const to = this.project.currentTextIndex();
+        command.addText(this, to, toPID);
       },
       trash: () => {
-        LOG('remove text');
-        command.removeText();
+        const fromPID = this.project.currentPage;
+        const from = this.project.currentTextIndex();
+        command.removeText(this, from, fromPID);
       },
       size: () => { LOG('text size'); },
     });
@@ -58,7 +60,6 @@ class TextView extends View {
       ERROR('textView: abort init page');
     }
 
-//  const texts = this.createTexts(page, page.texts.innerHTML);
     page.texts.childNodes.forEach((p) => {
       const text = $('<div class="dock-text"></div>')[0];
       const handle = $(`
@@ -76,6 +77,9 @@ class TextView extends View {
         if (element) {
           element.innerHTML = e.target.innerHTML;
         }
+      });
+
+      text.addEventListener('change', (e) => {
       });
       text.addEventListener('focus', (e) => {
         this.onFocus(e);
@@ -95,8 +99,8 @@ class TextView extends View {
       handle: '.sort-handle',
       group: 'text-view',
       onEnd: (e) => {
-        const oldPID = controller.detectPID(e.from.parentNode);
-        const newPID = controller.detectPID(e.to.parentNode);
+        const oldPID = this.detectPID(e.from.parentNode);
+        const newPID = this.detectPID(e.to.parentNode);
         command.moveText(this, e.oldIndex, e.newIndex, oldPID, newPID);
       }
     });
@@ -108,7 +112,7 @@ class TextView extends View {
           <ul class="dock-texts"></ul>
         </li>`)[0];
 
-    element.className = 'textview-page';
+    element.className = 'page'; //'textview-page';
     element.id = 'textview-page-' + pid;
     return element;
   }
@@ -126,15 +130,21 @@ class TextView extends View {
 
     // Restore previous state
     this.initCurrentPage();
+    this.initCurrentText();
   }
 
   initCurrentPage() {
-    this.project.currentPages.forEach((pid) => {
-      this.onAddCurrentPage(pid)
-    })
+    const pid = this.project.currentPage;
+    this.onSetCurrentPage(pid);
   }
 
-  onAddCurrentPage(pid) {
+  initCurrentText() {
+    this.project.currentTexts.forEach((tid) => {
+      this.onAddCurrentText(tid);
+    })
+  }
+  
+  onSetCurrentPage(pid) {
     const pd = this.pageData[pid];
     if (pd && pd.element) {
       $(pd.element).addClass('selected');
@@ -142,14 +152,12 @@ class TextView extends View {
   }
 
   onClearCurrentPage() {
-    this.project.currentPages.forEach((pid) => {
-      const pd = this.pageData[pid];
-      if (pd && pd.element) {
-        $(pd.element).removeClass('selected');
-      }
-    })
+    const pid = this.project.currentPage;
+    const pd = this.pageData[pid];
+    if (pd && pd.element) {
+      $(pd.element).removeClass('selected');
+    }
   }
-
 
   onAddCurrentText(tid) {
     $('#t' + tid).addClass('selected');
@@ -166,11 +174,25 @@ class TextView extends View {
     this.project.clearCurrentText();
     this.project.addCurrentText(tid);
   }
-  
+
   onBlur(e) {
-    //this.project.clearCurrentText();
+    const id = e.target.id.replace(/^t/, 'p');
+    const element = document.getElementById(id);
+    if (element) {
+      const toText = Text.getHTML(element);
+        
+      const pid = this.detectPID(element);
+      const page = this.project.pages.find((page) => page.pid === pid);
+      const index = this.project.findTextIndex(page, id);
+
+      const fromText = page.texts.childNodes[index].outerHTML;
+        
+      if (fromText != toText) {
+        ERROR('text edited!', fromText, toText);
+        command.editText(this, toText, index, pid);
+      }
+    }
   }
-  
 }
 
 export { TextView };

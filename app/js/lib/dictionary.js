@@ -56,7 +56,7 @@ const dictionary = {
     "Dock": "サイドバー",
     "Developer Tools": "デベロッパー ツール",
     "Full Screen": "フルスクリーン",
-    "Multipage": "複数ページ",
+    "Multipage": "複数ページ表示",
     "Print Preview": "印刷プレビュー",
     "Thumbnail Size": "サムネールのサイズ",
     "Small": "小",

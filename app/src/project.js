@@ -1,6 +1,7 @@
 import { namenote } from './namenote.js';
 import { Page } from './page.js';
 import { projectManager } from './project-manager.js';
+import { pageManager } from './page-manager.js';
 import { file } from './file.js';
 import { config } from './config.js';
 import { shape } from './shape.js';
@@ -23,13 +24,9 @@ class Project {
     this.pages = [];
     this.views = [];
 
-    this.currentPages = [];
+    this.currentPage = null;
     this.currentTexts = [];
     
-    //  this.finishPageRead = false
-    //  this.maxPID = 0
-    //  this.dirty = true
-
     if (json) {
       this.init(json);
     }
@@ -70,10 +67,21 @@ class Project {
     });
   }
 
-  addCurrentPage(pid) {
-    if (this.currentPages.indexOf(pid) < 0) {
-      this.currentPages.push(pid);
-      this.views.forEach((view) => view.onAddCurrentPage(pid))
+  setCurrentPage(pid) {
+    LOG('set current page', pid);
+    if (this.currentPage !== pid) {
+      this.clearCurrentPage();
+      this.currentPage = pid;
+      this.views.forEach((view) => view.onSetCurrentPage(pid))
+    }
+  }
+
+  clearCurrentPage() {
+    LOG('clear current page');
+    if (this.currentPage) {
+      this.clearCurrentText();
+      this.views.forEach((view) => view.onClearCurrentPage())
+      this.currentPage = null;
     }
   }
 
@@ -84,19 +92,9 @@ class Project {
     }
   }
 
-  clearCurrentPage() {
-    this.views.forEach((view) => view.onClearCurrentPage())
-    this.currentPages = [];
-  }
-
   clearCurrentText() {
     this.views.forEach((view) => view.onClearCurrentText())
     this.currentTexts = [];
-  }
-
-  setCurrentPage(pid) {
-    this.clearCurrentPage();
-    this.addCurrentPage(pid);
   }
 
   setCurrentText(tid) {
@@ -104,11 +102,28 @@ class Project {
     this.addCurrentText(tid);
   }
 
-  currentPageIndex() {
-    const pid = this.currentPages[0]
-    return this.pages.findIndex((page) => page.pid === pid)
+  getTID(node) {
+    const id = node.id;
+    return parseInt(id.replace(/^p/, ''))
   }
 
+  findTextIndex(page, id) {
+    const nodes = page.texts.childNodes;
+    for (let i = 0; i < nodes.length; i++) {
+      if (nodes[i].id === id) return i;
+    }
+    return -1;
+  }
+  currentPageIndex() {
+    const pid = this.currentPage;
+    return this.pages.findIndex((page) => page.pid === pid);
+  }
+
+  currentTextIndex() {
+    const id = 'p' + this.currentTexts[0];
+    const page = this.pages.find((page) => page.pid === this.currentPage);
+    return this.findTextIndex(page, id);
+  }
   
   draftMarks() {
     const options = { color: '#85bffd', dpi: this.dpi };
@@ -150,31 +165,29 @@ class Project {
     return { width: width, height: height };
   }
 
+
+  // Actions
+  
   movePage(from, to) {
-    LOG('project move page', from, to);
     const page = this.pages.splice(from, 1)[0];
     this.pages.splice(to, 0, page);
   }
 
   addPage(pid, to) {
-    const page = new Page(this, pid);
+    const page = pageManager.get(this, pid);
     this.pages.splice(to, 0, page);
-    
     this.setCurrentPage(pid);
   }
 
-  removePage(from) {
+  removePage(pid, from) {
     if (this.pages.length <= 1) return;
-    const page = this.pages.splice(from, 1)[0];
-    page.destructor()
+    this.pages.splice(from, 1)[0];
 
     const index = (from > 0) ? (from - 1) : 0;
     this.setCurrentPage(this.pages[index].pid)
   }
   
   moveText(from, to, fromPID, toPID) {
-    LOG('project move text', from, to, fromPID, toPID);
-
     const fromPage = this.pages.find(page => page.pid === fromPID);
     const toPage = this.pages.find(page => page.pid === toPID);
     if (!fromPage || !toPage) return;
@@ -188,19 +201,36 @@ class Project {
     const toPage = this.pages.find(page => page.pid === toPID)
     if (!toPage) return;
 
-    const node = $(text);
+    const node = $(text)[0];
     toPage.texts.insertBefore(node, toPage.texts.childNodes[to]);
+
+    this.setCurrentText(this.getTID(node));
   }
 
-  removeText(from, fromPID) {
-    const hoge = Text.createText('ほげ<br>ふに')
-    LOG(hoge)
-    
+  removeText(text, from, fromPID) {
     const fromPage = this.pages.find(page => page.pid === fromPID);
     if (!fromPage) return;
 
     const node = fromPage.texts.childNodes[from];
     fromPage.texts.removeChild(node);
+
+    if (fromPage.texts.childNodes.length > 0) {
+      const index = (from > 0) ? from - 1 : 0;
+      this.setCurrentText(this.getTID(fromPage.texts.childNodes[index]));
+    }
+  }
+
+  editText(toText, index, pid) {
+    const page = this.pages.find(page => page.pid === pid);
+    if (!page) return;
+
+    const fromNode = page.texts.childNodes[index];
+
+    const toNode = $(toText)[0];
+    $(toNode).removeClass('selected'); //TODO:他にもスケールを戻すとかいろいろある
+    WARN(toNode);
+    
+    page.texts.replaceChild(toNode, fromNode);
   }
 }
 

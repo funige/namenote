@@ -7,7 +7,6 @@ import { projectManager } from './project-manager.js';
 
 const MAX_FILES_IN_FOLDER = 1000;
 
-// //////////////////////////////////////////////////////////////
 
 class Finder {
   constructor(folders, fileList, toggleButton, options) {

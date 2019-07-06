@@ -24,7 +24,7 @@ let maxID = 1;
 
 class Namenote {
   constructor() {
-    this.version = '2.0.0-alpha.12-debug';
+    this.version = '2.0.0-alpha.13-debug';
     this.trial = false;
 
     this.config = config;
@@ -61,13 +61,17 @@ class Namenote {
 
   initBaseHandlers() {
     window.onresize = (e) => {
-      setTimeout(function () {
+      setTimeout(() => {
         if (dialog.isOpen() && dialog.current.onresize) {
           dialog.current.onresize(e);
-        } else {
-          LOG('onresize', document.body.clientWidth, document.body.clientHeight);
+//      } else {
+//        if (this.onResize) this.onResize();
         }
         ui.update();
+
+        if (this.mainView) {
+          this.mainView.onresize();
+        }
       }, 100);
     };
 
@@ -78,7 +82,9 @@ class Namenote {
   }
 
 
-  //
+//onResize() {
+//  LOG('onresize', document.body.clientWidth, document.body.clientHeight);
+//}
 
   currentProject() {
     return this.mainView && this.mainView.project;

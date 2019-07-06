@@ -1,5 +1,6 @@
 import { config } from './config.js';
 import { viewButton } from './view-button.js';
+import { namenote } from './namenote.js';
 
 let minWidth = 250;
 
@@ -18,8 +19,6 @@ class Divider {
   }
 
   update(value) {
-    LOG('[update]', value);
-
     if (value === undefined) value = config.data.sideBar;
     config.data.sideBar = value;
     config.save();
@@ -36,7 +35,9 @@ class Divider {
     }
 
     $('.split-pane').splitPane('firstComponentSize', width);
+
     viewButton.update();
+    if (namenote.mainView) namenote.mainView.onresize();
   }
 
   toggle() {

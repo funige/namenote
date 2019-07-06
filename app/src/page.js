@@ -1,23 +1,47 @@
 import { namenote } from './namenote.js';
 import { Text } from './text.js';
+import { file } from './file.js';
 
 const JSZip = require('JSZip');
 
 
 class Page {
-  constructor(project, pid) {
+  constructor(project, pid, isBlank) {
     this.pid = pid;
+    this.project = project;
     this.width = project.pageSize[0];
     this.height = project.pageSize[1];
 
-    this.project = project; //updateThumbnailでしか使わない。削除できるはず
+    if (isBlank) {
+      this.initBlank();
+
+    } else {
+      const url = `${project.baseURL}/${pid}.json`;
+      this.load(url);
+    }
   }
 
   destructor() {
     LOG('page destructor', this.pid);
     this.project = null;
   }
-  
+
+  load(url) {
+    file.readJSON(url).then((json) => {
+      this.init(json).then(() => {
+        this.project.views.forEach((view) => {
+          view.initPage(this);
+        })
+      })
+
+    }).catch((error) => {
+      this.initBlank();
+      this.project.views.forEach((view) => {
+        view.initPage(this);
+      });
+    });
+  }
+
   async init(data) {
     this.params = data
     this.canvas = this.createCanvasElement(this.width, this.height);
@@ -28,7 +52,7 @@ class Page {
   }
 
   initBlank() {
-    this.params = { text: "" };
+    this.params = {}; // text: '' };
     this.canvas = this.createCanvasElement(this.width, this.height);
     this.canvasCtx = this.canvas.getContext('2d');
     this.updateThumbnail(this.project);
@@ -77,23 +101,11 @@ class Page {
   
   getTexts(text) {
     const result = document.createElement('div');
-
     if (text) {
       result.innerHTML = text;
       result.childNodes.forEach((p) => {
-        $(p).removeClass('editable');
-        $(p).removeClass('selected');
-        $(p).css('color', '');
-
+        Text.cleanup(p);
         p.id = namenote.getUniqueID();
-        p.innerHTML = Text.cleanup(p.innerHTML)
-//      p.innerHTML = p.innerHTML
-//        .replace(/\r|\n/g, '')
-//        .replace(/(<([^>]+)>)/g, '/')
-//        .replace(/\/+/g, '/')
-//        .replace(/^\//, '')
-//        .replace(/\/$/, '')
-//        .replace(/\//g, '<br>');
       });
     }
     return result;

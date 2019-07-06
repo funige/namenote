@@ -18,7 +18,7 @@ const configDefault = {
   tabletCurveCenter: '0.5,0.5',
 
   // main-view.js
-  multiView: true,
+  multipage: true,
   printPreview: false
 };
 

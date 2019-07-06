@@ -4,7 +4,7 @@ import { command } from './command.js';
 
 
 class PageView extends View {
-  constructor(element, options = {}) {
+  constructor(element, options) {
     super(element, options);
     this.id = 'page';
 
@@ -14,10 +14,12 @@ class PageView extends View {
     this.content = this.element.querySelector('.content');
     this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'), {
       append: () => {
-        command.addPage();
+        const to = this.project.currentPageIndex();
+        command.addPage(this, to);
       },
       trash: () => {
-        command.removePage();
+        const from = this.project.currentPageIndex();
+        command.removePage(this, from);
       },
       size: () => { LOG('page size'); },
     });
@@ -38,7 +40,6 @@ class PageView extends View {
     });
   }
 
-
   initProject(project) {
     if (!this.element) return;
 
@@ -52,13 +53,14 @@ class PageView extends View {
         element: pageElement
       };
       if (page.loaded()) {
-        this.initPage(page, index);
+        this.initPage(page);
       }
       this.updatePage(pid, index);
     });
   }
 
-  initPage(page, index) {
+  initPage(page) {
+    const index = this.project.pages.indexOf(page);
     const pd = this.pageData[page.pid];
     if (!pd || !pd.element) {
       ERROR('abort init page', page.pid);
@@ -92,9 +94,9 @@ class PageView extends View {
   createPageElement(pid) {
     const element = document.createElement('li');
     const rect = this.project.getThumbnailSize();
-    element.style.height = PX(rect.height + 10);
+    element.style.height = (rect.height + 10) + 'px';
 
-    element.className = 'pageview-page';
+    element.className = 'page';
     element.id = 'pageview-page-' + pid;
     return element;
   }
@@ -108,7 +110,7 @@ class PageView extends View {
       const rect = this.project.getThumbnailSize();
       pd.thumbnail.style.width = 30; // rect.width
       pd.thumbnail.style.height = rect.height;
-      pd.element.style.height = PX(rect.height + 10);
+      pd.element.style.height = (rect.height + 10) + 'px';
     }
   }
 
@@ -141,12 +143,11 @@ class PageView extends View {
   }
 
   initCurrentPage() {
-    this.project.currentPages.forEach((pid) => {
-      this.onAddCurrentPage(pid)
-    })
+    const pid = this.project.currentPage;
+    this.onSetCurrentPage(pid)
   }
 
-  onAddCurrentPage(pid) {
+  onSetCurrentPage(pid) {
     const pd = this.pageData[pid];
     if (pd && pd.element) {
       $(pd.element).addClass('selected');
@@ -154,12 +155,11 @@ class PageView extends View {
   }
 
   onClearCurrentPage() {
-    this.project.currentPages.forEach((pid) => {
-      const pd = this.pageData[pid];
-      if (pd && pd.element) {
-        $(pd.element).removeClass('selected');
-      }
-    })
+    const pid = this.project.currentPage;
+    const pd = this.pageData[pid];
+    if (pd && pd.element) {
+      $(pd.element).removeClass('selected');
+    }
   }
 }
 

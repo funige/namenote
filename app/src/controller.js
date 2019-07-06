@@ -72,7 +72,7 @@ class Controller {
   }
 
   onDown(e) {
-    const info = this.getTargetInfo(e);
+    const info = this.getTargetInfo(e.target);
     LOG('[onDown]', info);
 
     if (info.pid) {
@@ -86,7 +86,7 @@ class Controller {
   }
 
   onUp(e) {
-    const info = this.getTargetInfo(e);
+    const info = this.getTargetInfo(e.target);
     if (info.view === 'main' && info.text) {
       const tid = e.target.id;
       LOG('constroller-- up', tid)
@@ -97,21 +97,17 @@ class Controller {
   }
 
 
-  getTargetInfo(e) {
-    const info = {};
-    info.parents = [];
-
-    let target = e.target;
+  getTargetInfo(target) {
+    const info = { parents: [] };
     while (target) {
       info.parents.push([target.className, target]);
       if (target.className === 'text') {
         info.text = true;
       }
-      if (target.className === 'page'
-          || target.className === 'pageview-page'
-          || target.className === 'textview-page') {
-        info.pid = this.detectPID(target);
+      if (target.className && target.classList.contains('page')) {
+        info.pid = namenote.mainView.detectPID(target);
       }
+
       if (target.className === 'main-view'
           || target.className === 'page-view'
           || target.className === 'text-view') {
@@ -119,14 +115,10 @@ class Controller {
         info.projectURL = target.alt;
         break;
       }
-      
       target = target.parentNode;
     }
+    LOG('getTargetInfo', info);
     return info;
-  }
-
-  detectPID(element) {
-    return parseInt(element.id.replace(/^(pageview-|textview-)?page-/, ''));
   }
 
   isMoved() {

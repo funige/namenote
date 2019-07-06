@@ -1,44 +1,28 @@
 import { namenote } from './namenote.js';
 import { Project } from './project.js';
+import { pageManager } from './page-manager.js';
 import { file } from './file.js';
 import { dialog } from './dialog.js';
 
-// //////////////////////////////////////////////////////////////
 
 class ProjectManager {
   constructor() {
     this.projects = [];
   }
 
-  async get(url, monitor) {
+  async get(url) {
     let project = this.find(url);
     if (!project) {
-      //project = await file.readProject(url, monitor);
-      const json = await file.readJSON(url)
-      project = new Project(url, json)
-      
-      file.readPages(project, monitor).then(() => {
-        LOG('readPages finishded');
-        if (monitor && monitor == dialog.current) {
-          dialog.close();
-        }
-      });
+      const json = await file.readJSON(url);
+      project = new Project(url, json);
+      project.pages = project.pids.map((pid) => pageManager.get(project, pid))
       this.addProject(project);
-    } else if (monitor && monitor == dialog.current) {
-      dialog.close();
     }
     return project;
   }
 
   find(url) {
     return this.projects.find(project => project.url === url)
-
-/*  for (const project of this.projects) {
-      if (project.url == url) {
-        return project;
-      }
-    }
-    return null;*/
   }
 
   addProject(project) {

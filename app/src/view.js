@@ -15,20 +15,20 @@ class View {
   }
 
   loadProject(project) {
-    LOG('pageView loadProject', project.url);
     if (this.project) this.project.removeView(this);
     this.project = project;
     if (!project) return;
     project.addView(this);
-
-    this.element.alt = project.url
+    
+    if (this.element) {
+      this.element.alt = project.url;
+    }
   }
 
   enableSmoothScroll(element) {
     element.parentNode.style.WebkitOverflowScrolling = 'touch';
     element.style.WebkitPerspective = '0';
   }
-
 
   createButtonElement() {
     const li = document.createElement('li');
@@ -43,14 +43,14 @@ class View {
 
   createCanvas(page, width, height) {
     const canvas = document.createElement('canvas');
-    canvas.width = width || page.width;
-    canvas.height = height || page.height;
+    canvas.width = (width !== undefined) ? width : page.width;
+    canvas.height = (height !== undefined) ? height : page.height;
     return canvas;
   }
 
   createTexts(page, text) {
     const texts = document.createElement('div');
-    texts.innerHTML = text || page.params.text;
+    texts.innerHTML = (text !== undefined) ? text : page.texts.innerHTML;
     return texts;
   }
 
@@ -58,31 +58,15 @@ class View {
     return false;
   }
 
-  /*
-  showCurrentPage(pid) {
-    const oldPID = this.project.currentPage;
-    if (!pid) pid = oldPID;
-    
-    const oldPD = this.pageData[oldPID];
-    const newPD = this.pageData[pid];
-    if (oldPD) $(oldPD.element).removeClass('selected');
-    if (newPD) $(newPD.element).addClass('selected');
-
-    // TODO: scroll to newPID
-  }*/
-
-  /*
-  showCurrentTexts(tids) {
-    const oldTIDs = this.project.currentTexts;
-    if (!tids) tids = oldTIDs;
-
-    oldTIDs.forEach((tid) => $(`#p${tid}`).removeClass('selected'))
-    oldTIDs.forEach((tid) => $(`#p${tid}t`).removeClass('selected'))
-    tids.forEach((tid) => $(`#p${tid}`).addClass('selected'))
-    tids.forEach((tid) => $(`#p${tid}t`).addClass('selected'))
-    
-    // TODO: scroll to newTIDs
-  }*/
+  detectPID(element) {
+    while (element) {
+      if (element.classList.contains('page')) {
+        return parseInt(element.id.replace(/^(pageview-|textview-)?page-/, ''));
+      }
+      element = element.parentNode;
+    }
+    return null;
+  }
 
   // Default update methods
 
@@ -116,9 +100,15 @@ class View {
     this.loadProject(this.project);
   }
 
-  onAddCurrentPage() {}
-  onAddCurrentText() {}
+  onEditText(toText, index, pid) {
+    LOG('edit text');
+    this.loadProject(this.project);
+  }
+
+  onSetCurrentPage(pid) {}
   onClearCurrentPage() {}
+
+  onAddCurrentText(tid) {}
   onClearCurrentText() {}
 }
 

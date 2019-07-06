@@ -43,6 +43,18 @@ class Action {
     }
   }
 
+  playHandler(action) {
+    const name = 'do' + action.charAt(0).toUpperCase() + action.slice(1);
+    return name; //this[name];
+  }
+
+  rewindHandler(action) {
+    const name = 'undo' + action.charAt(0).toUpperCase() + action.slice(1);
+    return name; //this[name];
+  }
+
+
+  
   doMovePage([from, to, url] = []) {
     const project = projectManager.find(url)
     if (!project) return;
@@ -53,9 +65,24 @@ class Action {
     })
   }
 
-  
-  undoMovePage([from, to, url] = []) {
-    this.doMovePage([to, from, url]);
+  doAddPage([pid, to, url] = []) {
+    const project = projectManager.find(url)
+    if (!project) return;
+
+    project.addPage(pid, to);
+    project.views.forEach((view) => {
+      view.onAddPage(pid, to);
+    })
+  }
+
+  doRemovePage([pid, from, url] = []) {
+    const project = projectManager.find(url)
+    if (!project) return;
+
+    project.removePage(pid, from);
+    project.views.forEach((view) => {
+      view.onRemovePage(pid, from);
+    })
   }
 
   doMoveText([from, to, fromPID, toPID, url] = []) {
@@ -68,21 +95,56 @@ class Action {
     })
   }
 
+  doAddText([text, to, toPID, url] = []) {
+    const project = projectManager.find(url);
+    if (!project) return;
+
+    project.addText(text, to, toPID);
+    project.views.forEach((view) => {
+      view.onAddText(text, to, toPID);
+    })
+  }
+
+  doRemoveText([text, from, fromPID, url] = []) {
+    const project = projectManager.find(url);
+    if (!project) return;
+
+    project.removeText(text, from, fromPID);
+    project.views.forEach((view) => {
+      view.onRemoveText(text, from, fromPID);
+    });
+  }
+
+  doEditText([fromText, toText, index, pid, url] =[]) {
+    const project = projectManager.find(url);
+    if (!project) return;
+
+    project.editText(toText, index, pid);
+    project.views.forEach((view) => {
+      view.onEditText(toText, index, pid);
+    });
+  }
+
+  undoMovePage([from, to, url] = []) {
+    this.doMovePage([to, from, url]);
+  }
+  undoAddPage([pid, to, url] = []) {
+    this.doRemovePage([pid, to, url]);
+  }
+  undoRemovePage([pid, from, url] = []) {
+    this.doAddPage([pid, from, url]);
+  }
   undoMoveText([from, to, fromPID, toPID, url] = []) {
     this.doMoveText([to, from, toPID, fromPID, url]);
   }
-
-
-  // Get hander names
-  
-  playHandler(action) {
-    const name = 'do' + action.charAt(0).toUpperCase() + action.slice(1);
-    return name; //this[name];
+  undoAddText([text, to, toPID, url] = []) {
+    this.doRemoveText([text, to, toPID, url]);
   }
-
-  rewindHandler(action) {
-    const name = 'undo' + action.charAt(0).toUpperCase() + action.slice(1);
-    return name; //this[name];
+  undoRemoveText([text, from, fromPID, url] = []) {
+    this.doAddText([text, from, fromPID, url]);
+  }
+  undoEditText([fromText, toText, index, pid, url] =[]) {
+    this.doEditText([toText, fromText, index, pid, url]);
   }
 }
 

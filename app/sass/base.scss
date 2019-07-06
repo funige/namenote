@@ -112,7 +112,7 @@ ul, li {
     transform: translate3d(0,0,0);
 }
  
-.page {
+.main-view .page {
     position: absolute;
     box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.3), 3px 3px 5px 2px rgba(0,0,0,0.1);
 //  box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.1);
@@ -124,22 +124,57 @@ ul, li {
     overflow: hidden;
 }
 
-.page.preload {
+.main-view .page.preload {
     box-shadow: none;
     outline: none;
     opacity: 0.3;
 }
 
-.page.selected {
+.main-view .page.selected {
     z-index: 1;
     outline: 3px solid rgba(133,191,253,1.0);
     outline-offset: 3px;
 //  box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.3), 3px 3px 5px 2px rgba(0,0,0,0.1);
 }
 
-.page .marks {
+.main-view .page .marks {
     position: absolute;
     transform-origin: top left;
+}
+
+.main-view .content {
+    width: calc(100% - 18px);
+    height: calc(100% - 18px);
+    position: absolute;
+    overflow: hidden;
+}
+
+.main-view .right-scroll-bar {
+    width: 18px;
+    height: calc(100% - 18px);
+    position: absolute;
+    background-color: #eee;
+    right: 0;
+    overflow: hidden;
+}
+
+.main-view .bottom-scroll-bar {
+    width: calc(100% - 18px);
+    height: 18px;
+    position: absolute;
+    background-color: #eee;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.main-view .corner-box {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    background-color: #f6f6f6;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
 }
 
 .page-mask {
@@ -200,6 +235,7 @@ textarea,
     border: none;
     outline: 1px solid #3a98fc; //#3a98fc;
     background: rgba(133,191,253,0.5); //rgba(58,152,252,1.0);
+    z-index: 1001;
 }
 
 .text.editable {
@@ -228,8 +264,10 @@ textarea,
     overflow: hidden;
 }
 
-canvas .scratch {
-    z-index :100;
+canvas.scratch {
+    pointer-events: none;
+    background-color: red;
+    z-index :10000;
 }
 
 .wand {

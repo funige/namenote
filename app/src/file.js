@@ -41,14 +41,7 @@ class File {
 
     const projectURL = await this.getProjectURL(url);
     if (projectURL) {
-      const messageForm = new MessageForm();
-      dialog.open(messageForm, {
-        title: 'Open',
-        message: 'Loading ...',
-        cancel: 'Cancel'
-      }).then(() => { dialog.close(); });
-
-      const project = await projectManager.get(projectURL, messageForm);
+      const project = await projectManager.get(projectURL);
       namenote.mainView.loadProject(project);
       namenote.pageView.loadProject(project);
       namenote.textView.loadProject(project);
@@ -69,7 +62,7 @@ class File {
           }
         })
       }
-*/
+      */
     }
   }
 
@@ -153,29 +146,6 @@ class File {
     });
   }
 
-  async readPages(project, monitor) {
-    project.pages = project.pids.map((pid) => new Page(project, pid))
-
-    return Promise.all(project.pages.map((page, index) => {
-      return new Promise((resolve, reject) => {
-        const pageURL = `${project.baseURL}/${page.pid}.json`;
-
-        this.readJSON(pageURL).then((json) => {
-          page.init(json).then(() => {
-            project.views.forEach((view) => {
-              view.initPage(page, index);
-            });
-          });
-          if (monitor) {
-            monitor.showProgress(`${pageURL}`);
-          }
-        }).catch((error) => {
-          ERROR('=page=', page, error);
-        }).then(resolve);
-      });
-    }));
-  }
-
   // 
 
   async getProjectURL(url) {
@@ -189,7 +159,6 @@ class File {
         }
       }
     } catch (e) { ERROR(e); }
-    return null; //???
   }
 
   async getMaxPID(url) {
@@ -206,7 +175,6 @@ class File {
       }
       return maxPID;
     } catch (e) { ERROR(e); }
-    return null; //???
   }
   
   getScheme(url) {

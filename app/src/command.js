@@ -12,6 +12,8 @@ import { history } from './history.js';
 import { action } from './action.js';
 
 import { Page } from './page.js';
+import { Text } from './text.js';
+import { config } from './config.js';
 
 import { AboutForm } from './about-form.js';
 import { OpenForm } from './open-form.js';
@@ -133,10 +135,6 @@ class Command {
     });
   }
 
-  /* close() {
-    projectManager.close()
-  } */
-
   flipView() {
     LOG('flipView');
     namenote.mainView.flipView();
@@ -150,6 +148,11 @@ class Command {
     namenote.mainView.unzoom();
   }
 
+  toggleMultipage() {
+    const value = config.getValue('multipage');
+    namenote.mainView.setMultipage(!value)
+  }
+  
   toggleEditMode() {}
 
   tabletSettings() {
@@ -165,88 +168,85 @@ class Command {
   // Basic actions
   
   movePage(sender, from, to) {
-    LOG(`${from}=>${to}`);
     const project = sender.project;
-
     const record = []
+    
     record.push(['movePage', from, to, project.url])
     history.pushUndo(record);
     action.play(record);
   }
 
   moveText(sender, from, to, fromPID, toPID) {
-    LOG(`${from}(${fromPID})=>${to}(${toPID})`);
     const project = sender.project;
-
     const record = [];
+    
     record.push(['moveText', from, to, fromPID, toPID, project.url])
     history.pushUndo(record);
     action.play(record);
   }
 
-  async addPage() {
-    const project = namenote.mainView.project;
-    if (!project) return;
 
+  async addPage(sender, to) {
+    const project = sender.project;
+    const index = (to >= 0) ? to : project.pages.length - 1;
     const pid = await project.getNewPID()
-    let index = project.currentPageIndex() + 1;
-    if (index <= 0) index = project.pages.length;
-
-    LOG(`add "page"=>${index}(${pid})`)
-    project.addPage(pid, index);
-    project.pages[index].initBlank();
-    project.views.forEach((view) => {
-      if (view.onAddPage) view.onAddPage(pid, index);
-    })
+    const record = [];
+    
+    record.push(['addPage', pid, index + 1, project.url])
+    history.pushUndo(record);
+    action.play(record);
   }
 
-  async removePage() {
-    const project = namenote.mainView.project;
-    if (!project) return;
+  removePage(sender, from) {
+    const project = sender.project;
+    const index = (from >= 0) ? from : project.pages.length - 1;
+    const record = [];
     
-    const index = project.currentPageIndex();
-    //if (index < 0) index = 0;
-    
-    LOG(`remove "page"<=${index}`)
-    project.removePage(index);
-    project.views.forEach((view) => {
-      if (view.onRemovePage) view.onRemovePage(index);
-    })
+    const pid = project.pages[index].pid;
+    record.push(['removePage', pid, index, project.url]);
+    history.pushUndo(record);
+    action.play(record);
   }
   
-  addText(text, to, toPID) {
-    const project = namenote.mainView.project;
-    if (!project || !project.currentPage) return;
-    if (to < 0) to = 0;
-    
-    LOG(`add "text"=>${to}(${toPID})`)
-    project.addText(text, to, toPID);
-    project.views.forEach((view) => {
-      if (view.onAddText) view.onAddText(text, to, toPID);
-    })
+  addText(sender, to, toPID) {
+    const project = sender.project;
+    const record = [];
+
+    const page = project.pages.find((page) => page.pid === toPID);
+    const index = (to >= 0) ? to : page.texts.childNodes.length - 1;
+    const text = Text.createNext(page.texts.childNodes[index]);
+    LOG(text);
+
+    record.push(['addText', text, index + 1, toPID, project.url]);
+    history.pushUndo(record);
+    action.play(record);
   }
 
-  removeText() {
-    const project = namenote.mainView.project;
-    if (!project) return;
+  removeText(sender, from, fromPID) {
+    const project = sender.project;
+    const record = [];
 
-    const pid = project.currentPages[0];
-    const tid = project.currentTexts[0];
-    if (!pid || !tid) return;
+    const page = project.pages.find((page) => page.pid === fromPID);
+    const index = (from >= 0) ? from : page.texts.childNodes.length - 1;
+    const text = page.texts.childNodes[index].outerHTML;
+    LOG(text);
 
-    const page = project.pages.find((page) => page.pid === pid)
-    WARN(page.texts);
-    
-    page.texts.childNodes.forEach((node, index) => {
-      if (node.id === 'p' + tid) {
-        project.removeText(index, pid);
-        project.views.forEach((view) => {
-          if (view.onRemoveText) view.onRemoveText(index, pid);
-        })
-      }
-    })
+    record.push(['removeText', text, index, fromPID, project.url]);
+    history.pushUndo(record);
+    action.play(record);
   }
 
+  editText(sender, toText, index, pid) {
+    const project = sender.project;
+    const record = [];
+
+    const page = project.pages.find((page) => page.pid === pid);
+    const fromText = page.texts.childNodes[index].outerHTML;
+
+    record.push(['editText', fromText, toText, index, pid, project.url]);
+    history.pushUndo(record);
+    action.play(record);
+  }
   
   dockSide(side) {
     divider.setPosition(side);
