@@ -19,7 +19,7 @@ class View {
     this.project = project;
     if (!project) return;
     project.addView(this);
-    
+
     if (this.element) {
       this.element.alt = project.url;
     }
@@ -61,7 +61,7 @@ class View {
   detectPID(element) {
     while (element) {
       if (element.classList.contains('page')) {
-        return parseInt(element.id.replace(/^(pageview-|textview-)?page-/, ''));
+        return parseInt(element.id.replace(/^(pageview-|textview-)?page-/, ''), 10);
       }
       element = element.parentNode;
     }
@@ -71,45 +71,51 @@ class View {
   // Default update methods
 
   onMovePage(from, to) {
-    LOG('move page');
+    LOG('move page', from, to);
     this.loadProject(this.project);
   }
 
   onMoveText(from, to, fromPID, toPID) {
-    LOG('move text');
+    LOG('move text', from, to, fromPID, toPID);
     this.loadProject(this.project);
   }
 
   onAddPage(pid, to) {
-    LOG('add page');
+    LOG('add page', pid, to);
     this.loadProject(this.project);
   }
-  
+
   onRemovePage(from) {
-    LOG('remove page');
+    LOG('remove page', from);
     this.loadProject(this.project);
   }
 
   onAddText(text, to, toPID) {
-    LOG('add text');
+    LOG('add text', text, to, toPID);
     this.loadProject(this.project);
   }
 
   onRemoveText(from, fromPID) {
-    LOG('remove text');
+    LOG('remove text', from, fromPID);
     this.loadProject(this.project);
   }
 
   onEditText(toText, index, pid) {
-    LOG('edit text');
+    LOG('edit text', toText, index, pid);
     this.loadProject(this.project);
   }
 
-  onSetCurrentPage(pid) {}
-  onClearCurrentPage() {}
+  onSetCurrentPage(pid) {
+  }
 
-  onAddCurrentText(tid) {}
-  onClearCurrentText() {}
+  onClearCurrentPage() {
+  }
+
+  onAddCurrentText(tid) {
+  }
+
+  onClearCurrentText() {
+  }
 }
 
 export { View };

@@ -18,12 +18,10 @@ class Flash {
     const json = localStorage.getItem('namenote/flash');
     localStorage.removeItem('namenote/flash');
 
-    // WARN('flash', json)
     if (json) {
       const options = JSON.parse(json);
       command.do(...options);
     }
-
     this.setUnloadWarning();
   }
 

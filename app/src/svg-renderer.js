@@ -1,11 +1,6 @@
-import { namenote } from './namenote.js';
 
-// //////////////////////////////////////////////////////////////
 
 class SVGRenderer {
-  constructor() {
-  }
-
   init() {
   }
 
@@ -56,7 +51,7 @@ class SVGRenderer {
        <svg xmlns='http://www.w3.org/2000/svg' width='${width}' height='${height}'>
          <foreignObject width='100%' height='100%'>
            <div xmlns='http://www.w3.org/1999/xhtml' style='${style}'>
-　　　　　　　${texts}
+             ${texts}
            </div>
            <div xmlns='http://www.w3.org/1999/xhtml' style='${style}'>
              <img src='${image}' />

@@ -28,12 +28,14 @@ module.exports = {
   'rules': {
     'no-console': [ 'off' ],
     'func-names': [ 'off' ],
+    'no-param-reassign': [ 'error', { 'props': false } ],
     'class-methods-use-this': [ 'off' ],
-    'no-param-reassign': ['error', { 'props': false }],
-
+    'no-plusplus': [ 'error', { 'allowForLoopAfterthoughts': true } ],
+    'no-unused-vars': ['error', {'args': 'none'}],
+    'no-shadow': ['error', {'allow': ['page']}],
+    
     /*
     'linebreak-style': [ 'error', 'unix' ],
-    'no-unused-vars': [ 'error', { 'args': 'none' } ],
     'no-use-before-define': [ 'off' ],
     'vars-on-top': [ 'off' ],
     'no-underscore-dangle': [ 'off' ],

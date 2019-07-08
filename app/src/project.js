@@ -26,7 +26,7 @@ class Project {
 
     this.currentPage = null;
     this.currentTexts = [];
-    
+
     if (json) {
       this.init(json);
     }
@@ -72,7 +72,7 @@ class Project {
     if (this.currentPage !== pid) {
       this.clearCurrentPage();
       this.currentPage = pid;
-      this.views.forEach((view) => view.onSetCurrentPage(pid))
+      this.views.forEach((view) => view.onSetCurrentPage(pid));
     }
   }
 
@@ -80,7 +80,7 @@ class Project {
     LOG('clear current page');
     if (this.currentPage) {
       this.clearCurrentText();
-      this.views.forEach((view) => view.onClearCurrentPage())
+      this.views.forEach((view) => view.onClearCurrentPage());
       this.currentPage = null;
     }
   }
@@ -88,12 +88,12 @@ class Project {
   addCurrentText(tid) {
     if (this.currentTexts.indexOf(tid) < 0) {
       this.currentTexts.push(tid);
-      this.views.forEach((view) => view.onAddCurrentText(tid))
+      this.views.forEach((view) => view.onAddCurrentText(tid));
     }
   }
 
   clearCurrentText() {
-    this.views.forEach((view) => view.onClearCurrentText())
+    this.views.forEach((view) => view.onClearCurrentText());
     this.currentTexts = [];
   }
 
@@ -104,7 +104,7 @@ class Project {
 
   getTID(node) {
     const id = node.id;
-    return parseInt(id.replace(/^p/, ''))
+    return parseInt(id.replace(/^p/, ''), 10);
   }
 
   findTextIndex(page, id) {
@@ -114,6 +114,7 @@ class Project {
     }
     return -1;
   }
+
   currentPageIndex() {
     const pid = this.currentPage;
     return this.pages.findIndex((page) => page.pid === pid);
@@ -124,7 +125,7 @@ class Project {
     const page = this.pages.find((page) => page.pid === this.currentPage);
     return this.findTextIndex(page, id);
   }
-  
+
   draftMarks() {
     const options = { color: '#85bffd', dpi: this.dpi };
     const arr = shape.parse([
@@ -151,10 +152,10 @@ class Project {
       if (max < page.pid) {
         max = page.pid;
       }
-    })
+    });
     return max + 1;
   }
-  
+
   getThumbnailSize() {
     const size = config.getValue('thumbnailSize');
     const thumbnailWidth = thumbnailWidths[size];
@@ -167,7 +168,7 @@ class Project {
 
 
   // Actions
-  
+
   movePage(from, to) {
     const page = this.pages.splice(from, 1)[0];
     this.pages.splice(to, 0, page);
@@ -184,9 +185,9 @@ class Project {
     this.pages.splice(from, 1)[0];
 
     const index = (from > 0) ? (from - 1) : 0;
-    this.setCurrentPage(this.pages[index].pid)
+    this.setCurrentPage(this.pages[index].pid);
   }
-  
+
   moveText(from, to, fromPID, toPID) {
     const fromPage = this.pages.find(page => page.pid === fromPID);
     const toPage = this.pages.find(page => page.pid === toPID);
@@ -198,7 +199,7 @@ class Project {
   }
 
   addText(text, to, toPID) {
-    const toPage = this.pages.find(page => page.pid === toPID)
+    const toPage = this.pages.find(page => page.pid === toPID);
     if (!toPage) return;
 
     const node = $(text)[0];
@@ -227,9 +228,9 @@ class Project {
     const fromNode = page.texts.childNodes[index];
 
     const toNode = $(toText)[0];
-    $(toNode).removeClass('selected'); //TODO:他にもスケールを戻すとかいろいろある
+    $(toNode).removeClass('selected'); // TODO:他にもスケールを戻すとかいろいろある
     WARN(toNode);
-    
+
     page.texts.replaceChild(toNode, fromNode);
   }
 }

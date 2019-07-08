@@ -15,14 +15,14 @@ class ProjectManager {
     if (!project) {
       const json = await file.readJSON(url);
       project = new Project(url, json);
-      project.pages = project.pids.map((pid) => pageManager.get(project, pid))
+      project.pages = project.pids.map((pid) => pageManager.get(project, pid));
       this.addProject(project);
     }
     return project;
   }
 
   find(url) {
-    return this.projects.find(project => project.url === url)
+    return this.projects.find(project => project.url === url);
   }
 
   addProject(project) {

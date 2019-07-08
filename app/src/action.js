@@ -1,35 +1,15 @@
-import { namenote } from './namenote.js';
 import { projectManager } from './project-manager.js';
 
-/*
-//DO
-record = []
-record.push(['addText', url, pid, index ])
-history.pushUndo(record)
-action.play(record)
-=> action.addText(url, pid, index, isReverse)
-
-//UNDO
-record = history.popUndo()
-action.rewind(record)
-
-//REDO
-record = history.popRedo()
-action.play(record)
-*/
 
 class Action {
-  constructor() {
-  }
-
   play(record) {
     record.forEach((item) => {
       const action = item[0];
       const handler = this.playHandler(action);
       if (this[handler]) {
-        this[handler](item.slice(1))
+        this[handler](item.slice(1));
       }
-    })
+    });
   }
 
   rewind(record) {
@@ -38,61 +18,63 @@ class Action {
       const action = item[0];
       const handler = this.rewindHandler(action);
       if (this[handler]) {
-        this[handler](item.slice(1))
+        this[handler](item.slice(1));
       }
     }
   }
 
   playHandler(action) {
     const name = 'do' + action.charAt(0).toUpperCase() + action.slice(1);
-    return name; //this[name];
+    return name; // this[name];
   }
 
   rewindHandler(action) {
     const name = 'undo' + action.charAt(0).toUpperCase() + action.slice(1);
-    return name; //this[name];
+    return name; // this[name];
   }
 
+  //
+  // do* Actions
+  //
 
-  
   doMovePage([from, to, url] = []) {
-    const project = projectManager.find(url)
+    const project = projectManager.find(url);
     if (!project) return;
 
     project.movePage(from, to);
     project.views.forEach((view) => {
       view.onMovePage(from, to);
-    })
+    });
   }
 
   doAddPage([pid, to, url] = []) {
-    const project = projectManager.find(url)
+    const project = projectManager.find(url);
     if (!project) return;
 
     project.addPage(pid, to);
     project.views.forEach((view) => {
       view.onAddPage(pid, to);
-    })
+    });
   }
 
   doRemovePage([pid, from, url] = []) {
-    const project = projectManager.find(url)
+    const project = projectManager.find(url);
     if (!project) return;
 
     project.removePage(pid, from);
     project.views.forEach((view) => {
       view.onRemovePage(pid, from);
-    })
+    });
   }
 
   doMoveText([from, to, fromPID, toPID, url] = []) {
-    const project = projectManager.find(url)
+    const project = projectManager.find(url);
     if (!project) return;
-    
+
     project.moveText(from, to, fromPID, toPID);
     project.views.forEach((view) => {
       view.onMoveText(from, to, fromPID, toPID);
-    })
+    });
   }
 
   doAddText([text, to, toPID, url] = []) {
@@ -102,7 +84,7 @@ class Action {
     project.addText(text, to, toPID);
     project.views.forEach((view) => {
       view.onAddText(text, to, toPID);
-    })
+    });
   }
 
   doRemoveText([text, from, fromPID, url] = []) {
@@ -115,7 +97,7 @@ class Action {
     });
   }
 
-  doEditText([fromText, toText, index, pid, url] =[]) {
+  doEditText([fromText, toText, index, pid, url] = []) {
     const project = projectManager.find(url);
     if (!project) return;
 
@@ -125,25 +107,35 @@ class Action {
     });
   }
 
+  //
+  // undo* Actions
+  //
+
   undoMovePage([from, to, url] = []) {
     this.doMovePage([to, from, url]);
   }
+
   undoAddPage([pid, to, url] = []) {
     this.doRemovePage([pid, to, url]);
   }
+
   undoRemovePage([pid, from, url] = []) {
     this.doAddPage([pid, from, url]);
   }
+
   undoMoveText([from, to, fromPID, toPID, url] = []) {
     this.doMoveText([to, from, toPID, fromPID, url]);
   }
+
   undoAddText([text, to, toPID, url] = []) {
     this.doRemoveText([text, to, toPID, url]);
   }
+
   undoRemoveText([text, from, fromPID, url] = []) {
     this.doAddText([text, from, fromPID, url]);
   }
-  undoEditText([fromText, toText, index, pid, url] =[]) {
+
+  undoEditText([fromText, toText, index, pid, url] = []) {
     this.doEditText([toText, fromText, index, pid, url]);
   }
 }

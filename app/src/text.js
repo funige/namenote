@@ -1,8 +1,8 @@
-import { namenote } from './namenote.js'
+import { namenote } from './namenote.js';
 
 /**
  * To create text element, 5 basic params are required:
- * - fontFamily 
+ * - fontFamily
  * - fontSize
  * - writingMode
  * - left
@@ -15,7 +15,7 @@ class Text {
     this.cleanup(p);
     return p.outerHTML;
   }
-  
+
   static cleanup(p) {
     p.classList.remove('editable', 'selected');
     p.style.color = '';
@@ -37,8 +37,8 @@ class Text {
   static createNext(node) {
     const p = (node) ? node.cloneNode() : this.createFromTemplate();
     p.id = namenote.getUniqueID();
-    p.style.left = (parseFloat(p.style.left) - 12) + 'px'
-    p.innerHTML = "";
+    p.style.left = (parseFloat(p.style.left) - 12) + 'px';
+    p.innerHTML = '';
     return p;
   }
 
@@ -47,13 +47,14 @@ class Text {
     y = 0,
     font = 'sans-serif',
     size = 14,
-    vert = true } = {}) {
+    vert = true
+  } = {}) {
     const p = document.createElement('p');
     p.style.left = x + 'px';
     p.style.top = y + 'px';
     p.style.fontFamily = font;
     p.style.fontSize = size + 'px';
-    p.style.writingMode = vert ? 'vertical-rl' : 'horizontal-tb'
+    p.style.writingMode = vert ? 'vertical-rl' : 'horizontal-tb';
     return p;
   }
 }

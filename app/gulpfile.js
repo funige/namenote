@@ -15,18 +15,14 @@ gulp.task('sass', function() {
     .pipe(plumber())
     .pipe(sass({ outputStyle: 'expanded' }))
     .pipe(autoprefixer({
-      browsers: ["last 2 versions", "ie >= 9", "Android >= 4","ios_saf >= 8"],
       cascade: false
     }))
     .pipe(gulp.dest('./'))
-    .pipe(gulp.dest('../funige.github.io/namenote'))
-//  .pipe(notify({title:'sass ok', sound:'Hero'}))
 });
 
-gulp.task('browser', function(done) {
-  browserify('./src/browser.js', { debug: true })
-    .transform(babelify, {presets: [['@babel/preset-env',
-                                     { "useBuiltIns": "usage", "corejs": 2 }]]})
+gulp.task('browser', function() {
+  return browserify('./src/browser.js', { debug: true })
+    .transform(babelify) //, {presets: [['@babel/preset-env', { "useBuiltIns": "usage", "corejs": 2 }]]})
     .bundle()
     .on("error", function (err) {
       console.log("Error : " + err.message);
@@ -35,22 +31,11 @@ gulp.task('browser', function(done) {
 //  .pipe(streamify(uglify()))  // comment out when deguging
     .pipe(gulp.dest('./dist'))
     .pipe(gulp.dest('../funige.github.io/namenote/dist'))
-    .pipe(notify({title:'browser ok', sound:'Hero'}))
-
-  gulp.src('base.css').
-    pipe(gulp.dest('../funige.github.io/namenote'))
-  gulp.src('index.html').
-    pipe(gulp.dest('../funige.github.io/namenote'))
-  gulp.src('js/lib/dictionary.js').
-    pipe(gulp.dest('../funige.github.io/namenote/js/lib'))
-
-  done();
 });
 
-gulp.task('desktop', function(done) {
-  browserify('./src/desktop.js', { debug: true })
-    .transform(babelify, {presets: [['@babel/preset-env',
-                                     { "useBuiltIns": "usage", "corejs": 2 }]]})
+gulp.task('desktop', function() {
+  return browserify('./src/desktop.js', { debug: true })
+    .transform(babelify) //, {presets: [['@babel/preset-env', { "useBuiltIns": "usage", "corejs": 2 }]]})
     .bundle()
     .on("error", function (err) {
       console.log("Error : " + err.message);
@@ -58,10 +43,28 @@ gulp.task('desktop', function(done) {
     .pipe(source('bundle-desktop.js'))
 //  .pipe(streamify(uglify()))  // comment out when deguging
     .pipe(gulp.dest('./dist'))
+});
+
+gulp.task('finish', function(done) {
+  gulp.src('base.css')
+    .pipe(gulp.dest('../funige.github.io/namenote'))
+  gulp.src('js/lib/dictionary.js')
+    .pipe(gulp.dest('../funige.github.io/namenote/js/lib'))
+  gulp.src('index.html')
+    .pipe(gulp.dest('../funige.github.io/namenote'))
+
+  // notify when build finished
+  notify({title:'Namenote', message:'build finished!', sound:'Hero'}).write('');
   done();
 });
 
-gulp.task('build', gulp.parallel('browser', 'desktop', 'sass'));
+
+////////////////////////////////////////////////////////////////
+
+gulp.task('build', gulp.series(
+  gulp.parallel('browser', 'desktop', 'sass'),
+  'finish',
+));
 
 gulp.task('default', function() {
   gulp.watch([

@@ -1,9 +1,6 @@
 import { namenote } from './namenote.js';
 
 class Title {
-  constructor() {
-  }
-
   init() {
     this.set();
   }

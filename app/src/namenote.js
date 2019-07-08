@@ -39,7 +39,7 @@ class Namenote {
     this.file = file;
     this.ui = ui;
 
-    this.text = text; //debug
+    this.text = text; // debug
   }
 
   init() {
@@ -64,8 +64,8 @@ class Namenote {
       setTimeout(() => {
         if (dialog.isOpen() && dialog.current.onresize) {
           dialog.current.onresize(e);
-//      } else {
-//        if (this.onResize) this.onResize();
+          //      } else {
+          //        if (this.onResize) this.onResize();
         }
         ui.update();
 
@@ -82,9 +82,9 @@ class Namenote {
   }
 
 
-//onResize() {
-//  LOG('onresize', document.body.clientWidth, document.body.clientHeight);
-//}
+  // onResize() {
+  //  LOG('onresize', document.body.clientWidth, document.body.clientHeight);
+  // }
 
   currentProject() {
     return this.mainView && this.mainView.project;

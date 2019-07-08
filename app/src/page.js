@@ -14,7 +14,6 @@ class Page {
 
     if (isBlank) {
       this.initBlank();
-
     } else {
       const url = `${project.baseURL}/${pid}.json`;
       this.load(url);
@@ -31,9 +30,8 @@ class Page {
       this.init(json).then(() => {
         this.project.views.forEach((view) => {
           view.initPage(this);
-        })
-      })
-
+        });
+      });
     }).catch((error) => {
       this.initBlank();
       this.project.views.forEach((view) => {
@@ -43,7 +41,7 @@ class Page {
   }
 
   async init(data) {
-    this.params = data
+    this.params = data;
     this.canvas = this.createCanvasElement(this.width, this.height);
     this.canvasCtx = this.canvas.getContext('2d');
     await this.unzip(this.canvasCtx);
@@ -96,9 +94,9 @@ class Page {
   }
 
   loaded() {
-    return (this.params) ? true : false;
+    return !!(this.params);
   }
-  
+
   getTexts(text) {
     const result = document.createElement('div');
     if (text) {
@@ -112,7 +110,6 @@ class Page {
   }
 
 
-  
   digest() {
     if (!this.params || !this.params.text) return '';
 

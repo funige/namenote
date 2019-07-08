@@ -38,7 +38,7 @@ class Command {
     LOG('undo');
     if (history.hasUndo()) {
       const record = history.popUndo();
-      history.pushRedo(record)
+      history.pushRedo(record);
       action.rewind(record);
     }
   }
@@ -150,9 +150,9 @@ class Command {
 
   toggleMultipage() {
     const value = config.getValue('multipage');
-    namenote.mainView.setMultipage(!value)
+    namenote.mainView.setMultipage(!value);
   }
-  
+
   toggleEditMode() {}
 
   tabletSettings() {
@@ -166,12 +166,12 @@ class Command {
   }
 
   // Basic actions
-  
+
   movePage(sender, from, to) {
     const project = sender.project;
-    const record = []
-    
-    record.push(['movePage', from, to, project.url])
+    const record = [];
+
+    record.push(['movePage', from, to, project.url]);
     history.pushUndo(record);
     action.play(record);
   }
@@ -179,8 +179,8 @@ class Command {
   moveText(sender, from, to, fromPID, toPID) {
     const project = sender.project;
     const record = [];
-    
-    record.push(['moveText', from, to, fromPID, toPID, project.url])
+
+    record.push(['moveText', from, to, fromPID, toPID, project.url]);
     history.pushUndo(record);
     action.play(record);
   }
@@ -189,10 +189,10 @@ class Command {
   async addPage(sender, to) {
     const project = sender.project;
     const index = (to >= 0) ? to : project.pages.length - 1;
-    const pid = await project.getNewPID()
+    const pid = await project.getNewPID();
     const record = [];
-    
-    record.push(['addPage', pid, index + 1, project.url])
+
+    record.push(['addPage', pid, index + 1, project.url]);
     history.pushUndo(record);
     action.play(record);
   }
@@ -201,13 +201,13 @@ class Command {
     const project = sender.project;
     const index = (from >= 0) ? from : project.pages.length - 1;
     const record = [];
-    
+
     const pid = project.pages[index].pid;
     record.push(['removePage', pid, index, project.url]);
     history.pushUndo(record);
     action.play(record);
   }
-  
+
   addText(sender, to, toPID) {
     const project = sender.project;
     const record = [];
@@ -247,7 +247,7 @@ class Command {
     history.pushUndo(record);
     action.play(record);
   }
-  
+
   dockSide(side) {
     divider.setPosition(side);
   }
@@ -256,7 +256,7 @@ class Command {
     namenote.setThumbnailSize(size);
   }
 
-  // 
+  //
 
   do(item, data) {
     const arr = item.split('.');
@@ -271,7 +271,7 @@ class Command {
     }
   }
 
-  // 
+  //
 
   developerTools() {
     _runMain('developerTools');

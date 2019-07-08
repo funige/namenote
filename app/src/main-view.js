@@ -15,7 +15,7 @@ class MainView extends View {
     super(element);
     this.id = 'main';
 
-    this.enableSmoothScroll(this.element); //this.content;
+    this.enableSmoothScroll(this.element); // this.content;
     this.init();
   }
 
@@ -49,19 +49,22 @@ class MainView extends View {
   }
 
   initProject(project) {
-    if (config.getValue('multipage')) {
+    if (!config.getValue('multipage')) {
       $(this.element).html(`
-        <div class='content'></div>
         <div class='right-scroll-bar'></div>
         <div class='bottom-scroll-bar'></div>
         <div class='corner-box'></div>
-      `)
-      this.content = this.element.querySelector('.content');
-      
+        <div class='singlepage-content'></div>
+        <canvas class='scratch'></canvas>
+      `);
+      this.content = this.element.querySelector('.singlepage-content');
     } else {
-      $(this.element).html('');
-      this.content = this.element;
-    }      
+      $(this.element).html(`
+        <div class='multipage-content'></div>
+        <canvas class='scratch'></canvas>
+      `);
+      this.content = this.element.querySelector('.multipage-content');
+    }
     this.scratch.init(this.content);
 
     project.pages.forEach((page, index) => {
@@ -114,8 +117,8 @@ class MainView extends View {
   }
 
   getPageRect(index) {
-    const width = parseInt(this.project.canvasSize[0] * this.scale);
-    const height = parseInt(this.project.canvasSize[1] * this.scale);
+    const width = Math.round(this.project.canvasSize[0] * this.scale);
+    const height = Math.round(this.project.canvasSize[1] * this.scale);
     const margin = 50;
 
     const x = index * (width + margin) + margin;
@@ -136,7 +139,7 @@ class MainView extends View {
   }
 
   updatePage(pid, index, updateSteps) {
-    //LOG('updatePage', pid, index, updateSteps);
+    // LOG('updatePage', pid, index, updateSteps);
     const pd = this.pageData[pid];
     const rect = this.getPageRect(index);
 
@@ -162,7 +165,7 @@ class MainView extends View {
     return (1.0 / this.scale) >> 1;
   }
 
-  
+
   /* flipView() {
     if (!this.project) return
     this.flip = ~this.flip
@@ -203,9 +206,9 @@ class MainView extends View {
   initCurrentText() {
     this.project.currentTexts.forEach((tid) => {
       this.onAddCurrentText(tid);
-    })
+    });
   }
-  
+
   onSetCurrentPage(pid) {
     const pd = this.pageData[pid];
     if (pd && pd.element) {
@@ -228,7 +231,7 @@ class MainView extends View {
   onClearCurrentText() {
     this.project.currentTexts.forEach((tid) => {
       $('#p' + tid).removeClass('selected');
-    })
+    });
   }
 
   onresize() {

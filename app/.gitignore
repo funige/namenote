@@ -2,4 +2,7 @@
 *~
 node_modules
 js/bundle*.js
+base.css
+dist
+coverage
 

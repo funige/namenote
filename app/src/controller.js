@@ -6,7 +6,6 @@ const MIN_MOVE = 5;
 let moved = false;
 let stroke = false;
 
-
 class Controller {
   constructor() {
     this.api = 'pointer';
@@ -83,19 +82,45 @@ class Controller {
         }
       }
     }
+
+    //TEST
+    if (info.view === 'main' && !info.text) {
+      LOG('=ONDOWN=')
+
+      const scratch = namenote.mainView.scratch;
+
+      if (scratch.canvas) {
+        const canvas = scratch.canvas;
+        const x = this.x - scratch.offsetX;
+        const y = this.y - scratch.offsetY;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#0000ff';
+        ctx.fillRect(x, y, 10, 10);
+      }
+      stroke = true;
+    }
   }
 
   onUp(e) {
     const info = this.getTargetInfo(e.target);
     if (info.view === 'main' && info.text) {
       const tid = e.target.id;
-      LOG('constroller-- up', tid)
+      LOG('constroller-- up', tid);
+    }
+
+    //TEST
+    if (stroke) {
+      LOG('=ONUP=')
+      stroke = false;
     }
   }
 
   onMove(e) {
+    //TEST
+    if (stroke) {
+      LOG('=ONMOVE=')
+    }
   }
-
 
   getTargetInfo(target) {
     const info = { parents: [] };

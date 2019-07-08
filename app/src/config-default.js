@@ -1,8 +1,8 @@
 
 const configDefault = {
-//defaultPath: null,
-//defaultName: null,
-//defaultAuthor: null,
+// defaultPath: null,
+// defaultName: null,
+// defaultAuthor: null,
 
   // project.js
   thumbnailSize: 'middle',
@@ -10,7 +10,7 @@ const configDefault = {
   // divider.js
   sideBar: false,
   sideBarWidth: 250,
-  sideBarPosition: 'right',
+  sideBarPosition: 'left',
 
   // tablet-settings-form.js
   tabletCurveLeft: '0,0',

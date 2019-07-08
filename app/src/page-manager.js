@@ -19,8 +19,8 @@ class PageManager {
   }
 
   find(project, pid) {
-    return this.pages.find(page => ((page.project === project) &&
-                                    (page.pid === pid)))
+    return this.pages.find(page => ((page.project === project)
+                                    && (page.pid === pid)));
   }
 
   addPage(page) {

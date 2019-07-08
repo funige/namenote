@@ -19,7 +19,7 @@ body {
     width: 100%;
     height: 100%;
     min-height: 100%;
-    overflow: auto;
+    overflow: hidden;  //auto;
     
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -114,9 +114,8 @@ ul, li {
  
 .main-view .page {
     position: absolute;
-    box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.3), 3px 3px 5px 2px rgba(0,0,0,0.1);
-//  box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.1);
-//  outline: 1px solid rgba(0,0,0,0.3);
+    box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.3),
+                3px 3px 5px 2px rgba(0,0,0,0.1);
     z-index: 0;
     background-color: white;
 
@@ -133,8 +132,7 @@ ul, li {
 .main-view .page.selected {
     z-index: 1;
     outline: 3px solid rgba(133,191,253,1.0);
-    outline-offset: 3px;
-//  box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.3), 3px 3px 5px 2px rgba(0,0,0,0.1);
+    outline-offset: 1px;
 }
 
 .main-view .page .marks {
@@ -142,11 +140,34 @@ ul, li {
     transform-origin: top left;
 }
 
-.main-view .content {
+.main-view canvas.scratch {
+    position: absolute;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.main-view .multipage-content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: scroll;
+
+    &+ canvas.scratch {
+        width: 100%;
+        height: 100%;
+    }
+}
+.main-view .singlepage-content {
     width: calc(100% - 18px);
     height: calc(100% - 18px);
     position: absolute;
     overflow: hidden;
+
+    &+ canvas.scratch {
+        width: calc(100% - 18px);
+        height: calc(100% - 18px);
+    }
 }
 
 .main-view .right-scroll-bar {
@@ -264,11 +285,11 @@ textarea,
     overflow: hidden;
 }
 
-canvas.scratch {
+/*canvas.scratch {
+    position: relative;
     pointer-events: none;
-    background-color: red;
-    z-index :10000;
-}
+    z-index :10;
+}*/
 
 .wand {
     position: absolute;

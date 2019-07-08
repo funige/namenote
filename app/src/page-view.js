@@ -21,7 +21,7 @@ class PageView extends View {
         const from = this.project.currentPageIndex();
         command.removePage(this, from);
       },
-      size: () => { LOG('page size'); },
+      size: () => { LOG('page size'); }
     });
 
     this.enableSmoothScroll(this.content);
@@ -116,7 +116,7 @@ class PageView extends View {
 
   loadProject(project) {
     super.loadProject(project);
-    
+
     // Init project
     this.pageData = {};
     this.initProject(project);
@@ -144,7 +144,7 @@ class PageView extends View {
 
   initCurrentPage() {
     const pid = this.project.currentPage;
-    this.onSetCurrentPage(pid)
+    this.onSetCurrentPage(pid);
   }
 
   onSetCurrentPage(pid) {

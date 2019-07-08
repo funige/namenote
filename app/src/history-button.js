@@ -35,8 +35,8 @@ class HistoryButton {
   update() {
     const project = namenote.currentProject();
 
-    const hasUndo = project && history.hasUndo()
-    const hasRedo = project && history.hasRedo()
+    const hasUndo = project && history.hasUndo();
+    const hasRedo = project && history.hasRedo();
     $(undoButton).imageButton('disabled', !hasUndo);
     $(redoButton).imageButton('disabled', !hasRedo);
   }

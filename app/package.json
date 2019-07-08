@@ -4,7 +4,8 @@
   "description": "A hackable drawing notebook.",
   "main": "main.js",
   "scripts": {
-    "lint": "npx eslint src"
+    "lint": "eslint src",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,8 @@
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^1.0.4",
+    "jest": "^24.8.0",
+    "notify-send": "^0.1.2",
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
@@ -55,5 +58,11 @@
     "jszip": "^3.2.1",
     "mime-db": "^1.40.0",
     "pdfmake": "^0.1.56"
-  }
+  },
+  "browsers": [
+    "last 2 versions",
+    "ie >= 9",
+    "Android >= 4",
+    "ios_saf >= 8"
+  ]
 }

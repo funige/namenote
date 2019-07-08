@@ -146,7 +146,7 @@ class File {
     });
   }
 
-  // 
+  //
 
   async getProjectURL(url) {
     if (url.match(/\.namenote$/i)) return url;
@@ -176,7 +176,7 @@ class File {
       return maxPID;
     } catch (e) { ERROR(e); }
   }
-  
+
   getScheme(url) {
     const arr = url.split(':');
     return (arr.length > 1 && arr[0]) ? arr[0] : 'file';

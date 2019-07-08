@@ -24,7 +24,7 @@ class TextView extends View {
         const from = this.project.currentTextIndex();
         command.removeText(this, from, fromPID);
       },
-      size: () => { LOG('text size'); },
+      size: () => { LOG('text size'); }
     });
 
     this.enableSmoothScroll(this.content);
@@ -112,7 +112,7 @@ class TextView extends View {
           <ul class="dock-texts"></ul>
         </li>`)[0];
 
-    element.className = 'page'; //'textview-page';
+    element.className = 'page'; // 'textview-page';
     element.id = 'textview-page-' + pid;
     return element;
   }
@@ -123,7 +123,7 @@ class TextView extends View {
 
   async loadProject(project) {
     super.loadProject(project);
-    
+
     // Init project
     this.pageData = {};
     this.initProject(project);
@@ -141,9 +141,9 @@ class TextView extends View {
   initCurrentText() {
     this.project.currentTexts.forEach((tid) => {
       this.onAddCurrentText(tid);
-    })
+    });
   }
-  
+
   onSetCurrentPage(pid) {
     const pd = this.pageData[pid];
     if (pd && pd.element) {
@@ -166,9 +166,9 @@ class TextView extends View {
   onClearCurrentText() {
     this.project.currentTexts.forEach((tid) => {
       $('#t' + tid).removeClass('selected');
-    })
+    });
   }
-  
+
   onFocus(e) {
     const tid = e.target.id.replace(/^t/, '');
     this.project.clearCurrentText();
@@ -180,14 +180,14 @@ class TextView extends View {
     const element = document.getElementById(id);
     if (element) {
       const toText = Text.getHTML(element);
-        
+
       const pid = this.detectPID(element);
       const page = this.project.pages.find((page) => page.pid === pid);
       const index = this.project.findTextIndex(page, id);
 
       const fromText = page.texts.childNodes[index].outerHTML;
-        
-      if (fromText != toText) {
+
+      if (fromText !== toText) {
         ERROR('text edited!', fromText, toText);
         command.editText(this, toText, index, pid);
       }
