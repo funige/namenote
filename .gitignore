@@ -1,11 +1,8 @@
 .DS_Store
-Namenote.zip
-Namenote-trial.zip
-Namenote/*.zip
-Namenote-trial/*.zip
-drafts
-support
-wiki
-funige.github.io
-release-builds/*
+*~
+node_modules
+js/bundle*.js
+base.css
+dist
+coverage
 

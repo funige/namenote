@@ -1,0 +1,82 @@
+/**
+ * PageView
+ */
+
+.page-view {
+    width: 100%;
+    height: 100%;
+//  background-color: #f6f6f6;
+}
+
+.page-view .content {
+    height: calc(100% - 27px); //26px+borderTop
+    text-align: center;
+
+    width: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.page-view .content > li {
+    position: relative;
+    display: table;
+    table-layout: fixed;
+    
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #9e9e9e;
+    overflow: hidden;
+
+    &.selected {
+        background-color: #b0ddf8; //#b9cdf8;
+    }
+
+    &.disabled {
+        opacity: 0.3;
+    }
+}
+
+.page-view .content > li > div.count {
+    position: absolute;
+    width: 16px;
+    text-align: center;
+    left: 0;
+    top: 4px;
+}
+
+.page-view .content > li > div.sort-handle {
+    display: table-cell;
+    vertical-align: middle;
+
+    color: #eee;
+    width: 16px;
+    height: 100%;
+}
+
+.page-view .content > li .thumbnail {
+    display: table-cell;
+    vertical-align: middle;
+    pointer-events: none;
+
+    img {
+        border: 1px solid #555; //#aaa;
+        background-color: white;
+        margin: 4px 4px 0px 0px;
+    }
+}
+
+.page-view .content > li .digest {
+    display: table-cell;
+    vertical-align: bottom;
+
+    text-align: left;
+    white-space: nowrap;
+    opacity: 0.5;
+    padding-bottom: 4px;
+}
+
+.dialog .page-view {
+    border: 1px solid #9e9e9e;
+    background-color: white;
+}
+
