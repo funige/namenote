@@ -1,9 +1,11 @@
 
 # Namenote
+![](https://travis-ci.org/funige/namenote.svg?branch=master)
 
-　年内に「Namenote2」として再起動したいと思います。
+年内に「Namenote2」として再起動したいと思います。
 
-　お待ちを……
+お待ちを……
+
 
 <!--
 Namenoteは、漫画のネームを快適に書くために作られた新しいツールです。

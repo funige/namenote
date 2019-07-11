@@ -3,7 +3,6 @@ import { Text } from './text.js';
 import { file } from './file.js';
 
 //const JSZip = require('JSZip');
-
 const JSZip = require('jszip')
 
 class Page {
