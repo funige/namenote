@@ -5,6 +5,7 @@ global.$ = require('jquery');
 window.jQuery = $;
 require('jquery-ui-dist/jquery-ui');
 
+const raw_token = "xzg77AnvTaAAAAAAAAAAZrK_IvNqQ0DtQVXPAWnfnx0uCy8elMPFaL0l8oAaw-hx";
 const fileSystem = new DropboxFileSystem();
 const readdir = (url) => {
   return new Promise((resolve, reject) => {
@@ -21,7 +22,7 @@ test('auth', () => {
   localStorage.setItem('namenote/raw_token', "");
   expect(fileSystem.auth()).toBe(false);
 
-  localStorage.setItem('namenote/raw_token', "xzg77AnvTaAAAAAAAAAAZrK_IvNqQ0DtQVXPAWnfnx0uCy8elMPFaL0l8oAaw-hx");
+  localStorage.setItem('namenote/raw_token', raw_token);
   expect(fileSystem.auth()).toBe(true);
 });
 

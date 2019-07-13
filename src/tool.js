@@ -9,11 +9,11 @@ class Tool {
   }
 
   start() {
-    console.log(`[${this.name} start]`);
+    //console.log(`[${this.name} start]`);
   }
 
   stop() {
-    console.log(`[${this.name} stop]`);
+    //console.log(`[${this.name} stop]`);
   }
 
   onDown(e) {

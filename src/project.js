@@ -166,7 +166,7 @@ class Project {
     return { width: width, height: height };
   }
 
-
+  
   // Actions
 
   movePage(from, to) {

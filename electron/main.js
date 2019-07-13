@@ -1,12 +1,12 @@
 'use strict'
 
-require('./electron/menu.js')
-require('./electron/file.js')
+require('./menu.js')
+require('./file.js')
 
 const { app, BrowserWindow, ipcMain } = require('electron')
 const fs = require('fs')
 
-const packageData = JSON.parse(fs.readFileSync(`${__dirname}/package.json`));
+const packageData = JSON.parse(fs.readFileSync(`${__dirname}/../package.json`));
 const name = packageData.name
 const debug = packageData.version.match(/debug/i)
 
@@ -37,7 +37,7 @@ function createWindow () {
   win.setMenu(null)
   win.setAutoHideMenuBar(true)
   
-  win.loadURL(`file://${__dirname}/index-desktop.html`)
+  win.loadURL(`file://${__dirname}/../index-desktop.html`)
   
   if (debug) win.webContents.openDevTools()
 
@@ -51,7 +51,7 @@ function createWindow () {
 
 function getLocaleFunc () {
   const locale = app.getLocale()
-  const dictionary = require(`${__dirname}/js/lib/dictionary.js`).dictionary
+  const dictionary = require(`${__dirname}/../js/lib/dictionary.js`).dictionary
 
   for (let key in dictionary) {
     if (locale.indexOf(key) === 0) {
