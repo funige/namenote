@@ -10,7 +10,7 @@ import { dialog } from './dialog.js';
 import { flash } from './flash.js';
 import { file } from './file.js';
 import { history } from './history.js';
-import { Text, text } from './text.js';
+import { Text } from './text.js';
 
 import { projectManager } from './project-manager.js';
 import { toolManager } from './tool-manager.js';
@@ -40,8 +40,6 @@ class Namenote {
 
     this.file = file;
     this.ui = ui;
-
-    this.text = text; // debug
   }
 
   init() {
@@ -52,10 +50,10 @@ class Namenote {
     controller.init();
     ui.init();
 
-    this.mainView = new MainView($('.main-view')[0]);
-    this.textView = new TextView($('.text-view')[0]);
-    this.pageView = new PageView($('.page-view')[0]);
-    this.noteView = new NoteView($('.note-view')[0]);
+    this.mainView = new MainView(document.querySelector('.main-view'));
+    this.textView = new TextView(document.querySelector('.text-view'));
+    this.pageView = new PageView(document.querySelector('.page-view'));
+    this.noteView = new NoteView(document.querySelector('.note-view'));
 
     this.initBaseHandlers();
 
@@ -67,8 +65,6 @@ class Namenote {
       setTimeout(() => {
         if (dialog.isOpen() && dialog.current.onresize) {
           dialog.current.onresize(e);
-          //      } else {
-          //        if (this.onResize) this.onResize();
         }
         ui.update();
 

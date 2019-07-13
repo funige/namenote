@@ -49,18 +49,15 @@ class ToolManager {
   }
 
   onDown(e) {
-    const handler = this.currentTool().onDown;
-    if (handler) handler(e);
+    this.currentTool().onDown(e)
   }
 
   onUp(e) {
-    const handler = this.currentTool().onUp;
-    if (handler) handler(e);
+    this.currentTool().onUp(e)
   }
 
   onMove(e) {
-    const handler = this.currentTool().onMove;
-    if (handler) handler(e);
+    this.currentTool().onMove(e)
   }
 }
 

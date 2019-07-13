@@ -3,7 +3,9 @@ module.exports = {
   'env': {
     'node': false,
     'browser': true,
-    'jquery': true
+    'jquery': true,
+    'jest': true,
+    'es6': true
   },
   'globals': {
     'T': true,
@@ -17,10 +19,6 @@ module.exports = {
   'extends': [
     'airbnb-base/legacy'
   ],
-  
-  "env": {
-    "es6": true
-  },
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2017

@@ -2,8 +2,8 @@ import { namenote } from './namenote.js';
 import { Text } from './text.js';
 import { file } from './file.js';
 
-//const JSZip = require('JSZip');
-const JSZip = require('jszip')
+
+const JSZip = require('jszip');
 
 class Page {
   constructor(project, pid, isBlank) {

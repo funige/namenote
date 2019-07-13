@@ -67,7 +67,8 @@ gulp.task('build', gulp.series(
 
 gulp.task('default', function() {
   gulp.watch([
-    'index.html',
+    './package.json',
+    './index*.html',
     './sass/*.scss',
     './src/*.js',
     './js/lib/*.js',

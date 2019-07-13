@@ -1,6 +1,5 @@
 import { T } from './locale.js';
 
-
 // jQuery UI Custom Widgets
 
 class Widget {

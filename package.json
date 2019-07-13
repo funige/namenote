@@ -1,12 +1,13 @@
 {
   "name": "Namenote",
-  "version": "2.0.0-alpha.15",
-  "trial": true,
+  "version": "2.0.0-alpha.16",
+  "trial": false,
   "description": "A hackable drawing notebook.",
   "main": "main.js",
   "scripts": {
-    "lint": "eslint src",
-    "test": "jest"
+    "lint": "eslint src test",
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -58,6 +59,8 @@
     "end-of-stream": "^1.4.1",
     "fs-extra": "^7.0.1",
     "isomorphic-fetch": "^2.2.1",
+    "jquery": "^3.4.1",
+    "jquery-ui-dist": "^1.12.1",
     "jszip": "^3.2.1",
     "mime-db": "^1.40.0",
     "mousetrap": "^1.6.3",

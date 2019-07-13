@@ -1,4 +1,5 @@
 import { namenote } from './namenote.js';
+import { T } from './locale.js';
 import { FileSystem } from './file-system.js';
 
 import { flash } from './flash.js';

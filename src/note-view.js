@@ -4,15 +4,16 @@ import { projectManager } from './project-manager.js';
 
 
 class NoteView extends View {
-  constructor(element) {
-    super(element);
+  constructor(element, options) {
+    super(element, options);
     this.id = 'note';
 
     $(this.element).html(`
       <div class='content'></div>
       <ul class='thin-toolbar border-top'></ul>`);
     this.content = $(this.element).find('.content')[0];
-    this.footer = new ViewFooter($(this.element).find('.thin-toolbar')[0]);
+    this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'), {
+    });
 
     this.init();
   }

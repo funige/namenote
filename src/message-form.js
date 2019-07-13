@@ -1,5 +1,5 @@
 import { namenote } from './namenote.js';
-import { locale } from './locale.js';
+import { locale, T } from './locale.js';
 import { Form } from './form.js';
 
 const images = {

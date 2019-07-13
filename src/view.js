@@ -15,7 +15,10 @@ class View {
   }
 
   loadProject(project) {
-    if (this.project) this.project.removeView(this);
+    if (this.project) {
+      this.project.removeView(this);
+      this.onUnloadProject();
+    }
     this.project = project;
     if (!project) return;
     project.addView(this);
@@ -115,6 +118,9 @@ class View {
   }
 
   onClearCurrentText() {
+  }
+
+  onUnloadProject() {
   }
 }
 

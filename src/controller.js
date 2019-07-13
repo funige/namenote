@@ -96,12 +96,6 @@ class Controller {
       toolManager.onUp(e);
       stroke = false;
     }
-
-    /* const info = this.getTargetInfo(e.target);
-    if (info.view === 'main' && info.text) {
-      const tid = e.target.id;
-      console.log('constroller-- up', tid);
-    } */
   }
 
   onMove(e) {
