@@ -27,7 +27,7 @@ class ProjectManager {
 
   addProject(project) {
     this.projects.push(project);
-    namenote.noteView.update(project);
+    if (namenote.noteView) namenote.noteView.update(project);
   }
 }
 

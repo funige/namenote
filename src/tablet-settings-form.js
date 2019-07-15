@@ -115,6 +115,7 @@ class TabletSettingsForm extends Form {
     this.updateCanvas();
   }
 
+  
   updateCanvas() {
     const canvas = $('#tablet-curve')[0];
     const ctx = canvas.getContext('2d');

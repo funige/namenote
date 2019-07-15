@@ -6,6 +6,7 @@ class LocalFileSystem extends FileSystem {
   constructor() {
     super();
     this.fs = window.require('fs');
+//  this.fs = require('fs-extra');
     this.type = 'local';
   }
 

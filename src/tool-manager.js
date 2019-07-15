@@ -47,18 +47,6 @@ class ToolManager {
     const newTool = this.stack[0];
     newTool.start();
   }
-
-  onDown(e) {
-    this.currentTool().onDown(e)
-  }
-
-  onUp(e) {
-    this.currentTool().onUp(e)
-  }
-
-  onMove(e) {
-    this.currentTool().onMove(e)
-  }
 }
 
 const toolManager = new ToolManager();

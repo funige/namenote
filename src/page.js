@@ -61,12 +61,15 @@ class Page {
     const rect = project.getThumbnailSize();
     this.thumbnail = this.createCanvasElement(rect.width, rect.height);
     this.thumbnailCtx = this.thumbnail.getContext('2d');
-    this.thumbnailCtx.filter = 'none';
-    this.thumbnailCtx.imageSmoothingQuality = 'high';
-    this.thumbnailCtx.drawImage(this.canvas,
-      project.canvasSize[2] || 0, project.canvasSize[3] || 0,
-      project.canvasSize[0], project.canvasSize[1],
-      0, 0, rect.width, rect.height);
+    if (this.thumbnailCtx) {
+      this.thumbnailCtx.filter = 'none';
+      this.thumbnailCtx.imageSmoothingQuality = 'high';
+      this.thumbnailCtx.drawImage(
+        this.canvas,
+        project.canvasSize[2] || 0, project.canvasSize[3] || 0,
+        project.canvasSize[0], project.canvasSize[1],
+        0, 0, rect.width, rect.height);
+    }
   }
 
   createCanvasElement(width, height) {

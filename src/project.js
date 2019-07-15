@@ -44,7 +44,7 @@ class Project {
   init(data) {
     this.params = data.params;
     this.pids = data.pids;
-
+    
     shape.setDPI(this.params.dpi);
     this.pageSize = shape.topx(this.params.page_size || [257, 364]);
     this.canvasSize = shape.topx(this.params.canvas_size || this.params.export_size || [257, 364]);

@@ -22,9 +22,9 @@ class Controller {
     this.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY;
     this.pressure = e.pressure;
 
-    if (stroke) {
-      console.log(this.x, this.y, this.pressure);
-    }
+    //if (stroke) {
+    //  console.log(this.x, this.y, this.pressure);
+    //}
   }
 
   init() {
@@ -86,21 +86,21 @@ class Controller {
 
     // TEST
     if (info.view === 'main' && !info.text) {
-      toolManager.onDown(e);
+      toolManager.currentTool().onDown(e);
       stroke = true;
     }
   }
 
   onUp(e) {
     if (stroke) {
-      toolManager.onUp(e);
+      toolManager.currentTool().onUp(e);
       stroke = false;
     }
   }
 
   onMove(e) {
     if (stroke) {
-      toolManager.onMove(e);
+      toolManager.currentTool().onMove(e);
     }
   }
 
@@ -125,7 +125,7 @@ class Controller {
       target = target.parentNode;
     }
 
-    if (info.view) console.log('getTargetInfo', info);
+    //if (info.view) console.log('getTargetInfo', info);
     return info;
   }
 

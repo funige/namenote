@@ -22,6 +22,7 @@ class PenTool extends Tool {
   }
 
   onUp(e) {
+    this.scratch.submit();
   }
 
   onMove(e) {

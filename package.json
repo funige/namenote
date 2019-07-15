@@ -45,6 +45,7 @@
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^1.0.4",
     "jest": "^24.8.0",
+    "jest-canvas-mock": "^2.1.0",
     "notify-send": "^0.1.2",
     "vinyl-source-stream": "^2.0.0"
   },
@@ -70,5 +71,10 @@
     "ie >= 9",
     "Android >= 4",
     "ios_saf >= 8"
-  ]
+  ],
+  "jest": {
+    "setupFiles": [
+      "jest-canvas-mock"
+    ]
+  }
 }

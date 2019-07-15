@@ -10,7 +10,6 @@ test('read package.json', () => {
 
 test('find duplicate id', () => {
   const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
   document.body.innerHTML = `
     <div id='hoge'></div>
     <div id='hoge'></div>`;
