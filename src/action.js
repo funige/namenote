@@ -107,6 +107,16 @@ class Action {
     });
   }
 
+  doEditImage([fromImage, toImage, rect, pid, url] = []) {
+    const project = projectManager.find(url);
+    if (!project) return;
+
+    project.editImage(toImage, rect, pid);
+    project.views.forEach((view) => {
+      view.onEditImage(toImage, rect, pid);
+    });
+  }
+  
   //
   // undo* Actions
   //
@@ -137,6 +147,10 @@ class Action {
 
   undoEditText([fromText, toText, index, pid, url] = []) {
     this.doEditText([toText, fromText, index, pid, url]);
+  }
+
+  undoEditImage([fromImage, toImage, rect, pid, url] = []) {
+    this.doEditText([toImage, fromImage, rect, pid, url]);
   }
 }
 

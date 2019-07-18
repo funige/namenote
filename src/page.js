@@ -68,7 +68,8 @@ class Page {
         this.canvas,
         project.canvasSize[2] || 0, project.canvasSize[3] || 0,
         project.canvasSize[0], project.canvasSize[1],
-        0, 0, rect.width, rect.height);
+        0, 0, rect.width, rect.height
+      );
     }
   }
 
@@ -112,6 +113,13 @@ class Page {
     return result;
   }
 
+  getImage(rect) {
+    return this.canvasCtx.getImageData(rect.x, rect.y, rect.width, rect.height);
+  }
+
+  putImage(rect, image) {
+    this.canvasCtx.putImageData(image, rect.x, rect.y);
+  }
 
   digest() {
     if (!this.params || !this.params.text) return '';

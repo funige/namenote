@@ -1,4 +1,6 @@
 import { MessageForm } from './message-form.js';
+import { T } from './locale.js';
+
 
 class Dialog {
   constructor() {

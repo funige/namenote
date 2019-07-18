@@ -1,5 +1,5 @@
 import { namenote } from './namenote.js';
-import { locale } from './locale.js';
+import { locale, T } from './locale.js';
 import { dialog } from './dialog.js';
 import { file } from './file.js';
 import { recentURL } from './recent-url.js';

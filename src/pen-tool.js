@@ -11,18 +11,18 @@ class PenTool extends Tool {
 
   onDown(e) {
     if (!namenote.mainView) return;
-    this.scratch = namenote.mainView.scratch;
-    if (!this.scratch) return;
-    
-    if (this.scratch.canvas) {
-      this.ctx = this.scratch.canvas.getContext('2d');
+    this.drawingLayer = namenote.mainView.drawingLayer;
+    if (!this.drawingLayer) return;
+
+    if (this.drawingLayer.canvas) {
+      this.ctx = this.drawingLayer.canvas.getContext('2d');
       this.scale = namenote.mainView.scale;
       this.putPoint();
     }
   }
 
   onUp(e) {
-    this.scratch.submit();
+    this.drawingLayer.draw();
   }
 
   onMove(e) {
@@ -33,11 +33,11 @@ class PenTool extends Tool {
 
 
   putPoint() {
-    const x = controller.x - this.scratch.offsetX;
-    const y = controller.y - this.scratch.offsetY;
-    const width = 10 * this.scale;
-    this.ctx.fillStyle = '#0000ff';
-    this.ctx.fillRect(x, y, width, width);
+    const x = controller.x - this.drawingLayer.offsetX;
+    const y = controller.y - this.drawingLayer.offsetY;
+    const width = 5 * this.scale;
+    this.ctx.fillStyle = '#000000';
+    this.ctx.fillRect(x - width / 2, y - width / 2, width, width);
   }
 }
 

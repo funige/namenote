@@ -22,9 +22,9 @@ class Controller {
     this.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY;
     this.pressure = e.pressure;
 
-    //if (stroke) {
+    // if (stroke) {
     //  console.log(this.x, this.y, this.pressure);
-    //}
+    // }
   }
 
   init() {
@@ -125,7 +125,7 @@ class Controller {
       target = target.parentNode;
     }
 
-    //if (info.view) console.log('getTargetInfo', info);
+    // if (info.view) console.log('getTargetInfo', info);
     return info;
   }
 

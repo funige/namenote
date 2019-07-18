@@ -1,5 +1,4 @@
-import { namenote } from './namenote.js';
-import { locale } from './locale.js';
+import { locale, T } from './locale.js';
 import { config } from './config.js';
 import { Form } from './form.js';
 
@@ -21,9 +20,10 @@ function encodePosition(id) {
 }
 
 function limit(value, min, max) {
-  if (value < min) value = min;
-  if (value > max) value = max;
-  return value;
+  const result = value;
+  if (result < min) result = min;
+  if (result > max) result = max;
+  return result;
 }
 
 // //////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ class TabletSettingsForm extends Form {
     this.updateCanvas();
   }
 
-  
+
   updateCanvas() {
     const canvas = $('#tablet-curve')[0];
     const ctx = canvas.getContext('2d');

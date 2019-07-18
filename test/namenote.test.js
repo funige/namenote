@@ -13,9 +13,8 @@ test('find duplicate id', () => {
   document.body.innerHTML = `
     <div id='hoge'></div>
     <div id='hoge'></div>`;
-  namenote.findDuplicateID()
+  namenote.findDuplicateID();
   expect(console.error).toHaveBeenCalledTimes(1);
   expect(spy.mock.calls[0][0]).toContain('Multiple IDs #hoge');
   spy.mockRestore();
 });
-

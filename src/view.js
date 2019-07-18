@@ -3,6 +3,7 @@ class View {
   constructor(element, options) {
     this.element = element;
     this.options = options || {};
+    this.snapshots = {};
   }
 
   destructor() {
@@ -16,8 +17,8 @@ class View {
 
   loadProject(project) {
     if (this.project) {
+      this.onUnloadProject(this.project);
       this.project.removeView(this);
-      this.onUnloadProject();
     }
     this.project = project;
     if (!project) return;

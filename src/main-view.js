@@ -20,7 +20,7 @@ class MainView extends View {
   }
 
   init() {
-    this.scratch = new DrawingLayer();
+    this.drawingLayer = new DrawingLayer();
   }
 
   loadProject(project) {
@@ -43,9 +43,7 @@ class MainView extends View {
     this.pageData = {};
     this.initProject(project);
 
-    // Restore previous state
-    this.initCurrentPage();
-    this.initCurrentText();
+    this.onLoadProject(project);
   }
 
   initProject(project) {
@@ -55,17 +53,17 @@ class MainView extends View {
         <div class='bottom-scroll-bar'></div>
         <div class='corner-box'></div>
         <div class='singlepage-content'></div>
-        <canvas class='scratch'></canvas>
+        <canvas class='drawing-layer'></canvas>
       `);
       this.content = this.element.querySelector('.singlepage-content');
     } else {
       $(this.element).html(`
         <div class='multipage-content'></div>
-        <canvas class='scratch'></canvas>
+        <canvas class='drawing-layer'></canvas>
       `);
       this.content = this.element.querySelector('.multipage-content');
     }
-    this.scratch.init(this.content);
+    this.drawingLayer.init(this.content);
 
     project.pages.forEach((page, index) => {
       const pid = page.pid;
@@ -194,6 +192,8 @@ class MainView extends View {
   setPrintPreview(value) {
     if (config.updateValue('printPreview', value)) {
       console.log('update printPreview', config.getValue('printPreview'));
+
+      this.loadProject(this.project);
     }
   }
 
@@ -233,8 +233,27 @@ class MainView extends View {
     });
   }
 
+  onLoadProject(project) {
+    const snapshot = this.snapshots[project.url] || {};
+    this.content.scrollTop = snapshot.scrollTop || 0;
+    this.content.scrollLeft = snapshot.scrollLeft || 0;
+    this.scale = snapshot.scale || 1;
+    this.updateScale();
+
+    this.initCurrentPage();
+    this.initCurrentText();
+  }
+  
+  onUnloadProject(project) {
+    const snapshot = {};
+    snapshot.scale = this.scale;
+    snapshot.scrollLeft = this.content.scrollLeft;
+    snapshot.scrollTop = this.content.scrollTop;
+    this.snapshots[project.url] = snapshot;
+  }
+
   onresize() {
-    this.scratch.onresize();
+    this.drawingLayer.onresize();
   }
 }
 

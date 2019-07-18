@@ -123,8 +123,7 @@ class PageView extends View {
     console.log(this.options);
     if (this.options.loaded) this.options.loaded(url, project.url);
 
-    // Restore previous state
-    this.initCurrentPage();
+    this.onLoadProject(project);
   }
 
   showProgress(message) {
@@ -157,6 +156,19 @@ class PageView extends View {
     if (pd && pd.element) {
       $(pd.element).removeClass('selected');
     }
+  }
+
+  onLoadProject(project) {
+    const snapshot = this.snapshots[project.url] || {};
+    this.content.scrollTop = snapshot.scrollTop || 0;
+
+    this.initCurrentPage();
+  }
+
+  onUnloadProject(project) {
+    const snapshot = { scrollTop: this.content.scrollTop };
+    console.warn(snapshot);
+    this.snapshots[project.url] = snapshot;
   }
 }
 

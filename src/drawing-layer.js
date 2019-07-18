@@ -3,12 +3,12 @@
 class DrawingLayer {
   init(element) {
     this.element = element;
-    this.canvas = element.parentNode.querySelector('.scratch');
-    this.ctx = this.canvas.getContext('2d')
+    this.canvas = element.parentNode.querySelector('.drawing-layer');
+    this.ctx = this.canvas.getContext('2d');
     this.onresize();
   }
 
-  submit() {
+  draw() {
     this.clear();
   }
 

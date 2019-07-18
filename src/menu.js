@@ -2,10 +2,12 @@ import { namenote } from './namenote.js';
 import { menuTemplate } from './menu-template.js';
 import { recentURL } from './recent-url.js';
 import { htmlMenu } from './html-menu.js';
+import { config } from './config.js';
 import { projectManager } from './project-manager.js';
 
 let template;
 let states = {};
+let checks = {};
 
 const findSubmenu = (template, label) => {
   for (const item of template) {
@@ -38,10 +40,14 @@ const setChecked = (template, label, value) => {
   if (item) {
     value = !!(value);
 
-    if (value) {
-      item.type = 'checkbox';
-      item.checked = true;
-    }
+    item.checked = value;
+    checks[label] = value;
+
+// Native menu got broken...
+//  if (value) {
+//    item.type = 'checkbox';
+//    item.checked = true;
+//  }
   }
 };
 
@@ -58,9 +64,11 @@ class Menu {
   update() {
     template = JSON.parse(JSON.stringify(menuTemplate));
     states = {};
+    checks = {};
 
     this.updateRecents(template);
     this.updateStates(template);
+    this.updateChecks(template);
     this.rebuild(template);
   }
 
@@ -105,12 +113,20 @@ class Menu {
 
     setEnabled(template, 'Undo', isProject); // && project.history.hasUndo())
     setEnabled(template, 'Redo', isProject); // && project.history.hasRedo())
-
-    //  setChecked(template, 'Full Screen', true) // test
   }
 
+  updateChecks(template) {
+    setChecked(template, 'Dock', config.getValue('sideBar'));
+    setChecked(template, 'Print Preview', config.getValue('printPreview'));
+    setChecked(template, 'Multipage', config.getValue('multipage'));
+  }
+  
   getEnabled(label) {
     return states[label];
+  }
+
+  getChecked(label) {
+    return checks[label];
   }
 }
 

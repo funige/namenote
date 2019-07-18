@@ -80,12 +80,8 @@ const getLabel = (url) => {
   return `<span class="ui-icon ${label.icon}"></span>${label.text}`;
 };
 
-// TODO: HTMLMenuはNamenote3で全部書き直すこと
 
 class HTMLMenu {
-  constructor() {
-  }
-
   init() {
   }
 
@@ -159,6 +155,8 @@ class HTMLMenu {
   // //////////////
 
   update(element) {
+    nativeMenu.update();
+    
     const menu = element.childNodes[0];
     const id = element.id.replace(/-.*$/, '');
 
@@ -210,11 +208,15 @@ class HTMLMenu {
             item.classList.add('ui-state-disabled');
           }
         }
+        const check = nativeMenu.getChecked(label);
+        if (check !== undefined) {
+          item.querySelector('.check').innerHTML = (check) ? '&#x2714;' : '';
+        }
       }
     }
   }
 
-  // //////////////
+  // 
 
   select(event, ui) {
     const p = ui.item[0] && ui.item[0].getElementsByTagName('p')[0];

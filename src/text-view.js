@@ -128,9 +128,7 @@ class TextView extends View {
     this.pageData = {};
     this.initProject(project);
 
-    // Restore previous state
-    this.initCurrentPage();
-    this.initCurrentText();
+    this.onLoadProject(project);
   }
 
   initCurrentPage() {
@@ -199,6 +197,21 @@ class TextView extends View {
       }
     }
   }
+
+  onLoadProject(project) {
+    const snapshot = this.snapshots[project.url] || {};
+    this.content.scrollTop = snapshot.scrollTop || 0;
+
+    this.initCurrentPage();
+    this.initCurrentText();
+  }
+
+  onUnloadProject(project) {
+    const snapshot = { scrollTop: this.content.scrollTop };
+    console.warn(snapshot);
+    this.snapshots[project.url] = snapshot;
+  }
+
 }
 
 export { TextView };

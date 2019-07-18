@@ -1,6 +1,6 @@
 class Shape {
   parse() {}
-  
+
   setDPI(dpi) {
     this.dpi = dpi;
   }

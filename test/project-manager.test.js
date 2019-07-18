@@ -16,4 +16,3 @@ test('get', async () => {
   expect(project.params.page_count).toBe(15);
   expect(projectManager.projects.length).toBe(1);
 });
-

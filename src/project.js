@@ -44,7 +44,7 @@ class Project {
   init(data) {
     this.params = data.params;
     this.pids = data.pids;
-    
+
     shape.setDPI(this.params.dpi);
     this.pageSize = shape.topx(this.params.page_size || [257, 364]);
     this.canvasSize = shape.topx(this.params.canvas_size || this.params.export_size || [257, 364]);
@@ -108,9 +108,11 @@ class Project {
   }
 
   findTextIndex(page, id) {
-    const nodes = page.texts.childNodes;
-    for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].id === id) return i;
+    if (page) {
+      const nodes = page.texts.childNodes;
+      for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].id === id) return i;
+      }
     }
     return -1;
   }
@@ -166,7 +168,6 @@ class Project {
     return { width: width, height: height };
   }
 
-  
   // Actions
 
   movePage(from, to) {
@@ -228,10 +229,18 @@ class Project {
     const fromNode = page.texts.childNodes[index];
 
     const toNode = $(toText)[0];
-    $(toNode).removeClass('selected'); // TODO:他にもスケールを戻すとかいろいろある
-    console.log(toNode);
+    Text.cleanup(toNode);
+//  $(toNode).removeClass('selected');
+//  console.log(toNode);
 
     page.texts.replaceChild(toNode, fromNode);
+  }
+
+  editImage(toImage, rect, pid) {
+    const page = this.pages.find(page => page.pid === pid);
+    if (!page) return;
+
+    page.putImage(rect, toImage);
   }
 }
 

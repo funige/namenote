@@ -151,6 +151,11 @@ class Command {
     namenote.mainView.setMultipage(!value);
   }
 
+  togglePrintPreview() {
+    const value = config.getValue('printPreview');
+    namenote.mainView.setPrintPreview(!value);
+  }
+
   toggleEditMode() {}
 
   tabletSettings() {
@@ -246,6 +251,18 @@ class Command {
     action.play(record);
   }
 
+  editImage(sender, toImage, rect, pid) {
+    const project = sender.project;
+    const record = [];
+
+    const page = project.pages.find((page) => page.pid === pid);
+    const fromImage = page.getImage(rect);
+
+    record.push(['editImage', fromImage, toImage, rect, pid, project.url]);
+    history.pushUndo(record);
+    action.play(record);
+  }
+  
   dockSide(side) {
     divider.setPosition(side);
   }

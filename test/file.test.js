@@ -28,4 +28,3 @@ test('truncateURL returns display name for the project url', () => {
   expect(file.truncateURL('foo/bar/')).toBe('bar');
   expect(file.truncateURL('/foo/bar')).toBe('bar');
 });
-
