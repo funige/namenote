@@ -262,7 +262,7 @@ class Command {
     history.pushUndo(record);
     action.play(record);
   }
-  
+
   dockSide(side) {
     divider.setPosition(side);
   }

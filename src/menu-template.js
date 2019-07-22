@@ -8,12 +8,6 @@ const menuTemplate = [
       { label: 'Tablet Settings ...', click: 'tabletSettings' },
       { type: 'separator' },
       { label: 'Quit Namenote', click: 'quit' }
-
-      //    { label: 'Settings',
-      //	submenu: [
-      //	  { label: 'Reset Settings to Default', click: 'resetSettings' },
-      //	],
-      //    },
     ]
   },
   {
@@ -24,20 +18,8 @@ const menuTemplate = [
       { label: 'Open Recent', submenu: [] },
 
       { type: 'separator' },
-      //    { label: 'Close', click: 'close' },
-      //    { label: 'Close All', click: 'closeAll' },
-
-      //    { type: 'separator' },
-      //    { label: 'Note Settings ...', click: 'noteSettings' },
-
       { label: 'Save Snapshot As ...', click: 'snapshot' },
       { type: 'separator' },
-
-      //    { label: 'Import',
-      //	submenu: [
-      //	  { label: '.txt (Plain Text) ...', click: 'importTextDialog' },
-      //	],
-      //    },
       {
         label: 'Export',
         submenu: [
@@ -99,16 +81,8 @@ const fileMenuTemplate = [
   {
     label: 'Note',
     submenu: [
-      //    { label: 'Close', click: 'close' },
-      //    { label: 'Close All', click: 'closeAll' },
       { label: 'Save Snapshot As ...', click: 'snapshot' },
       { type: 'separator' },
-
-      //    { label: 'Import',
-      //	submenu: [
-      //	  { label: '.txt (Plain Text) ...', click: 'importTextDialog' },
-      //	],
-      //    },
       {
         label: 'Export',
         submenu: [

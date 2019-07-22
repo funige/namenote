@@ -10,7 +10,6 @@ import { dialog } from './dialog.js';
 import { flash } from './flash.js';
 import { file } from './file.js';
 import { history } from './history.js';
-import { Text } from './text.js';
 
 import { projectManager } from './project-manager.js';
 import { toolManager } from './tool-manager.js';
@@ -21,11 +20,12 @@ import { PageView } from './page-view.js';
 import { TextView } from './text-view.js';
 
 let maxID = 1;
+const packageJSON = require('../package.json');
 
 class Namenote {
   constructor() {
-    this.version = require('../package.json').version;
-    this.trial = require('../package.json').trial;
+    this.version = packageJSON.version;
+    this.trial = packageJSON.trial;
 
     this.config = config;
     this.shortcut = shortcut;

@@ -198,37 +198,41 @@ class MainView extends View {
   }
 
   initCurrentPage() {
-    const pid = this.project.currentPage;
-    this.onSetCurrentPage(pid);
+    const page = this.project.currentPage;
+    this.onSetCurrentPage(page);
   }
 
-  initCurrentText() {
-    this.project.currentTexts.forEach((tid) => {
-      this.onAddCurrentText(tid);
+  initCurrentTID() {
+    this.project.currentTID.forEach((tid) => {
+      this.onAddCurrentTID(tid);
     });
   }
 
-  onSetCurrentPage(pid) {
-    const pd = this.pageData[pid];
-    if (pd && pd.element) {
-      $(pd.element).addClass('selected');
+  onSetCurrentPage(page) {
+    if (page) {
+      const pd = this.pageData[page.pid];
+      if (pd && pd.element) {
+        $(pd.element).addClass('selected');
+      }
     }
   }
 
   onClearCurrentPage() {
-    const pid = this.project.currentPage;
-    const pd = this.pageData[pid];
-    if (pd && pd.element) {
-      $(pd.element).removeClass('selected');
+    const page = this.project.currentPage;
+    if (page) {
+      const pd = this.pageData[page.pid];
+      if (pd && pd.element) {
+        $(pd.element).removeClass('selected');
+      }
     }
   }
 
-  onAddCurrentText(tid) {
+  onAddCurrentTID(tid) {
     $('#p' + tid).addClass('selected');
   }
 
-  onClearCurrentText() {
-    this.project.currentTexts.forEach((tid) => {
+  onClearCurrentTID() {
+    this.project.currentTID.forEach((tid) => {
       $('#p' + tid).removeClass('selected');
     });
   }
@@ -241,15 +245,19 @@ class MainView extends View {
     this.updateScale();
 
     this.initCurrentPage();
-    this.initCurrentText();
+    this.initCurrentTID();
   }
-  
+
   onUnloadProject(project) {
     const snapshot = {};
     snapshot.scale = this.scale;
     snapshot.scrollLeft = this.content.scrollLeft;
     snapshot.scrollTop = this.content.scrollTop;
     this.snapshots[project.url] = snapshot;
+  }
+
+  onEditImage() {
+    this.loadProject(this.project);
   }
 
   onresize() {

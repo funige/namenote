@@ -5,7 +5,7 @@ import { toolManager } from './tool-manager.js';
 const MIN_MOVE = 5;
 
 let moved = false;
-let stroke = false;
+let stroke = null;
 
 class Controller {
   constructor() {
@@ -21,10 +21,6 @@ class Controller {
     this.x = (e.clientX !== undefined) ? e.clientX : e.touches[0].clientX;
     this.y = (e.clientY !== undefined) ? e.clientY : e.touches[0].clientY;
     this.pressure = e.pressure;
-
-    // if (stroke) {
-    //  console.log(this.x, this.y, this.pressure);
-    // }
   }
 
   init() {
@@ -79,28 +75,28 @@ class Controller {
       if (info.view) {
         const project = projectManager.find(info.projectURL);
         if (project) {
-          project.setCurrentPage(info.pid);
+          project.setCurrentPage(project.pages.find(page => page.pid === info.pid));
         }
       }
     }
 
-    // TEST
     if (info.view === 'main' && !info.text) {
-      toolManager.currentTool().onDown(e);
-      stroke = true;
+      stroke = [[this.x, this.y]];
+      toolManager.currentTool().onDown(this.x, this.y);
     }
   }
 
   onUp(e) {
     if (stroke) {
-      toolManager.currentTool().onUp(e);
-      stroke = false;
+      toolManager.currentTool().onUp(stroke);
+      stroke = null;
     }
   }
 
   onMove(e) {
     if (stroke) {
-      toolManager.currentTool().onMove(e);
+      stroke.push([this.x, this.y]);
+      toolManager.currentTool().onMove(this.x, this.y);
     }
   }
 

@@ -1,9 +1,7 @@
 import { namenote } from './namenote.js';
 import { menuTemplate } from './menu-template.js';
 import { recentURL } from './recent-url.js';
-import { htmlMenu } from './html-menu.js';
 import { config } from './config.js';
-import { projectManager } from './project-manager.js';
 
 let template;
 let states = {};
@@ -11,7 +9,7 @@ let checks = {};
 
 const findSubmenu = (template, label) => {
   for (const item of template) {
-    if (item.label == label) {
+    if (item.label === label) {
       return item;
     }
     if (item.submenu) {
@@ -43,20 +41,18 @@ const setChecked = (template, label, value) => {
     item.checked = value;
     checks[label] = value;
 
-// Native menu got broken...
-//  if (value) {
-//    item.type = 'checkbox';
-//    item.checked = true;
-//  }
+    /* Native menu got broken...
+    if (value) {
+      item.type = 'checkbox';
+      item.checked = true;
+    }
+    */
   }
 };
 
-// //////////////////////////////////////////////////////////////
+//
 
 class Menu {
-  constructor() {
-  }
-
   init() {
     this.update();
   }
@@ -120,7 +116,7 @@ class Menu {
     setChecked(template, 'Print Preview', config.getValue('printPreview'));
     setChecked(template, 'Multipage', config.getValue('multipage'));
   }
-  
+
   getEnabled(label) {
     return states[label];
   }

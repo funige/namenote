@@ -8,11 +8,9 @@ module.exports = {
     'es6': true
   },
   'globals': {
+    'global': true,
     'T': true,
     '$': true,
-    'LOG': true,
-    'WARN': true,
-    'ERROR': true,
     'Sortable': true,
     'Mousetrap': true
   },

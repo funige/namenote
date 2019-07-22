@@ -116,7 +116,7 @@ class Action {
       view.onEditImage(toImage, rect, pid);
     });
   }
-  
+
   //
   // undo* Actions
   //
@@ -150,7 +150,7 @@ class Action {
   }
 
   undoEditImage([fromImage, toImage, rect, pid, url] = []) {
-    this.doEditText([toImage, fromImage, rect, pid, url]);
+    this.doEditImage([toImage, fromImage, rect, pid, url]);
   }
 }
 

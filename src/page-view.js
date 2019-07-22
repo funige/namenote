@@ -139,22 +139,26 @@ class PageView extends View {
   }
 
   initCurrentPage() {
-    const pid = this.project.currentPage;
-    this.onSetCurrentPage(pid);
+    const page = this.project.currentPage;
+    this.onSetCurrentPage(page);
   }
 
-  onSetCurrentPage(pid) {
-    const pd = this.pageData[pid];
-    if (pd && pd.element) {
-      $(pd.element).addClass('selected');
+  onSetCurrentPage(page) {
+    if (page) {
+      const pd = this.pageData[page.pid];
+      if (pd && pd.element) {
+        $(pd.element).addClass('selected');
+      }
     }
   }
 
   onClearCurrentPage() {
-    const pid = this.project.currentPage;
-    const pd = this.pageData[pid];
-    if (pd && pd.element) {
-      $(pd.element).removeClass('selected');
+    const page = this.project.currentPage;
+    if (page) {
+      const pd = this.pageData[page.pid];
+      if (pd && pd.element) {
+        $(pd.element).removeClass('selected');
+      }
     }
   }
 

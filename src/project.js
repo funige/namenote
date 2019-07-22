@@ -25,7 +25,7 @@ class Project {
     this.views = [];
 
     this.currentPage = null;
-    this.currentTexts = [];
+    this.currentTID = [];
 
     if (json) {
       this.init(json);
@@ -67,39 +67,39 @@ class Project {
     });
   }
 
-  setCurrentPage(pid) {
-    console.log('set current page', pid);
-    if (this.currentPage !== pid) {
+  setCurrentPage(page) {
+    console.log('set current page', page);
+    if (this.currentPage !== page) {
       this.clearCurrentPage();
-      this.currentPage = pid;
-      this.views.forEach((view) => view.onSetCurrentPage(pid));
+      this.currentPage = page;
+      this.views.forEach((view) => view.onSetCurrentPage(page));
     }
   }
 
   clearCurrentPage() {
     console.log('clear current page');
     if (this.currentPage) {
-      this.clearCurrentText();
+      this.clearCurrentTID();
       this.views.forEach((view) => view.onClearCurrentPage());
       this.currentPage = null;
     }
   }
 
-  addCurrentText(tid) {
-    if (this.currentTexts.indexOf(tid) < 0) {
-      this.currentTexts.push(tid);
-      this.views.forEach((view) => view.onAddCurrentText(tid));
+  addCurrentTID(tid) {
+    if (this.currentTID.indexOf(tid) < 0) {
+      this.currentTID.push(tid);
+      this.views.forEach((view) => view.onAddCurrentTID(tid));
     }
   }
 
-  clearCurrentText() {
-    this.views.forEach((view) => view.onClearCurrentText());
-    this.currentTexts = [];
+  clearCurrentTID() {
+    this.views.forEach((view) => view.onClearCurrentTID());
+    this.currentTID = [];
   }
 
-  setCurrentText(tid) {
-    this.clearCurrentText();
-    this.addCurrentText(tid);
+  setCurrentTID(tid) {
+    this.clearCurrentTID();
+    this.addCurrentTID(tid);
   }
 
   getTID(node) {
@@ -118,13 +118,12 @@ class Project {
   }
 
   currentPageIndex() {
-    const pid = this.currentPage;
-    return this.pages.findIndex((page) => page.pid === pid);
+    return this.pages.indexOf(this.currentPage);
   }
 
   currentTextIndex() {
-    const id = 'p' + this.currentTexts[0];
-    const page = this.pages.find((page) => page.pid === this.currentPage);
+    const id = 'p' + this.currentTID[0];
+    const page = this.currentPage;
     return this.findTextIndex(page, id);
   }
 
@@ -178,7 +177,7 @@ class Project {
   addPage(pid, to) {
     const page = pageManager.get(this, pid);
     this.pages.splice(to, 0, page);
-    this.setCurrentPage(pid);
+    this.setCurrentPage(this.pages.find(page => page.pid === pid));
   }
 
   removePage(pid, from) {
@@ -186,7 +185,7 @@ class Project {
     this.pages.splice(from, 1)[0];
 
     const index = (from > 0) ? (from - 1) : 0;
-    this.setCurrentPage(this.pages[index].pid);
+    this.setCurrentPage(this.pages[index]);
   }
 
   moveText(from, to, fromPID, toPID) {
@@ -206,7 +205,7 @@ class Project {
     const node = $(text)[0];
     toPage.texts.insertBefore(node, toPage.texts.childNodes[to]);
 
-    this.setCurrentText(this.getTID(node));
+    this.setCurrentTID(this.getTID(node));
   }
 
   removeText(text, from, fromPID) {
@@ -218,7 +217,7 @@ class Project {
 
     if (fromPage.texts.childNodes.length > 0) {
       const index = (from > 0) ? from - 1 : 0;
-      this.setCurrentText(this.getTID(fromPage.texts.childNodes[index]));
+      this.setCurrentTID(this.getTID(fromPage.texts.childNodes[index]));
     }
   }
 
@@ -227,12 +226,7 @@ class Project {
     if (!page) return;
 
     const fromNode = page.texts.childNodes[index];
-
-    const toNode = $(toText)[0];
-    Text.cleanup(toNode);
-//  $(toNode).removeClass('selected');
-//  console.log(toNode);
-
+    const toNode = Text.cleanup($(toText)[0]);
     page.texts.replaceChild(toNode, fromNode);
   }
 

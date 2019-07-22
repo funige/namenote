@@ -1,4 +1,3 @@
-import { dialog } from './dialog.js';
 import { file } from './file.js';
 import { locale, T } from './locale.js';
 import { Finder } from './finder.js';
@@ -36,8 +35,8 @@ class OpenNewForm extends Form {
 
             <tr><td style='height: 1em;'>
             <tr><td>T(Template):
-	      <td><select name='tmpl' class='tmpl'>
-	        <option value='Manga'>T(Manga)</select>
+              <td><select name='tmpl' class='tmpl'>
+                <option value='Manga'>T(Manga)</select>
 
             <tr><td>T(Binding point):
               <td><label><input name='bind' type='radio' value=0>T(Left binding)</label>

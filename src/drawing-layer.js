@@ -1,4 +1,4 @@
-
+import { namenote } from './namenote.js';
 
 class DrawingLayer {
   init(element) {
@@ -6,10 +6,6 @@ class DrawingLayer {
     this.canvas = element.parentNode.querySelector('.drawing-layer');
     this.ctx = this.canvas.getContext('2d');
     this.onresize();
-  }
-
-  draw() {
-    this.clear();
   }
 
   clear() {
@@ -38,6 +34,9 @@ class DrawingLayer {
       element = element.parentNode;
     }
     return [x, y];
+  }
+
+  draw(stroke) {
   }
 }
 

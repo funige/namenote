@@ -21,17 +21,20 @@ class Shortcut {
         console.log('keycode=', e.keyCode, e);
 
         if (e.ctrlKey && !e.shiftKey && !e.metaKey) {
-	  switch (e.keyCode) {
-	  case 71: // ctrl+g
-	  case 188: // ctrl+,
-	  case 190: // ctrl+.
-	  case 221: // ctrl+]
-	    return false;
-	  }
+          switch (e.keyCode) {
+            case 71: // ctrl+g
+            case 188: // ctrl+,
+            case 190: // ctrl+.
+            case 221: // ctrl+]
+              return false;
+
+            default:
+              break;
+          }
         }
 
-        if (e.keyCode == 9) { // TAB
-	  return false;
+        if (e.keyCode === 9) { // TAB
+          return false;
         }
         return true;
       }
@@ -63,25 +66,24 @@ class Shortcut {
       const key = this.data[item];
       const handler = command[item];
 
-      if (item == 'developerTools') continue;
+      if (item !== 'developerTools') {
+        if (handler) {
+          console.log(`'${item}`);
 
-      if (handler) {
-        console.log(`'${item}`);
+          Mousetrap.bind(key, (e) => {
+            command.prev = command.current;
+            command.current = item;
 
-        Mousetrap.bind(key, (e) => {
-	  command.prev = command.current;
-	  command.current = item;
-
-          if (!dialog.isOpen()) {
-	    console.log(`*${item}*`);
-            handler();
-          }
-          return false;
-          //	  handler()
-          //	  return (dialog.isOpen()) ? true : false
-        }, 'keydown');
-      } else {
-        console.log(`'${item}': no such command`);
+            if (!dialog.isOpen()) {
+              console.log(`*${item}*`);
+              handler();
+            }
+            return false;
+            // return (dialog.isOpen()) ? true : false
+          }, 'keydown');
+        } else {
+          console.log(`'${item}': no such command`);
+        }
       }
     }
 
@@ -98,7 +100,7 @@ class Shortcut {
 
     //  Mousetrap.bind('space', (e) => {
     //    if (!Controller.isMoved()) {
-    //	command.quickZoom();
+    //      command.quickZoom();
     //    }
     //    return false;
     //  }, 'keyup')

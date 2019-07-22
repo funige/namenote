@@ -109,16 +109,21 @@ class View {
     this.loadProject(this.project);
   }
 
-  onSetCurrentPage(pid) {
+  onEditImage(toImage, rect, pid) {
+    console.log('edit image', toImage, rect, pid);
+    this.loadProject(this.project);
+  }
+
+  onSetCurrentPage(page) {
   }
 
   onClearCurrentPage() {
   }
 
-  onAddCurrentText(tid) {
+  onAddCurrentTID(tid) {
   }
 
-  onClearCurrentText() {
+  onClearCurrentTID() {
   }
 
   onUnloadProject() {

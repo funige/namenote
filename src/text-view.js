@@ -132,41 +132,45 @@ class TextView extends View {
   }
 
   initCurrentPage() {
-    const pid = this.project.currentPage;
-    this.onSetCurrentPage(pid);
+    const page = this.project.currentPage;
+    this.onSetCurrentPage(page);
   }
 
-  initCurrentText() {
-    this.project.currentTexts.forEach((tid) => {
-      this.onAddCurrentText(tid);
+  initCurrentTID() {
+    this.project.currentTID.forEach((tid) => {
+      this.onAddCurrentTID(tid);
     });
   }
 
-  onSetCurrentPage(pid) {
-    const pd = this.pageData[pid];
-    if (pd && pd.element) {
-      const tmp = $(pd.element);
-      tmp.addClass('selected');
+  onSetCurrentPage(page) {
+    if (page) {
+      const pd = this.pageData[page.pid];
+      if (pd && pd.element) {
+        const tmp = $(pd.element);
+        tmp.addClass('selected');
+      }
     }
   }
 
   onClearCurrentPage() {
-    const pid = this.project.currentPage;
-    const pd = this.pageData[pid];
-    if (pd && pd.element) {
-      const tmp = $(pd.element);
-      tmp.removeClass('selected');
+    const page = this.project.currentPage;
+    if (page) {
+      const pd = this.pageData[page.pid];
+      if (pd && pd.element) {
+        const tmp = $(pd.element);
+        tmp.removeClass('selected');
+      }
     }
   }
 
-  onAddCurrentText(tid) {
+  onAddCurrentTID(tid) {
     const tmp = $('#t' + tid);
     tmp.addClass('selected');
     tmp.prev().addClass('selected');
   }
 
-  onClearCurrentText() {
-    this.project.currentTexts.forEach((tid) => {
+  onClearCurrentTID() {
+    this.project.currentTID.forEach((tid) => {
       const tmp = $('#t' + tid);
       tmp.removeClass('selected');
       tmp.prev().removeClass('selected');
@@ -175,8 +179,8 @@ class TextView extends View {
 
   onFocus(e) {
     const tid = e.target.id.replace(/^t/, '');
-    this.project.clearCurrentText();
-    this.project.addCurrentText(tid);
+    this.project.clearCurrentTID();
+    this.project.addCurrentTID(tid);
   }
 
   onBlur(e) {
@@ -203,7 +207,7 @@ class TextView extends View {
     this.content.scrollTop = snapshot.scrollTop || 0;
 
     this.initCurrentPage();
-    this.initCurrentText();
+    this.initCurrentTID();
   }
 
   onUnloadProject(project) {
@@ -211,7 +215,6 @@ class TextView extends View {
     console.warn(snapshot);
     this.snapshots[project.url] = snapshot;
   }
-
 }
 
 export { TextView };

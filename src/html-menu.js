@@ -41,14 +41,17 @@ const appendAttribute = (div, data, click) => {
 };
 
 const appendKey = (string, key, check) => {
-  check = (check) ? '&#x2714;' : '';
   key = convertKey(key) || '&nbsp;';
 
   const result = `
-    <div class='check'>${check}</div>
+    <div class='check'>${checkIcon(check)}</div>
     <div class='label'>${string}</div>
     <div class='key'>${key}</div>`;
   return result;
+};
+
+const checkIcon = (check) => {
+  return (check) ? '<span class="ui-icon ui-icon-check"></span>' : ''; // '&#x2714;';
 };
 
 const convertKey = (key) => {
@@ -156,7 +159,7 @@ class HTMLMenu {
 
   update(element) {
     nativeMenu.update();
-    
+
     const menu = element.childNodes[0];
     const id = element.id.replace(/-.*$/, '');
 
@@ -210,13 +213,13 @@ class HTMLMenu {
         }
         const check = nativeMenu.getChecked(label);
         if (check !== undefined) {
-          item.querySelector('.check').innerHTML = (check) ? '&#x2714;' : '';
+          item.querySelector('.check').innerHTML = checkIcon(check);
         }
       }
     }
   }
 
-  // 
+  //
 
   select(event, ui) {
     const p = ui.item[0] && ui.item[0].getElementsByTagName('p')[0];
