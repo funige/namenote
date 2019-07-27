@@ -16,7 +16,7 @@ class ViewFooter {
     const appendButton = Widget.createImageButton({
       src: 'img/zoom-button.png',
       click: () => {
-        if (this.options.append) this.options.append();
+        this.options.append();
       },
       float: 'left'
     });
@@ -24,7 +24,7 @@ class ViewFooter {
     const trashButton = Widget.createImageButton({
       src: 'img/redo-button.png',
       click: () => {
-        if (this.options.trash) this.options.trash();
+        this.options.trash();
       },
       float: 'left'
     });
@@ -32,14 +32,14 @@ class ViewFooter {
     const sizeButton = Widget.createImageButton({
       src: 'img/flip-button.png',
       click: () => {
-        if (this.options.size) this.options.size();
+        this.options.size();
       },
       float: 'right'
     });
 
-    this.element.appendChild(appendButton);
-    this.element.appendChild(trashButton);
-    this.element.appendChild(sizeButton);
+    if (this.options.append) this.element.appendChild(appendButton);
+    if (this.options.trash) this.element.appendChild(trashButton);
+    if (this.options.size) this.element.appendChild(sizeButton);
   }
 }
 

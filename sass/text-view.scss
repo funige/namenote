@@ -15,12 +15,14 @@
 
     overflow: scroll;
     overflow-x: hidden;
+    background-color: #ccc;
 }
 
 .text-view .content > li {
     display: table;
     table-layout: auto; //fixed;
     min-width: 100%;
+    background-color: #f6f6f6;
 
     &.selected {
         background-color: #b0ddf8; //#b9cdf8;

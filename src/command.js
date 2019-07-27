@@ -4,6 +4,7 @@ import { divider } from './divider.js';
 import { toolButton } from './tool-button.js';
 import { dockTab } from './dock-tab.js';
 import { projectManager } from './project-manager.js';
+import { pageManager } from './page-manager.js';
 import { toolManager } from './tool-manager.js';
 import { flash } from './flash.js';
 import { file } from './file.js';
@@ -29,7 +30,7 @@ const _runMain = (message, data) => {
   }
 };
 
-// //////////////////////////////////////////////////////////////
+//
 
 class Command {
   constructor() {
@@ -95,6 +96,7 @@ class Command {
     $(namenote.pageView.element).hide();
     $(namenote.textView.element).hide();
     dockTab.select('note');
+    namenote.noteView.onShow();
   }
 
   openNewDialog() {
@@ -215,7 +217,7 @@ class Command {
     const project = sender.project;
     const record = [];
 
-    const page = project.pages.find((page) => page.pid === toPID);
+    const page = pageManager.find(project, toPID);
     const index = (to >= 0) ? to : page.texts.childNodes.length - 1;
     const text = Text.createNext(page.texts.childNodes[index]);
     console.log(text);
@@ -229,7 +231,7 @@ class Command {
     const project = sender.project;
     const record = [];
 
-    const page = project.pages.find((page) => page.pid === fromPID);
+    const page = pageManager.find(project, fromPID);
     const index = (from >= 0) ? from : page.texts.childNodes.length - 1;
     const text = page.texts.childNodes[index].outerHTML;
     console.log(text);
@@ -243,7 +245,7 @@ class Command {
     const project = sender.project;
     const record = [];
 
-    const page = project.pages.find((page) => page.pid === pid);
+    const page = pageManager.find(project, pid);
     const fromText = page.texts.childNodes[index].outerHTML;
 
     record.push(['editText', fromText, toText, index, pid, project.url]);
@@ -255,7 +257,7 @@ class Command {
     const project = sender.project;
     const record = [];
 
-    const page = project.pages.find((page) => page.pid === pid);
+    const page = pageManager.find(project, pid);
     const fromImage = page.getImage(rect);
 
     record.push(['editImage', fromImage, toImage, rect, pid, project.url]);

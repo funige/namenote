@@ -30,9 +30,7 @@ class File {
     dialog.close();
 
     if (project) {
-      namenote.mainView.loadProject(project);
-      namenote.pageView.loadProject(project);
-      namenote.textView.loadProject(project);
+      namenote.loadProject(project);
     }
   }
 
@@ -43,9 +41,7 @@ class File {
     const projectURL = await this.getProjectURL(url);
     if (projectURL) {
       const project = await projectManager.get(projectURL);
-      namenote.mainView.loadProject(project);
-      namenote.pageView.loadProject(project);
-      namenote.textView.loadProject(project);
+      namenote.loadProject(project);
     }
   }
 
@@ -92,9 +88,7 @@ class File {
 
     const project = null; // ここで新規プロジェクト作成……
     if (project) {
-      namenote.mainView.loadProject(project);
-      namenote.pageView.loadProject(project);
-      namenote.textView.loadProject(project);
+      namenote.loadProject(project);
     }
   }
 

@@ -5,18 +5,93 @@
 .note-view {
     width: 100%;
     height: 100%;
-    background-color: #f6f6f6;
 }
 
 .note-view .content {
     height: calc(100% - 27px);
-
+    text-align: center;
+    
     width: 100%;
     overflow: scroll;
+    overflow-x: hidden;
+    background-color: #ccc;
 }
 
 .note-view .content > li {
-    border-bottom: 1px solid #ccc;
+    position: relative;
+    display: table;
+    table-layout: fixed;
+
+    width: 100%;
+    height: 10px;
+
+    border: none;
+    border-bottom: 1px solid #9e9e9e;
     overflow: hidden;
+    background-color: #f6f6f6;
+
+    &.selected {
+        background-color: #b0ddf8;
+    }
+
+    &.disalbe {
+        opacity: 0.3;
+    }
+}
+
+.note-view .content > li > .sort-handle {
+    display: table-cell;
+    vertical-align: middle;
+    
+    color: #eee;
+    width: 16px;
+    height: 100%;
+}
+
+.note-view .content > li .thumbnail {
+    display: table-cell;
+    vertical-align: middle;
+    pointer-events: none;
+
+    img {
+        position: relative;
+        display: block;
+        border: 1px solid #555;
+        background-color: white;
+
+        margin-top: 4px;
+        margin-bottom: 4px;
+        margin-right: 0px;
+        margin-left: 0;
+    }
+}
+
+.note-view .content > li .info {
+    display: table-cell;
+    vertical-align: bottom;
+    
+    text-align: left;
+    white-space: nowrap;
+    padding-bottom: 4px;
+
+    .info-title {
+        position: absolute;
+        top: 4px;
+    }
+    .info-detail {
+        position: absolute;
+        bottom: 4px;
+        opacity: 0.5;
+    }
+}
+
+.note-view .content > li .digest {
+    display: table-cell;
+    vertical-align: bottom;
+    
+    text-align: left;
+    white-space: nowrap;
+    opacity: 0.5;
+    padding-bottom: 4px;
 }
 

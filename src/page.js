@@ -6,18 +6,14 @@ import { file } from './file.js';
 const JSZip = require('jszip');
 
 class Page {
-  constructor(project, pid, isBlank) {
+  constructor(project, pid) {
     this.pid = pid;
     this.project = project;
-    this.width = project.pageSize[0];
-    this.height = project.pageSize[1];
+    this.width = project.pageSize.width;
+    this.height = project.pageSize.height;
 
-    if (isBlank) {
-      this.initBlank();
-    } else {
-      const url = `${project.baseURL}/${pid}.json`;
-      this.load(url);
-    }
+    const url = `${project.baseURL}/${pid}.json`;
+    this.load(url);
   }
 
   destructor() {
@@ -45,7 +41,7 @@ class Page {
     this.canvas = this.createCanvasElement(this.width, this.height);
     this.canvasCtx = this.canvas.getContext('2d');
     await this.unzip(this.canvasCtx);
-    this.updateThumbnail(this.project);
+    this.updateThumbnail();
     this.texts = this.getTexts(this.params.text);
   }
 
@@ -53,24 +49,23 @@ class Page {
     this.params = {}; // text: '' };
     this.canvas = this.createCanvasElement(this.width, this.height);
     this.canvasCtx = this.canvas.getContext('2d');
-    this.updateThumbnail(this.project);
+    this.updateThumbnail();
     this.texts = this.getTexts(this.params.text);
   }
 
-  updateThumbnail(project) {
-    const rect = project.getThumbnailSize();
+  updateThumbnail() {
+    const rect = this.project.getThumbnailSize();
     this.thumbnail = this.createCanvasElement(rect.width, rect.height);
     this.thumbnailCtx = this.thumbnail.getContext('2d');
-    if (this.thumbnailCtx) {
-      this.thumbnailCtx.filter = 'none';
-      this.thumbnailCtx.imageSmoothingQuality = 'high';
-      this.thumbnailCtx.drawImage(
-        this.canvas,
-        project.canvasSize[2] || 0, project.canvasSize[3] || 0,
-        project.canvasSize[0], project.canvasSize[1],
-        0, 0, rect.width, rect.height
-      );
-    }
+    this.thumbnailCtx.imageSmoothingQuality = 'high';
+    this.thumbnailCtx.drawImage(
+      this.canvas,
+      this.project.canvasSize.x || 0,
+      this.project.canvasSize.y || 0,
+      this.project.canvasSize.width,
+      this.project.canvasSize.height,
+      0, 0, rect.width, rect.height
+    );
   }
 
   createCanvasElement(width, height) {

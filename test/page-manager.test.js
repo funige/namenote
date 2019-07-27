@@ -8,10 +8,10 @@ window.jQuery = $;
 require('jquery-ui-dist/jquery-ui');
 
 test('get', async () => {
-  const project = await projectManager.get('dropbox:///mock/mock.namenote');
-  expect(pageManager.pages.length).toBe(project.params.page_count);
+  const url = 'dropbox:///mock/mock.namenote'
+  const project = await projectManager.get(url);
+  expect(pageManager.pages[url][1234]).not.toBeDefined();
 
   const page = pageManager.get(project, 1234);
-  expect(page.pid).toBe(1234);
-  expect(pageManager.pages.length).toBe(project.params.page_count + 1);
+  expect(pageManager.pages[url][1234]).toBe(page)
 });

@@ -19,6 +19,7 @@ class OpenForm extends Form {
 
   destructor() {
     this.pageView.destructor();
+    this.pageView = null;
     this.element = null;
   }
 
@@ -60,6 +61,7 @@ class OpenForm extends Form {
 
       const preview = this.element.querySelector('.page-view');
       this.pageView = new PageView(preview, {
+        thumbnailSize: 'small',
         loaded: (url, projectURL) => {
           this.finder.updateFolders(url, projectURL);
         }

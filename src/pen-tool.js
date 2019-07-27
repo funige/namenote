@@ -49,7 +49,6 @@ class PenTool extends Tool {
     const project = mainView.project;
     if (!project) return;
 
-    const scale = mainView.scale;
     const page = project.currentPage;
     if (!page) return;
 
@@ -59,7 +58,7 @@ class PenTool extends Tool {
 
     const dx = this.drawingLayer.offsetX + pageOffsetX;
     const dy = this.drawingLayer.offsetY + pageOffsetY;
-
+    const scale = mainView.scale;
     stroke.map(point => {
       point[0] = (point[0] - dx) / scale;
       point[1] = (point[1] - dy) / scale;
@@ -68,24 +67,25 @@ class PenTool extends Tool {
     const width = 5;
     const rect = this.getBound(stroke, width);
     const fromImage = page.getImage(rect);
-    
+
     stroke.forEach(point => {
       page.canvasCtx.fillStyle = '#000000';
       page.canvasCtx.fillRect(point[0] - width/2, point[1] - width/2, width, width);
     });
+    page.updateThumbnail(project);
 
     const toImage = page.getImage(rect);
-    const blankImage = fromImage; //とりあえず
     const pid = page.pid;
     const url = project.url;
 
     const record = [];
     record.push(['editImage', fromImage, toImage, rect, pid, url]);
-    console.warn(record);
     history.pushUndo(record);
-    //action.play(record);
-    mainView.onEditImage(toImage, rect, pid);
 
+    project.views.forEach((view) => {
+      view.onEditImage(toImage, rect, pid);
+    });
+    
     this.drawingLayer.clear();
   }
 

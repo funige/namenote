@@ -1,5 +1,6 @@
 import { namenote } from './namenote.js';
 import { projectManager } from './project-manager.js';
+import { pageManager } from './page-manager.js';
 import { toolManager } from './tool-manager.js';
 
 const MIN_MOVE = 5;
@@ -69,13 +70,19 @@ class Controller {
 
   onDown(e) {
     const info = this.getTargetInfo(e.target);
-    console.log('[onDown]', info);
+    //console.log('[onDown]', info);
 
-    if (info.pid) {
-      if (info.view) {
-        const project = projectManager.find(info.projectURL);
-        if (project) {
-          project.setCurrentPage(project.pages.find(page => page.pid === info.pid));
+    if (info.view) {
+      const project = projectManager.find(info.projectURL);
+      if (project) {
+        if (info.pid) {
+          project.setCurrentPage(pageManager.find(project, info.pid));
+
+        } else if (info.view === 'note') {
+          namenote.mainView.loadProject(project);
+          namenote.pageView.loadProject(project);
+          namenote.textView.loadProject(project);
+          namenote.noteView.loadProjects();
         }
       }
     }
@@ -110,18 +117,23 @@ class Controller {
       if (target.className && target.classList.contains('page')) {
         info.pid = namenote.mainView.detectPID(target);
       }
+      if (target.className && target.classList.contains('project')) {
+        info.projectURL = target.alt;
+      }
 
+      
       if (target.className === 'main-view'
           || target.className === 'page-view'
-          || target.className === 'text-view') {
+          || target.className === 'text-view'
+          || target.className === 'note-view') {
         info.view = target.className.replace(/-view$/, '');
-        info.projectURL = target.alt;
+        info.projectURL = info.projectURL || target.alt;
         break;
       }
       target = target.parentNode;
     }
 
-    // if (info.view) console.log('getTargetInfo', info);
+    if (info.view) console.log('getTargetInfo', info); //test
     return info;
   }
 

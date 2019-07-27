@@ -12,6 +12,7 @@ import { file } from './file.js';
 import { history } from './history.js';
 
 import { projectManager } from './project-manager.js';
+import { pageManager } from './page-manager.js';
 import { toolManager } from './tool-manager.js';
 
 import { MainView } from './main-view.js';
@@ -36,6 +37,7 @@ class Namenote {
     this.history = history;
 
     this.projectManager = projectManager;
+    this.pageManager = pageManager;
     this.toolManager = toolManager;
 
     this.file = file;
@@ -84,6 +86,13 @@ class Namenote {
     return this.mainView && this.mainView.project;
   }
 
+  loadProject(project) {
+    this.mainView.loadProject(project);
+    this.pageView.loadProject(project);
+    this.textView.loadProject(project);
+    this.noteView.loadProjects();
+  }
+  
   isMac() {
     return navigator.platform.indexOf('Mac');
   }

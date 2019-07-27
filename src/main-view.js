@@ -6,9 +6,9 @@ import { title } from './title.js';
 import { config } from './config.js';
 import { viewButton } from './view-button.js';
 import { DrawingLayer } from './drawing-layer.js';
+import { pageManager } from './page-manager.js';
 
 // $('.main-view')[0].parentNode.scrollTop = ...
-
 
 class MainView extends View {
   constructor(element) {
@@ -76,7 +76,7 @@ class MainView extends View {
       if (page.loaded()) {
         this.initPage(page);
       }
-      this.updatePage(pid, index);
+      this.setPageRect(pid, index);
     });
   }
 
@@ -91,10 +91,10 @@ class MainView extends View {
 
     pd.canvas.className = 'canvas';
     pd.texts.className = 'texts';
-
     pd.ctx = pd.canvas.getContext('2d');
-    pd.ctx.filter = `blur(${this.getSteps()}px)`;
-    pd.ctx.drawImage(page.canvas, 0, 0);
+
+//  pd.ctx.filter = `blur(${this.getSteps()}px)`;
+//  pd.ctx.drawImage(page.canvas, 0, 0);
 
     pd.marks = this.project.draftMarks();
 
@@ -103,6 +103,8 @@ class MainView extends View {
     pd.frame.appendChild(pd.texts);
     pd.element.appendChild(pd.frame);
     $(pd.element).removeClass('preload');
+
+    this.updateImage(page.pid);
   }
 
   // //////////////
@@ -115,8 +117,8 @@ class MainView extends View {
   }
 
   getPageRect(index) {
-    const width = Math.round(this.project.canvasSize[0] * this.scale);
-    const height = Math.round(this.project.canvasSize[1] * this.scale);
+    const width = Math.round(this.project.canvasSize.width * this.scale);
+    const height = Math.round(this.project.canvasSize.height * this.scale);
     const margin = 50;
 
     const x = index * (width + margin) + margin;
@@ -126,17 +128,19 @@ class MainView extends View {
     };
   }
 
-  updateScale() {
-    console.log(this.project, this.getSteps(), this.steps);
-    const updateSteps = (this.steps != this.getSteps());
+  onScale() {
+    const updateImageNeeded = (this.steps != this.getSteps());
     this.steps = this.getSteps();
 
-    this.project.pages.forEach((page, index) => {
-      this.updatePage(page.pid, index, updateSteps);
+    this.project.pages.map((page, index) => {
+      this.setPageRect(page.pid, index);
+      if (updateImageNeeded) {
+        this.updateImage(page.pid);
+      }
     });
   }
 
-  updatePage(pid, index, updateSteps) {
+  setPageRect(pid, index) {
     const pd = this.pageData[pid];
     const rect = this.getPageRect(index);
 
@@ -149,13 +153,34 @@ class MainView extends View {
     if (pd.texts) pd.texts.style.transform = `scale(${this.scale})`;
     if (pd.canvas) pd.canvas.style.transform = `scale(${this.scale})`;
     if (pd.marks) pd.marks.style.transform = `scale(${this.scale})`;
+  }
 
-    const page = this.project.pages[index];
-    if (page && updateSteps) {
+  updateImage(pid) {
+    const page = pageManager.find(this.project, pid);
+    if (page) {
+      const pd = this.pageData[pid];
       pd.ctx.filter = `blur(${this.getSteps()}px)`;
       pd.ctx.clearRect(0, 0, pd.canvas.width, pd.canvas.height);
       pd.ctx.drawImage(page.canvas, 0, 0);
     }
+  }
+  
+  onEditImage(toImage, rect, pid) {
+    this.updateImage(pid);
+    
+    /*const page = pageManager.find(this.project, pid);
+    const pd = this.pageData[pid];
+    const blur = this.getSteps();
+    rect.x -= blur;
+    rect.y -= blur;
+    rect.width += blur * 2;
+    rect.height += blur * 2;
+
+    pd.ctx.filter = `blur(${this.getSteps()}px)`;
+    pd.ctx.clearRect(rect.x, rect.y, rect.width, rect.height);
+    pd.ctx.drawImage(page.canvas,
+                     rect.x, rect.y, rect.width, rect.height,
+                     rect.x, rect.y, rect.width, rect.height);*/
   }
 
   getSteps() {
@@ -172,13 +197,13 @@ class MainView extends View {
   zoom() {
     if (!this.project) return;
     this.scale /= 0.9;
-    this.updateScale();
+    this.onScale();
   }
 
   unzoom() {
     if (!this.project) return;
     this.scale *= 0.9;
-    this.updateScale();
+    this.onScale();
   }
 
   setMultipage(value) {
@@ -208,25 +233,6 @@ class MainView extends View {
     });
   }
 
-  onSetCurrentPage(page) {
-    if (page) {
-      const pd = this.pageData[page.pid];
-      if (pd && pd.element) {
-        $(pd.element).addClass('selected');
-      }
-    }
-  }
-
-  onClearCurrentPage() {
-    const page = this.project.currentPage;
-    if (page) {
-      const pd = this.pageData[page.pid];
-      if (pd && pd.element) {
-        $(pd.element).removeClass('selected');
-      }
-    }
-  }
-
   onAddCurrentTID(tid) {
     $('#p' + tid).addClass('selected');
   }
@@ -242,22 +248,18 @@ class MainView extends View {
     this.content.scrollTop = snapshot.scrollTop || 0;
     this.content.scrollLeft = snapshot.scrollLeft || 0;
     this.scale = snapshot.scale || 1;
-    this.updateScale();
+    this.onScale();
 
     this.initCurrentPage();
     this.initCurrentTID();
   }
 
   onUnloadProject(project) {
-    const snapshot = {};
-    snapshot.scale = this.scale;
-    snapshot.scrollLeft = this.content.scrollLeft;
-    snapshot.scrollTop = this.content.scrollTop;
-    this.snapshots[project.url] = snapshot;
-  }
-
-  onEditImage() {
-    this.loadProject(this.project);
+    this.snapshots[project.url] = {
+      scale: this.scale,
+      scrollLeft: this.content.scrollLeft,
+      scrollTop: this.content.scrollTop,
+    };
   }
 
   onresize() {

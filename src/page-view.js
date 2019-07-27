@@ -1,13 +1,15 @@
 import { View } from './view.js';
 import { ViewFooter } from './view-footer.js';
 import { command } from './command.js';
+import { pageManager } from './page-manager.js';
 
 
 class PageView extends View {
-  constructor(element, options) {
+  constructor(element, options = {}) {
     super(element, options);
     this.id = 'page';
-
+    this.size = options.thumbnailSize || 'middle';
+    
     $(this.element).html(`
       <ul class='content'></ul>
       <ul class='thin-toolbar border-top'></ul>`);
@@ -21,13 +23,17 @@ class PageView extends View {
         const from = this.project.currentPageIndex();
         command.removePage(this, from);
       },
-      size: () => { console.log('page size'); }
+      size: () => {
+        this.size = this.rotateSize(this.size);
+        this.project.pages.map(page => {
+          this.updateThumbnail(page);
+        });
+      },
     });
-
     this.enableSmoothScroll(this.content);
     this.init();
   }
-
+  
   init() {
     this.project = null;
 
@@ -55,7 +61,6 @@ class PageView extends View {
       if (page.loaded()) {
         this.initPage(page);
       }
-      this.updatePage(pid, index);
     });
   }
 
@@ -66,49 +71,21 @@ class PageView extends View {
 
     const rect = this.project.getThumbnailSize();
     pd.thumbnail = new Image(rect.width, rect.height);
-    pd.thumbnail.src = page.thumbnail.toDataURL('image/png');
 
-    const thumbnail = $('<div class=\'thumbnail\'></div>');
-    thumbnail.width(rect.width + 10); // [0].style.width = '40px'
-    thumbnail.append(pd.thumbnail);
+    const li = $(pd.element);
+    this.handleDiv().appendTo(li);
+    this.thumbnailDiv(pd.thumbnail).appendTo(li);
+    this.digestDiv(page).appendTo(li);
+    this.countDiv(index).appendTo(li);
 
-    const digest = $(`<div class='digest'>${page.digest()}</div>`);
-    const handle = $(`
-      <div class="sort-handle">
-        <span class="ui-icon ui-icon-grip-dotted-vertical"></span>
-      </div>`);
-    const count = $(`
-      <div class="count">
-        ${index + 1}
-      </div>`);
-
-    $(pd.element).append(handle);
-    $(pd.element).append(thumbnail);
-    $(pd.element).append(digest);
-    $(pd.element).append(count);
+    this.updateThumbnail(page);
   }
 
   createPageElement(pid) {
     const element = document.createElement('li');
-    const rect = this.project.getThumbnailSize();
-    element.style.height = (rect.height + 10) + 'px';
-
     element.className = 'page';
     element.id = 'pageview-page-' + pid;
     return element;
-  }
-
-  updatePage(pid, index, updateThumbnail) {
-    const page = this.project.pages[index];
-    if (page && updateThumbnail) {
-      const pd = this.pageData[page.pid];
-      pd.thumbnail.src = page.thumbnail.toDataURL('image/png');
-
-      const rect = this.project.getThumbnailSize();
-      pd.thumbnail.style.width = 30; // rect.width
-      pd.thumbnail.style.height = rect.height;
-      pd.element.style.height = (rect.height + 10) + 'px';
-    }
   }
 
   loadProject(project) {
@@ -117,10 +94,8 @@ class PageView extends View {
     // Init project
     this.pageData = {};
     this.initProject(project);
-
     const url = project.url.replace(/[^/]+\/[^/]+$/, '');
 
-    console.log(this.options);
     if (this.options.loaded) this.options.loaded(url, project.url);
 
     this.onLoadProject(project);
@@ -143,25 +118,6 @@ class PageView extends View {
     this.onSetCurrentPage(page);
   }
 
-  onSetCurrentPage(page) {
-    if (page) {
-      const pd = this.pageData[page.pid];
-      if (pd && pd.element) {
-        $(pd.element).addClass('selected');
-      }
-    }
-  }
-
-  onClearCurrentPage() {
-    const page = this.project.currentPage;
-    if (page) {
-      const pd = this.pageData[page.pid];
-      if (pd && pd.element) {
-        $(pd.element).removeClass('selected');
-      }
-    }
-  }
-
   onLoadProject(project) {
     const snapshot = this.snapshots[project.url] || {};
     this.content.scrollTop = snapshot.scrollTop || 0;
@@ -170,10 +126,16 @@ class PageView extends View {
   }
 
   onUnloadProject(project) {
-    const snapshot = { scrollTop: this.content.scrollTop };
-    console.warn(snapshot);
-    this.snapshots[project.url] = snapshot;
+    this.snapshots[project.url] = {
+      scrollTop: this.content.scrollTop,
+    };      
   }
+
+  onEditImage(toImage, rect, pid) {
+    const page = pageManager.find(this.project, pid);
+    this.updateThumbnail(page);
+  }
+
 }
 
 

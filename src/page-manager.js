@@ -6,7 +6,7 @@ import { file } from './file.js';
 
 class PageManager {
   constructor() {
-    this.pages = [];
+    this.pages = {};
   }
 
   get(project, pid) {
@@ -19,13 +19,26 @@ class PageManager {
   }
 
   find(project, pid) {
-    return this.pages.find(page => {
-      return (page.project === project) && (page.pid === pid);
-    });
+    const url = project.url;
+    if (this.pages[url]) {
+      return this.pages[url][pid];
+    }
+    return null;
+
+    //return this.pages.find(page => {
+    //  return (page.project === project) && (page.pid === pid);
+    //});
   }
 
   addPage(page) {
-    this.pages.push(page);
+    const url = page.project.url;
+    const pid = page.pid;
+    if (!this.pages[url]) {
+      this.pages[url] = {};
+    }
+    this.pages[url][pid] = page;
+    
+    //this.pages.push(page);
   }
 }
 

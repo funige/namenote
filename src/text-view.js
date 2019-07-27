@@ -2,6 +2,7 @@ import { View } from './view.js';
 import { ViewFooter } from './view-footer.js';
 import { command } from './command.js';
 import { Text } from './text.js';
+import { pageManager } from './page-manager.js';
 
 
 class TextView extends View {
@@ -15,16 +16,15 @@ class TextView extends View {
     this.content = this.element.querySelector('.content');
     this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'), {
       append: () => {
-        const toPID = this.project.currentPage;
+        const toPID = this.project.currentPage.pid;
         const to = this.project.currentTextIndex();
         command.addText(this, to, toPID);
       },
       trash: () => {
-        const fromPID = this.project.currentPage;
+        const fromPID = this.project.currentPage.pid;
         const from = this.project.currentTextIndex();
         command.removeText(this, from, fromPID);
       },
-      size: () => { console.log('text size'); }
     });
 
     this.enableSmoothScroll(this.content);
@@ -50,7 +50,6 @@ class TextView extends View {
       if (page.loaded()) {
         this.initPage(page);
       }
-      this.updatePage(pid, index);
     });
   }
 
@@ -117,10 +116,6 @@ class TextView extends View {
     return element;
   }
 
-  updatePage(pid, index) {
-    // TODO
-  }
-
   async loadProject(project) {
     super.loadProject(project);
 
@@ -140,27 +135,6 @@ class TextView extends View {
     this.project.currentTID.forEach((tid) => {
       this.onAddCurrentTID(tid);
     });
-  }
-
-  onSetCurrentPage(page) {
-    if (page) {
-      const pd = this.pageData[page.pid];
-      if (pd && pd.element) {
-        const tmp = $(pd.element);
-        tmp.addClass('selected');
-      }
-    }
-  }
-
-  onClearCurrentPage() {
-    const page = this.project.currentPage;
-    if (page) {
-      const pd = this.pageData[page.pid];
-      if (pd && pd.element) {
-        const tmp = $(pd.element);
-        tmp.removeClass('selected');
-      }
-    }
   }
 
   onAddCurrentTID(tid) {
@@ -190,7 +164,7 @@ class TextView extends View {
       const toText = Text.getHTML(element);
 
       const pid = this.detectPID(element);
-      const page = this.project.pages.find((page) => page.pid === pid);
+      const page = pageManager.find(this.project, pid);
       const index = this.project.findTextIndex(page, id);
 
       const fromText = page.texts.childNodes[index].outerHTML;
@@ -211,10 +185,12 @@ class TextView extends View {
   }
 
   onUnloadProject(project) {
-    const snapshot = { scrollTop: this.content.scrollTop };
-    console.warn(snapshot);
-    this.snapshots[project.url] = snapshot;
+    this.snapshots[project.url] = {
+      scrollTop: this.content.scrollTop,
+    };      
   }
+
+  onEditImage() {}
 }
 
 export { TextView };

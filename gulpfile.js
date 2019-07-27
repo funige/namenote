@@ -10,7 +10,10 @@ const sass = require('gulp-sass')
 const autoprefixer = require('gulp-autoprefixer')
 const plumber = require('gulp-plumber')
 
+let isSuccess;
+
 gulp.task('sass', function() {
+  isSuccess = true;
   return gulp.src('./sass/base.scss')
     .pipe(plumber())
     .pipe(sass({ outputStyle: 'expanded' }))
@@ -23,10 +26,12 @@ gulp.task('sass', function() {
 
 gulp.task('browser', function() {
   return browserify('./src/browser.js', { debug: true })
-    .transform(babelify) //, {presets: [['@babel/preset-env', { "useBuiltIns": "usage", "corejs": 2 }]]})
+    .transform(babelify)
     .bundle()
     .on("error", function (err) {
       console.log("Error : " + err.message);
+      isSuccess = false;
+      this.emit('end');
     })
     .pipe(source('bundle-browser.js'))
 //  .pipe(streamify(uglify()))  // comment out when deguging
@@ -36,14 +41,17 @@ gulp.task('browser', function() {
 
 gulp.task('desktop', function() {
   return browserify('./src/desktop.js', { debug: true })
-    .transform(babelify) //, {presets: [['@babel/preset-env', { "useBuiltIns": "usage", "corejs": 2 }]]})
+    .transform(babelify)
     .bundle()
     .on("error", function (err) {
+      isSuccess = false;
       console.log("Error : " + err.message);
+      this.emit('end');
     })
     .pipe(source('bundle-desktop.js'))
 //  .pipe(streamify(uglify()))  // comment out when deguging
     .pipe(gulp.dest('./dist'))
+    
 });
 
 gulp.task('finish', function(done) {
@@ -53,7 +61,11 @@ gulp.task('finish', function(done) {
     .pipe(gulp.dest('../funige.github.io/namenote'))
 
   // notify when build finished
-  notify({title:'Namenote', message:'build finished!', sound:'Hero'}).write('');
+  if (isSuccess) {
+    notify({title:'Namenote', message:'Success!!', sound:'Hero'}).write('');
+  } else {
+    notify({title:'Namenote', message:'Error...', sound:'Sosumi'}).write('');
+  }
   done();
 });
 

@@ -108,6 +108,7 @@ const dictionary = {
     "From left": "左ページ",
     "From right": "右ページ",
     "Pages": "ページ",
+    "pages": "ページ",
     "All": "すべて",
     "Current page": "選択されたページ",
     "Range": "範囲指定",

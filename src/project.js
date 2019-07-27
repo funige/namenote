@@ -8,12 +8,13 @@ import { shape } from './shape.js';
 import { Text } from './text.js';
 
 const thumbnailWidths = {
-  small: 50, // 75,
-  middle: 100, // 106,
+  small: 50, 
+  middle: 100,
   large: 150
 };
 
-// //////////////////////////////////////////////////////////////
+
+//
 
 class Project {
   constructor(url, json) {
@@ -46,8 +47,15 @@ class Project {
     this.pids = data.pids;
 
     shape.setDPI(this.params.dpi);
-    this.pageSize = shape.topx(this.params.page_size || [257, 364]);
-    this.canvasSize = shape.topx(this.params.canvas_size || this.params.export_size || [257, 364]);
+
+    this.pageSize = {};
+    [this.pageSize.width, this.pageSize.height] = shape.topx(
+      this.params.page_size || [257, 364]);
+    
+    this.canvasSize = {};
+    [this.canvasSize.width, this.canvasSize.height] = shape.topx(
+      this.params.canvas_size || this.params.export_size || [257, 364]);
+
     return this;
   }
 
@@ -55,6 +63,10 @@ class Project {
     return file.truncateURL(this.url);
   }
 
+  path() {
+    return this.url.split(this.name())[0]
+  }
+  
   addView(view) {
     if (this.views.indexOf(view) < 0) {
       this.views.push(view);
@@ -68,7 +80,6 @@ class Project {
   }
 
   setCurrentPage(page) {
-    console.log('set current page', page);
     if (this.currentPage !== page) {
       this.clearCurrentPage();
       this.currentPage = page;
@@ -77,7 +88,6 @@ class Project {
   }
 
   clearCurrentPage() {
-    console.log('clear current page');
     if (this.currentPage) {
       this.clearCurrentTID();
       this.views.forEach((view) => view.onClearCurrentPage());
@@ -138,8 +148,8 @@ class Project {
       [100, 1, 39, 47, 180, 270]
     ], options);
 
-    const width = shape.topx(this.canvasSize[0]);
-    const height = shape.topx(this.canvasSize[1]);
+    const width = shape.topx(this.canvasSize.width);
+    const height = shape.topx(this.canvasSize.height);
     const string = `
       <svg class="marks" width="${width}" height="${height}">
         ${arr.join('')}
@@ -157,13 +167,11 @@ class Project {
     return max + 1;
   }
 
-  getThumbnailSize() {
-    const size = config.getValue('thumbnailSize');
-    const thumbnailWidth = thumbnailWidths[size];
-    const scale = thumbnailWidth / this.canvasSize[0];
-
-    const width = Math.ceil(this.canvasSize[0] * scale);
-    const height = Math.ceil(this.canvasSize[1] * scale);
+  getThumbnailSize(size) {
+    const thumbnailWidth = thumbnailWidths[size || 'large'];
+    const scale = thumbnailWidth / this.canvasSize.width;
+    const width = Math.ceil(this.canvasSize.width * scale);
+    const height = Math.ceil(this.canvasSize.height * scale);
     return { width: width, height: height };
   }
 
@@ -177,7 +185,7 @@ class Project {
   addPage(pid, to) {
     const page = pageManager.get(this, pid);
     this.pages.splice(to, 0, page);
-    this.setCurrentPage(this.pages.find(page => page.pid === pid));
+    this.setCurrentPage(pageManager.find(this, pid));
   }
 
   removePage(pid, from) {
@@ -189,8 +197,8 @@ class Project {
   }
 
   moveText(from, to, fromPID, toPID) {
-    const fromPage = this.pages.find(page => page.pid === fromPID);
-    const toPage = this.pages.find(page => page.pid === toPID);
+    const fromPage = pageManager.find(this, fromPID);
+    const toPage = pageManager.find(this, toPID);
     if (!fromPage || !toPage) return;
 
     const node = fromPage.texts.childNodes[from];
@@ -199,7 +207,7 @@ class Project {
   }
 
   addText(text, to, toPID) {
-    const toPage = this.pages.find(page => page.pid === toPID);
+    const toPage = pageManager.find(this, toPID);
     if (!toPage) return;
 
     const node = $(text)[0];
@@ -209,7 +217,7 @@ class Project {
   }
 
   removeText(text, from, fromPID) {
-    const fromPage = this.pages.find(page => page.pid === fromPID);
+    const fromPage = pageManager.find(this, fromPID);
     if (!fromPage) return;
 
     const node = fromPage.texts.childNodes[from];
@@ -222,7 +230,7 @@ class Project {
   }
 
   editText(toText, index, pid) {
-    const page = this.pages.find(page => page.pid === pid);
+    const page = pageManager.find(this, pid);
     if (!page) return;
 
     const fromNode = page.texts.childNodes[index];
@@ -231,10 +239,11 @@ class Project {
   }
 
   editImage(toImage, rect, pid) {
-    const page = this.pages.find(page => page.pid === pid);
+    const page = pageManager.find(this, pid);
     if (!page) return;
 
     page.putImage(rect, toImage);
+    page.updateThumbnail(this);
   }
 }
 
