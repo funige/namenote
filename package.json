@@ -2,6 +2,7 @@
   "name": "Namenote",
   "version": "2.0.0-alpha.20",
   "trial": false,
+  "authURL": "https://funige.github.io/namenote/auth",
   "description": "A hackable drawing notebook.",
   "main": "electron/main.js",
   "scripts": {
@@ -57,6 +58,7 @@
     "electron": "^5.0.1",
     "electron-json-storage": "^4.1.6",
     "end-of-stream": "^1.4.1",
+    "fontkit": "git+https://github.com/ArthurClemens/fontkit.git",
     "fs-extra": "^7.0.1",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.4.1",
@@ -64,7 +66,8 @@
     "jszip": "^3.2.1",
     "mime-db": "^1.40.0",
     "mousetrap": "^1.6.3",
-    "pdfmake": "^0.1.56"
+    "pdfmake": "git+https://github.com/ArthurClemens/pdfmake.git",
+    "restructure": "git+https://github.com/ArthurClemens/restructure.git"
   },
   "browsers": [
     "last 2 versions",

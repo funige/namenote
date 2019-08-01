@@ -58,39 +58,61 @@
         height: 100%;
     }
 }
+
+$scroll-bar-width: 12px;
+$scroll-bar-width-rest: calc(100% - 12px);
+
 .main-view .singlepage-content {
-    width: calc(100% - 18px);
-    height: calc(100% - 18px);
+    width: $scroll-bar-width-rest;
+    height: $scroll-bar-width-rest;
     position: absolute;
     overflow: hidden;
 
     &+ canvas.drawing-layer {
-        width: calc(100% - 18px);
-        height: calc(100% - 18px);
+        width: $scroll-bar-width-rest;
+        height: $scroll-bar-width-rest;
     }
 }
 
 .main-view .right-scroll-bar {
-    width: 18px;
-    height: calc(100% - 18px);
+    width: $scroll-bar-width;
+    height: $scroll-bar-width-rest;
     position: absolute;
     background-color: #eee;
     right: 0;
     overflow: hidden;
+
+    .slider {
+        width: calc(100% - 4px);
+        left: 2px;
+        height: 50px;
+    }
+}
+
+.main-view .slider {
+    background-color: #888;
+    position: absolute;
+    border-radius: 10px;
 }
 
 .main-view .bottom-scroll-bar {
-    width: calc(100% - 18px);
-    height: 18px;
+    width: $scroll-bar-width-rest;
+    height: $scroll-bar-width;
     position: absolute;
     background-color: #eee;
     bottom: 0;
     overflow: hidden;
+
+    .slider {
+        width: 50px;
+        height: calc(100% - 4px);
+        top: 2px;
+    }
 }
 
-.main-view .corner-box {
-    width: 18px;
-    height: 18px;
+.main-view .corner-scroll-bar {
+    width: $scroll-bar-width;
+    height: $scroll-bar-width;
     position: absolute;
     background-color: #f6f6f6;
     right: 0;

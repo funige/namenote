@@ -25,9 +25,9 @@ class PageManager {
     }
     return null;
 
-    //return this.pages.find(page => {
+    // return this.pages.find(page => {
     //  return (page.project === project) && (page.pid === pid);
-    //});
+    // });
   }
 
   addPage(page) {
@@ -37,8 +37,8 @@ class PageManager {
       this.pages[url] = {};
     }
     this.pages[url][pid] = page;
-    
-    //this.pages.push(page);
+
+    // this.pages.push(page);
   }
 }
 

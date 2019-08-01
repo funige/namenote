@@ -20,6 +20,9 @@ import { NoteView } from './note-view.js';
 import { PageView } from './page-view.js';
 import { TextView } from './text-view.js';
 
+import { pdf } from './pdf.js';
+
+
 let maxID = 1;
 const packageJSON = require('../package.json');
 
@@ -42,6 +45,8 @@ class Namenote {
 
     this.file = file;
     this.ui = ui;
+
+    this.pdf = pdf; // test
   }
 
   init() {
@@ -92,7 +97,7 @@ class Namenote {
     this.textView.loadProject(project);
     this.noteView.loadProjects();
   }
-  
+
   isMac() {
     return navigator.platform.indexOf('Mac');
   }

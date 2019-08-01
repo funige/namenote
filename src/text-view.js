@@ -24,7 +24,7 @@ class TextView extends View {
         const fromPID = this.project.currentPage.pid;
         const from = this.project.currentTextIndex();
         command.removeText(this, from, fromPID);
-      },
+      }
     });
 
     this.enableSmoothScroll(this.content);
@@ -186,8 +186,8 @@ class TextView extends View {
 
   onUnloadProject(project) {
     this.snapshots[project.url] = {
-      scrollTop: this.content.scrollTop,
-    };      
+      scrollTop: this.content.scrollTop
+    };
   }
 
   onEditImage() {}

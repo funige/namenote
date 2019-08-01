@@ -7,6 +7,7 @@ import { config } from './config.js';
 import { viewButton } from './view-button.js';
 import { DrawingLayer } from './drawing-layer.js';
 import { pageManager } from './page-manager.js';
+import { ScrollBar } from './scroll-bar.js';
 
 // $('.main-view')[0].parentNode.scrollTop = ...
 
@@ -51,11 +52,13 @@ class MainView extends View {
       $(this.element).html(`
         <div class='right-scroll-bar'></div>
         <div class='bottom-scroll-bar'></div>
-        <div class='corner-box'></div>
+        <div class='corner-scroll-bar'></div>
         <div class='singlepage-content'></div>
         <canvas class='drawing-layer'></canvas>
       `);
       this.content = this.element.querySelector('.singlepage-content');
+      this.rightScrollBar = new ScrollBar(this.content, 'right');
+      this.bottomScrollBar = new ScrollBar(this.content, 'bottom');
     } else {
       $(this.element).html(`
         <div class='multipage-content'></div>
@@ -93,8 +96,8 @@ class MainView extends View {
     pd.texts.className = 'texts';
     pd.ctx = pd.canvas.getContext('2d');
 
-//  pd.ctx.filter = `blur(${this.getSteps()}px)`;
-//  pd.ctx.drawImage(page.canvas, 0, 0);
+    //  pd.ctx.filter = `blur(${this.getSteps()}px)`;
+    //  pd.ctx.drawImage(page.canvas, 0, 0);
 
     pd.marks = this.project.draftMarks();
 
@@ -164,11 +167,11 @@ class MainView extends View {
       pd.ctx.drawImage(page.canvas, 0, 0);
     }
   }
-  
+
   onEditImage(toImage, rect, pid) {
     this.updateImage(pid);
-    
-    /*const page = pageManager.find(this.project, pid);
+
+    /* const page = pageManager.find(this.project, pid);
     const pd = this.pageData[pid];
     const blur = this.getSteps();
     rect.x -= blur;
@@ -180,7 +183,7 @@ class MainView extends View {
     pd.ctx.clearRect(rect.x, rect.y, rect.width, rect.height);
     pd.ctx.drawImage(page.canvas,
                      rect.x, rect.y, rect.width, rect.height,
-                     rect.x, rect.y, rect.width, rect.height);*/
+                     rect.x, rect.y, rect.width, rect.height); */
   }
 
   getSteps() {
@@ -258,7 +261,7 @@ class MainView extends View {
     this.snapshots[project.url] = {
       scale: this.scale,
       scrollLeft: this.content.scrollLeft,
-      scrollTop: this.content.scrollTop,
+      scrollTop: this.content.scrollTop
     };
   }
 

@@ -1,5 +1,5 @@
 import { file } from './file.js';
-import { locale } from './locale.js';
+import { locale, T } from './locale.js';
 import { Finder } from './finder.js';
 import { Form } from './form.js';
 

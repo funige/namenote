@@ -24,8 +24,12 @@ class LocalFileSystem extends FileSystem {
     return this.fs.readFile(url, 'utf8', callback);
   }
 
-  writeFile(url, data, callback) {
-    return this.fs.writeFile(url, data, 'utf8', callback);
+  writeFile(url, data, encoding, callback) {
+    if (arguments.length < 4) {
+      callback = encoding;
+      encoding = 'utf8';
+    }
+    return this.fs.writeFile(url, data, encoding, callback);
   }
 }
 

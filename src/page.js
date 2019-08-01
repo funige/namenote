@@ -1,6 +1,7 @@
 import { namenote } from './namenote.js';
 import { Text } from './text.js';
 import { file } from './file.js';
+import { svgRenderer } from './svg-renderer.js';
 
 
 const JSZip = require('jszip');
@@ -124,6 +125,13 @@ class Page {
       .replace(/\/+/g, '/')
       .replace(/^\//, '').replace(/\/$/, '');
   }
+
+  /* capture(callback) {
+    svgRenderer.capture(this, (data) => {
+      //console.log(data);
+      callback(data)
+    });
+  } */
 }
 
 export { Page };

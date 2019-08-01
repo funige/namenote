@@ -62,7 +62,7 @@ class PenTool extends Tool {
     stroke.map(point => {
       point[0] = (point[0] - dx) / scale;
       point[1] = (point[1] - dy) / scale;
-    })
+    });
 
     const width = 5;
     const rect = this.getBound(stroke, width);
@@ -70,7 +70,7 @@ class PenTool extends Tool {
 
     stroke.forEach(point => {
       page.canvasCtx.fillStyle = '#000000';
-      page.canvasCtx.fillRect(point[0] - width/2, point[1] - width/2, width, width);
+      page.canvasCtx.fillRect(point[0] - width / 2, point[1] - width / 2, width, width);
     });
     page.updateThumbnail(project);
 
@@ -85,7 +85,7 @@ class PenTool extends Tool {
     project.views.forEach((view) => {
       view.onEditImage(toImage, rect, pid);
     });
-    
+
     this.drawingLayer.clear();
   }
 
@@ -101,7 +101,6 @@ class PenTool extends Tool {
         if (tmp[1] > y) tmp[1] = y;
         if (tmp[2] < x) tmp[2] = x;
         if (tmp[3] < y) tmp[3] = y;
-
       } else {
         tmp = [x, y, x, y];
       }

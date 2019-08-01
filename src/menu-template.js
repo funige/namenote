@@ -54,7 +54,7 @@ const menuTemplate = [
       { label: 'Empty Buffer', click: 'emptyPage' },
       { type: 'separator' },
       { label: 'Extract Text', click: 'extractText' },
-      { label: 'Save Image As ...', click: 'savePageImage' }
+      { label: 'Save Image As ...', click: 'saveImage' }
     ]
   },
   {
@@ -104,7 +104,7 @@ const fileMenuTemplate = [
       { label: 'Empty Buffer', click: 'emptyPage' },
       { type: 'separator' },
       { label: 'Extract Text', click: 'extractText' },
-      { label: 'Save Image As ...', click: 'savePageImage' }
+      { label: 'Save Image As ...', click: 'saveImage' }
     ]
   },
   {

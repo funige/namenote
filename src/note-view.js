@@ -1,3 +1,4 @@
+import { namenote } from './namenote.js';
 import { View } from './view.js';
 import { ViewFooter } from './view-footer.js';
 import { projectManager } from './project-manager.js';
@@ -19,13 +20,13 @@ class NoteView extends View {
       },
       trash: () => {
         console.log('noteView trash');
-      },
-      /*size: () => {
+      }
+      /* size: () => {
         this.size = this.rotateSize(this.size);
         projectManager.projects.map(project => {
           this.updateThumbnail(project.currentPage || project.pages[0]);
         })
-      },*/
+      }, */
     });
 
     this.enableSmoothScroll(this.content);
@@ -45,8 +46,8 @@ class NoteView extends View {
   }
 
   loadProjects() {
-    this.projectData = {}
-    
+    this.projectData = {};
+
     this.content.innerHTML = '';
     projectManager.projects.forEach((project) => {
       const url = project.url;
@@ -73,7 +74,7 @@ class NoteView extends View {
     this.noteInfoDiv(project).appendTo(li);
     this.updateThumbnail(project.currentPage || project.pages[0]);
   }
-  
+
   createProjectElement(url) {
     const element = document.createElement('li');
     element.className = 'project';
@@ -86,13 +87,13 @@ class NoteView extends View {
     return element;
   }
 
-  onShow() {
+  /* onShow() {
     this.loadProjects();
-  }
+  } */
 
-  addProject(project) {
+  /* addProject(project) {
     this.loadProjects();
-  }
+  } */
 }
 
 export { NoteView };

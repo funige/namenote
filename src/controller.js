@@ -70,7 +70,7 @@ class Controller {
 
   onDown(e) {
     const info = this.getTargetInfo(e.target);
-    //console.log('[onDown]', info);
+    // console.log('[onDown]', info);
 
     if (info.view) {
       const project = projectManager.find(info.projectURL);
@@ -79,10 +79,7 @@ class Controller {
           project.setCurrentPage(pageManager.find(project, info.pid));
 
         } else if (info.view === 'note') {
-          namenote.mainView.loadProject(project);
-          namenote.pageView.loadProject(project);
-          namenote.textView.loadProject(project);
-          namenote.noteView.loadProjects();
+          namenote.loadProject(project);
         }
       }
     }
@@ -111,29 +108,32 @@ class Controller {
     const info = { parents: [] };
     while (target) {
       info.parents.push([target.className, target]);
-      if (target.className === 'text') {
-        info.text = true;
-      }
-      if (target.className && target.classList.contains('page')) {
-        info.pid = namenote.mainView.detectPID(target);
-      }
-      if (target.className && target.classList.contains('project')) {
-        info.projectURL = target.alt;
-      }
 
-      
-      if (target.className === 'main-view'
-          || target.className === 'page-view'
-          || target.className === 'text-view'
-          || target.className === 'note-view') {
-        info.view = target.className.replace(/-view$/, '');
-        info.projectURL = info.projectURL || target.alt;
-        break;
+      if (target.className) {
+        if (target.classList.contains('page')) {
+          info.pid = namenote.mainView.detectPID(target);
+        }
+        if (target.classList.contains('project')) {
+          info.projectURL = target.alt;
+        }
+
+        if (target.className.indexOf('scroll-bar') >= 0) {
+          info.scrollBar = true;
+          break;
+        }
+        if (target.className === 'main-view'
+            || target.className === 'page-view'
+            || target.className === 'text-view'
+            || target.className === 'note-view') {
+          info.view = target.className.replace(/-view$/, '');
+          info.projectURL = info.projectURL || target.alt;
+          break;
+        }
       }
       target = target.parentNode;
     }
 
-    if (info.view) console.log('getTargetInfo', info); //test
+    if (info.view || info.scrollBar) console.log('getTargetInfo', info);
     return info;
   }
 

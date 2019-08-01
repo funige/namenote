@@ -7,7 +7,8 @@ import { dialog } from './dialog.js';
 
 import { MessageForm } from './message-form.js';
 
-// //////////////////////////////////////////////////////////////
+const packageJSON = require('../package.json');
+
 
 class DropboxFileSystem extends FileSystem {
   constructor() {
@@ -32,9 +33,13 @@ class DropboxFileSystem extends FileSystem {
     return this.fs.readFile(url, 'utf8', callback);
   }
 
-  writeFile(url, data, callback) {
+  writeFile(url, data, encoding, callback) {
     if (!this.auth()) return;
-    return this.fs.writeFile(url, data, 'utf8', callback);
+    if (arguments.length < 4) {
+      callback = encoding;
+      encoding = 'utf8';
+    }
+    return this.fs.writeFile(url, data, encoding, callback);
   }
 
   // //////////////
@@ -61,7 +66,7 @@ class DropboxFileSystem extends FileSystem {
         var Dropbox = require('dropbox').Dropbox;
         var dbx = new Dropbox({ clientId: 'cex5vkoxd9nwj48' });
         var authUrl = (location.href.indexOf('localhost') < 0)
-          ? 'https://funige.github.io/namenote/auth'
+          ? packageJSON.authURL
           : 'http://localhost:8080/namenote/auth';
 
         flash.save(item, data);

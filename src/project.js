@@ -8,7 +8,7 @@ import { shape } from './shape.js';
 import { Text } from './text.js';
 
 const thumbnailWidths = {
-  small: 50, 
+  small: 50,
   middle: 100,
   large: 150
 };
@@ -50,11 +50,13 @@ class Project {
 
     this.pageSize = {};
     [this.pageSize.width, this.pageSize.height] = shape.topx(
-      this.params.page_size || [257, 364]);
-    
+      this.params.page_size || [257, 364]
+    );
+
     this.canvasSize = {};
     [this.canvasSize.width, this.canvasSize.height] = shape.topx(
-      this.params.canvas_size || this.params.export_size || [257, 364]);
+      this.params.canvas_size || this.params.export_size || [257, 364]
+    );
 
     return this;
   }
@@ -64,9 +66,9 @@ class Project {
   }
 
   path() {
-    return this.url.split(this.name())[0]
+    return this.url.split(this.name())[0];
   }
-  
+
   addView(view) {
     if (this.views.indexOf(view) < 0) {
       this.views.push(view);

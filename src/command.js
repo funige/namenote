@@ -96,7 +96,6 @@ class Command {
     $(namenote.pageView.element).hide();
     $(namenote.textView.element).hide();
     dockTab.select('note');
-    namenote.noteView.onShow();
   }
 
   openNewDialog() {
@@ -129,8 +128,8 @@ class Command {
     });
   }
 
-  savePageImage() {
-    file.savePageImageDialog().catch((error) => {
+  saveImage() {
+    file.saveImageDialog().catch((error) => {
       dialog.alert(error);
     });
   }

@@ -10,7 +10,7 @@ import { MessageForm } from './message-form.js';
 import { OpenForm } from './open-form.js';
 import { OpenNewForm } from './open-new-form.js';
 
-import { SavePageImageForm } from './save-page-image-form.js';
+import { SaveImageForm } from './save-image-form.js';
 import { ExportPDFForm } from './export-pdf-form.js';
 import { ExportCSNFForm } from './export-csnf-form.js';
 import { namenote } from './namenote.js';
@@ -45,8 +45,8 @@ class File {
     }
   }
 
-  async savePageImageDialog() {
-    const url = await dialog.open(new SavePageImageForm());
+  async saveImageDialog() {
+    const url = await dialog.open(new SaveImageForm());
     dialog.close();
     if (url) {
       console.log('save page image to', url);
@@ -132,7 +132,7 @@ class File {
     return new Promise((resolve, reject) => {
       const fileSystem = this.getFileSystem(this.getScheme(url));
       const path = this.getPath(url);
-      fileSystem.writeFile(path, data, (err) => {
+      fileSystem.writeFile(path, data, 'base64', (err) => {
         if (err) {
           return reject(err);
         }
@@ -144,10 +144,12 @@ class File {
   //
 
   async getProjectURL(url) {
+    console.log('getProjectURL', url);
     if (url.match(/\.namenote$/i)) return url;
 
     try {
       const dirents = await file.readdir(url);
+      
       for (const dirent of dirents) {
         if (!dirent.isDirectory() && dirent.name.match(/\.namenote$/i)) {
           return `${url}${dirent.name}`;

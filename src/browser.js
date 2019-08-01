@@ -1,6 +1,6 @@
 import { namenote } from './namenote.js';
 
-// window.namenote = namenote;
+window.namenote = namenote; // test
 
 const $ = require('jquery');
 window.jQuery = $; // for jquery-ui

@@ -9,7 +9,7 @@ class PageView extends View {
     super(element, options);
     this.id = 'page';
     this.size = options.thumbnailSize || 'middle';
-    
+
     $(this.element).html(`
       <ul class='content'></ul>
       <ul class='thin-toolbar border-top'></ul>`);
@@ -28,12 +28,12 @@ class PageView extends View {
         this.project.pages.map(page => {
           this.updateThumbnail(page);
         });
-      },
+      }
     });
     this.enableSmoothScroll(this.content);
     this.init();
   }
-  
+
   init() {
     this.project = null;
 
@@ -127,15 +127,14 @@ class PageView extends View {
 
   onUnloadProject(project) {
     this.snapshots[project.url] = {
-      scrollTop: this.content.scrollTop,
-    };      
+      scrollTop: this.content.scrollTop
+    };
   }
 
   onEditImage(toImage, rect, pid) {
     const page = pageManager.find(this.project, pid);
     this.updateThumbnail(page);
   }
-
 }
 
 

@@ -73,18 +73,20 @@ class OpenForm extends Form {
   }
 
   async load(url) {
-    console.log('load', url);
-
+//  this.hideAll();
+    
     const projectURL = await file.getProjectURL(url);
+    console.log('load', url, projectURL);
+    
     if (projectURL) {
-      this.showPreview();
       const project = await projectManager.get(projectURL);
       if (project) {
         this.pageView.loadProject(project);
+        this.showPageView();
       }
     } else {
-      this.hidePreview();
       this.finder.loadFolder(url);
+      this.showFileList();
     }
   }
 
@@ -94,14 +96,20 @@ class OpenForm extends Form {
 
   saveForm() { return this.pageView.project; }
 
-  showPreview() {
+  showPageView() {
     $(this.element).find('.page-view').show();
     $(this.element).find('.file-list').hide();
     this.enable();
   }
 
-  hidePreview() {
+  showFileList() {
     $(this.element).find('.file-list').show();
+    $(this.element).find('.page-view').hide();
+    this.disable();
+  }
+
+  hideAll() {
+    $(this.element).find('.file-list').hide();
     $(this.element).find('.page-view').hide();
     this.disable();
   }

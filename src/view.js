@@ -1,3 +1,4 @@
+import { namenote } from './namenote.js';
 import { T } from './locale.js';
 
 class View {
@@ -79,21 +80,31 @@ class View {
   // Helper methods for pageView/noteView
 
   updateThumbnail(page, loop) {
-    if (this.id === 'note' && !this.projectData[page.project.url]) return;
-    
-    const pd = (this.id === 'note') ?
-          this.projectData[page.project.url] :
-          this.pageData[page.pid];
+    let pd;
 
-    if (page.thumbnail) {
-      console.warn(page, pd);
-      pd.thumbnail.src = page.thumbnail.toDataURL('image/png');
+    if (this.id !== 'note') {
+      pd = this.pageData[page.pid];
+    } else if (this.projectData) {
+      pd = this.projectData[page.project.url];
+    } else {
+      return;
     }
 
+    //if (this.id === 'note' && !this.projectData[page.project.url]) return;
+    //const pd = (this.id === 'note')
+    //  ? this.projectData[page.project.url]
+    //  : this.pageData[page.pid];
+
     const rect = page.project.getThumbnailSize(this.size);
-    pd.thumbnail.style.width = rect.width + 'px'
-    pd.thumbnail.style.height = rect.height + 'px';
-    pd.thumbnail.parentNode.style.width = (rect.width + 6) + 'px';
+    if (pd.thumbnail) {
+      pd.thumbnail.style.width = rect.width + 'px';
+      pd.thumbnail.style.height = rect.height + 'px';
+      pd.thumbnail.parentNode.style.width = (rect.width + 6) + 'px';
+
+      if (page.thumbnail) {
+        pd.thumbnail.src = page.thumbnail.toDataURL('image/png');
+      }
+    }
 
     pd.element.style.height = (rect.height + 5) + 'px';
     const count = pd.element.querySelector('.count');
@@ -105,7 +116,7 @@ class View {
       }
     }
   }
-  
+
   rotateSize(size) {
     switch (size) {
       case 'small':
@@ -119,34 +130,33 @@ class View {
   }
 
   handleDiv() {
-    const icon = $('<span>').addClass('ui-icon ui-icon-grip-dotted-vertical')
-    return $('<div>').addClass('sort-handle').append(icon)
+    const icon = $('<span>').addClass('ui-icon ui-icon-grip-dotted-vertical');
+    return $('<div>').addClass('sort-handle').append(icon);
   }
 
   countDiv(index) {
-    return $('<div>').addClass('count').html(index + 1)
+    return $('<div>').addClass('count').html(index + 1);
   }
 
   thumbnailDiv(image) {
-    return $('<div>').addClass('thumbnail').append(image)
+    return $('<div>').addClass('thumbnail').append(image);
   }
 
   digestDiv(page) {
-    return $('<div>').addClass('digest').html(page.digest())
+    return $('<div>').addClass('digest').html(page.digest());
   }
 
   noteInfoDiv(project) {
     const info = $('<div>').addClass('info');
     const name = project.name();
-    const detail =
-          project.path() + '<br>' +
-          project.pages.length + ' ' + T('pages');
-    
+    const detail = project.path() + '<br>'
+          + project.pages.length + ' ' + T('pages');
+
     $('<div>').addClass('info-title').html(name).appendTo(info);
     $('<div>').addClass('info-detail').html(detail).appendTo(info);
     return info;
   }
-  
+
   // Default update methods
 
   onMovePage(from, to) {
