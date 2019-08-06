@@ -5,11 +5,11 @@ const pdfMake = require('pdfmake/build/pdfmake.js')
 const pdfFonts = require('pdfmake/build/vfs_fonts.js')
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-let images = []
+let pages = []
 let docDefinition = {}
 
 class PDF {
-  initData(project) {
+  load(project) {
     const width = project.canvasSize.width;
     const height = project.canvasSize.height;
 
@@ -18,46 +18,15 @@ class PDF {
       pageMargin: [ 0, 0 ],
       content: [],
     };
-    images = [];
-  }
-
-  makeData(project) {
-    this.initData(project);
-
-    project.pages.map(page => images.push(page));
-    console.log('make data', images);
-  }
-
-  renderData(images, callback) {
-    if (images.length > 0) {
-      const page = images.shift();
-      console.log('...render', page.pid)
-
-      svgRenderer.capture(page, (png) => {
-        if (!png) console.error('ummm?', page);
-        const item = {
-          image: png,
-          width: page.project.canvasSize.width,
-          height: page.project.canvasSize.height,
-          absolutePosition: { x:0, y:0 },
-        }
-        if (images.length > 0) item.pageBreak = 'after'
-        docDefinition.content.push(item);
-
-        
-        this.renderData(images, callback)
-      })
-
-    } else {
-      callback()
-    }
   }
 
   write(project, filename, callback) {
     console.log('write', filename, project, '...');
 
-    this.makeData(project);
-    this.renderData(images, (err) => {
+    this.load(project);
+    pages = [...project.pages];
+    
+    this.renderData(pages, (err) => {
       if (!err) {
         console.log('docDefinishion is done, create pdf...', docDefinition);
 
@@ -71,6 +40,31 @@ class PDF {
     })
     console.log('rendering...');
   }
+
+  renderData(pages, callback) {
+    if (pages.length > 0) {
+      const page = pages.shift();
+      console.log('...render', page.pid)
+
+      svgRenderer.capture(page, (png) => {
+        if (!png) console.error('ummm?', page);
+        const item = {
+          image: png,
+          width: page.project.canvasSize.width,
+          height: page.project.canvasSize.height,
+          absolutePosition: { x:0, y:0 },
+        }
+        if (pages.length > 0) item.pageBreak = 'after'
+        docDefinition.content.push(item);
+
+        this.renderData(pages, callback)
+      })
+
+    } else {
+      callback()
+    }
+  }
+
 }
 
 const pdf = new PDF();

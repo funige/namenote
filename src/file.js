@@ -141,6 +141,12 @@ class File {
     });
   }
 
+  createWriteStream(url) {
+    const fileSystem = this.getFileSystem(this.getScheme(url));
+    const path = this.getPath(url);
+    return fileSystem.createWriteStream(path);
+  }
+  
   //
 
   async getProjectURL(url) {

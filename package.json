@@ -48,11 +48,11 @@
     "jest": "^24.8.0",
     "jest-canvas-mock": "^2.1.0",
     "notify-send": "^0.1.2",
+    "resolve": "^1.12.0",
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
     "bl": "^3.0.0",
-    "browserify-fs": "^1.0.0",
     "dropbox": "^4.0.17",
     "dropbox-fs": "^0.3.1",
     "electron": "^5.0.1",
@@ -64,10 +64,12 @@
     "jquery": "^3.4.1",
     "jquery-ui-dist": "^1.12.1",
     "jszip": "^3.2.1",
+    "memory-streams": "^0.1.3",
     "mime-db": "^1.40.0",
     "mousetrap": "^1.6.3",
     "pdfmake": "git+https://github.com/ArthurClemens/pdfmake.git",
-    "restructure": "git+https://github.com/ArthurClemens/restructure.git"
+    "restructure": "git+https://github.com/ArthurClemens/restructure.git",
+    "xtend": "^4.0.2"
   },
   "browsers": [
     "last 2 versions",

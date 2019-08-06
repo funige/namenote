@@ -42,6 +42,10 @@ class DropboxFileSystem extends FileSystem {
     return this.fs.writeFile(url, data, encoding, callback);
   }
 
+  createWriteStream(filename) {
+    return this.fs.createWriteStream(filename);
+  }
+  
   // //////////////
 
   auth(item, data) {

@@ -31,6 +31,10 @@ class LocalFileSystem extends FileSystem {
     }
     return this.fs.writeFile(url, data, encoding, callback);
   }
+
+  createWriteStream(filename) {
+    return this.fs.createWriteStream(filename);
+  }
 }
 
 export { LocalFileSystem };
