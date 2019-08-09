@@ -34,7 +34,7 @@ class ViewButton {
     })[0];
 
     dockButton = $('#dock-button').imageButton({
-      src: 'img/unzoom-button.png',
+      src: 'img/dock-button.png',
       float: 'right',
       click: () => { command.dock(); }
     })[0];

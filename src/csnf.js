@@ -25,14 +25,12 @@ class CSNF {
       if (!err) {
         this.packData(files, (err) => {
           if (!err) {
-//          const writeStream = file.createWriteStream(filename);
-            const writeStream = new memoryStreams.WritableStream();
-            writeStream.on('drain', () => { console.log('stream drain') });
-
             pack.on('end', () => {
-              console.log('end', writeStream.toString().length);
               file.writeFile(filename, writeStream.toBuffer());
             });
+            
+//          const writeStream = file.createWriteStream(filename);
+            const writeStream = new memoryStreams.WritableStream();
             pack.pipe(writeStream);
             if (callback) callback();
 
@@ -58,10 +56,10 @@ class CSNF {
         header.type = 'directory'
       }
 
-//    setImmediate(() => {
+      setImmediate(() => {
         pack.entry(header, raw)
         this.packData(files, callback)
-//    })
+      })
     } else {
       console.log('finalize');
       pack.finalize()
@@ -111,7 +109,7 @@ class CSNF {
     const result = []
 
     const scale = 1; //project.exportScale
-    for (let i = 0; i <= project.pages.length - 1; i++) {
+    for (let i = 0; i < project.pages.length; i++) {
 //  for (let i = project.exportStart - 1; i <= project.exportEnd - 1; i++) {
       const page = project.pages[i]
       const pageDir = `${dir}/${page.pid}`
@@ -137,14 +135,14 @@ class CSNF {
     body.sheet_id = (scale == 1) ? 3 : 2
     body.sheet_size = project.params.export_size //helper.scale(project.params.export_size, scale)
     body.serial_id = body.page_count + 1
-    body.page_count = (project.exportEnd - project.exportStart) + 1
+    body.page_count = project.pages.length //(project.exportEnd - project.exportStart) + 1
     body.version = 1
     body.bind_right = project.params.bind_right
     body.finishing_size = project.params.finishing_size //helper.scale(project.params.finishing_size, scale)
     body.baseframe_id = 6
     body.author = ''
     body.story_id = 1
-    body.title = project.exportName
+    body.title = project.name() //project.exportName
     body.pageinfo_count = pageinfo.length
     body.startpage_right = project.params.startpage_right
     body.edit_date = CSNFTime.toString()
@@ -180,7 +178,7 @@ class CSNF {
       y *= scale
     
       const size = parseFloat(element.style.fontSize) * scale
-      const string = Text.cleanup(element).innerHTML;
+      const string = Text.toPlainText(element.innerHTML);
       //const string = Text.normalize(element.innerHTML)
       
       const vert = (element.style.writingMode == 'vertical-rl') ? true : false

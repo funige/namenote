@@ -19,6 +19,13 @@ form input {
         width: 200px;
         margin-bottom: 5px;
     }
+    &.count {
+        font-size: 14px;
+        padding-left: 5px;
+        height: 26px;
+        margin-bottom: 5px;
+        width: 30px;
+    }
 }
 
 form input[type=button] {
@@ -46,7 +53,6 @@ form .tmpl2   { width: 350px; }
 form .ref     { padding: 5px; }
 form .key     { width: 30px; }
 form .regexp { width: 100px; }
-form .count   { width: 30px; }
 form .count2  { width: 30px; border: none; text-overflow: ellipsis;}
 form .extract { width: 500px; height: 450px; }
 form .preview { width: 500px; height: 150px; } /* 350px */

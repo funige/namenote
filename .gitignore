@@ -4,5 +4,4 @@ node_modules
 js/bundle*.js
 base.css
 coverage
-
-#dist
+dist

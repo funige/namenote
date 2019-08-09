@@ -11,11 +11,10 @@ class OpenNewForm extends Form {
     this.id = 'open-new';
   }
 
-
   init() {
     return new Promise((resolve, reject) => {
       const buttons = {};
-      buttons[T('Ok')] = () => { resolve(this.saevForm()); };
+      buttons[T('Ok')] = () => { resolve(this.saveForm()); };
       buttons[T('Cancel')] = () => { resolve(); };
 
       const string = locale.translateHTML(`
@@ -33,10 +32,11 @@ class OpenNewForm extends Form {
             <tr><td>T(Number of pages):
               <td><input name='count' class='count' type='text' value=8 /><br>
 
-            <tr><td style='height: 1em;'>
             <tr><td>T(Template):
               <td><select name='tmpl' class='tmpl'>
                 <option value='Manga'>T(Manga)</select>
+
+            <tr><td style='height: 1em;'>
 
             <tr><td>T(Binding point):
               <td><label><input name='bind' type='radio' value=0>T(Left binding)</label>
@@ -79,24 +79,24 @@ class OpenNewForm extends Form {
         }
       });
 
-      this.initForm();
-      this.load(file.getHome());
+      const tmpl = this.element.querySelector('.tmpl');
+      $(tmpl).iconselectmenu({
+      });
+      
+      this.load(file.getHome('note'), {
+        loaded: () => {
+          this.initForm();
+        },
+      })
     });
   }
 
-  async load(url) {
-    const projectURL = await file.getProjectURL(url);
-    if (projectURL) {
-      alert(T('Folder open error.'));
-    } else {
-      this.finder.loadFolder(url);
-    }
-  }
-
-  initForm() {
-    const filename = `${Date.now()}.png`;
+  async initForm() {
+    const name = T('Untitled');
+    const saveName = await file.getSaveName(name, this.finder.url);
     $(this.element).find('input.filename')
-      .val(filename)
+      .val(saveName)
+      .select()
       .on('keyup', (e) => {
         (e.target.value) ? this.enable() : this.disable();
       });
@@ -104,9 +104,17 @@ class OpenNewForm extends Form {
 
   saveForm() {
     const filename = $(this.element).find('input.filename').val();
-    const result = `${this.finder.url}${filename}`;
-    this.result = result;
-    return result;
+    const count = $(this.element).find('input.count').val();
+    const start = document.forms[this.id].start.value == "1";
+    const bind = document.forms[this.id].bind.value == "1";
+
+    return {
+      path: this.finder.url,
+      name: filename,
+      page_count: count,
+      bind_right: bind,
+      startpage_right: start,
+    }
   }
 }
 

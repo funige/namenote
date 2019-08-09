@@ -78,7 +78,7 @@ class Finder {
     }
   }
 
-  async loadFolder(url) {
+  async loadFolder(url, options = {}) {
     console.log('loadFolder', url);
     const tmp = [];
     const dirents = await file.readdir(url).catch((e) => {
@@ -101,6 +101,8 @@ class Finder {
     $(this.fileList).html(tmp.join(''));
     $(this.fileList).selectable('refresh');
     this.updateFolders(url);
+
+    if (options.loaded) options.loaded();
   }
 
   updateFolders(url, projectURL) {

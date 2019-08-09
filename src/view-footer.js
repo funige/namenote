@@ -22,7 +22,7 @@ class ViewFooter {
     });
 
     const trashButton = Widget.createImageButton({
-      src: 'img/redo-button.png',
+      src: 'img/trash-button.png',
       click: () => {
         this.options.trash();
       },
@@ -30,7 +30,7 @@ class ViewFooter {
     });
 
     const sizeButton = Widget.createImageButton({
-      src: 'img/flip-button.png',
+      src: 'img/magnifier-button.png',
       click: () => {
         this.options.size();
       },

@@ -42,17 +42,14 @@ class DropboxFileSystem extends FileSystem {
     return this.fs.writeFile(url, data, encoding, callback);
   }
 
-  createWriteStream(filename) {
-    return this.fs.createWriteStream(filename);
-  }
-  
-  // //////////////
+  //
 
   auth(item, data) {
     const accessToken = localStorage.getItem('namenote/raw_token');
     if (accessToken) {
       if (!this.fs) {
         this.fs = require('dropbox-fs')({ apiKey: accessToken });
+        this.initFolders();
       }
       return true;
     }
@@ -94,6 +91,20 @@ class DropboxFileSystem extends FileSystem {
       dialog.close();
     });
   }
+
+  initFolders() {
+    this.readdir('/', (err, dirents) => {
+      if (!err) {
+        const notes = dirents.find(dirent => dirent.name.match('Notes'));
+        if (!notes) this.fs.mkdir('/Notes', (err) => {
+          const exports = dirents.find(dirent => dirent.name.match('Exports'));
+          if (!exports) this.fs.mkdir('/Exports', (err) => {
+            console.log('init folders');
+          });
+        });
+      }
+    });
+  }  
 }
 
 export { DropboxFileSystem };

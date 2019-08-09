@@ -64,7 +64,8 @@ class File {
   }
 
   async exportPDFDialog() {
-    const result = await dialog.open(new ExportPDFForm());
+    const project = namenote.currentProject();
+    const result = await dialog.open(new ExportPDFForm(project));
     dialog.close();
     if (result) {
       console.log('export pdf', result);
@@ -72,7 +73,8 @@ class File {
   }
 
   async exportCSNFDialog() {
-    const result = await dialog.open(new ExportCSNFForm());
+    const project = namenote.currentProject();
+    const result = await dialog.open(new ExportCSNFForm(project));
     dialog.close();
     if (result) {
       console.log('export csnf', result);
@@ -85,6 +87,7 @@ class File {
 
     const result = await dialog.open(new OpenNewForm());
     dialog.close();
+    console.warn(result);
 
     const project = null; // ここで新規プロジェクト作成……
     if (project) {
@@ -141,15 +144,7 @@ class File {
     });
   }
 
-  createWriteStream(url) {
-    const fileSystem = this.getFileSystem(this.getScheme(url));
-    const path = this.getPath(url);
-    return fileSystem.createWriteStream(path);
-  }
-  
-  //
-
-  async getProjectURL(url) {
+  async getProjectURL(url) { // Translate "hoge/" -> "hoge/hoge.namenote"
     console.log('getProjectURL', url);
     if (url.match(/\.namenote$/i)) return url;
 
@@ -180,6 +175,39 @@ class File {
     } catch (e) { console.log(e); }
   }
 
+  async getSaveName(name, url) {
+    console.log('get save name', name, url);
+    const [body, ext] = this.splitName(name);
+    try {
+      const dirents = await file.readdir(url);
+      let index = 0;
+      const dotext = (ext) ? `.${ext}` : ''
+      while (1) {
+        const saveName = (index == 0) ? name : `${body} ${index}${dotext}`
+        if (!dirents.find(dirent => dirent.name === saveName)) {
+          console.log(saveName);
+          return saveName;
+        }
+        index++;
+      }
+    } catch (e) { console.log(e); }
+  }
+
+  // "url" may contain a storage scheme.
+  // "url" = "scheme" + "path"
+
+  getLabel(url) {
+    const scheme = this.getScheme(url);
+    const path = this.getPath(url);
+    const label = this.truncateURL(url);
+    return {
+      text: label,
+      path: path,
+      scheme: scheme,
+      icon: 'ui-icon-note'
+    };
+  }
+
   getScheme(url) {
     const arr = url.split(':');
     return (arr.length > 1 && arr[0]) ? arr[0] : 'file';
@@ -206,15 +234,14 @@ class File {
     return (namenote.app) ? 'file' : 'dropbox';
   }
 
-  getHome() {
+  getHome(type) {
     if (namenote.app) {
       return `file://${namenote.homePath}/`;
     }
-    return 'dropbox:///';
-  }
 
-  getUniqueName(name) {
-    return name;
+    if (type === 'export') return 'dropbox:///Exports/';
+    if (type === 'note') return 'dropbox:///Notes/';
+    return 'dropbox:///';
   }
 
   truncateURL(url) {
@@ -224,16 +251,11 @@ class File {
     return url;
   }
 
-  getLabel(url) {
-    const scheme = this.getScheme(url);
-    const path = this.getPath(url);
-    const label = this.truncateURL(url);
-    return {
-      text: label,
-      path: path,
-      scheme: scheme,
-      icon: 'ui-icon-note'
-    };
+  splitName(name) {
+    const arr = name.split('.');
+    const ext = (arr.length > 1) ? arr.pop() : null;
+    const body = arr.join('.');
+    return [body, ext];
   }
 }
 

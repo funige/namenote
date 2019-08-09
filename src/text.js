@@ -24,16 +24,34 @@ class Text {
   }
 
   static flatten(text) {
-    // TODO: '/'がtextに含まれているときパースに失敗する。リリース前に修正が必要
     return text
       .replace(/\r|\n/g, '')
-      .replace(/(<([^>]+)>)/g, '/')
+      .replace(/(<([^>]+)>)/g, '\n')
       .replace(/\/+/g, '/')
       .replace(/^\//, '')
       .replace(/\/$/, '')
-      .replace(/\//g, '<br>');
+      .replace(/\n/g, '<br>');
   }
 
+  static toPlainText(html) { // for CSNF export
+    let result = html
+        .replace(/^<div[^>]*>/, '')
+        .replace(/(<br>)?<\/div><div[^>]*>/g, '\n')
+        .replace(/<br>/g, '\n')
+        .replace(/<div[^>]*>/g, '\n')
+        .replace(/<\/div>/g, '')
+
+    result = result
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, '&')
+
+    console.log(html, '=>', result)
+    return result
+  }
+  
   static createNext(node) {
     const p = (node) ? node.cloneNode() : this.createFromTemplate();
     p.id = namenote.getUniqueID();

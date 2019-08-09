@@ -70,7 +70,6 @@ class Controller {
 
   onDown(e) {
     const info = this.getTargetInfo(e.target);
-    // console.log('[onDown]', info);
 
     if (info.view) {
       const project = projectManager.find(info.projectURL);
@@ -78,15 +77,24 @@ class Controller {
         if (info.pid) {
           project.setCurrentPage(pageManager.find(project, info.pid));
 
-        } else if (info.view === 'note') {
+        }
+
+        if (info.view === 'note') {
           namenote.loadProject(project);
         }
-      }
-    }
 
-    if (info.view === 'main' && !info.text) {
-      stroke = [[this.x, this.y]];
-      toolManager.currentTool().onDown(this.x, this.y);
+        if (info.view === 'main') {
+          if (!info.tid) {
+            project.clearCurrentTID();
+
+            stroke = [[this.x, this.y]];
+            toolManager.currentTool().onDown(this.x, this.y);
+
+          } else {
+            project.addCurrentTID(info.tid);
+          }
+        }
+      }
     }
   }
 
@@ -115,6 +123,10 @@ class Controller {
         }
         if (target.classList.contains('project')) {
           info.projectURL = target.alt;
+        }
+        if (target.classList.contains('text')) {
+          const result = target.id.match(/^p(\d+)$/);
+          info.tid = parseInt(result[1]);
         }
 
         if (target.className.indexOf('scroll-bar') >= 0) {

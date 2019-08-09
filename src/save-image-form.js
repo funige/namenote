@@ -9,7 +9,7 @@ import { Form } from './form.js';
 class SaveImageForm extends Form {
   constructor() {
     super();
-    this.id = 'save-image-form';
+    this.id = 'save-image';
   }
 
   init() {
@@ -30,7 +30,7 @@ class SaveImageForm extends Form {
         </div>
         <input type='submit' style='display: none' />`);
 
-      $(this.element).html(`<form id='save-image'>${string}</form>`);
+      $(this.element).html(`<form id='${this.id}'>${string}</form>`);
       $(this.element).dialog({
         autoOpen: false,
         position: { my: 'center center', at: 'center center' },
@@ -55,32 +55,24 @@ class SaveImageForm extends Form {
         }
       });
 
+      this.load(file.getHome('export'));
       this.initForm();
-      this.load(file.getHome());
     });
   }
 
-  async load(url) {
-    const projectURL = await file.getProjectURL(url);
-    if (projectURL) {
-      alert(T('Folder open error.'));
-    } else {
-      this.finder.loadFolder(url);
-    }
-  }
-
   initForm() {
-    const filename = `${Date.now()}.png`;
+    const saveName = `${Date.now()}.png`; 
     $(this.element).find('input.filename')
-      .val(filename)
+      .val(saveName)
+      .select()
       .on('keyup', (e) => {
         (e.target.value) ? this.enable() : this.disable();
       });
   }
 
   saveForm() {
-    const filename = $(this.element).find('input.filename').val();
-    const result = `${this.finder.url}${filename}`;
+    const saveName = $(this.element).find('input.filename').val();
+    const result = `${this.finder.url}${saveName}`;
     this.result = result;
     return result;
   }

@@ -34,7 +34,7 @@ gulp.task('browser', function() {
       this.emit('end');
     })
     .pipe(source('bundle-browser.js'))
-//  .pipe(streamify(uglify()))  // comment out when deguging
+//  .pipe(streamify(uglify()))
     .pipe(gulp.dest('./dist'))
     .pipe(gulp.dest('../funige.github.io/namenote/dist'))
 });
@@ -49,7 +49,7 @@ gulp.task('desktop', function() {
       this.emit('end');
     })
     .pipe(source('bundle-desktop.js'))
-//  .pipe(streamify(uglify()))  // comment out when deguging
+//  .pipe(streamify(uglify()))
     .pipe(gulp.dest('./dist'))
     
 });
