@@ -25,8 +25,7 @@ gulp.task('sass', function() {
 });
 
 gulp.task('browser', function() {
-  return browserify('./src/browser.js', { debug: true })
-    .transform(babelify)
+  return browserify('./src/browser.js', { transform: [babelify] })
     .bundle()
     .on("error", function (err) {
       console.log("Error : " + err.message);
@@ -40,8 +39,7 @@ gulp.task('browser', function() {
 });
 
 gulp.task('desktop', function() {
-  return browserify('./src/desktop.js', { debug: true })
-    .transform(babelify)
+  return browserify('./src/desktop.js', { transform: [babelify] })
     .bundle()
     .on("error", function (err) {
       isSuccess = false;

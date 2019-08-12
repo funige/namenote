@@ -51,6 +51,39 @@ class Text {
     console.log(html, '=>', result)
     return result
   }
+
+  static measure(element) {
+    return new Promise((resolve) => {
+      const tmp = element.cloneNode(true);
+      tmp.id = '';
+      tmp.style.visibility = 'hidden';
+      $('body')[0].appendChild(tmp);
+
+      setImmediate(() => {
+        const rect = { width: tmp.offsetWidth, height: tmp.offsetHeight };
+        tmp.parentNode.removeChild(tmp);
+        resolve(rect);
+      })
+    })
+  }
+
+  static fixPosition(element) {
+    const width = element.offsetWidth
+    const height = element.offsetHeight
+
+    if (Text.isVert(element)) {
+      const data = JSON.parse(element.alt)
+      if (width != data.width) {
+        const left = parseFloat(element.style.left) - (width - data.width)
+        element.style.left = left + "px"
+      }
+    }
+    element.alt = JSON.stringify({ width: width, height: height })
+  }
+
+  static isVert(element) {
+    return (element.style.writingMode == 'vertical-rl') ? true : false
+  }
   
   static createNext(node) {
     const p = (node) ? node.cloneNode() : this.createFromTemplate();

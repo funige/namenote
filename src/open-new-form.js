@@ -38,18 +38,15 @@ class OpenNewForm extends Form {
 
             <tr><td style='height: 1em;'>
 
-            <tr><td>T(Binding point):
-              <td><label><input name='bind' type='radio' value=0>T(Left binding)</label>
+            <tr><td>T(Binding point):<td>
+              <label><input name='bind' type='radio' value=0>T(Left binding)</label>
               <label><input name='bind' type='radio' checked value=1>T(Right binding)</label>
-
-            <tr><td>T(Start page):
-              <td><label><input name='start' type='radio' value=0 checked>T(From left)</label>
+            <tr><td>T(Start page):<td>
+              <label><input name='start' type='radio' value=0 checked>T(From left)</label>
 	      <label><input name='start' type='radio' value=1>T(From right)</label>
-
-              <input type='submit' style='display: none' />
           </table>
-        </div>
-`);
+          <input type='submit' style='display: none' />
+        </div>`);
 
       $(this.element).html(`<form id='${this.id}'>${string}</form>`);
       $(this.element).dialog({
@@ -79,9 +76,12 @@ class OpenNewForm extends Form {
         }
       });
 
+//    $('#' + this.id + ' input[type="radio"]').checkboxradio({
+//       icon: false
+//    });
+      
       const tmpl = this.element.querySelector('.tmpl');
-      $(tmpl).iconselectmenu({
-      });
+      $(tmpl).iconselectmenu({});
       
       this.load(file.getHome('note'), {
         loaded: () => {

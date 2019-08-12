@@ -86,7 +86,6 @@ class Controller {
         if (info.view === 'main') {
           if (!info.tid) {
             project.clearCurrentTID();
-
             stroke = [[this.x, this.y]];
             toolManager.currentTool().onDown(this.x, this.y);
 

@@ -9,6 +9,13 @@ let pages = []
 let docDefinition = {}
 
 class PDF {
+  constructor(project, options = {}) {
+    this.project = project;
+    this.options = options;
+
+    if (options.monitor) { options.monitor.log('ここにメッセージを表示……'); }
+  }
+  
   load(project) {
     const width = project.canvasSize.width;
     const height = project.canvasSize.height;
@@ -20,9 +27,10 @@ class PDF {
     };
   }
 
-  write(project, filename, callback) {
+  write(filename, callback) {
+    const project = this.project;
     console.log('write', filename, project, '...');
-
+    
     this.load(project);
     pages = [...project.pages];
     
@@ -67,6 +75,4 @@ class PDF {
 
 }
 
-const pdf = new PDF();
-
-export { pdf }
+export { PDF }

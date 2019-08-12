@@ -23,6 +23,14 @@ class Form {
     }
   }
 
+  log(text) {
+    const footer = $(this.element).parent().find('.ui-dialog-buttonset');
+    if (!footer.find('.message').length > 0) {
+      $('<div>').addClass('message').appendTo(footer);
+    }
+    footer.find('.message').html(text);
+  }
+  
   onReturnPressed(callback) {
     $(this.element).on('keydown', (e) => {
       if (e.keyCode == 13) {

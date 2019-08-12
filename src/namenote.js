@@ -20,8 +20,6 @@ import { NoteView } from './note-view.js';
 import { PageView } from './page-view.js';
 import { TextView } from './text-view.js';
 
-import { pdf } from './pdf.js';
-import { csnf } from './csnf.js';
 import { Canvas } from './canvas.js';
 
 let maxID = 1;
@@ -48,8 +46,6 @@ class Namenote {
     this.file = file;
     this.ui = ui;
 
-    this.pdf = pdf; // test
-    this.csnf = csnf; // test
     this.Canvas = Canvas; // test
   }
 

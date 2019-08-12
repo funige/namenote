@@ -14,13 +14,19 @@ let pack = null;
 
 
 class CSNF {
+  constructor(project, options = {}) {
+    this.project = project;
+    this.options = options;
+  }
+  
   load(project) {
   }
 
-  write(project, filename, callback) {
+  async write(filename, callback) {
+    const project = this.project;
     pack = csnfStream.pack();
 
-    this.makeData(project);
+    await this.makeData(project);
     this.zipData(images, (err) => {
       if (!err) {
         this.packData(files, (err) => {
@@ -103,7 +109,7 @@ class CSNF {
     images = []
   }
 
-  makeData(project) {
+  async makeData(project) {
     this.initData(project)
     const dir = files[0]
     const result = []
@@ -121,7 +127,7 @@ class CSNF {
     
       const text = `${pageDir}/ly_t0_t`
       files.push(text)
-      data[text] = this.getText(page)
+      data[text] = await this.getText(page)
     }
   }
 
@@ -160,7 +166,7 @@ class CSNF {
     return body
   }
 
-  getText(page) {
+  async getText(page) {
     if (!page) page = Project.current.currentPage
     const scale = 1; //page.project.exportScale 
     const result = {}
@@ -171,22 +177,21 @@ class CSNF {
 
     for (let i = 0; i < count; i++) {
       const element = page.texts.children[i]
-      let x = parseFloat(element.style.left) + element.offsetWidth / 2
-      let y = parseFloat(element.style.top) + element.offsetHeight / 2
-
+      const rect = await Text.measure(element);
+      
+      let x = parseFloat(element.style.left) + rect.width / 2
+      let y = parseFloat(element.style.top) + rect.height / 2
       x *= scale
       y *= scale
     
       const size = parseFloat(element.style.fontSize) * scale
       const string = Text.toPlainText(element.innerHTML);
-      //const string = Text.normalize(element.innerHTML)
-      
       const vert = (element.style.writingMode == 'vertical-rl') ? true : false
 	  
       const item = [5, x, y, size, 0, 0, vert, string, 100, 200, 300]
       shape.push(item)
     }
-    console.log(shape)
+    //console.log(shape)
   
     result.body = { count: count, shape: shape }
     return JSON.stringify(result)
@@ -248,6 +253,4 @@ class CSNF {
 
 }
 
-const csnf = new CSNF();
-
-export { csnf }
+export { CSNF }

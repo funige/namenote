@@ -57,9 +57,9 @@ class View {
     return canvas;
   }
 
-  createTexts(page, text) {
+  createTexts(page) {
     const texts = document.createElement('div');
-    texts.innerHTML = (text !== undefined) ? text : page.texts.innerHTML;
+    texts.innerHTML = page.texts.innerHTML;
     return texts;
   }
 

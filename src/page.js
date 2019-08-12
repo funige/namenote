@@ -19,7 +19,11 @@ class Page {
 
   destructor() {
     console.log('page destructor', this.pid);
+
     this.project = null;
+//  if (this.texts && this.texts.parentNode) {
+//    this.texts.parentNode.removeChild(this.texts);
+//  }
   }
 
   load(url) {

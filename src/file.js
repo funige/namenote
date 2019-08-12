@@ -13,6 +13,8 @@ import { OpenNewForm } from './open-new-form.js';
 import { SaveImageForm } from './save-image-form.js';
 import { ExportPDFForm } from './export-pdf-form.js';
 import { ExportCSNFForm } from './export-csnf-form.js';
+import { PDF } from './pdf.js';
+import { CSNF } from './csnf.js';
 import { namenote } from './namenote.js';
 
 // //////////////////////////////////////////////////////////////
@@ -65,19 +67,29 @@ class File {
 
   async exportPDFDialog() {
     const project = namenote.currentProject();
-    const result = await dialog.open(new ExportPDFForm(project));
-    dialog.close();
+    const form = new ExportPDFForm(project);
+    const result = await dialog.open(form);
+
     if (result) {
-      console.log('export pdf', result);
+      const pdf = new PDF(project, { monitor: form });
+      pdf.write(result, () => {
+        console.log('export pdf', result);
+        dialog.close();
+      });
     }
   }
 
   async exportCSNFDialog() {
     const project = namenote.currentProject();
-    const result = await dialog.open(new ExportCSNFForm(project));
-    dialog.close();
+    const form = new ExportCSNFForm(project);
+    const result = await dialog.open(form);
+
     if (result) {
-      console.log('export csnf', result);
+      const csnf = new CSNF(project, { monitor: form });
+      csnf.write(result, () => {
+        console.log('export csnf', result);
+        dialog.close();
+      });
     }
   }
 

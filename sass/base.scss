@@ -271,7 +271,12 @@ button.ui-button.ui-widget {
 
 .ui-dialog-buttonset {
     width: calc(100% - 15px);
+
+    .message {
+        margin-top: 10px;
+    }
 }
+
 .ui-dialog-buttonpane button {
     float: right;
 }
