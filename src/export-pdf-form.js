@@ -52,14 +52,14 @@ class ExportPDFForm extends Form {
         noRecents: true,
         selected: (url) => {
           this.load(url);
-        },
+        }
       });
 
       this.load(file.getHome('export'), {
         loaded: () => {
           this.initForm();
         }
-      })
+      });
     });
   }
 
@@ -78,7 +78,7 @@ class ExportPDFForm extends Form {
     const saveName = $(this.element).find('input.filename').val();
     const result = `${this.finder.url}${saveName}`;
     this.result = result;
-    console.log(result)
+    console.log(result);
     return result;
   }
 }

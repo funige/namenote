@@ -189,14 +189,13 @@ class Command {
     action.play(record);
   }
 
-
   async addPage(sender, to) {
     const project = sender.project;
     const index = (to >= 0) ? to : project.pages.length - 1;
-    const pid = await project.getNewPID();
     const record = [];
 
-    record.push(['addPage', pid, index + 1, project.url]);
+    const page = await pageManager.create(project);
+    record.push(['addPage', page.pid, index + 1, project.url]);
     history.pushUndo(record);
     action.play(record);
   }

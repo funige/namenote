@@ -35,21 +35,21 @@ class Text {
 
   static toPlainText(html) { // for CSNF export
     let result = html
-        .replace(/^<div[^>]*>/, '')
-        .replace(/(<br>)?<\/div><div[^>]*>/g, '\n')
-        .replace(/<br>/g, '\n')
-        .replace(/<div[^>]*>/g, '\n')
-        .replace(/<\/div>/g, '')
+      .replace(/^<div[^>]*>/, '')
+      .replace(/(<br>)?<\/div><div[^>]*>/g, '\n')
+      .replace(/<br>/g, '\n')
+      .replace(/<div[^>]*>/g, '\n')
+      .replace(/<\/div>/g, '');
 
     result = result
       .replace(/&nbsp;/g, ' ')
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
-      .replace(/&amp;/g, '&')
+      .replace(/&amp;/g, '&');
 
-    console.log(html, '=>', result)
-    return result
+    console.log(html, '=>', result);
+    return result;
   }
 
   static measure(element) {
@@ -59,32 +59,32 @@ class Text {
       tmp.style.visibility = 'hidden';
       $('body')[0].appendChild(tmp);
 
-      setImmediate(() => {
+      setTimeout(() => {
         const rect = { width: tmp.offsetWidth, height: tmp.offsetHeight };
         tmp.parentNode.removeChild(tmp);
         resolve(rect);
-      })
-    })
+      }, 0);
+    });
   }
 
   static fixPosition(element) {
-    const width = element.offsetWidth
-    const height = element.offsetHeight
+    const width = element.offsetWidth;
+    const height = element.offsetHeight;
 
     if (Text.isVert(element)) {
-      const data = JSON.parse(element.alt)
-      if (width != data.width) {
-        const left = parseFloat(element.style.left) - (width - data.width)
-        element.style.left = left + "px"
+      const data = JSON.parse(element.alt);
+      if (width !== data.width) {
+        const left = parseFloat(element.style.left) - (width - data.width);
+        element.style.left = left + 'px';
       }
     }
-    element.alt = JSON.stringify({ width: width, height: height })
+    element.alt = JSON.stringify({ width: width, height: height });
   }
 
   static isVert(element) {
-    return (element.style.writingMode == 'vertical-rl') ? true : false
+    return (element.style.writingMode === 'vertical-rl');
   }
-  
+
   static createNext(node) {
     const p = (node) ? node.cloneNode() : this.createFromTemplate();
     p.id = namenote.getUniqueID();

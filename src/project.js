@@ -1,9 +1,5 @@
-import { namenote } from './namenote.js';
-import { Page } from './page.js';
-import { projectManager } from './project-manager.js';
 import { pageManager } from './page-manager.js';
 import { file } from './file.js';
-import { config } from './config.js';
 import { shape } from './shape.js';
 import { Text } from './text.js';
 
@@ -34,7 +30,7 @@ class Project {
   }
 
   destructor() {
-    log('project destructor', this.url);
+    console.log('project destructor', this.url);
     this.pages.forEach(page => {
       page.destructor();
     });
@@ -169,6 +165,13 @@ class Project {
     return max + 1;
   }
 
+  anyPage() {
+    console.log('curentPage=>', this.currentPage);
+    console.log('pages=>', this.pages.map(page => page.loaded));
+    console.log('result=>', this.currentPage || this.pages.find(page => page.loaded));
+    return this.currentPage || this.pages.find(page => page.loaded);
+  }
+
   getThumbnailSize(size) {
     const thumbnailWidth = thumbnailWidths[size || 'large'];
     const scale = thumbnailWidth / this.canvasSize.width;
@@ -192,7 +195,7 @@ class Project {
 
   removePage(pid, from) {
     if (this.pages.length <= 1) return;
-    this.pages.splice(from, 1)[0];
+    this.pages.splice(from, 1); // this.pages.splice(from, 1)[0];
 
     const index = (from > 0) ? (from - 1) : 0;
     this.setCurrentPage(this.pages[index]);
@@ -245,7 +248,21 @@ class Project {
     if (!page) return;
 
     page.putImage(rect, toImage);
-    page.updateThumbnail(this);
+    page.updateThumbnail();
+  }
+
+  toData() {
+    const data = {};
+    data.params = $.extend({}, this.params);
+    data.pids = [];
+    this.pages.forEach((page) => {
+      data.pids.push(page.pid);
+    });
+    return data;
+  }
+
+  async save() {
+    await file.writeJSON(this.url + '.test', this.toData());
   }
 }
 

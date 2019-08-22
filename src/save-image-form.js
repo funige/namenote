@@ -1,4 +1,3 @@
-import { dialog } from './dialog.js';
 import { file } from './file.js';
 import { locale, T } from './locale.js';
 import { Finder } from './finder.js';
@@ -61,12 +60,16 @@ class SaveImageForm extends Form {
   }
 
   initForm() {
-    const saveName = `${Date.now()}.png`; 
+    const saveName = `${Date.now()}.png`;
     $(this.element).find('input.filename')
       .val(saveName)
       .select()
       .on('keyup', (e) => {
-        (e.target.value) ? this.enable() : this.disable();
+        if (e.target.value) {
+          this.enable();
+        } else {
+          this.disable();
+        }
       });
   }
 

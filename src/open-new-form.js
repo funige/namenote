@@ -76,18 +76,14 @@ class OpenNewForm extends Form {
         }
       });
 
-//    $('#' + this.id + ' input[type="radio"]').checkboxradio({
-//       icon: false
-//    });
-      
       const tmpl = this.element.querySelector('.tmpl');
       $(tmpl).iconselectmenu({});
-      
+
       this.load(file.getHome('note'), {
         loaded: () => {
           this.initForm();
-        },
-      })
+        }
+      });
     });
   }
 
@@ -105,16 +101,16 @@ class OpenNewForm extends Form {
   saveForm() {
     const filename = $(this.element).find('input.filename').val();
     const count = $(this.element).find('input.count').val();
-    const start = document.forms[this.id].start.value == "1";
-    const bind = document.forms[this.id].bind.value == "1";
+    const start = document.forms[this.id].start.value == '1';
+    const bind = document.forms[this.id].bind.value == '1';
 
     return {
       path: this.finder.url,
       name: filename,
       page_count: count,
       bind_right: bind,
-      startpage_right: start,
-    }
+      startpage_right: start
+    };
   }
 }
 

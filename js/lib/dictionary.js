@@ -70,6 +70,7 @@ const dictionary = {
     "Clear Recent Note List": "最近使用したノートのリストを消去",
     "Untitled": "名称未設定",
     "Making CSNF ...": "CSNFファイルを作成中 ...",
+    "Making PDF ...": "PDFファイルを作成中 ...",
     "Online Storage": "オンラインストレージ",
     "Recent Notes": "最近使用したノート",
 
@@ -165,6 +166,8 @@ const dictionary = {
     "Zoom In": "ズームイン",
     "Zoom Out": "ズームアウト",
     "Quick Zoom": "クイックズーム",
+
+    "Write Protected": "書き込み禁止",
     
     "Enable Japanese Options": "日本語用のオプションを有効にする"
   }

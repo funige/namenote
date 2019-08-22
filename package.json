@@ -1,6 +1,6 @@
 {
   "name": "Namenote",
-  "version": "2.0.0-alpha.20",
+  "version": "2.0.0-alpha.21",
   "trial": false,
   "authURL": "https://funige.github.io/namenote/auth",
   "description": "A hackable drawing notebook.",
@@ -49,7 +49,8 @@
     "jest-canvas-mock": "^2.1.0",
     "notify-send": "^0.1.2",
     "resolve": "^1.12.0",
-    "vinyl-source-stream": "^2.0.0"
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.1"
   },
   "dependencies": {
     "bl": "^3.0.0",
@@ -69,7 +70,8 @@
     "mousetrap": "^1.6.3",
     "pdfmake": "git+https://github.com/ArthurClemens/pdfmake.git",
     "restructure": "git+https://github.com/ArthurClemens/restructure.git",
-    "xtend": "^4.0.2"
+    "xtend": "^4.0.2",
+    "yarn": "^1.17.3"
   },
   "browsers": [
     "last 2 versions",

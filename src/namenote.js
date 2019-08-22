@@ -10,6 +10,7 @@ import { dialog } from './dialog.js';
 import { flash } from './flash.js';
 import { file } from './file.js';
 import { history } from './history.js';
+import { autosave } from './autosave.js';
 
 import { projectManager } from './project-manager.js';
 import { pageManager } from './page-manager.js';
@@ -47,6 +48,7 @@ class Namenote {
     this.ui = ui;
 
     this.Canvas = Canvas; // test
+    this.autosave = autosave;
   }
 
   init() {
@@ -128,7 +130,7 @@ class Namenote {
       project.pids.forEach((pid, index) => {
         if (project.pages[index]) {
           const page = project.pages[index];
-          page.updateThumbnail(project);
+          page.updateThumbnail();
         }
       });
     });

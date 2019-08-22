@@ -14,7 +14,7 @@ class Form {
 
   async load(url, options = {}) {
     console.log('form load', url);
-    
+
     const projectURL = await file.getProjectURL(url);
     if (projectURL) {
       alert(T('Folder open error.'));
@@ -30,7 +30,7 @@ class Form {
     }
     footer.find('.message').html(text);
   }
-  
+
   onReturnPressed(callback) {
     $(this.element).on('keydown', (e) => {
       if (e.keyCode == 13) {

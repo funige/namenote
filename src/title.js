@@ -7,10 +7,7 @@ class Title {
     this.set();
   }
 
-  set(title) {
-    if (!title) {
-      title = (namenote.trial) ? `${T('Namenote')} ${T('Trial')}` : T('Namenote');
-    }
+  set(title = (namenote.trial) ? `${T('Namenote')} ${T('Trial')}` : T('Namenote')) {
     if (namenote.app) {
       namenote.app.setTitle(title);
     } else {

@@ -1,20 +1,9 @@
 import { config } from './config.js';
 
 const { ipcRenderer } = window.require('electron');
-const fs = window.require('fs-extra');
+const { dialog } = window.require('electron').remote;
 const path = window.require('path');
 
-const { dialog } = window.require('electron').remote;
-
-/* const openParams = {
-  defaultPath: null,
-  properties: ['openDirectory', 'openFile'],
-  filters: [
-    { name: 'Namenote', extensions: ['namenote'] }
-  ],
-} */
-
-// //////////////////////////////////////////////////////////////
 
 class App {
   constructor() {
@@ -22,7 +11,7 @@ class App {
   }
 
   updateDefaultPath(url) {
-    config.data.defaultPath = path.dirname(url); // .replace(/\/[^/]+?$/, '')
+    config.data.defaultPath = path.dirname(url);
     config.save();
   }
 

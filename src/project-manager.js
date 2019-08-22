@@ -3,11 +3,40 @@ import { Project } from './project.js';
 import { pageManager } from './page-manager.js';
 import { file } from './file.js';
 import { dialog } from './dialog.js';
-
+import { projectTemplate } from './project-template.js';
 
 class ProjectManager {
   constructor() {
     this.projects = [];
+  }
+
+  async create(params) {
+    const baseURL = `${params.path}${params.name}`;
+    const url = `${baseURL}/${params.name}.namenote`;
+    console.warn('project manager create', baseURL, url);
+
+    file.mkdir(baseURL);
+    const template = { params: projectTemplate.Manga, pids: [] };
+    const project = new Project(url, template);
+
+    for (let i = 0; i < params.page_count; i++) {
+      const page = await pageManager.create(project);
+      project.pages.push(page);
+    }
+    console.warn('create project=>', project);
+
+    this.addProject(project);
+    return project;
+
+
+    /*
+    const project = new Project()
+    for (const i = 0; i < params.page_count; i++) {
+      pids.push(i + 1);
+    }
+    const project = new Project(url, )
+    return null;
+    */
   }
 
   async get(url) {

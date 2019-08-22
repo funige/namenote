@@ -20,13 +20,10 @@ class NoteView extends View {
       },
       trash: () => {
         console.log('noteView trash');
+      },
+      lock: () => {
+        console.log('noteView lock');
       }
-      /* size: () => {
-        this.size = this.rotateSize(this.size);
-        projectManager.projects.map(project => {
-          this.updateThumbnail(project.currentPage || project.pages[0]);
-        })
-      }, */
     });
 
     this.enableSmoothScroll(this.content);
@@ -72,7 +69,8 @@ class NoteView extends View {
     this.handleDiv().appendTo(li);
     this.thumbnailDiv(pd.thumbnail).appendTo(li);
     this.noteInfoDiv(project).appendTo(li);
-    this.updateThumbnail(project.currentPage || project.pages[0]);
+
+    this.updateThumbnail((project.currentPage || project.pages[0]), project);
   }
 
   createProjectElement(url) {

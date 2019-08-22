@@ -68,40 +68,48 @@ class View {
   }
 
   detectPID(element) {
-    while (element) {
-      if (element.classList.contains('page')) {
-        return parseInt(element.id.replace(/^(pageview-|textview-)?page-/, ''), 10);
+    let node = element;
+    while (node) {
+      if (node.classList.contains('page')) {
+        return parseInt(node.id.replace(/^(pageview-|textview-)?page-/, ''), 10);
       }
-      element = element.parentNode;
+      node = node.parentNode;
     }
     return null;
   }
 
+  initPageData(page, index) {
+    const pid = page.pid;
+    if (!this.pageData[pid]) {
+      const pageElement = this.createPageElement(pid, index);
+      this.content.appendChild(pageElement);
+      this.pageData[pid] = {
+        element: pageElement
+      };
+    }
+  }
+
   // Helper methods for pageView/noteView
 
-  updateThumbnail(page, loop) {
+  updateThumbnail(page, project) {
     let pd;
 
-    if (this.id !== 'note') {
+    if (this.id === 'page') {
+      project = page.project;
       pd = this.pageData[page.pid];
     } else if (this.projectData) {
-      pd = this.projectData[page.project.url];
-    } else {
-      return;
+      pd = this.projectData[project.url];
     }
 
-    //if (this.id === 'note' && !this.projectData[page.project.url]) return;
-    //const pd = (this.id === 'note')
-    //  ? this.projectData[page.project.url]
-    //  : this.pageData[page.pid];
+    if (!pd) return;
 
-    const rect = page.project.getThumbnailSize(this.size);
+    const rect = project.getThumbnailSize(this.size);
     if (pd.thumbnail) {
       pd.thumbnail.style.width = rect.width + 'px';
       pd.thumbnail.style.height = rect.height + 'px';
       pd.thumbnail.parentNode.style.width = (rect.width + 6) + 'px';
 
-      if (page.thumbnail) {
+      if (page && page.thumbnail) {
         pd.thumbnail.src = page.thumbnail.toDataURL('image/png');
       }
     }
@@ -111,8 +119,8 @@ class View {
     if (count) count.style.left = (rect.width + 18) + 'px';
 
     if (this.id === 'page') {
-      if ((page.project.currentPage || page.project.pages[0]) === page) {
-        namenote.noteView.updateThumbnail(page);
+      if ((project.currentPage || project.pages[0]) === page) {
+        namenote.noteView.updateThumbnail(page, project);
       }
     }
   }

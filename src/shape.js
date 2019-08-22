@@ -1,6 +1,5 @@
 class Shape {
-  parse(data, options) {
-    if (!options) options = {};
+  parse(data, options = {}) {
     if (!options.color) options.color = '#85bffd';
 
     const result = [];

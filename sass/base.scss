@@ -409,6 +409,17 @@ span .ui-icon {
     z-index: 3000;
     opacity: 0.8; //0.4
     pointer-events: none;
+
+    img {
+        display: inline-block;
+        height: 30px;
+        vertical-align: bottom;
+    }
+    div {
+        display: inline-block;
+        color: #297efd;
+        vertical-align: bottom;
+    }
 }
 
 /**

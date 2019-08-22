@@ -51,17 +51,17 @@ class PageView extends View {
 
     this.content.innerHTML = '';
     project.pages.forEach((page, index) => {
-      const pid = page.pid;
-      const pageElement = this.createPageElement(pid);
-      this.content.appendChild(pageElement);
+      this.initPageData(page, index);
 
-      this.pageData[pid] = {
-        element: pageElement
-      };
-      if (page.loaded()) {
+      if (page.loaded) {
         this.initPage(page);
       }
     });
+  }
+
+  initPageData(page, index) {
+    super.initPageData(page, index);
+    this.setPageRect(page, index);
   }
 
   initPage(page) {
@@ -78,6 +78,10 @@ class PageView extends View {
     this.digestDiv(page).appendTo(li);
     this.countDiv(index).appendTo(li);
 
+    this.updateThumbnail(page);
+  }
+
+  setPageRect(page, index) {
     this.updateThumbnail(page);
   }
 

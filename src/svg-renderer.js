@@ -66,13 +66,6 @@ class SVGRenderer {
       if (callback) {
         const png = destCanvas.toDataURL('image/png');
         callback(png);
-        /*
-        const body = png.replace(/^data:image\/png;base64,/, '');
-        file.writeFile('hoge.png', body, 'base64', function(err) {
-        }).then(() => {
-          console.log('write test data')
-        });
-        */
       }
     };
     img.onerror = (err) => {

@@ -23,6 +23,7 @@ const dummy = {
 
 class File {
   async readdir(url) {
+    return [];
   }
 
   async readJSON(url) {

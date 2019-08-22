@@ -16,11 +16,16 @@ class DropboxFileSystem extends FileSystem {
     this.type = 'dropbox';
   }
 
-  // //////////////
+  //
 
   stat(url, callback) {
     if (!this.auth()) return;
     return this.fs.stat(url, callback);
+  }
+
+  mkdir(url, calback) {
+    if (!this.auth()) return;
+    return this.fs.mkdir(url, callback);
   }
 
   readdir(url, callback) {
@@ -95,16 +100,20 @@ class DropboxFileSystem extends FileSystem {
   initFolders() {
     this.readdir('/', (err, dirents) => {
       if (!err) {
-        const notes = dirents.find(dirent => dirent.name.match('Notes'));
-        if (!notes) this.fs.mkdir('/Notes', (err) => {
-          const exports = dirents.find(dirent => dirent.name.match('Exports'));
-          if (!exports) this.fs.mkdir('/Exports', (err) => {
-            console.log('init folders');
+        const notes = dirents.find(dirent => dirent.name === 'Notes');
+        if (!notes) {
+          this.fs.mkdir('/Notes', (err) => {
+            const exports = dirents.find(dirent => dirent.name === 'Exports');
+            if (!exports) {
+              this.fs.mkdir('/Exports', (err) => {
+                console.log('init folders');
+              });
+            }
           });
-        });
+        }
       }
     });
-  }  
+  }
 }
 
 export { DropboxFileSystem };

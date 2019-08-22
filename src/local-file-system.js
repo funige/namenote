@@ -16,6 +16,10 @@ class LocalFileSystem extends FileSystem {
     return this.fs.stat(url, callback);
   }
 
+  mkdir(url, callback) {
+    return this.fs.mkdir(url, callback);
+  }
+
   readdir(url, callback) {
     return this.fs.readdir(url, { withFileTypes: true }, callback);
   }

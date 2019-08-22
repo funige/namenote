@@ -39,19 +39,26 @@ class PenTool extends Tool {
     x -= this.drawingLayer.offsetX;
     y -= this.drawingLayer.offsetY;
 
-    const width = 5 * scale;
+    const w = 5 * scale;
     this.drawingLayer.ctx.fillStyle = '#ff0000';
-    this.drawingLayer.ctx.fillRect(x - width / 2, y - width / 2, width, width);
+    this.drawingLayer.ctx.fillRect(x - w / 2, y - w / 2, w, w);
   }
 
   draw(stroke) {
+    const project = namenote.mainView.project;
+    if (project) {
+      const page = project.currentPage;
+      if (page && page.loaded) {
+        this.drawPage(page, stroke);
+      }
+    }
+    this.drawingLayer.clear();
+  }
+
+  drawPage(page, stroke) {
+    console.log('drawPage', page);
+
     const mainView = namenote.mainView;
-    const project = mainView.project;
-    if (!project) return;
-
-    const page = project.currentPage;
-    if (!page) return;
-
     const pageRect = mainView.getPageRect(mainView.project.currentPageIndex());
     const pageOffsetX = pageRect.x - mainView.content.scrollLeft;
     const pageOffsetY = pageRect.y - mainView.content.scrollTop;
@@ -64,32 +71,30 @@ class PenTool extends Tool {
       point[1] = (point[1] - dy) / scale;
     });
 
-    const width = 5;
-    const rect = this.getBound(stroke, width);
+    const w = 5;
+    const rect = this.getBound(stroke, w);
     const fromImage = page.getImage(rect);
 
     stroke.forEach(point => {
       page.canvasCtx.fillStyle = '#000000';
-      page.canvasCtx.fillRect(point[0] - width / 2, point[1] - width / 2, width, width);
+      page.canvasCtx.fillRect(point[0] - w / 2, point[1] - w / 2, w, w);
     });
-    page.updateThumbnail(project);
+    page.updateThumbnail();
 
     const toImage = page.getImage(rect);
     const pid = page.pid;
-    const url = project.url;
+    const url = page.project.url;
 
     const record = [];
     record.push(['editImage', fromImage, toImage, rect, pid, url]);
     history.pushUndo(record);
 
-    project.views.forEach((view) => {
+    page.project.views.forEach((view) => {
       view.onEditImage(toImage, rect, pid);
     });
-
-    this.drawingLayer.clear();
   }
 
-  getBound(stroke, width) {
+  getBound(stroke, w) {
     let tmp = null;
 
     stroke.forEach(point => {
@@ -107,10 +112,10 @@ class PenTool extends Tool {
     });
 
     return {
-      x: Math.floor(tmp[0] - width / 2),
-      y: Math.floor(tmp[1] - width / 2),
-      width: Math.ceil(tmp[2] - tmp[0] + width + 1),
-      height: Math.ceil(tmp[3] - tmp[1] + width + 1)
+      x: Math.floor(tmp[0] - w / 2),
+      y: Math.floor(tmp[1] - w / 2),
+      width: Math.ceil(tmp[2] - tmp[0] + w + 1),
+      height: Math.ceil(tmp[3] - tmp[1] + w + 1)
     };
   }
 }

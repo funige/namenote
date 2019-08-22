@@ -73,11 +73,11 @@ class OpenForm extends Form {
   }
 
   async load(url) {
-//  this.hideAll();
-    
+    //  this.hideAll();
+
     const projectURL = await file.getProjectURL(url);
     console.log('load', url, projectURL);
-    
+
     if (projectURL) {
       const project = await projectManager.get(projectURL);
       if (project) {

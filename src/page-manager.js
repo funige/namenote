@@ -9,6 +9,13 @@ class PageManager {
     this.pages = {};
   }
 
+  async create(project) {
+    const pid = await project.getNewPID();
+    const page = new Page(project, pid, true);
+    this.addPage(page);
+    return page;
+  }
+
   get(project, pid) {
     let page = this.find(project, pid);
     if (!page) {
@@ -24,10 +31,6 @@ class PageManager {
       return this.pages[url][pid];
     }
     return null;
-
-    // return this.pages.find(page => {
-    //  return (page.project === project) && (page.pid === pid);
-    // });
   }
 
   addPage(page) {

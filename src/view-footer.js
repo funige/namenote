@@ -37,9 +37,18 @@ class ViewFooter {
       float: 'right'
     });
 
+    const lockButton = Widget.createImageButton({
+      src: 'img/lock-button.png',
+      click: () => {
+        this.options.size();
+      },
+      float: 'right'
+    });
+
     if (this.options.append) this.element.appendChild(appendButton);
     if (this.options.trash) this.element.appendChild(trashButton);
     if (this.options.size) this.element.appendChild(sizeButton);
+    if (this.options.lock) this.element.appendChild(lockButton);
   }
 }
 

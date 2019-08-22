@@ -52,13 +52,16 @@ class Divider {
 
     const mainView = $('.main-view');
     const dock = $('.sidebar');
+    const saveIndicator = $('#save-indicator');
 
     if (value == 'left') {
       $('#left-component').append(dock);
       $('#right-component').append(mainView);
+      $('#right-component').append(saveIndicator);
     } else {
       $('#right-component').append(dock);
       $('#left-component').append(mainView);
+      $('#left-component').append(saveIndicator);
     }
     this.update();
   }

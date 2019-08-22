@@ -8,9 +8,10 @@ const MIN_MOVE = 5;
 let moved = false;
 let stroke = null;
 
+
 class Controller {
   constructor() {
-    this.api = 'pointer';
+    this.api = (window.PointerEvent) ? 'pointer' : ((window.TouchEvent) ? 'touch' : 'mouse');
 
     this.spaceKey = false;
     this.altKey = false;
@@ -25,6 +26,9 @@ class Controller {
   }
 
   init() {
+    const main = $('#main')[0];
+
+    /*
     window.addEventListener(this.api + 'down', (e) => {
       this.updatePointer(e);
       this.pointerId = e.pointerId;
@@ -48,6 +52,32 @@ class Controller {
       }
       this.onMove(e);
     });
+    */
+
+    window['on' + this.api + 'down'] = (e) => {
+      console.log('touch down');
+      this.updatePointer(e);
+      this.pointerId = e.pointerId;
+
+      this.x0 = this.x;
+      this.y0 = this.y;
+      this.onDown(e);
+    };
+
+    window['on' + this.api + 'up'] = (e) => {
+      this.onUp(e);
+    };
+
+    window['on' + this.api + 'move'] = (e) => {
+      if (this.pointerId != e.pointerId) return;
+
+      this.updatePointer(e);
+      if (Math.abs(this.x - this.x0) >= MIN_MOVE
+          || Math.abs(this.y - this.y0) >= MIN_MOVE) {
+        moved = true;
+      }
+      this.onMove(e);
+    };
 
     document.addEventListener('keydown', (e) => {
       this.altKey = e.altKey;
@@ -76,7 +106,6 @@ class Controller {
       if (project) {
         if (info.pid) {
           project.setCurrentPage(pageManager.find(project, info.pid));
-
         }
 
         if (info.view === 'note') {
@@ -88,7 +117,6 @@ class Controller {
             project.clearCurrentTID();
             stroke = [[this.x, this.y]];
             toolManager.currentTool().onDown(this.x, this.y);
-
           } else {
             project.addCurrentTID(info.tid);
           }

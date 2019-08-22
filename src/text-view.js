@@ -40,14 +40,10 @@ class TextView extends View {
 
     this.content.innerHTML = '';
     project.pages.forEach((page, index) => {
-      const pid = page.pid;
-      const pageElement = this.createPageElement(pid, index);
-      this.content.appendChild(pageElement);
+      this.initPageData(page, index);
 
-      this.pageData[pid] = {
-        element: pageElement
-      };
-      if (page.loaded()) {
+
+      if (page.loaded) {
         this.initPage(page);
       }
     });

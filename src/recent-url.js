@@ -1,4 +1,3 @@
-import { projectManager } from './project-manager.js';
 import { menu } from './menu.js';
 
 const MAX_RECENT_URL = 10;
@@ -26,7 +25,7 @@ class RecentURL {
   }
 
   add(url) {
-    this.data = this.data.filter((value) => value != url);
+    this.data = this.data.filter((value) => value !== url);
     this.data.unshift(url);
 
     if (this.data.length > MAX_RECENT_URL) {

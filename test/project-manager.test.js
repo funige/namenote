@@ -2,7 +2,7 @@ jest.mock('../src/file.js');
 jest.mock('../src/shape.js');
 
 import { projectManager } from '../src/project-manager.js';
-import { dummy } from '../src/__mocks__/file.js';
+// import { dummy } from '../src/__mocks__/file.js';
 
 global.$ = require('jquery');
 window.jQuery = $;

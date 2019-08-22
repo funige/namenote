@@ -11,13 +11,14 @@ import { OpenForm } from './open-form.js';
 import { OpenNewForm } from './open-new-form.js';
 
 import { SaveImageForm } from './save-image-form.js';
+import { svgRenderer } from './svg-renderer.js';
 import { ExportPDFForm } from './export-pdf-form.js';
 import { ExportCSNFForm } from './export-csnf-form.js';
 import { PDF } from './pdf.js';
 import { CSNF } from './csnf.js';
 import { namenote } from './namenote.js';
 
-// //////////////////////////////////////////////////////////////
+//
 
 class File {
   constructor() {
@@ -48,20 +49,24 @@ class File {
   }
 
   async saveImageDialog() {
+    const project = namenote.currentProject();
+    if (!project) return;
+    const page = project.currentPage;
+    if (!page) return;
+
     const url = await dialog.open(new SaveImageForm());
-    dialog.close();
+
     if (url) {
       console.log('save page image to', url);
-      /*
-      const project = namenote.currentProject()
-      if (project) {
-        project.pages[0].capture((data) => {
-          if (data) {
-            this.save(url, data)
-          }
-        })
-      }
-      */
+      svgRenderer.capture(page, (png) => {
+        if (png) {
+          const body = png.replace(/^data:image\/png;base64,/, '');
+          this.writeFile(url, body).then((err) => {
+            console.log('image saved..');
+          });
+        }
+        dialog.close();
+      });
     }
   }
 
@@ -101,7 +106,8 @@ class File {
     dialog.close();
     console.warn(result);
 
-    const project = null; // ここで新規プロジェクト作成……
+    const project = await projectManager.create(result);
+    console.log('openNewDialog:', project);
     if (project) {
       namenote.loadProject(project);
     }
@@ -111,6 +117,19 @@ class File {
     const fileSystem = this.getFileSystem(scheme);
     console.log('logout', scheme, fileSystem);
     fileSystem.logout();
+  }
+
+  async mkdir(url) {
+    return new Promise((resolve, reject) => {
+      const fileSystem = this.getFileSystem(this.getScheme(url));
+      const path = this.getPath(url);
+      fileSystem.mkdir(path, (err) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
   }
 
   async readdir(url) {
@@ -140,14 +159,16 @@ class File {
   }
 
   async writeJSON(url, data) {
-    return writeFile(url, JSON.stringify(data));
+    return this.writeFile(url, JSON.stringify(data), 'utf8');
   }
 
-  async writeFile(url, data) {
+  async writeFile(url, data, type) {
+    if (type === undefined) type = 'base64';
+
     return new Promise((resolve, reject) => {
       const fileSystem = this.getFileSystem(this.getScheme(url));
       const path = this.getPath(url);
-      fileSystem.writeFile(path, data, 'base64', (err) => {
+      fileSystem.writeFile(path, data, type, (err) => {
         if (err) {
           return reject(err);
         }
@@ -162,7 +183,7 @@ class File {
 
     try {
       const dirents = await file.readdir(url);
-      
+
       for (const dirent of dirents) {
         if (!dirent.isDirectory() && dirent.name.match(/\.namenote$/i)) {
           return `${url}${dirent.name}`;
@@ -173,7 +194,7 @@ class File {
 
   async getMaxPID(url) {
     try {
-      let maxPID = -1;
+      let maxPID = 0;
       const dirents = await file.readdir(url);
       for (const dirent of dirents) {
         if (!dirent.isDirectory() && dirent.name.match(/\.json$/i)) {
@@ -184,18 +205,23 @@ class File {
         }
       }
       return maxPID;
-    } catch (e) { console.log(e); }
+    } catch (e) {
+      console.log(e);
+      return 0;
+    }
   }
 
   async getSaveName(name, url) {
     console.log('get save name', name, url);
     const [body, ext] = this.splitName(name);
+
     try {
       const dirents = await file.readdir(url);
       let index = 0;
-      const dotext = (ext) ? `.${ext}` : ''
+      const dotext = (ext) ? `.${ext}` : '';
+
       while (1) {
-        const saveName = (index == 0) ? name : `${body} ${index}${dotext}`
+        const saveName = (index == 0) ? name : `${body} ${index}${dotext}`;
         if (!dirents.find(dirent => dirent.name === saveName)) {
           console.log(saveName);
           return saveName;

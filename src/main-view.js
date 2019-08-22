@@ -69,19 +69,13 @@ class MainView extends View {
     this.drawingLayer.init(this.content);
 
     project.pages.forEach((page, index) => {
-      const pid = page.pid;
-      const pageElement = this.createPageElement(pid);
-      this.content.appendChild(pageElement);
-
-      this.pageData[pid] = {
-        element: pageElement
-      };
-      if (page.loaded()) {
+      this.initPageData(page, index);
+      if (page.loaded) {
         this.initPage(page);
       }
-      this.setPageRect(pid, index);
     });
   }
+
 
   initPage(page) {
     const pd = this.pageData[page.pid];
@@ -96,9 +90,6 @@ class MainView extends View {
     pd.texts.className = 'texts';
     pd.ctx = pd.canvas.getContext('2d');
 
-    //  pd.ctx.filter = `blur(${this.getSteps()}px)`;
-    //  pd.ctx.drawImage(page.canvas, 0, 0);
-
     pd.marks = this.project.draftMarks();
 
     pd.frame.appendChild(pd.marks);
@@ -112,7 +103,12 @@ class MainView extends View {
 
   // //////////////
 
-  createPageElement(pid) {
+  initPageData(page, index) {
+    super.initPageData(page, index);
+    this.setPageRect(page.pid, index);
+  }
+
+  createPageElement(pid, index) {
     const element = document.createElement('div');
     element.className = 'page preload';
     element.id = 'page-' + pid;
@@ -160,7 +156,7 @@ class MainView extends View {
 
   updateImage(pid) {
     const page = pageManager.find(this.project, pid);
-    if (page) {
+    if (page && page.loaded) {
       const pd = this.pageData[pid];
       pd.ctx.filter = `blur(${this.getSteps()}px)`;
       pd.ctx.clearRect(0, 0, pd.canvas.width, pd.canvas.height);

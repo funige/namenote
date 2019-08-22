@@ -7,55 +7,41 @@ import { svgRenderer } from './svg-renderer.js';
 const JSZip = require('jszip');
 
 class Page {
-  constructor(project, pid) {
-    this.pid = pid;
+  constructor(project, pid, isBlank) {
     this.project = project;
+    this.pid = pid;
+    this.url = `${project.baseURL}/${pid}.json`;
     this.width = project.pageSize.width;
     this.height = project.pageSize.height;
 
-    const url = `${project.baseURL}/${pid}.json`;
-    this.load(url);
+    if (!isBlank) {
+      file.readJSON(this.url)
+        .then((json) => this.init(json))
+        .catch((err) => console.log(err));
+    } else {
+      this.init();
+    }
   }
 
   destructor() {
     console.log('page destructor', this.pid);
 
     this.project = null;
-//  if (this.texts && this.texts.parentNode) {
-//    this.texts.parentNode.removeChild(this.texts);
-//  }
-  }
-
-  load(url) {
-    file.readJSON(url).then((json) => {
-      this.init(json).then(() => {
-        this.project.views.forEach((view) => {
-          view.initPage(this);
-        });
-      });
-    }).catch((error) => {
-      this.initBlank();
-      this.project.views.forEach((view) => {
-        view.initPage(this);
-      });
-    });
   }
 
   async init(data) {
-    this.params = data;
+    this.params = data || {};
     this.canvas = this.createCanvasElement(this.width, this.height);
     this.canvasCtx = this.canvas.getContext('2d');
-    await this.unzip(this.canvasCtx);
-    this.updateThumbnail();
-    this.texts = this.getTexts(this.params.text);
-  }
+    await this.unzipImage(this.canvasCtx, this.params.base64);
 
-  initBlank() {
-    this.params = {}; // text: '' };
-    this.canvas = this.createCanvasElement(this.width, this.height);
-    this.canvasCtx = this.canvas.getContext('2d');
     this.updateThumbnail();
     this.texts = this.getTexts(this.params.text);
+    this.loaded = true;
+    this.project.views.forEach(view => {
+      view.initPageData(this, this.project.pages.indexOf(this));
+      view.initPage(this);
+    });
   }
 
   updateThumbnail() {
@@ -80,9 +66,8 @@ class Page {
     return canvas;
   }
 
-  unzip(ctx) {
+  unzipImage(ctx, base64) {
     return new Promise((resolve, reject) => {
-      const base64 = this.params.base64;
       if (!base64) return resolve();
 
       const zip = new JSZip();
@@ -97,8 +82,23 @@ class Page {
     });
   }
 
-  loaded() {
-    return !!(this.params);
+  zipImage(ctx) {
+    return new Promise((resolve, reject) => {
+      const imageData = ctx.getImageData(0, 0, this.width, this.height);
+      console.log('...', imageData.data.buffer, this.width, this.height);
+
+      const zip = new JSZip();
+      zip.file('image', imageData.data.buffer, { createFolders: false, binary: true });
+      zip.generateAsync({
+        type: 'base64',
+        compression: 'DEFLATE',
+        compressionOptions: { level: 6 }
+
+      }).then((content) => {
+        console.log('zipped:', this.pid, content);
+        resolve(content);
+      });
+    });
   }
 
   getTexts(text) {
@@ -130,12 +130,20 @@ class Page {
       .replace(/^\//, '').replace(/\/$/, '');
   }
 
-  /* capture(callback) {
-    svgRenderer.capture(this, (data) => {
-      //console.log(data);
-      callback(data)
-    });
-  } */
+  async toData() {
+    this.params.base64 = await this.zipImage(this.canvasCtx);
+    this.params.pid = this.pid;
+    this.params.text = this.texts.innerHTML;
+
+    return $.extend({}, this.params);
+  }
+
+  async save() {
+    const data = await this.toData();
+    console.log('save data', data);
+
+    await file.writeJSON(this.url + '.test', data); // await this.toData());
+  }
 }
 
 export { Page };
