@@ -19,6 +19,9 @@ class PageView extends View {
         const to = this.project.currentPageIndex();
         command.addPage(this, to);
       },
+      clone: () => {
+        console.log('page-view clone');
+      },
       trash: () => {
         const from = this.project.currentPageIndex();
         command.removePage(this, from);

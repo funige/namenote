@@ -40,10 +40,11 @@ const dictionary = {
 
     "Page": "ページ",
     "Add": "追加",
+    "Remove": "削除",
+    "Duplicate": "複製",
     "Move to Buffer": "バッファに入れる",
     "Put Back from Buffer": "バッファから戻す",
     "Empty Buffer": "バッファを空にする",
-    "Duplicate": "複製を追加",
     "Move Forward": "前に移動",
     "Move Backward": "後ろに移動",
     "Flip": "左右反転して表示",
@@ -168,6 +169,8 @@ const dictionary = {
     "Quick Zoom": "クイックズーム",
 
     "Write Protected": "書き込み禁止",
+    "Write Protect": "書き込み禁止",
+    
     
     "Enable Japanese Options": "日本語用のオプションを有効にする"
   }
