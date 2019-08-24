@@ -1,9 +1,9 @@
-import { namenote } from './namenote.js';
 import { Project } from './project.js';
 import { pageManager } from './page-manager.js';
 import { file } from './file.js';
-import { dialog } from './dialog.js';
 import { projectTemplate } from './project-template.js';
+import { autosave } from './autosave.js';
+
 
 class ProjectManager {
   constructor() {
@@ -18,7 +18,7 @@ class ProjectManager {
     file.mkdir(baseURL);
     const template = { params: projectTemplate.Manga, pids: [] };
     const project = new Project(url, template);
-
+    
     for (let i = 0; i < params.page_count; i++) {
       const page = await pageManager.create(project);
       project.pages.push(page);
@@ -26,6 +26,7 @@ class ProjectManager {
     console.warn('create project=>', project);
 
     this.addProject(project);
+    autosave.push(project);
     return project;
 
 

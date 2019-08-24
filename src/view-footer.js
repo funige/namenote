@@ -19,7 +19,7 @@ class ViewFooter {
         this.options.append();
       },
       float: 'left',
-      title: 'Add',
+      title: 'Add'
     });
 
     const trashButton = Widget.createImageButton({
@@ -28,7 +28,7 @@ class ViewFooter {
         this.options.trash();
       },
       float: 'left',
-      title: 'Remove',
+      title: 'Remove'
     });
 
     const cloneButton = Widget.createImageButton({
@@ -37,7 +37,7 @@ class ViewFooter {
         this.options.size();
       },
       float: 'left',
-      title: 'Duplicate',
+      title: 'Duplicate'
     });
 
     const sizeButton = Widget.createImageButton({
@@ -46,7 +46,7 @@ class ViewFooter {
         this.options.size();
       },
       float: 'right',
-      title: 'Scale',
+      title: 'Scale'
     });
 
     const lockButton = Widget.createImageButton({
@@ -55,7 +55,7 @@ class ViewFooter {
         this.options.size();
       },
       float: 'right',
-      title: 'Write Protect',
+      title: 'Write Protect'
     });
 
     if (this.options.append) this.element.appendChild(appendButton);

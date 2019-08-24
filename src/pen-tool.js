@@ -3,6 +3,7 @@ import { controller } from './controller.js';
 import { namenote } from './namenote.js';
 import { history } from './history.js';
 import { action } from './action.js';
+import { autosave } from './autosave.js';
 
 
 class PenTool extends Tool {
@@ -89,6 +90,7 @@ class PenTool extends Tool {
     record.push(['editImage', fromImage, toImage, rect, pid, url]);
     history.pushUndo(record);
 
+    autosave.push(page);
     page.project.views.forEach((view) => {
       view.onEditImage(toImage, rect, pid);
     });

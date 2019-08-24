@@ -230,6 +230,9 @@ class Command {
     const record = [];
 
     const page = pageManager.find(project, fromPID);
+    if (!page || !page.texts) return;
+    if (page.texts.childNodes.length <= 0) return;
+    
     const index = (from >= 0) ? from : page.texts.childNodes.length - 1;
     const text = page.texts.childNodes[index].outerHTML;
     console.log(text);

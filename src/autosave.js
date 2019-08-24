@@ -1,7 +1,5 @@
 import { Page } from './page.js';
 
-// const worker = new Worker('./js/lib/autosave-worker.js');
-
 
 class Autosave {
   constructor() {
@@ -10,42 +8,26 @@ class Autosave {
   }
 
   init() {
-    this.status = Autosave.IDLE;
     this.defaultInterval = 10;
 
-    worker.onmessage = (e) => {
-      console.log(`*saved ${e.data.pid}`);
-      this.updateIndicator();
-
-      if (!e.data.err) {
-        this.savePage(e.data, (err) => {
-          if (err) console.log(err);
-        });
-      } else {
-        console.log(e.data.err);
-        this.status = Autosave.ERROR;
-      }
-    };
+    this.status = Autosave.IDLE;
+    this.update(); //start autosave
   }
 
-  update() {
+  async update() {
     if (this.status === Autosave.DISABLED) return;
-
+    
     if (this.items.length > 0) {
+      const target = this.items.pop();
       try {
-        const target = this.items.pop();
-        this.save(target, (err) => {
-          if (!err) {
-            //          if (target.released) target.destructor();
-          } else {
-            console.error(err);
-          }
-        });
+        await this.save(target);
+
       } catch (e) {
-        console.error(e);
+        console.error('[autosave error]', e);
       }
     }
 
+    this.updateIndicator();
     setTimeout(() => {
       this.update();
     }, (this.items.length > 0) ? 0 : this.defaultInterval * 1000);
@@ -60,40 +42,34 @@ class Autosave {
   }
 
   push(target) {
+    if (!target) {
+      console.error('autosave.push target === null');
+      return;
+    }
+    
     target.dirty = true;
     if (this.items.find(item => item === target)) return false;
-    this.items.unshift();
-    this.updatendicator();
+    this.items.unshift(target);
+    this.updateIndicator();
     return true;
   }
 
-  save(item, callback) {
+  async save(item, callback) {
     if (item instanceof Page) {
-      this.savePage(item, callback);
+      await this.savePage(item);
     } else {
-      this.saveProject(item, callback);
+      await this.saveProject(item);
     }
   }
 
-  savePage(page, callback) {
-    const width = page.canvas.width;
-    const height = page.canvas.height;
-    const imageData = page.ctx.getImageData(0, 0, width, height);
-
-    worker.postMessage({
-      type: 'page',
-      url: page.project.url,
-      pid: page.pid,
-      imageData: imageData
-    });
+  async savePage(page) {
+    await page.save()
+    page.dirty = false;
   }
 
-  saveProject(project, callback) {
-    /*  worker.postMessage({
-      type: 'project',
-      url: project.url,
-    })
-    project.dirty = false; */
+  async saveProject(project) {
+    await project.save();
+    project.dirty = false;
   }
 }
 

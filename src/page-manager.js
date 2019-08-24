@@ -2,6 +2,7 @@ import { namenote } from './namenote.js';
 import { Project } from './project.js';
 import { Page } from './page.js';
 import { file } from './file.js';
+import { autosave } from './autosave.js';
 
 
 class PageManager {
@@ -12,7 +13,9 @@ class PageManager {
   async create(project) {
     const pid = await project.getNewPID();
     const page = new Page(project, pid, true);
+
     this.addPage(page);
+    autosave.push(page);
     return page;
   }
 

@@ -52,6 +52,7 @@
     height: 100%;
     position: absolute;
     overflow: scroll;
+    transform: translateZ(0);
 
     &+ canvas.drawing-layer {
         width: 100%;

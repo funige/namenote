@@ -102,6 +102,11 @@ ul, li {
     background-color: #f6f6f6;
 }
 
+.drop-shadow {
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.8);
+    z-index: 200;
+}
+
 .page-mask {
     position: absolute;
     overflow: hidden;
@@ -405,7 +410,7 @@ span .ui-icon {
 #save-indicator {
     position: absolute;
     left: 0px;
-    bottom: 0px; //7px;
+    bottom: 12px;
     z-index: 3000;
     opacity: 0.8; //0.4
     pointer-events: none;

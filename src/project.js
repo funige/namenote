@@ -116,7 +116,7 @@ class Project {
   }
 
   findTextIndex(page, id) {
-    if (page) {
+    if (page && page.texts) {
       const nodes = page.texts.childNodes;
       for (let i = 0; i < nodes.length; i++) {
         if (nodes[i].id === id) return i;
@@ -251,7 +251,7 @@ class Project {
     page.updateThumbnail();
   }
 
-  toData() {
+  async toData() {
     const data = {};
     data.params = $.extend({}, this.params);
     data.pids = [];
@@ -262,7 +262,10 @@ class Project {
   }
 
   async save() {
-    await file.writeJSON(this.url + '.test', this.toData());
+    const data = await this.toData();
+    await file.writeJSON(this.url, data);
+
+    console.warn(`[save ${this.url}]`);
   }
 }
 

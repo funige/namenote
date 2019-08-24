@@ -85,7 +85,7 @@ class Page {
   zipImage(ctx) {
     return new Promise((resolve, reject) => {
       const imageData = ctx.getImageData(0, 0, this.width, this.height);
-      console.log('...', imageData.data.buffer, this.width, this.height);
+//    console.log('...', imageData.data.buffer, this.width, this.height);
 
       const zip = new JSZip();
       zip.file('image', imageData.data.buffer, { createFolders: false, binary: true });
@@ -95,7 +95,7 @@ class Page {
         compressionOptions: { level: 6 }
 
       }).then((content) => {
-        console.log('zipped:', this.pid, content);
+//      console.log('zipped:', this.pid, content);
         resolve(content);
       });
     });
@@ -140,9 +140,9 @@ class Page {
 
   async save() {
     const data = await this.toData();
-    console.log('save data', data);
+    await file.writeJSON(this.url, data);
 
-    await file.writeJSON(this.url + '.test', data); // await this.toData());
+    console.warn(`[save ${this.url}]`);
   }
 }
 
