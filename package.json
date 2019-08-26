@@ -1,6 +1,6 @@
 {
   "name": "Namenote",
-  "version": "2.0.0-alpha.21",
+  "version": "2.0.0-alpha.22",
   "trial": false,
   "authURL": "https://funige.github.io/namenote/auth",
   "description": "A hackable drawing notebook.",

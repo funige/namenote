@@ -56,7 +56,7 @@ class Divider {
 
     if (value == 'left') {
       $('#left-component')
-        .css('box-shadow', '0px 0px 8px 0px rgba(0,0,0,0.2)')
+        .css('box-shadow', '0px 0px 8px 0px rgba(0,0,0,0.15)')
         .css('z-index', 1)
         .append(dock);
       $('#right-component')
@@ -67,7 +67,7 @@ class Divider {
 
     } else {
       $('#right-component')
-        .css('box-shadow', '0px 0px 8px 0px rgba(0,0,0,0.2)')
+        .css('box-shadow', '0px 0px 8px 0px rgba(0,0,0,0.15)')
         .css('z-index', 1)
         .append(dock);
       $('#left-component')
