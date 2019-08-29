@@ -82,6 +82,8 @@ class Command {
     $(namenote.pageView.element).hide();
     $(namenote.textView.element).show();
     dockTab.select('text');
+    console.log('text', namenote.textView.content.scrollHeight);
+    console.log('page', namenote.pageView.content.scrollHeight);
   }
 
   showPageView() {
@@ -89,7 +91,10 @@ class Command {
     $(namenote.pageView.element).show();
     $(namenote.textView.element).hide();
     dockTab.select('page');
-  }
+
+    console.log('text', namenote.textView.content.scrollHeight);
+    console.log('page', namenote.pageView.content.scrollHeight);
+}
 
   showNoteView() {
     $(namenote.noteView.element).show();

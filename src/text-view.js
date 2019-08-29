@@ -2,6 +2,7 @@ import { View } from './view.js';
 import { ViewFooter } from './view-footer.js';
 import { command } from './command.js';
 import { Text } from './text.js';
+import { Rect } from './rect.js';
 import { pageManager } from './page-manager.js';
 
 
@@ -123,6 +124,10 @@ class TextView extends View {
     this.initProject(project);
 
     this.onLoadProject(project);
+  }
+
+  getTextRect(tid) {
+    return Rect.get(document.querySelector('#t' + tid));
   }
 
   initCurrentPage() {

@@ -60,6 +60,8 @@ class SaveImageForm extends Form {
   }
 
   initForm() {
+//  this.log('<a class="download-button" href="https://www.asahi.com">[download]</a>')
+    
     const saveName = `${Date.now()}.png`;
     $(this.element).find('input.filename')
       .val(saveName)

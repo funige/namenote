@@ -63,10 +63,13 @@ class File {
           const body = png.replace(/^data:image\/png;base64,/, '');
           this.writeFile(url, body).then((err) => {
             console.log('image saved..');
+            dialog.close();
           });
-        }
-        dialog.close();
+        } 
       });
+    } else {
+      console.log('save image canceled.')
+      dialog.close();
     }
   }
 
@@ -81,7 +84,10 @@ class File {
         console.log('export pdf', result);
         dialog.close();
       });
-    }
+    } else {
+      console.log('export pdf canceled.')
+      dialog.close();
+    }      
   }
 
   async exportCSNFDialog() {
@@ -95,6 +101,9 @@ class File {
         console.log('export csnf', result);
         dialog.close();
       });
+    } else {
+      console.log('export csnf canceled.')
+      dialog.close();
     }
   }
 
@@ -106,10 +115,12 @@ class File {
     dialog.close();
     console.warn(result);
 
-    const project = await projectManager.create(result);
-    console.log('openNewDialog:', project);
-    if (project) {
-      namenote.loadProject(project);
+    if (result) {
+      const project = await projectManager.create(result);
+      console.log('openNewDialog:', project);
+      if (project) {
+        namenote.loadProject(project);
+      }
     }
   }
 

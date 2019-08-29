@@ -130,7 +130,6 @@ class Action {
 
     project.editImage(toImage, rect, pid);
 
-    console.log('editimage?', pid);
     autosave.push(pageManager.find(project, pid));
     project.views.forEach((view) => {
       view.onEditImage(toImage, rect, pid);

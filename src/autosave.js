@@ -8,6 +8,10 @@ class Autosave {
   }
 
   init() {
+    $('#save-indicator').on('click', () => {
+      console.log('save indicator click');
+    });
+    
     this.defaultInterval = 10;
 
     this.status = Autosave.IDLE;

@@ -60,7 +60,7 @@ class PenTool extends Tool {
     console.log('drawPage', page);
 
     const mainView = namenote.mainView;
-    const pageRect = mainView.getPageRect(mainView.project.currentPageIndex());
+    const pageRect = mainView.getPageRect(mainView.project.currentPage.pid);
     const pageOffsetX = pageRect.x - mainView.content.scrollLeft;
     const pageOffsetY = pageRect.y - mainView.content.scrollTop;
 

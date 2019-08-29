@@ -1,0 +1,6 @@
+{
+  "name": "Namenote",
+  "short_name": "Namenote",
+  "start_url": "/index.html",
+  "display": "standalone"
+}

@@ -165,11 +165,16 @@ class Project {
     return max + 1;
   }
 
-  anyPage() {
+  /*anyPage() {
     console.log('curentPage=>', this.currentPage);
     console.log('pages=>', this.pages.map(page => page.loaded));
     console.log('result=>', this.currentPage || this.pages.find(page => page.loaded));
     return this.currentPage || this.pages.find(page => page.loaded);
+  }*/
+
+  getPageByTID(tid) {
+    const query = '#p' + tid;
+    return this.pages.find(page => page.texts.querySelector(query));
   }
 
   getThumbnailSize(size) {

@@ -8,6 +8,7 @@ import { viewButton } from './view-button.js';
 import { DrawingLayer } from './drawing-layer.js';
 import { pageManager } from './page-manager.js';
 import { ScrollBar } from './scroll-bar.js';
+import { Rect } from './rect.js';
 
 // $('.main-view')[0].parentNode.scrollTop = ...
 
@@ -59,15 +60,18 @@ class MainView extends View {
       this.content = this.element.querySelector('.singlepage-content');
       this.rightScrollBar = new ScrollBar(this.content, 'right');
       this.bottomScrollBar = new ScrollBar(this.content, 'bottom');
+
     } else {
       $(this.element).html(`
         <div class='multipage-content'></div>
         <canvas class='drawing-layer'></canvas>
       `);
       this.content = this.element.querySelector('.multipage-content');
+      this.rightScrollBar = null;
+      this.bottomScrollBar = null;
     }
     this.drawingLayer.init(this.content);
-
+    
     project.pages.forEach((page, index) => {
       this.initPageData(page, index);
       if (page.loaded) {
@@ -115,7 +119,11 @@ class MainView extends View {
     return element;
   }
 
-  getPageRect(index) {
+  getTextRect(tid) {
+    return Rect.get(document.querySelector('#p' + tid));
+  }
+
+  pageRectFor(index) {
     const width = Math.round(this.project.canvasSize.width * this.scale);
     const height = Math.round(this.project.canvasSize.height * this.scale);
     const margin = 50;
@@ -141,7 +149,7 @@ class MainView extends View {
 
   setPageRect(pid, index) {
     const pd = this.pageData[pid];
-    const rect = this.getPageRect(index);
+    const rect = this.pageRectFor(index);
 
     if (pd.element) {
       pd.element.style.width = rect.width + 'px';
@@ -208,8 +216,11 @@ class MainView extends View {
   setMultipage(value) {
     if (config.updateValue('multipage', value)) {
       console.log('update multipage', config.getValue('multipage'));
-
       this.loadProject(this.project);
+
+      setTimeout(() => {
+        this.onresize();
+      }, 100);
     }
   }
 
@@ -248,6 +259,7 @@ class MainView extends View {
     this.content.scrollLeft = snapshot.scrollLeft || 0;
     this.scale = snapshot.scale || 1;
     this.onScale();
+    this.onresize();
 
     this.initCurrentPage();
     this.initCurrentTID();
@@ -262,6 +274,21 @@ class MainView extends View {
   }
 
   onresize() {
+    if (this.content) {
+      this.offsetWidth = this.content.offsetWidth;
+      this.offsetHeight = this.content.offsetHeight;
+      this.scrollLeft = this.content.scrollLeft;
+      this.scrollTop = this.content.scrollTop;
+      this.scrollWidth = this.content.scrollWidth;
+      this.scrollHeight = this.content.scrollHeight;
+      console.log('resize',
+                  this.offsetWidth, this.offsetHeight, '-',
+                  this.scrollLeft, this.scrollTop, '-',
+                  this.scrollWidth, this.scrollHeight);
+    }
+    if (this.rightScrollBar) this.rightScrollBar.onresize();
+    if (this.bottomScrollBar) this.bottomScrollBar.onresize();
+    
     this.drawingLayer.onresize();
   }
 }
