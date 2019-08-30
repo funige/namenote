@@ -138,6 +138,12 @@ class Namenote {
 
     this.pageView.loadProject(this.pageView.project);
   }
+
+  getHomePath() {
+    const path = this.homePath;
+    console.log(`getHomePath [${path}]`);
+    return path;
+  }
 }
 
 const namenote = new Namenote();

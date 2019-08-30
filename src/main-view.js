@@ -12,6 +12,7 @@ import { Rect } from './rect.js';
 
 // $('.main-view')[0].parentNode.scrollTop = ...
 
+
 class MainView extends View {
   constructor(element) {
     super(element);
