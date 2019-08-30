@@ -116,7 +116,7 @@ class Project {
   }
 
   findTextIndex(page, id) {
-    if (page) {
+    if (page && page.texts) {
       const nodes = page.texts.childNodes;
       for (let i = 0; i < nodes.length; i++) {
         if (nodes[i].id === id) return i;
@@ -165,11 +165,16 @@ class Project {
     return max + 1;
   }
 
-  anyPage() {
+  /*anyPage() {
     console.log('curentPage=>', this.currentPage);
     console.log('pages=>', this.pages.map(page => page.loaded));
     console.log('result=>', this.currentPage || this.pages.find(page => page.loaded));
     return this.currentPage || this.pages.find(page => page.loaded);
+  }*/
+
+  getPageByTID(tid) {
+    const query = '#p' + tid;
+    return this.pages.find(page => page.texts.querySelector(query));
   }
 
   getThumbnailSize(size) {
@@ -251,7 +256,7 @@ class Project {
     page.updateThumbnail();
   }
 
-  toData() {
+  async toData() {
     const data = {};
     data.params = $.extend({}, this.params);
     data.pids = [];
@@ -262,7 +267,10 @@ class Project {
   }
 
   async save() {
-    await file.writeJSON(this.url + '.test', this.toData());
+    const data = await this.toData();
+    await file.writeJSON(this.url, data);
+
+    console.warn(`[save ${this.url}]`);
   }
 }
 

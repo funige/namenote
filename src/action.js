@@ -1,4 +1,6 @@
 import { projectManager } from './project-manager.js';
+import { pageManager } from './page-manager.js';
+import { autosave } from './autosave.js';
 
 
 class Action {
@@ -25,12 +27,12 @@ class Action {
 
   playHandler(action) {
     const name = 'do' + action.charAt(0).toUpperCase() + action.slice(1);
-    return name; // this[name];
+    return name;
   }
 
   rewindHandler(action) {
     const name = 'undo' + action.charAt(0).toUpperCase() + action.slice(1);
-    return name; // this[name];
+    return name;
   }
 
   //
@@ -42,6 +44,8 @@ class Action {
     if (!project) return;
 
     project.movePage(from, to);
+
+    autosave.push(project);
     project.views.forEach((view) => {
       view.onMovePage(from, to);
     });
@@ -52,6 +56,8 @@ class Action {
     if (!project) return;
 
     project.addPage(pid, to);
+
+    autosave.push(project);
     project.views.forEach((view) => {
       view.onAddPage(pid, to);
     });
@@ -62,6 +68,8 @@ class Action {
     if (!project) return;
 
     project.removePage(pid, from);
+
+    autosave.push(project);
     project.views.forEach((view) => {
       view.onRemovePage(pid, from);
     });
@@ -72,6 +80,9 @@ class Action {
     if (!project) return;
 
     project.moveText(from, to, fromPID, toPID);
+
+    autosave.push(pageManager.find(project, fromPID));
+    autosave.push(pageManager.find(project, toPID));
     project.views.forEach((view) => {
       view.onMoveText(from, to, fromPID, toPID);
     });
@@ -82,6 +93,8 @@ class Action {
     if (!project) return;
 
     project.addText(text, to, toPID);
+
+    autosave.push(pageManager.find(project, toPID));
     project.views.forEach((view) => {
       view.onAddText(text, to, toPID);
     });
@@ -92,6 +105,8 @@ class Action {
     if (!project) return;
 
     project.removeText(text, from, fromPID);
+
+    autosave.push(pageManager.find(project, fromPID));
     project.views.forEach((view) => {
       view.onRemoveText(text, from, fromPID);
     });
@@ -102,6 +117,8 @@ class Action {
     if (!project) return;
 
     project.editText(toText, index, pid);
+
+    autosave.push(pageManager.find(project, pid));
     project.views.forEach((view) => {
       view.onEditText(toText, index, pid);
     });
@@ -112,6 +129,8 @@ class Action {
     if (!project) return;
 
     project.editImage(toImage, rect, pid);
+
+    autosave.push(pageManager.find(project, pid));
     project.views.forEach((view) => {
       view.onEditImage(toImage, rect, pid);
     });

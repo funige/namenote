@@ -8,10 +8,29 @@ const MIN_MOVE = 5;
 let moved = false;
 let stroke = null;
 
+const API = {
+  POINTER: {
+    type: 'pointer',
+    down: 'onpointerdown', move: 'onpointermove', up: 'onpointerup'
+  },
+  TOUCH: {
+    type: 'touch',
+    down: 'ontouchstart', move: 'ontouchmove', up: 'ontouchend'
+  },
+  MOUSE: {
+    type: 'mouse',
+    down: 'onmousedown', move: 'onmousemove', up: 'onmouseup'
+  }
+}
 
 class Controller {
   constructor() {
-    this.api = (window.PointerEvent) ? 'pointer' : ((window.TouchEvent) ? 'touch' : 'mouse');
+    if (window.PointerEvent) {
+      this.api = API.POINTER;
+
+    } else {
+      this.api = (window.TouchEvent) ? API.TOUCH : API_MOUSE;
+    }
 
     this.spaceKey = false;
     this.altKey = false;
@@ -26,36 +45,11 @@ class Controller {
   }
 
   init() {
-    const main = $('#main')[0];
-
-    /*
-    window.addEventListener(this.api + 'down', (e) => {
-      this.updatePointer(e);
-      this.pointerId = e.pointerId;
-
-      this.x0 = this.x;
-      this.y0 = this.y;
-      this.onDown(e);
-    });
-
-    window.addEventListener(this.api + 'up', (e) => {
-      this.onUp(e);
-    });
-
-    window.addEventListener(this.api + 'move', (e) => {
-      if (this.pointerId != e.pointerId) return;
-
-      this.updatePointer(e);
-      if (Math.abs(this.x - this.x0) >= MIN_MOVE
-          || Math.abs(this.y - this.y0) >= MIN_MOVE) {
-        moved = true;
-      }
-      this.onMove(e);
-    });
-    */
-
-    window['on' + this.api + 'down'] = (e) => {
-      console.log('touch down');
+    window[this.api.down] = (e) => {
+      console.log(this.api.type, 'down',
+                  e.pointerType,
+                  e.touches ? e.touches.length : '-');
+      
       this.updatePointer(e);
       this.pointerId = e.pointerId;
 
@@ -64,13 +58,15 @@ class Controller {
       this.onDown(e);
     };
 
-    window['on' + this.api + 'up'] = (e) => {
+    window[this.api.up] = (e) => {
+      console.log(this.api.type, 'up');
       this.onUp(e);
     };
 
-    window['on' + this.api + 'move'] = (e) => {
+    window[this.api.move] = (e) => {
       if (this.pointerId != e.pointerId) return;
 
+      console.log(this.api.type, 'move');
       this.updatePointer(e);
       if (Math.abs(this.x - this.x0) >= MIN_MOVE
           || Math.abs(this.y - this.y0) >= MIN_MOVE) {
@@ -156,10 +152,14 @@ class Controller {
           info.tid = parseInt(result[1]);
         }
 
+        if (target.className.indexOf('slider') >= 0) {
+          info.slider = true;
+        }
         if (target.className.indexOf('scroll-bar') >= 0) {
           info.scrollBar = true;
           break;
         }
+        
         if (target.className === 'main-view'
             || target.className === 'page-view'
             || target.className === 'text-view'

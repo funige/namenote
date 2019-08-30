@@ -63,7 +63,7 @@ class Widget {
         this.element.css('width', this.options.width);
         this.element.css('height', this.options.height);
 
-        this.element.attr('title', T(this.options.title)); //this.element.attr('title')));
+        this.element.attr('title', T(this.options.title)); // this.element.attr('title')));
         this.element.html(`<img src='${this.options.src}' />`);
 
         this.locked(this.options.locked);
@@ -82,9 +82,9 @@ class Widget {
           // Should recalc menu postion on open
           }
         }
-//      if (this.options.title) {
-//        this.element.title = T(this.options.title) || 'ほげげ';
-//      }
+        //      if (this.options.title) {
+        //        this.element.title = T(this.options.title) || 'ほげげ';
+        //      }
 
         const click = this.options.click;
         if (click) this.element.on('click', click);

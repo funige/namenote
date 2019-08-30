@@ -3,6 +3,7 @@ import { controller } from './controller.js';
 import { namenote } from './namenote.js';
 import { history } from './history.js';
 import { action } from './action.js';
+import { autosave } from './autosave.js';
 
 
 class PenTool extends Tool {
@@ -59,7 +60,7 @@ class PenTool extends Tool {
     console.log('drawPage', page);
 
     const mainView = namenote.mainView;
-    const pageRect = mainView.getPageRect(mainView.project.currentPageIndex());
+    const pageRect = mainView.getPageRect(mainView.project.currentPage.pid);
     const pageOffsetX = pageRect.x - mainView.content.scrollLeft;
     const pageOffsetY = pageRect.y - mainView.content.scrollTop;
 
@@ -89,6 +90,7 @@ class PenTool extends Tool {
     record.push(['editImage', fromImage, toImage, rect, pid, url]);
     history.pushUndo(record);
 
+    autosave.push(page);
     page.project.views.forEach((view) => {
       view.onEditImage(toImage, rect, pid);
     });

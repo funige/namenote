@@ -52,6 +52,7 @@
     height: 100%;
     position: absolute;
     overflow: scroll;
+    transform: translateZ(0);
 
     &+ canvas.drawing-layer {
         width: 100%;
@@ -59,8 +60,8 @@
     }
 }
 
-$scroll-bar-width: 15px; //12px; 
-$scroll-bar-width-rest: calc(100% - 15px); //calc(100% - 12px);
+$scroll-bar-width: 18px; //12px; 
+$scroll-bar-width-rest: calc(100% - 18px); //calc(100% - 12px);
 
 .main-view .singlepage-content {
     width: $scroll-bar-width-rest;
@@ -92,7 +93,7 @@ $scroll-bar-width-rest: calc(100% - 15px); //calc(100% - 12px);
 .main-view .slider {
     background-color: #888;
     position: absolute;
-    border-radius: 10px;
+    border-radius: 3px;
 }
 
 .main-view .bottom-scroll-bar {

@@ -58,7 +58,8 @@ class Namenote {
 
     controller.init();
     ui.init();
-
+    autosave.init();
+    
     this.mainView = new MainView(document.querySelector('.main-view'));
     this.textView = new TextView(document.querySelector('.text-view'));
     this.pageView = new PageView(document.querySelector('.page-view'));

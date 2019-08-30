@@ -125,6 +125,14 @@ class PageView extends View {
     this.onSetCurrentPage(page);
   }
 
+  getTextRect(tid) {
+    const page = this.project.getPageByTID(tid);
+    if (page) {
+      return this.getPageRect(page.pid);
+    }
+    return null;
+  }
+  
   onLoadProject(project) {
     const snapshot = this.snapshots[project.url] || {};
     this.content.scrollTop = snapshot.scrollTop || 0;

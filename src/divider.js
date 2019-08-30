@@ -55,13 +55,26 @@ class Divider {
     const saveIndicator = $('#save-indicator');
 
     if (value == 'left') {
-      $('#left-component').append(dock);
-      $('#right-component').append(mainView);
-      $('#right-component').append(saveIndicator);
+      $('#left-component')
+        .css('box-shadow', '0px 0px 8px 0px rgba(0,0,0,0.15)')
+        .css('z-index', 1)
+        .append(dock);
+      $('#right-component')
+        .css('box-shadow', 'none')
+        .css('z-index', 0)
+        .append(mainView)
+        .append(saveIndicator);
+
     } else {
-      $('#right-component').append(dock);
-      $('#left-component').append(mainView);
-      $('#left-component').append(saveIndicator);
+      $('#right-component')
+        .css('box-shadow', '0px 0px 8px 0px rgba(0,0,0,0.15)')
+        .css('z-index', 1)
+        .append(dock);
+      $('#left-component')
+        .css('box-shadow', 'none')
+        .css('z-index', 0)
+        .append(mainView)
+        .append(saveIndicator);
     }
     this.update();
   }

@@ -1,5 +1,6 @@
 import { namenote } from './namenote.js';
 import { T } from './locale.js';
+import { Rect } from './rect.js';
 
 class View {
   constructor(element, options = {}) {
@@ -165,6 +166,48 @@ class View {
     return info;
   }
 
+  getPageRect(pid) {
+    const pd = this.pageData[pid];
+    if (pd && pd.element) {
+      return Rect.get(pd.element);
+    }
+    return null;
+  }
+
+  getFocusTextRect() {
+  }
+
+  getFocusPageRect() {
+  }
+  
+  getFocusRect() {
+    const page = this.project.currentPage;
+    if (page) {
+      const pd = this.pageData[page.pid];
+      console.log(this.project.currentTID);
+      if (this.project.currentTID.length > 0) {
+        let rect = null;
+        this.project.currentTID.forEach((tid) => {
+          rect = Rect.merge(this.getTextRect(tid), rect);
+          console.log('...', this.getTextRect(tid), rect);
+        });
+        return rect;
+        
+      } else {
+        if (pd && pd.element) {
+          return Rect.get(pd.element);
+        }
+      }
+    }
+    return null;
+  }
+  
+  isFocusVisible() {
+  }
+  
+  showFocus() {
+  }
+  
   // Default update methods
 
   onMovePage(from, to) {
