@@ -112,7 +112,9 @@ ipcMain.on('quit', (event) => {
 })
 
 ipcMain.on('init-path', (event) => {
-  run('namenote.homePath="' + app.getPath('home') + '";')
+  run('namenote.homePath="'
+      + app.getPath('home').replace(/\\/g, '/')
+      + '";')
   event.returnValue = "ok"
 })
 

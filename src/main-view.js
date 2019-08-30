@@ -11,6 +11,7 @@ import { ScrollBar } from './scroll-bar.js';
 
 // $('.main-view')[0].parentNode.scrollTop = ...
 
+
 class MainView extends View {
   constructor(element) {
     super(element);
@@ -262,6 +263,7 @@ class MainView extends View {
   }
 
   onresize() {
+    console.log('[resize]', this.element.innerWidth, this.element.innerHeight);
     this.drawingLayer.onresize();
   }
 }

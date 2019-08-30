@@ -8,7 +8,6 @@ const MIN_MOVE = 5;
 let moved = false;
 let stroke = null;
 
-
 class Controller {
   constructor() {
     this.api = (window.PointerEvent) ? 'pointer' : ((window.TouchEvent) ? 'touch' : 'mouse');

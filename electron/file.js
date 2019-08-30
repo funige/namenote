@@ -3,39 +3,12 @@
 const { app, dialog, ipcMain } = require('electron')
 const fs = require('fs')
 
-/*
-ipcMain.on('open', (event, data) => {
-  let path = data.defualtPath
-  if (!fs.existsSync(path)) {
-    path = app.getPath('home')
-  }
-  
-  openParams.title = T('Open');
-  openParams.defaultPath = path
-  event.returnValue = "ok"
-
-  setTimeout(() => {
-    dialog.showOpenDialog(win, openParams, (filenames) => {
-      if (filenames && filenames.length == 1) {
-	console.log("open url", filenames[0]);
-	run(`namenote.project.open("${filenames[0]}")`)
-      }
-    })
-  }, 0)
-})
-*/
 
 ipcMain.on('openNew', (event, data) => {
   let path = data.path
   if (!path || !fs.existsSync(path)) path = app.getPath('home')
   const name = getDefaultName(path, T('Untitled'))
   event.sender.send('reply', {hoge:'hoge', funi:'funi', defaultName:name})
-  
-//event.returnValue = "ok"
-
-//  setTimeout(() => {
-//    run(`namenote.ui.openNewDialog.onOpenNew({name:"${name}", path:"${path}"})`)
-//  }, 0)
 })
 
 ipcMain.on('searchFolder', (event, data) => {

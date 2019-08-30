@@ -253,7 +253,13 @@ class File {
 
   getPath(url) {
     const arr = url.split(':');
-    const result = (arr.length > 1) ? arr.slice(1).join(':') : url;
+
+    let result = url;
+    if (arr.length > 1) {
+      arr[1] = arr[1].replace(/^\/+/, '');
+      result = arr.slice(1).join(':');
+    }
+    console.log('getPath', arr, result.replace(/^\/+/, '/'));
     return result.replace(/^\/+/, '/');
   }
 
@@ -265,6 +271,7 @@ class File {
         this.systems[scheme] = new DropboxFileSystem();
       }
     }
+    console.log('getFileSystem', scheme);
     return this.systems[scheme];
   }
 
@@ -274,7 +281,8 @@ class File {
 
   getHome(type) {
     if (namenote.app) {
-      return `file://${namenote.homePath}/`;
+      const homePath = namenote.getHomePath();
+      return `file://${homePath}/`;
     }
 
     if (type === 'export') return 'dropbox:///Exports/';
