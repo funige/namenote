@@ -264,10 +264,14 @@ class File {
 
   getPath(url) {
     const arr = url.split(':');
-
+    console.log('getPath', arr);
+    
     let result = url;
     if (arr.length > 1) {
-      arr[1] = arr[1].replace(/^\/+/, '');
+      // when arr[1] is drive name (like '//C')
+      if (arr.length > 2) {
+        arr[1] = arr[1].replace(/^\/+/, '');
+      }
       result = arr.slice(1).join(':');
     }
     console.log('getPath', arr, result.replace(/^\/+/, '/'));

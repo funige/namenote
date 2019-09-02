@@ -140,9 +140,7 @@ class Namenote {
   }
 
   getHomePath() {
-    const path = this.homePath;
-    console.log(`getHomePath [${path}]`);
-    return path;
+    return this.homePath;
   }
 }
 
