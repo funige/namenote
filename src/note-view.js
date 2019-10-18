@@ -20,10 +20,12 @@ class NoteView extends View {
       },
       trash: () => {
         console.log('noteView trash');
-      },
+      }
+      /*
       lock: () => {
         console.log('noteView lock');
       }
+      */
     });
 
     this.enableSmoothScroll(this.content);

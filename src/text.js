@@ -100,7 +100,11 @@ class Text {
     size = 14,
     vert = true
   } = {}) {
-    const p = document.createElement('p');
+    const p = document.createElement('div');
+    p.className = 'text';
+    p.contentEditable = false;
+
+    p.style.position = 'absolute';
     p.style.left = x + 'px';
     p.style.top = y + 'px';
     p.style.fontFamily = font;

@@ -36,7 +36,7 @@ class ExportPDFForm extends Form {
         position: { my: 'center center', at: 'center center' },
         title: T('Export PDF'),
         modal: true,
-        width: 550,
+        width: 375,
         buttons: buttons,
         open: () => {
           this.onReturnPressed(() => {

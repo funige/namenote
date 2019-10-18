@@ -106,7 +106,6 @@ ipcMain.on('set-title', (event, arg) => {
 
 ipcMain.on('quit', (event) => {
   event.preventDefault()
-  
   app.quit()
   event.returnValue = "ok"
 })
@@ -119,7 +118,6 @@ ipcMain.on('init-path', (event) => {
 })
 
 ipcMain.on('developerTools', (event) => {
-  console.log('[DEVELOPER TOOLS]')
   win.webContents.toggleDevTools()
   event.returnValue = "ok"
 })

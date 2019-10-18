@@ -19,18 +19,13 @@ class PageView extends View {
         const to = this.project.currentPageIndex();
         command.addPage(this, to);
       },
-      clone: () => {
-        console.log('page-view clone');
-      },
       trash: () => {
         const from = this.project.currentPageIndex();
         command.removePage(this, from);
       },
       size: () => {
         this.size = this.rotateSize(this.size);
-        this.project.pages.map(page => {
-          this.updateThumbnail(page);
-        });
+        this.project.pages.map(page => this.updateThumbnail(page));
       }
     });
     this.enableSmoothScroll(this.content);
@@ -132,7 +127,7 @@ class PageView extends View {
     }
     return null;
   }
-  
+
   onLoadProject(project) {
     const snapshot = this.snapshots[project.url] || {};
     this.content.scrollTop = snapshot.scrollTop || 0;

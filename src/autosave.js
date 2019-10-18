@@ -10,38 +10,54 @@ class Autosave {
   init() {
     $('#save-indicator').on('click', () => {
       console.log('save indicator click');
+      if (this.status === Autosave.ERROR) {
+        $('#save-indicator').html('<img src="img/save-indicator.png" />');
+        this.status = Autosave.IDLE;
+        this.update();
+      }
     });
-    
+
     this.defaultInterval = 10;
 
     this.status = Autosave.IDLE;
-    this.update(); //start autosave
+    this.update(); // start autosave
   }
 
   async update() {
-    if (this.status === Autosave.DISABLED) return;
-    
+    if (this.status !== Autosave.IDLE) return;
+
     if (this.items.length > 0) {
-      const target = this.items.pop();
+      // const target = this.items.pop();
+      const target = this.items[this.items.length - 1];
+
       try {
         await this.save(target);
-
+        this.items.pop();
       } catch (e) {
         console.error('[autosave error]', e);
+        this.status = Autosave.ERROR;
       }
     }
 
     this.updateIndicator();
-    setTimeout(() => {
-      this.update();
-    }, (this.items.length > 0) ? 0 : this.defaultInterval * 1000);
+
+    if (this.status === Autosave.IDLE) {
+      setTimeout(() => {
+        this.update();
+      }, (this.items.length > 0) ? 0 : this.defaultInterval * 1000);
+    }
   }
 
   updateIndicator() {
-    if (this.items.length > 0) {
-      $('#save-indicator').show();
+    if (this.status === Autosave.IDLE) {
+      if (this.items.length > 0) {
+        $('#save-indicator').show();
+      } else {
+        $('#save-indicator').hide();
+      }
     } else {
-      $('#save-indicator').hide();
+      $('#save-indicator').html('<img src="img/save-indicator-red.png" />');
+      $('#save-indicator').show();
     }
   }
 
@@ -50,7 +66,7 @@ class Autosave {
       console.error('autosave.push target === null');
       return;
     }
-    
+
     target.dirty = true;
     if (this.items.find(item => item === target)) return false;
     this.items.unshift(target);
@@ -67,7 +83,7 @@ class Autosave {
   }
 
   async savePage(page) {
-    await page.save()
+    await page.save();
     page.dirty = false;
   }
 
@@ -79,7 +95,6 @@ class Autosave {
 
 Autosave.DISABLED = 0;
 Autosave.IDLE = 1;
-Autosave.BUSY = 2;
 Autosave.ERROR = 3;
 
 const autosave = new Autosave();

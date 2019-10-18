@@ -5,3 +5,5 @@ js/bundle*.js
 base.css
 coverage
 dist
+
+private.json

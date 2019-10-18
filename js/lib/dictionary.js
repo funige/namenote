@@ -22,6 +22,8 @@ const dictionary = {
     "Close All": "すべてを閉じる",
     "Note Settings ...": "ノート設定 ...",
     "Export": "書き出し",
+    "Export CSNF ...": "CSNF書き出し ...",
+    "Export PDF ...": "PDF書き出し ...",
     "Import": "読み込み",
     ".csnf (CLIP STUDIO Storyboard) ...": ".csnf (CLIP STUDIO ネームファイル) ...",
     ".pdf (PDF) ...": ".pdf (PDF) ...",

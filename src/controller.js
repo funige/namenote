@@ -11,23 +11,28 @@ let stroke = null;
 const API = {
   POINTER: {
     type: 'pointer',
-    down: 'onpointerdown', move: 'onpointermove', up: 'onpointerup'
+    down: 'onpointerdown',
+    move: 'onpointermove',
+    up: 'onpointerup'
   },
   TOUCH: {
     type: 'touch',
-    down: 'ontouchstart', move: 'ontouchmove', up: 'ontouchend'
+    down: 'ontouchstart',
+    move: 'ontouchmove',
+    up: 'ontouchend'
   },
   MOUSE: {
     type: 'mouse',
-    down: 'onmousedown', move: 'onmousemove', up: 'onmouseup'
+    down: 'onmousedown',
+    move: 'onmousemove',
+    up: 'onmouseup'
   }
-}
+};
 
 class Controller {
   constructor() {
     if (window.PointerEvent) {
       this.api = API.POINTER;
-
     } else {
       this.api = (window.TouchEvent) ? API.TOUCH : API_MOUSE;
     }
@@ -47,9 +52,9 @@ class Controller {
   init() {
     window[this.api.down] = (e) => {
       console.log(this.api.type, 'down',
-                  e.pointerType,
-                  e.touches ? e.touches.length : '-');
-      
+        e.pointerType,
+        e.touches ? e.touches.length : '-');
+
       this.updatePointer(e);
       this.pointerId = e.pointerId;
 
@@ -159,7 +164,7 @@ class Controller {
           info.scrollBar = true;
           break;
         }
-        
+
         if (target.className === 'main-view'
             || target.className === 'page-view'
             || target.className === 'text-view'

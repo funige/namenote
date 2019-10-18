@@ -1,8 +1,6 @@
 import { Tool } from './tool.js';
-import { controller } from './controller.js';
 import { namenote } from './namenote.js';
 import { history } from './history.js';
-import { action } from './action.js';
 import { autosave } from './autosave.js';
 
 
@@ -37,12 +35,13 @@ class PenTool extends Tool {
   addPoint(x, y) {
     const mainView = namenote.mainView;
     const scale = mainView.scale;
-    x -= this.drawingLayer.offsetX;
-    y -= this.drawingLayer.offsetY;
 
     const w = 5 * scale;
+    const left = x - this.drawingLayer.offsetX - w / 2;
+    const top = y - this.drawingLayer.offsetY - w / 2;
+
     this.drawingLayer.ctx.fillStyle = '#ff0000';
-    this.drawingLayer.ctx.fillRect(x - w / 2, y - w / 2, w, w);
+    this.drawingLayer.ctx.fillRect(left, top, w, w);
   }
 
   draw(stroke) {
@@ -67,7 +66,7 @@ class PenTool extends Tool {
     const dx = this.drawingLayer.offsetX + pageOffsetX;
     const dy = this.drawingLayer.offsetY + pageOffsetY;
     const scale = mainView.scale;
-    stroke.map(point => {
+    stroke.forEach(point => {
       point[0] = (point[0] - dx) / scale;
       point[1] = (point[1] - dy) / scale;
     });
@@ -97,28 +96,29 @@ class PenTool extends Tool {
   }
 
   getBound(stroke, w) {
-    let tmp = null;
+    let xmin = stroke[0][0];
+    let ymin = stroke[0][1];
+    let xmax = xmin;
+    let ymax = ymin;
 
     stroke.forEach(point => {
       const x = point[0];
       const y = point[1];
 
-      if (tmp) {
-        if (tmp[0] > x) tmp[0] = x;
-        if (tmp[1] > y) tmp[1] = y;
-        if (tmp[2] < x) tmp[2] = x;
-        if (tmp[3] < y) tmp[3] = y;
-      } else {
-        tmp = [x, y, x, y];
-      }
+      if (x > xmax) xmax = x;
+      if (y > ymax) ymax = y;
+      if (x < xmin) xmin = x;
+      if (y < ymin) ymin = y;
     });
 
-    return {
-      x: Math.floor(tmp[0] - w / 2),
-      y: Math.floor(tmp[1] - w / 2),
-      width: Math.ceil(tmp[2] - tmp[0] + w + 1),
-      height: Math.ceil(tmp[3] - tmp[1] + w + 1)
+    const rect = {
+      x: Math.floor(xmin - w / 2),
+      y: Math.floor(ymin - w / 2),
+      width: Math.ceil(xmax - xmin + w + 1),
+      height: Math.ceil(ymax - ymin + w + 1)
     };
+    console.warn('getBound', rect);
+    return rect;
   }
 }
 

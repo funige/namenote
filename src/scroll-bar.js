@@ -28,7 +28,7 @@ class ScrollBar {
         this.drag = false;
       }
     });
-}
+  }
 
   slideHorizontal() {
     const width = this.content.offsetWidth;
@@ -45,7 +45,7 @@ class ScrollBar {
     this.slider[0].style.height = height * (height / scrollHeight) + 'px';
     this.slider[0].style.top = height * (scrollTop / scrollHeight) + 'px';
   }
-  
+
   onresize() {
     console.warn(this);
     switch (this.type) {

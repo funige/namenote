@@ -1,7 +1,4 @@
-import { namenote } from './namenote.js';
-import { Project } from './project.js';
 import { Page } from './page.js';
-import { file } from './file.js';
 import { autosave } from './autosave.js';
 
 

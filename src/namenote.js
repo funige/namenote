@@ -7,7 +7,6 @@ import { command } from './command.js';
 import { action } from './action.js';
 import { ui } from './ui.js';
 import { dialog } from './dialog.js';
-import { flash } from './flash.js';
 import { file } from './file.js';
 import { history } from './history.js';
 import { autosave } from './autosave.js';
@@ -22,6 +21,7 @@ import { PageView } from './page-view.js';
 import { TextView } from './text-view.js';
 
 import { Canvas } from './canvas.js';
+
 
 let maxID = 1;
 const packageJSON = require('../package.json');
@@ -59,15 +59,13 @@ class Namenote {
     controller.init();
     ui.init();
     autosave.init();
-    
+
     this.mainView = new MainView(document.querySelector('.main-view'));
     this.textView = new TextView(document.querySelector('.text-view'));
     this.pageView = new PageView(document.querySelector('.page-view'));
     this.noteView = new NoteView(document.querySelector('.note-view'));
 
     this.initBaseHandlers();
-
-    flash.load();
   }
 
   initBaseHandlers() {
@@ -110,23 +108,24 @@ class Namenote {
   }
 
   getUniqueID() {
-    return 'p' + maxID++;
+    const id = 'p' + maxID;
+    maxID = maxID + 1;
+    return id;
   }
 
   findDuplicateID() {
     $('[id]').each(function () {
       var ids = $('[id="' + this.id + '"]');
-      if (ids.length > 1 && ids[0] == this) console.error('Multiple IDs #' + this.id);
+      if (ids.length > 1 && ids[0] === this) console.error('Multiple IDs #' + this.id);
     });
   }
 
   setThumbnailSize(value) {
-    if (value && value == config.data.thumbnailSize) return;
+    if (value && value === config.data.thumbnailSize) return;
     if (!value) value = config.data.thumbnailSize || 'middle';
     config.data.thumbnailSize = value;
     config.save();
 
-    const tmp = [];
     this.projectManager.projects.forEach((project) => {
       project.pids.forEach((pid, index) => {
         if (project.pages[index]) {

@@ -43,7 +43,7 @@ class OpenNewForm extends Form {
               <label><input name='bind' type='radio' checked value=1>T(Right binding)</label>
             <tr><td>T(Start page):<td>
               <label><input name='start' type='radio' value=0 checked>T(From left)</label>
-	      <label><input name='start' type='radio' value=1>T(From right)</label>
+              <label><input name='start' type='radio' value=1>T(From right)</label>
           </table>
           <input type='submit' style='display: none' />
         </div>`);
@@ -54,7 +54,7 @@ class OpenNewForm extends Form {
         position: { my: 'center center', at: 'center center' },
         title: T('New'),
         modal: true,
-        width: 550,
+        width: 375,
         buttons: buttons,
         open: () => {
           this.onReturnPressed(() => {
@@ -94,15 +94,19 @@ class OpenNewForm extends Form {
       .val(saveName)
       .select()
       .on('keyup', (e) => {
-        (e.target.value) ? this.enable() : this.disable();
+        if (e.target.value) {
+          this.enable();
+        } else {
+          this.disable();
+        }
       });
   }
 
   saveForm() {
     const filename = $(this.element).find('input.filename').val();
     const count = $(this.element).find('input.count').val();
-    const start = document.forms[this.id].start.value == '1';
-    const bind = document.forms[this.id].bind.value == '1';
+    const start = document.forms[this.id].start.value === '1';
+    const bind = document.forms[this.id].bind.value === '1';
 
     return {
       path: this.finder.url,

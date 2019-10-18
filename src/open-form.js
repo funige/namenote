@@ -1,8 +1,5 @@
-import { namenote } from './namenote.js';
 import { locale, T } from './locale.js';
-import { dialog } from './dialog.js';
 import { file } from './file.js';
-import { recentURL } from './recent-url.js';
 
 import { projectManager } from './project-manager.js';
 import { PageView } from './page-view.js';
@@ -44,7 +41,7 @@ class OpenForm extends Form {
         position: { my: 'center center', at: 'center center' },
         title: T('Open'),
         modal: true,
-        width: 550,
+        width: 375,
         buttons: buttons,
         open: () => {
           // $(this.element).find('.folders').focus()

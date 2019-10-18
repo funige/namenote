@@ -1,4 +1,3 @@
-import { namenote } from './namenote.js';
 import { locale, T } from './locale.js';
 import { Form } from './form.js';
 
@@ -15,9 +14,7 @@ class MessageForm extends Form {
     this.id = 'message';
   }
 
-  init(options) {
-    options = options || {};
-
+  init(options = {}) {
     return new Promise((resolve, reject) => {
       const buttons = {};
       if (options.ok) {

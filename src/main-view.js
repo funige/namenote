@@ -33,7 +33,7 @@ class MainView extends View {
       return;
     }
 
-    //　Init project
+    // Init project
     recentURL.add(project.url);
     menu.update();
     viewButton.update();
@@ -61,7 +61,6 @@ class MainView extends View {
       this.content = this.element.querySelector('.singlepage-content');
       this.rightScrollBar = new ScrollBar(this.content, 'right');
       this.bottomScrollBar = new ScrollBar(this.content, 'bottom');
-
     } else {
       $(this.element).html(`
         <div class='multipage-content'></div>
@@ -72,7 +71,7 @@ class MainView extends View {
       this.bottomScrollBar = null;
     }
     this.drawingLayer.init(this.content);
-    
+
     project.pages.forEach((page, index) => {
       this.initPageData(page, index);
       if (page.loaded) {
@@ -137,10 +136,10 @@ class MainView extends View {
   }
 
   onScale() {
-    const updateImageNeeded = (this.steps != this.getSteps());
+    const updateImageNeeded = (this.steps !== this.getSteps());
     this.steps = this.getSteps();
 
-    this.project.pages.map((page, index) => {
+    this.project.pages.forEach((page, index) => {
       this.setPageRect(page.pid, index);
       if (updateImageNeeded) {
         this.updateImage(page.pid);
@@ -192,7 +191,7 @@ class MainView extends View {
   }
 
   getSteps() {
-    return (1.0 / this.scale) >> 1;
+    return (1.0 / this.scale) >> 1; // eslint-disable-line no-bitwise
   }
 
 
@@ -283,13 +282,13 @@ class MainView extends View {
       this.scrollWidth = this.content.scrollWidth;
       this.scrollHeight = this.content.scrollHeight;
       console.log('resize',
-                  this.offsetWidth, this.offsetHeight, '-',
-                  this.scrollLeft, this.scrollTop, '-',
-                  this.scrollWidth, this.scrollHeight);
+        this.offsetWidth, this.offsetHeight, '-',
+        this.scrollLeft, this.scrollTop, '-',
+        this.scrollWidth, this.scrollHeight);
     }
     if (this.rightScrollBar) this.rightScrollBar.onresize();
     if (this.bottomScrollBar) this.bottomScrollBar.onresize();
-    
+
     this.drawingLayer.onresize();
   }
 }

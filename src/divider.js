@@ -64,7 +64,6 @@ class Divider {
         .css('z-index', 0)
         .append(mainView)
         .append(saveIndicator);
-
     } else {
       $('#right-component')
         .css('box-shadow', '0px 0px 8px 0px rgba(0,0,0,0.15)')

@@ -6,7 +6,6 @@ import { dockTab } from './dock-tab.js';
 import { projectManager } from './project-manager.js';
 import { pageManager } from './page-manager.js';
 import { toolManager } from './tool-manager.js';
-import { flash } from './flash.js';
 import { file } from './file.js';
 
 import { dialog } from './dialog.js';
@@ -94,7 +93,7 @@ class Command {
 
     console.log('text', namenote.textView.content.scrollHeight);
     console.log('page', namenote.pageView.content.scrollHeight);
-}
+  }
 
   showNoteView() {
     $(namenote.noteView.element).show();
@@ -237,7 +236,7 @@ class Command {
     const page = pageManager.find(project, fromPID);
     if (!page || !page.texts) return;
     if (page.texts.childNodes.length <= 0) return;
-    
+
     const index = (from >= 0) ? from : page.texts.childNodes.length - 1;
     const text = page.texts.childNodes[index].outerHTML;
     console.log(text);

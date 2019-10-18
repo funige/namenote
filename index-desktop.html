@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' api.dropboxapi.com content.dropboxapi.com 'unsafe-inline'; img-src 'self' data:;">
 
+    <link rel="manifest" href="/manifest.json">
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" type="text/css" media="all" href="dist/base.css" />
     <link rel="stylesheet" type="text/css" media="all" href="js/lib/jquery-ui.min.css" />
@@ -32,6 +33,10 @@
   </head>
 
   <body>
+    <div id="save-indicator" title="save indicator" style="display:none;">
+      <img src='img/save-indicator.png'>
+    </div>
+    
     <ul id="header" class="toolbar border-bottom">
       <li class="img-button" id="file-menu-button" title="Menu" style="margin-left:5px;"></li>
 
@@ -63,8 +68,6 @@
               <li class="text-button" id="text-view-button"></li>
               <li class="text-button" id="page-view-button"></li>
               <li class="text-button" id="note-view-button"></li>
-              <li class="img-button" id="dock-menu-button"></li>
-              <li class="separator right"></li>
             </ul>
 
             <div class="dock-container">
@@ -83,10 +86,6 @@
         <div class="split-pane-divider" id="divider"></div>
         <div class="split-pane-component" id="right-component">
 	  <div class="main-view">
-          </div>
-          <div id="save-indicator" title="save indicator" style="display:block;">
-            <img src='img/save-indicator.png'>
-            <div></div>
           </div>
         </div>
       </div>

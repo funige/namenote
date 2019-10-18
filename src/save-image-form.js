@@ -35,7 +35,7 @@ class SaveImageForm extends Form {
         position: { my: 'center center', at: 'center center' },
         title: T('Save Image'),
         modal: true,
-        width: 550,
+        width: 375,
         buttons: buttons,
         open: () => {
           this.onReturnPressed(() => {
@@ -60,8 +60,8 @@ class SaveImageForm extends Form {
   }
 
   initForm() {
-//  this.log('<a class="download-button" href="https://www.asahi.com">[download]</a>')
-    
+    //  this.log('<a class="download-button" href="https://www.asahi.com">[download]</a>')
+
     const saveName = `${Date.now()}.png`;
     $(this.element).find('input.filename')
       .val(saveName)

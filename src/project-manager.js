@@ -18,9 +18,9 @@ class ProjectManager {
     file.mkdir(baseURL);
     const template = { params: projectTemplate.Manga, pids: [] };
     const project = new Project(url, template);
-    
+
     for (let i = 0; i < params.page_count; i++) {
-      const page = await pageManager.create(project);
+      const page = await pageManager.create(project); // eslint-disable-line no-await-in-loop
       project.pages.push(page);
     }
     console.warn('create project=>', project);

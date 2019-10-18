@@ -1,6 +1,6 @@
 {
   "name": "Namenote",
-  "version": "2.0.0-alpha.22",
+  "version": "2.0.0-alpha.23",
   "trial": false,
   "authURL": "https://funige.github.io/namenote/auth",
   "description": "A hackable drawing notebook.",
@@ -29,6 +29,7 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babelify": "^10.0.0",
+    "browser-sync": "^2.26.7",
     "browserify": "^16.5.0",
     "core-js": "^2.6.5",
     "eslint": "^5.16.0",

@@ -62,7 +62,7 @@ class Menu {
     states = {};
     checks = {};
 
-    this.updateRecents(template);
+//  this.updateRecents(template);
     this.updateStates(template);
     this.updateChecks(template);
     this.rebuild(template);

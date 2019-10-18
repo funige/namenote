@@ -36,7 +36,7 @@ class ExportCSNFForm extends Form {
         position: { my: 'center center', at: 'center center' },
         title: T('Export CLIP STUDIO Storyboard'),
         modal: true,
-        width: 550,
+        width: 375,
         buttons: buttons,
         open: () => {
           this.onReturnPressed(() => {

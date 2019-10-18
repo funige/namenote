@@ -3,8 +3,8 @@ import { Project } from './project.js';
 import { Page } from './page.js';
 import { projectManager } from './project-manager.js';
 
-import { LocalFileSystem } from './local-file-system.js';
-import { DropboxFileSystem } from './dropbox-file-system.js';
+import { LocalAdapter } from './local-adapter.js';
+import { DropboxAdapter } from './dropbox-adapter.js';
 
 import { MessageForm } from './message-form.js';
 import { OpenForm } from './open-form.js';
@@ -18,16 +18,17 @@ import { PDF } from './pdf.js';
 import { CSNF } from './csnf.js';
 import { namenote } from './namenote.js';
 
-//
+// "url" may contain a storage scheme. ("file" or "dropbox")
+// <url> = <scheme>:<path>
 
 class File {
   constructor() {
-    this.systems = {};
+    this.adapters = {};
   }
 
   async openDialog() {
-    const fileSystem = this.getFileSystem(this.getDefaultScheme());
-    if (!fileSystem.auth('openDialog')) return;
+    const adapter = this.getAdapter(this.getDefaultScheme());
+    if (!adapter) return;
 
     const project = await dialog.open(new OpenForm());
     dialog.close();
@@ -38,10 +39,11 @@ class File {
   }
 
   async open(url) {
-    const fileSystem = this.getFileSystem(this.getScheme(url));
-    if (!fileSystem.auth('open', url)) return;
+    const adapter = this.getAdapter(this.getScheme(url));
+    if (!adapter) return;
 
     const projectURL = await this.getProjectURL(url);
+
     if (projectURL) {
       const project = await projectManager.get(projectURL);
       namenote.loadProject(project);
@@ -65,10 +67,10 @@ class File {
             console.log('image saved..');
             dialog.close();
           });
-        } 
+        }
       });
     } else {
-      console.log('save image canceled.')
+      console.log('save image canceled.');
       dialog.close();
     }
   }
@@ -85,9 +87,9 @@ class File {
         dialog.close();
       });
     } else {
-      console.log('export pdf canceled.')
+      console.log('export pdf canceled.');
       dialog.close();
-    }      
+    }
   }
 
   async exportCSNFDialog() {
@@ -102,14 +104,14 @@ class File {
         dialog.close();
       });
     } else {
-      console.log('export csnf canceled.')
+      console.log('export csnf canceled.');
       dialog.close();
     }
   }
 
   async openNewDialog() {
-    const fileSystem = this.getFileSystem(this.getDefaultScheme());
-    if (!fileSystem.auth('openNewDialog')) return;
+    const adapter = this.getAdapter(this.getDefaultScheme());
+    if (!adapter) return;
 
     const result = await dialog.open(new OpenNewForm());
     dialog.close();
@@ -125,126 +127,98 @@ class File {
   }
 
   async logout(scheme) {
-    const fileSystem = this.getFileSystem(scheme);
-    console.log('logout', scheme, fileSystem);
-    fileSystem.logout();
-  }
-
-  async mkdir(url) {
-    return new Promise((resolve, reject) => {
-      const fileSystem = this.getFileSystem(this.getScheme(url));
-      const path = this.getPath(url);
-      fileSystem.mkdir(path, (err) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    });
-  }
-
-  async readdir(url) {
-    return new Promise((resolve, reject) => {
-      const fileSystem = this.getFileSystem(this.getScheme(url));
-      const path = this.getPath(url);
-      fileSystem.readdir(path, (err, dirents) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(dirents);
-      });
-    });
-  }
-
-  async readJSON(url) {
-    return new Promise((resolve, reject) => {
-      const fileSystem = this.getFileSystem(this.getScheme(url));
-      const path = this.getPath(url);
-      fileSystem.readFile(path, (err, json) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(JSON.parse(json));
-      });
-    });
-  }
-
-  async writeJSON(url, data) {
-    return this.writeFile(url, JSON.stringify(data), 'utf8');
-  }
-
-  async writeFile(url, data, type) {
-    if (type === undefined) type = 'base64';
-
-    return new Promise((resolve, reject) => {
-      const fileSystem = this.getFileSystem(this.getScheme(url));
-      const path = this.getPath(url);
-      fileSystem.writeFile(path, data, type, (err) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    });
-  }
-
-  async getProjectURL(url) { // Translate "hoge/" -> "hoge/hoge.namenote"
-    console.log('getProjectURL', url);
-    if (url.match(/\.namenote$/i)) return url;
-
-    try {
-      const dirents = await file.readdir(url);
-
-      for (const dirent of dirents) {
-        if (!dirent.isDirectory() && dirent.name.match(/\.namenote$/i)) {
-          return `${url}${dirent.name}`;
-        }
-      }
-    } catch (e) { console.log(e); }
-  }
-
-  async getMaxPID(url) {
-    try {
-      let maxPID = 0;
-      const dirents = await file.readdir(url);
-      for (const dirent of dirents) {
-        if (!dirent.isDirectory() && dirent.name.match(/\.json$/i)) {
-          const pid = parseInt(dirent.name);
-          if (maxPID < pid) {
-            maxPID = pid;
-          }
-        }
-      }
-      return maxPID;
-    } catch (e) {
-      console.log(e);
-      return 0;
+    const adapter = this.getAdapter(scheme);
+    if (adapter) {
+      adapter.logout();
     }
   }
 
-  async getSaveName(name, url) {
-    console.log('get save name', name, url);
-    const [body, ext] = this.splitName(name);
-
-    try {
-      const dirents = await file.readdir(url);
-      let index = 0;
-      const dotext = (ext) ? `.${ext}` : '';
-
-      while (1) {
-        const saveName = (index == 0) ? name : `${body} ${index}${dotext}`;
-        if (!dirents.find(dirent => dirent.name === saveName)) {
-          console.log(saveName);
-          return saveName;
-        }
-        index++;
-      }
-    } catch (e) { console.log(e); }
+  async mkdir(url) {
+    const adapter = this.getAdapter(this.getScheme(url));
+    if (!adapter) return;
+    
+    const path = this.getPath(url);
+    await adapter.mkdir(path);
   }
 
-  // "url" may contain a storage scheme.
-  // "url" = "scheme" + "path"
+  async readdir(url) {
+    const adapter = this.getAdapter(this.getScheme(url));
+    if (!adapter) return;
 
+    const path = this.getPath(url);
+    return await adapter.readdir(path);
+  }
+
+  async readJSON(url) {
+    const data = await this.readFile(url);
+    return JSON.parse(data);
+  }
+
+  async readFile(url) {
+    const adapter = this.getAdapter(this.getScheme(url));
+    if (!adapter) return;
+    
+    const path = this.getPath(url);
+    return await adapter.readFile(path);
+  }
+
+  async writeJSON(url, data) {
+    return await this.writeFile(url, JSON.stringify(data), 'utf8');
+  }
+
+  async writeFile(url, data, type = 'base64') {
+    const adapter = this.getAdapter(this.getScheme(url));
+    if (!adapter) return;
+
+    const path = this.getPath(url);
+    return adapter.writeFile(path, data, type);
+  }
+
+  // Translate "hoge/" -> "hoge/hoge.namenote"
+  async getProjectURL(url) {
+    if (url.match(/\.namenote$/i)) return url;
+
+    const dirents = await this.readdir(url);
+    for (const dirent of dirents) {
+      if (!dirent.isDirectory() && dirent.name.match(/\.namenote$/i)) {
+        console.log(`getProjectURL ${url} -> ${url}${dirent.name}`);
+        return `${url}${dirent.name}`;
+      }
+    }
+  }
+
+  async getMaxPID(url) {
+    let maxPID = 0;
+
+    const dirents = await this.readdir(url);
+    for (const dirent of dirents) {
+      if (!dirent.isDirectory() && dirent.name.match(/\.json$/i)) {
+        const pid = parseInt(dirent.name);
+        if (maxPID < pid) {
+          maxPID = pid;
+        }
+      }
+    }
+    return maxPID;
+  }
+
+  // "Untitled.ext" => "Untitled 1.ext"
+  async getSaveName(name, url) {
+    const [body, ext] = this.splitName(name);
+    const dotext = (ext) ? `.${ext}` : '';
+    let index = 0;
+
+    const dirents = await this.readdir(url);
+    while (1) {
+      const saveName = (index == 0) ? name : `${body} ${index}${dotext}`;
+      if (!dirents.find(dirent => dirent.name === saveName)) {
+        return saveName;
+      }
+      index++;
+    }
+  }
+
+  // Get display name for url
   getLabel(url) {
     const scheme = this.getScheme(url);
     const path = this.getPath(url);
@@ -264,8 +238,7 @@ class File {
 
   getPath(url) {
     const arr = url.split(':');
-    console.log('getPath', arr);
-    
+
     let result = url;
     if (arr.length > 1) {
       // when arr[1] is drive name (like '//C')
@@ -274,24 +247,34 @@ class File {
       }
       result = arr.slice(1).join(':');
     }
-    console.log('getPath', arr, result.replace(/^\/+/, '/'));
     return result.replace(/^\/+/, '/');
   }
 
-  getFileSystem(scheme) {
-    if (!this.systems[scheme]) {
-      if (scheme == 'file') {
-        this.systems[scheme] = new LocalFileSystem();
-      } else if (scheme == 'dropbox') {
-        this.systems[scheme] = new DropboxFileSystem();
+  getAdapter(scheme) {
+    if (!this.adapters[scheme]) {
+      switch (scheme) {
+        case 'file':
+          this.adapters[scheme] = new LocalAdapter();
+          break;
+        case 'dropbox':
+          this.adapters[scheme] = new DropboxAdapter();
+          break;
       }
     }
-    console.log('getFileSystem', scheme);
-    return this.systems[scheme];
+    const adapter = this.adapters[scheme];
+    if (adapter.auth()) {
+      adapter.showAuthDialog();
+      return null;
+    }
+    return adapter;
   }
 
   getDefaultScheme() {
-    return (namenote.app) ? 'file' : 'dropbox';
+    if (namenote.app) {
+      return 'file';
+    } else {
+      return 'dropbox';
+    }
   }
 
   getHome(type) {
@@ -299,9 +282,8 @@ class File {
       const homePath = namenote.getHomePath();
       return `file://${homePath}/`;
     }
-
-    if (type === 'export') return 'dropbox:///Exports/';
-    if (type === 'note') return 'dropbox:///Notes/';
+    //if (type === 'export') return 'dropbox:///Exports/';
+    //if (type === 'note') return 'dropbox:///Notes/';
     return 'dropbox:///';
   }
 
@@ -323,3 +305,41 @@ class File {
 const file = new File();
 
 export { file };
+
+
+/*
+   async getHash(path) {
+   fileSystem 
+   }
+
+   async writeFileWithHash(url, data, hash) {
+   const fileSystem = this.getFileSystem(this.getScheme(url));
+   const path = this.getPath(url);
+   const hash = await fileSystem.getHash(path);
+   if (hash) {
+   const currentHash = await this.getHash(url);
+   if (currentHash !== hash) {
+   throw new Error("file modified");
+   }
+   }
+
+   await this.writeFile(url, data)
+   this.hashes[hash] = await this.getHash(url);
+   }
+ */
+
+/*
+   async readJSON(url) {
+   return new Promise((resolve, reject) => {
+   const fileSystem = this.getFileSystem(this.getScheme(url));
+   const path = this.getPath(url);
+   fileSystem.readFile(path, (err, json) => {
+   if (err) {
+   return reject(err);
+   }
+   resolve(JSON.parse(json));
+   });
+   });
+   }
+ */
+

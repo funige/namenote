@@ -21,9 +21,6 @@ class TextView extends View {
         const to = this.project.currentTextIndex();
         command.addText(this, to, toPID);
       },
-      clone: () => {
-        console.log('text-view clone');
-      },
       trash: () => {
         const fromPID = this.project.currentPage.pid;
         const from = this.project.currentTextIndex();
