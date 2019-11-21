@@ -5,10 +5,10 @@ import { autosave } from './autosave.js';
 import { toolManager } from './tool-manager.js';
 
 
-class TextTool extends Tool {
+class HandTool extends Tool {
   constructor() {
     super();
-    this.name = 'text';
+    this.name = 'hand';
   }
 
   onDown(x, y) {
@@ -24,4 +24,4 @@ class TextTool extends Tool {
   }
 }
 
-export { TextTool };
+export { HandTool };

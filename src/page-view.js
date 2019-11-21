@@ -17,11 +17,11 @@ class PageView extends View {
     this.footer = new ViewFooter(this.element.querySelector('.thin-toolbar'), {
       append: () => {
         const to = this.project.currentPageIndex();
-        command.addPage(this, to);
+        command.addPage(this.project, to);
       },
       trash: () => {
         const from = this.project.currentPageIndex();
-        command.removePage(this, from);
+        command.removePage(this.project, from);
       },
       size: () => {
         this.size = this.rotateSize(this.size);
@@ -38,8 +38,10 @@ class PageView extends View {
     Sortable.create(this.content, {
       animation: 150,
       handle: '.sort-handle',
+      group: "page-view",
       onEnd: (e) => {
-        command.movePage(this, e.oldIndex, e.newIndex);
+        console.warn('movepage', this.project);
+        command.movePage(this.project, e.oldIndex, e.newIndex);
       }
     });
   }
@@ -59,7 +61,7 @@ class PageView extends View {
 
   initPageData(page, index) {
     super.initPageData(page, index);
-    this.setPageRect(page, index);
+    this.updatePageRect(page, index);
   }
 
   initPage(page) {
@@ -79,7 +81,7 @@ class PageView extends View {
     this.updateThumbnail(page);
   }
 
-  setPageRect(page, index) {
+  updatePageRect(page, index) {
     this.updateThumbnail(page);
   }
 
@@ -92,14 +94,17 @@ class PageView extends View {
 
   loadProject(project) {
     super.loadProject(project);
-
+    
     // Init project
     this.pageData = {};
+    if (!project) {
+      this.content.innerHTML = '';
+      return;
+    }
+    
     this.initProject(project);
     const url = project.url.replace(/[^/]+\/[^/]+$/, '');
-
     if (this.options.loaded) this.options.loaded(url, project.url);
-
     this.onLoadProject(project);
   }
 
@@ -120,10 +125,10 @@ class PageView extends View {
     this.onSetCurrentPage(page);
   }
 
-  getTextRect(tid) {
-    const page = this.project.getPageByTID(tid);
+  keyRect(key) {
+    const page = this.project.getPageByKey(key);
     if (page) {
-      return this.getPageRect(page.pid);
+      return this.pageRect(page.pid);
     }
     return null;
   }

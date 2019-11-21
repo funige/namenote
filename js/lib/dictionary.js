@@ -52,6 +52,9 @@ const dictionary = {
     "Flip": "左右反転して表示",
     "Save Image As ...": "イメージを保存 ...",
     "Save Image": "イメージを保存",
+    "Download": "ダウンロード",
+    "Download Image": "イメージを保存",
+    "Repaint": "再描画",
     
     "Untitled": "名称未設定",
     "View": "表示",

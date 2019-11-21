@@ -10,7 +10,8 @@ const shortcutDefault = {
 
   close: ['command+w', 'alt+w'],
   quit: ['command+q', 'alt+q'],
-  reload: ['command+r', 'alt+r'],
+  reload: ['command+shift+r', 'alt+shift+r'],
+  repaint: ['command+r', 'alt+r'],
 
   exportCSNFDialog: ['command+p', 'alt+p'],
   exportPDFDialog: ['command+shift+p', 'alt+shift+p'],
@@ -31,7 +32,7 @@ const shortcutDefault = {
 
   dock: '1',
   developerTools: 'command+alt+i',
-
+  
   pen: 'p',
   eraser: 'e',
   text: 't',
@@ -60,9 +61,9 @@ const shortcutDefault = {
   // Text shortcuts (can be used while text editing)
   //
 
-  toggleEditMode: 'ctrl+g',
-  addFontSize: 'ctrl+.',
-  subtractFontSize: 'ctrl+,',
+  toggleEditable: 'ctrl+g',
+  increaseFontSize: 'ctrl+.',
+  decreaseFontSize: 'ctrl+,',
   toggleDirection: 'ctrl+]',
   cutText: 'backspace',
   nextText: 'tab',

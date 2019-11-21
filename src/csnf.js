@@ -170,11 +170,11 @@ class CSNF {
     const result = {};
     result.body = {};
 
-    const count = page.texts.children.length;
+    const count = page.texts.length; //page.texts.children.length;
     const shape = [];
 
     for (let i = 0; i < count; i++) {
-      const element = page.texts.children[i];
+      const element = page.toElement(page.texts[i]); //page.texts.children[i];
       const rect = await Text.measure(element);
 
       let x = parseFloat(element.style.left) + rect.width / 2;

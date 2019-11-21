@@ -133,8 +133,9 @@ class Command {
   }
 
   saveImage() {
-    file.saveImageDialog().catch((error) => {
-      dialog.alert(error);
+    file.downloadImageDialog().catch((error) => {
+    //file.saveImageDialog().catch((error) => {
+    dialog.alert(error);
     });
   }
 
@@ -161,7 +162,60 @@ class Command {
     namenote.mainView.setPrintPreview(!value);
   }
 
-  toggleEditMode() {}
+  toggleEditable() {
+    const project = namenote.mainView.project;
+    if (!project) return;
+
+    
+    // とりあえず
+    if (project.currentKeys.length === 1) {
+      const key = project.currentKeys[0];
+      const element = namenote.mainView.keyElement(key);
+      
+      if (element === document.activeElement) {
+        namenote.mainView.removeEditable(element);
+        const element2 = namenote.textView.keyElement(key);
+        if (element2) element2.focus();
+
+      } else {
+        namenote.mainView.addEditable(element);
+        element.focus();
+      }
+    }
+  }
+  
+  increaseFontSize() {
+    const project = namenote.mainView.project;
+    if (!project) return;
+    project.currentKeys.forEach((key) => {
+      const element = namenote.mainView.keyElement(key);
+      if (element) {
+        Text.increaseFontSize(element);
+      }
+    });
+  }
+  
+  decreaseFontSize() {
+    const project = namenote.mainView.project;
+    if (!project) return;
+    project.currentKeys.forEach((key) => {
+      const element = namenote.mainView.keyElement(key);
+      if (element) {
+        Text.decreaseFontSize(element);
+      }
+    });
+  }
+
+  toggleDirection() {
+    const project = namenote.mainView.project;
+    if (!project) return;
+    project.currentKeys.forEach((key) => {
+      const element = namenote.mainView.keyElement(key);
+      if (element) {
+        Text.toggleDirection(element);
+      }
+    });
+  }
 
   tabletSettings() {
     dialog.open(new TabletSettingsForm()).then(() => {
@@ -175,8 +229,25 @@ class Command {
 
   // Basic actions
 
-  movePage(sender, from, to) {
-    const project = sender.project;
+  moveNote(from, to) {
+    console.log('moveNote');
+    const project = projectManager.projects.splice(from, 1)[0];
+    projectManager.projects.splice(to, 0, project);
+    namenote.noteView.loadProjects(); //test
+  }
+
+  async addNote(to) {
+    await this.openDialog();
+    console.log('noteView append', to);
+  }
+
+  removeNote(from) {
+    console.log('noteView trash', from);
+    const project = projectManager.projects[from];
+    projectManager.removeProject(project);
+  }
+  
+  movePage(project, from, to) {
     const record = [];
 
     record.push(['movePage', from, to, project.url]);
@@ -184,8 +255,7 @@ class Command {
     action.play(record);
   }
 
-  moveText(sender, from, to, fromPID, toPID) {
-    const project = sender.project;
+  moveText(project, from, to, fromPID, toPID) {
     const record = [];
 
     record.push(['moveText', from, to, fromPID, toPID, project.url]);
@@ -193,8 +263,7 @@ class Command {
     action.play(record);
   }
 
-  async addPage(sender, to) {
-    const project = sender.project;
+  async addPage(project, to) {
     const index = (to >= 0) ? to : project.pages.length - 1;
     const record = [];
 
@@ -204,8 +273,7 @@ class Command {
     action.play(record);
   }
 
-  removePage(sender, from) {
-    const project = sender.project;
+  removePage(project, from) {
     const index = (from >= 0) ? from : project.pages.length - 1;
     const record = [];
 
@@ -215,13 +283,12 @@ class Command {
     action.play(record);
   }
 
-  addText(sender, to, toPID) {
-    const project = sender.project;
+  addText(project, to, toPID) {
     const record = [];
 
     const page = pageManager.find(project, toPID);
-    const index = (to >= 0) ? to : page.texts.childNodes.length - 1;
-    const text = Text.createNext(page.texts.childNodes[index]);
+    const index = (to >= 0) ? to : page.texts.length - 1;
+    const text = Text.createNext(page.texts[index]);
     console.log(text);
 
     record.push(['addText', text, index + 1, toPID, project.url]);
@@ -229,16 +296,16 @@ class Command {
     action.play(record);
   }
 
-  removeText(sender, from, fromPID) {
-    const project = sender.project;
+  removeText(project, from, fromPID) {
+    console.log('[removeText]', from, fromPID);
     const record = [];
 
     const page = pageManager.find(project, fromPID);
     if (!page || !page.texts) return;
-    if (page.texts.childNodes.length <= 0) return;
+    if (page.texts.length === 0) return;
 
-    const index = (from >= 0) ? from : page.texts.childNodes.length - 1;
-    const text = page.texts.childNodes[index].outerHTML;
+    const index = (from >= 0) ? from : page.texts.length - 1;
+    const text = page.texts[index];
     console.log(text);
 
     record.push(['removeText', text, index, fromPID, project.url]);
@@ -246,22 +313,43 @@ class Command {
     action.play(record);
   }
 
-  editText(sender, toText, index, pid) {
-    const project = sender.project;
-    const record = [];
+  editText(project, key) {
+    const element = document.getElementById('p' + key);
+    if (element) {
+      const index = project.findTextIndex(project.currentPage, key);
+      const page = project.currentPage;
+      const fromText = page.texts[index];
+      const toText = Text.toText(element, 'p');
 
-    const page = pageManager.find(project, pid);
-    const fromText = page.texts.childNodes[index].outerHTML;
-
-    record.push(['editText', fromText, toText, index, pid, project.url]);
-    history.pushUndo(record);
-    action.play(record);
+      if (!page) console.error('error?', page);
+      if (!Text.shallowEqual(fromText, toText)) {
+        //console.warn('changed', fromText, toText);
+        return ['editText', fromText, toText, index, page.pid, project.url];
+      }
+    }
+    return null;
   }
 
-  editImage(sender, toImage, rect, pid) {
-    const project = sender.project;
+  editTexts(project) {
     const record = [];
+    project.currentKeys.forEach((key) => {
+      const item = this.editText(project, key);
+      if (item) {
+        record.push(item);
+      }
+    });
 
+    if (record.length > 0) {
+      history.pushUndo(record);
+      action.play(record);
+      console.log('editTexts', record);
+    } else {
+      console.log('editTexts', 'no text changed');
+    }
+  }
+  
+  editImage(project, toImage, rect, pid) {
+    const record = [];
     const page = pageManager.find(project, pid);
     const fromImage = page.getImage(rect);
 
@@ -278,8 +366,6 @@ class Command {
     namenote.setThumbnailSize(size);
   }
 
-  //
-
   do(item, data) {
     const arr = item.split('.');
     if (arr.length == 2) {
@@ -292,8 +378,6 @@ class Command {
       this[item](data);
     }
   }
-
-  //
 
   developerTools() {
     _runMain('developerTools');
@@ -313,6 +397,9 @@ class Command {
 
   reload() {
     location.reload();
+  }
+  repaint() {
+    console.log('repaint');
   }
 }
 

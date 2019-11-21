@@ -13,55 +13,60 @@ class DropboxAdapter {
     this.type = 'dropbox';
   }
 
-  async stat(url) {
+  async getHash(path) {
+    const stat = await this.stat(path);
+    return stat.content_hash;
+  }
+  
+  async stat(path) {
     return new Promise((resolve, reject) => {
       const err = this.auth();
       if (err) reject(err);
-      this.fs.stat(url, (err, stat) => {
+      this.fs.stat(path, (err, stat) => {
         if (err) reject(err);
         resolve(stat);
       });
     });
   }
 
-  async mkdir(url) {
+  async mkdir(path) {
     return new Promise((resolve, reject) => {
       const err = this.auth();
       if (err) reject(err);
-      this.fs.mkdir(url, (err) => {
+      this.fs.mkdir(path, (err) => {
         if (err) reject(err);
         resolve();
       });
     });
   }
 
-  async readdir(url) {
+  async readdir(path) {
     return new Promise((resolve, reject) => {
       const err = this.auth();
       if (err) reject(err);
-      this.fs.readdir(url, { mode: 'stat' }, (err, dirents) => {
+      this.fs.readdir(path, { mode: 'stat' }, (err, dirents) => {
         if (err) reject(err);
         resolve(dirents);
       });
     });
   }
 
-  async readFile(url) {
+  async readFile(path) {
     return new Promise((resolve, reject) => {
       const err = this.auth();
       if (err) reject(err);
-      this.fs.readFile(url, 'utf8', (err, data) => {
+      this.fs.readFile(path, 'utf8', (err, data) => {
         if (err) reject(err);
         resolve(data);
       });
     });
   }
   
-  async writeFile(url, data, encoding = 'utf8') {
+  async writeFile(path, data, encoding = 'utf8') {
     return new Promise((resolve, reject) => {
       const err = this.auth();
       if (err) reject(err);
-      this.fs.writeFile(url, data, encoding, (err) => {
+      this.fs.writeFile(path, data, encoding, (err) => {
         if (err) reject(err);
         resolve();
       });

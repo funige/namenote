@@ -3,37 +3,29 @@ class SVGRenderer {
   init() {
   }
 
-  fixTexts(texts) {
-    const array = texts.innerHTML.split(/<div class="text.*?"/);
-    for (let i = 0; i < array.length; i++) {
-      let text = array[i];
-      if (text.length > 0) {
-        text = '<div' + array[i];
-        text = text.replace(/&nbsp;/g, '&#160;');
-        text = text.replace(/&copy;/g, '&#169;');
-        text = text.replace(/&laquo;/g, '&#171;');
-        text = text.replace(/&raquo;/g, '&#187;');
-        text = text.replace(/&yen;/g, '&#165;');
-        text = text.replace(/&plusmn;/g, '&#177;');
-        text = text.replace(/&minus;/g, '&#8722;');
-        text = text.replace(/style="/g, 'style="white-space:nowrap; z-index:100; color:#bf0058;');
-
-        text = text.replace(/<br>/g, '<br/>');
-        text = text.replace(/<br\/><\/div>/g, '</div>');
-        text = text.replace(/<div>(.*?)<\/div>/g, '<br/>$1');
-        array[i] = text;
-      }
-    }
-    // nn.log('=>', array)
-    return array.join(''); // ('\n\n')
+  getFixedTexts(page) {
+    const array = page.texts.map((text) => {
+      return page.toElement(text).outerHTML
+                 .replace(/&nbsp;/g, '&#160;')
+                 .replace(/&copy;/g, '&#169;')
+                 .replace(/&laquo;/g, '&#171;')
+                 .replace(/&raquo;/g, '&#187;')
+                 .replace(/&yen;/g, '&#165;')
+                 .replace(/&plusmn;/g, '&#177;')
+                 .replace(/&minus;/g, '&#8722;')
+                 .replace(/style="/g, 'style="position:absolute; white-space:nowrap; z-index:100; color:#bf0058; ')
+                 .replace(/<br>/g, '<br/>')
+                 .replace(/<br\/><\/div>/g, '</div>')
+                 .replace(/<div>(.*?)<\/div>/g, '<br/>$1')
+    });
+    return array.join('');    
   }
-
+  
   capture(page, callback) {
     const style = 'position:absolute;';
     const image = page.canvas.toDataURL('image/png');
-    const texts = this.fixTexts(page.texts);
+    const texts = this.getFixedTexts(page);
     const marks = page.project.draftMarks().outerHTML;
-    console.warn(marks);
 
     const width = page.canvas.width;
     const height = page.canvas.height;

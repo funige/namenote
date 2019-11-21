@@ -2,6 +2,7 @@ import { pageManager } from './page-manager.js';
 import { file } from './file.js';
 import { shape } from './shape.js';
 import { Text } from './text.js';
+import { command } from './command.js';
 
 const thumbnailWidths = {
   small: 50,
@@ -9,8 +10,6 @@ const thumbnailWidths = {
   large: 150
 };
 
-
-//
 
 class Project {
   constructor(url, json) {
@@ -22,7 +21,7 @@ class Project {
     this.views = [];
 
     this.currentPage = null;
-    this.currentTID = [];
+    this.currentKeys = [];
 
     if (json) {
       this.init(json);
@@ -54,6 +53,10 @@ class Project {
       this.params.canvas_size || this.params.export_size || [257, 364]
     );
 
+    //とりあえず動くように
+    if (!this.params.sheet_size) {
+    this.params.sheet_size = [257, 364];
+    }
     return this;
   }
 
@@ -87,40 +90,35 @@ class Project {
 
   clearCurrentPage() {
     if (this.currentPage) {
-      this.clearCurrentTID();
+      this.clearCurrentKey();
       this.views.forEach((view) => view.onClearCurrentPage());
       this.currentPage = null;
     }
   }
 
-  addCurrentTID(tid) {
-    if (this.currentTID.indexOf(tid) < 0) {
-      this.currentTID.push(tid);
-      this.views.forEach((view) => view.onAddCurrentTID(tid));
+  addCurrentKey(key) {
+    if (this.currentKeys.indexOf(key) < 0) {
+      this.currentKeys.push(key);
+      this.views.forEach((view) => view.onAddCurrentKey(key));
     }
   }
 
-  clearCurrentTID() {
-    this.views.forEach((view) => view.onClearCurrentTID());
-    this.currentTID = [];
+  clearCurrentKey() {
+    if (this.currentKeys.length > 0) {
+      command.editTexts(this);
+      this.views.forEach((view) => view.onClearCurrentKey());
+      this.currentKeys = [];
+    }
   }
 
-  setCurrentTID(tid) {
-    this.clearCurrentTID();
-    this.addCurrentTID(tid);
+  setCurrentKey(key) {
+    this.clearCurrentKey();
+    this.addCurrentKey(key);
   }
 
-  getTID(node) {
-    const id = node.id;
-    return parseInt(id.replace(/^p/, ''), 10);
-  }
-
-  findTextIndex(page, id) {
+  findTextIndex(page, key) {
     if (page && page.texts) {
-      const nodes = page.texts.childNodes;
-      for (let i = 0; i < nodes.length; i++) {
-        if (nodes[i].id === id) return i;
-      }
+      return page.texts.findIndex(item => item.key === key)
     }
     return -1;
   }
@@ -130,9 +128,9 @@ class Project {
   }
 
   currentTextIndex() {
-    const id = 'p' + this.currentTID[0];
+    const key = this.currentKeys[0];
     const page = this.currentPage;
-    return this.findTextIndex(page, id);
+    return this.findTextIndex(page, key);
   }
 
   draftMarks() {
@@ -165,15 +163,8 @@ class Project {
     return max + 1;
   }
 
-  /* anyPage() {
-    console.log('curentPage=>', this.currentPage);
-    console.log('pages=>', this.pages.map(page => page.loaded));
-    console.log('result=>', this.currentPage || this.pages.find(page => page.loaded));
-    return this.currentPage || this.pages.find(page => page.loaded);
-  } */
-
-  getPageByTID(tid) {
-    const query = '#p' + tid;
+  getPageByKey(key) {
+    const query = '#p' + key;
     return this.pages.find(page => page.texts.querySelector(query));
   }
 
@@ -185,78 +176,7 @@ class Project {
     return { width: width, height: height };
   }
 
-  // Actions
-
-  movePage(from, to) {
-    const page = this.pages.splice(from, 1)[0];
-    this.pages.splice(to, 0, page);
-  }
-
-  addPage(pid, to) {
-    const page = pageManager.get(this, pid);
-    this.pages.splice(to, 0, page);
-    this.setCurrentPage(pageManager.find(this, pid));
-  }
-
-  removePage(pid, from) {
-    if (this.pages.length <= 1) return;
-    this.pages.splice(from, 1); // this.pages.splice(from, 1)[0];
-
-    const index = (from > 0) ? (from - 1) : 0;
-    this.setCurrentPage(this.pages[index]);
-  }
-
-  moveText(from, to, fromPID, toPID) {
-    const fromPage = pageManager.find(this, fromPID);
-    const toPage = pageManager.find(this, toPID);
-    if (!fromPage || !toPage) return;
-
-    const node = fromPage.texts.childNodes[from];
-    fromPage.texts.removeChild(node);
-    toPage.texts.insertBefore(node, toPage.texts.childNodes[to]);
-  }
-
-  addText(text, to, toPID) {
-    const toPage = pageManager.find(this, toPID);
-    if (!toPage) return;
-
-    const node = $(text)[0];
-    toPage.texts.insertBefore(node, toPage.texts.childNodes[to]);
-
-    this.setCurrentTID(this.getTID(node));
-  }
-
-  removeText(text, from, fromPID) {
-    const fromPage = pageManager.find(this, fromPID);
-    if (!fromPage) return;
-
-    const node = fromPage.texts.childNodes[from];
-    fromPage.texts.removeChild(node);
-
-    if (fromPage.texts.childNodes.length > 0) {
-      const index = (from > 0) ? from - 1 : 0;
-      this.setCurrentTID(this.getTID(fromPage.texts.childNodes[index]));
-    }
-  }
-
-  editText(toText, index, pid) {
-    const page = pageManager.find(this, pid);
-    if (!page) return;
-
-    const fromNode = page.texts.childNodes[index];
-    const toNode = Text.cleanup($(toText)[0]);
-    page.texts.replaceChild(toNode, fromNode);
-  }
-
-  editImage(toImage, rect, pid) {
-    const page = pageManager.find(this, pid);
-    if (!page) return;
-
-    page.putImage(rect, toImage);
-    page.updateThumbnail();
-  }
-
-  async toData() {
+  async makeData() {
     const data = {};
     data.params = $.extend({}, this.params);
     data.pids = [];
@@ -267,7 +187,7 @@ class Project {
   }
 
   async save() {
-    const data = await this.toData();
+    const data = await this.makeData();
     await file.writeJSON(this.url, data);
 
     console.warn(`[save ${this.url}]`);

@@ -1,6 +1,7 @@
 import { namenote } from './namenote.js';
 import { T } from './locale.js';
 import { Rect } from './rect.js';
+import { Text } from './text.js';
 
 class View {
   constructor(element, options = {}) {
@@ -59,9 +60,14 @@ class View {
   }
 
   createTexts(page) {
-    const texts = document.createElement('div');
-    texts.innerHTML = page.texts.innerHTML;
-    return texts;
+    const elements = Text.toElements(page.texts, 'p');
+    elements.childNodes.forEach((p) => {
+      p.classList.add('text');
+    })
+    return elements;
+    //const texts = document.createElement('div');
+    //texts.innerHTML = page.texts.innerHTML;
+    //return texts;
   }
 
   isDialog() {
@@ -183,12 +189,12 @@ class View {
     const page = this.project.currentPage;
     if (page) {
       const pd = this.pageData[page.pid];
-      console.log(this.project.currentTID);
-      if (this.project.currentTID.length > 0) {
+      console.log(this.project.currentKeys);
+      if (this.project.currentKeys.length > 0) {
         let rect = null;
-        this.project.currentTID.forEach((tid) => {
-          rect = Rect.merge(this.getTextRect(tid), rect);
-          console.log('...', this.getTextRect(tid), rect);
+        this.project.currentKeys.forEach((key) => {
+          rect = Rect.merge(this.keyRect(key), rect);
+          console.log('...', this.keyRect(key), rect);
         });
         return rect;
       }
@@ -238,7 +244,7 @@ class View {
   }
 
   onEditText(toText, index, pid) {
-    console.log(this.id, 'edit text', toText, index, pid);
+    console.log(this.id, 'edit text'); //, toText, index, pid);
     this.loadProject(this.project);
   }
 
@@ -266,10 +272,10 @@ class View {
     }
   }
 
-  onAddCurrentTID(tid) {
+  onAddCurrentKey(key) {
   }
 
-  onClearCurrentTID() {
+  onClearCurrentKey() {
   }
 
   onUnloadProject() {

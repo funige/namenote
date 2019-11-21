@@ -57,6 +57,18 @@ class Form {
       .find('.ui-dialog-buttonpane button:first')
       .button('disable');
   }
+
+  showDownload(data, url) {
+    console.log('showDownload', url);
+    const footer = $(this.element).parent().find('.ui-dialog-buttonset');
+    $('<a>')
+      .addClass('download-button')
+      .html(T('Download'))
+      .attr('download', url)
+      .attr('href', data)
+      .on('click', (e) => { dialog.close(); })
+      .prependTo(footer);
+  }
 }
 
 export { Form };

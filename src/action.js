@@ -1,12 +1,14 @@
 import { projectManager } from './project-manager.js';
 import { pageManager } from './page-manager.js';
 import { autosave } from './autosave.js';
-
+import { reducer } from './reducer.js';
 
 class Action {
   play(record) {
     record.forEach((item) => {
       const action = item[0];
+      console.log('play', action);
+
       const handler = this.playHandler(action);
       if (this[handler]) {
         this[handler](item.slice(1));
@@ -18,6 +20,8 @@ class Action {
     for (let i = record.length - 1; i >= 0; i--) {
       const item = record[i];
       const action = item[0];
+      console.log('rewind', action);
+
       const handler = this.rewindHandler(action);
       if (this[handler]) {
         this[handler](item.slice(1));
@@ -43,7 +47,7 @@ class Action {
     const project = projectManager.find(url);
     if (!project) return;
 
-    project.movePage(from, to);
+    reducer.movePage(from, to, url);
 
     autosave.push(project);
     project.views.forEach((view) => {
@@ -55,7 +59,7 @@ class Action {
     const project = projectManager.find(url);
     if (!project) return;
 
-    project.addPage(pid, to);
+    reducer.addPage(pid, to, url);
 
     autosave.push(project);
     project.views.forEach((view) => {
@@ -67,7 +71,7 @@ class Action {
     const project = projectManager.find(url);
     if (!project) return;
 
-    project.removePage(pid, from);
+    reducer.removePage(pid, from, url);
 
     autosave.push(project);
     project.views.forEach((view) => {
@@ -79,7 +83,7 @@ class Action {
     const project = projectManager.find(url);
     if (!project) return;
 
-    project.moveText(from, to, fromPID, toPID);
+    reducer.moveText(from, to, fromPID, toPID, url);
 
     autosave.push(pageManager.find(project, fromPID));
     autosave.push(pageManager.find(project, toPID));
@@ -92,7 +96,7 @@ class Action {
     const project = projectManager.find(url);
     if (!project) return;
 
-    project.addText(text, to, toPID);
+    reducer.addText(text, to, toPID, url);
 
     autosave.push(pageManager.find(project, toPID));
     project.views.forEach((view) => {
@@ -104,7 +108,7 @@ class Action {
     const project = projectManager.find(url);
     if (!project) return;
 
-    project.removeText(text, from, fromPID);
+    reducer.removeText(text, from, fromPID, url);
 
     autosave.push(pageManager.find(project, fromPID));
     project.views.forEach((view) => {
@@ -116,7 +120,7 @@ class Action {
     const project = projectManager.find(url);
     if (!project) return;
 
-    project.editText(toText, index, pid);
+    reducer.editText(toText, index, pid, url);
 
     autosave.push(pageManager.find(project, pid));
     project.views.forEach((view) => {
@@ -128,7 +132,7 @@ class Action {
     const project = projectManager.find(url);
     if (!project) return;
 
-    project.editImage(toImage, rect, pid);
+    reducer.editImage(toImage, rect, pid, url);
 
     autosave.push(pageManager.find(project, pid));
     project.views.forEach((view) => {

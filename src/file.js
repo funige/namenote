@@ -10,6 +10,8 @@ import { MessageForm } from './message-form.js';
 import { OpenForm } from './open-form.js';
 import { OpenNewForm } from './open-new-form.js';
 
+
+import { DownloadImageForm } from './download-image-form.js';
 import { SaveImageForm } from './save-image-form.js';
 import { svgRenderer } from './svg-renderer.js';
 import { ExportPDFForm } from './export-pdf-form.js';
@@ -50,6 +52,15 @@ class File {
     }
   }
 
+  async downloadImageDialog() {
+    const project = namenote.currentProject();
+    if (!project) return;
+    const page = project.currentPage;
+    if (!page) return;
+    const result = await dialog.open(new DownloadImageForm(page));
+    dialog.close();
+  }
+  
   async saveImageDialog() {
     const project = namenote.currentProject();
     if (!project) return;
@@ -133,6 +144,14 @@ class File {
     }
   }
 
+  async getHash(url) {
+    const adapter = this.getAdapter(this.getScheme(url));
+    if (!adapter) return;
+
+    const path = this.getPath(url);
+    return await adapter.getHash(path);
+  }
+  
   async mkdir(url) {
     const adapter = this.getAdapter(this.getScheme(url));
     if (!adapter) return;

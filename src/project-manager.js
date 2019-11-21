@@ -58,6 +58,30 @@ class ProjectManager {
   addProject(project) {
     this.projects.push(project);
   }
+
+  canRemoveProject(project) {
+    // TODO: pageとprojectが削除できるかどうか先に確認する
+    return true;
+  }
+  
+  removeProject(project) {
+    if (!this.canRemoveProject(project)) return;
+    
+    const index = this.projects.findIndex(item => item === project);
+    console.log(index);
+    
+    if (index >= 0) {
+      this.projects[index].destructor();
+      this.projects.splice(index, 1);
+      
+      if (this.projects.length > 0) {
+        namenote.loadProject(this.projects[(index > 0) ? index - 1 : 0]);
+      } else {
+        namenote.loadProject(null);
+      }
+    }
+    pageManager.removePagesForURL(project.url);
+  }
 }
 
 const projectManager = new ProjectManager();

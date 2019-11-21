@@ -36,12 +36,21 @@ class PageManager {
   addPage(page) {
     const url = page.project.url;
     const pid = page.pid;
+
     if (!this.pages[url]) {
       this.pages[url] = {};
     }
     this.pages[url][pid] = page;
 
     // this.pages.push(page);
+  }
+
+  removePagesForURL(url) {
+    const pagesForProject = this.pages[url];
+    Object.keys(pagesForProject).forEach(pid => {
+      pagesForProject[pid].destructor();
+    });
+    this.pages[url] = null;
   }
 }
 

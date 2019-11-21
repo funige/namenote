@@ -1,7 +1,7 @@
 import { shortcutDefault } from './shortcut-default.js';
 import { command } from './command.js';
 import { dialog } from './dialog.js';
-import { controller } from './controller.js';
+import { pointer } from './pointer.js';
 const Mousetrap = require('mousetrap');
 
 class Shortcut {
@@ -17,7 +17,7 @@ class Shortcut {
     });
 
     Mousetrap.prototype.stopCallback = function (e, element, combo) {
-      if (controller.isEditable(element)) {
+      if (pointer.isEditable(element)) {
         console.log('keycode=', e.keyCode, e);
 
         if (e.ctrlKey && !e.shiftKey && !e.metaKey) {
@@ -45,6 +45,7 @@ class Shortcut {
   load() {
     const json = localStorage.getItem('namenote/shortcut');
     this.data = json ? JSON.parse(json) : Object.assign({}, shortcutDefault);
+    const data = Object.assign({}, shortcutDefault);
     this.bind();
   }
 
@@ -87,23 +88,25 @@ class Shortcut {
       }
     }
 
-    //  Mousetrap.bind('space', (e) => {
-    //    Controller.clearMove()
-    //    return false;
-    //  })
+    Mousetrap.bind('space', (e) => {
+      pointer.clearMove()
+      return false;
+    })
 
-    //  Mousetrap.bind('enter', (e) => {
-    //    if (dialog.isOpen()) return true
-    //    command.quickZoom()
-    //    return false
-    //  })
+    Mousetrap.bind('enter', (e) => {
+      if (dialog.isOpen()) return true
+      //command.quickZoom()
+      console.log('[quick zoom on enter]');
+      return false
+    })
 
-    //  Mousetrap.bind('space', (e) => {
-    //    if (!Controller.isMoved()) {
-    //      command.quickZoom();
-    //    }
-    //    return false;
-    //  }, 'keyup')
+    Mousetrap.bind('space', (e) => {
+      if (!pointer.isMoved()) {
+        //command.quickZoom();
+        console.log('[quick zoom on space]');
+      }
+      return false;
+    }, 'keyup')
   }
 }
 

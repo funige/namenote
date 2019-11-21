@@ -20,7 +20,7 @@
     background-color: white;
 
     transform-origin: top left;
-    overflow: hidden;
+//  overflow: hidden; // はみだしたテキストを表示
 }
 
 .main-view .page.preload {
@@ -119,5 +119,16 @@ $scroll-bar-width-rest: calc(100% - 18px); //calc(100% - 12px);
     right: 0;
     bottom: 0;
     overflow: hidden;
+}
+
+.anchor {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background-color: #aaa;
+}
+
+.main-view .text {
+    position: absolute;
 }
 

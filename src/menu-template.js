@@ -23,6 +23,8 @@ const fileMenuTemplate = [
       { label: 'Full Screen', click: 'fullScreen' },
       { label: 'Dock', click: 'dock' },
       { label: 'Developer Tools', click: 'developerTools' },
+      { type: 'separator' },
+      { label: 'Repaint', click: 'repaint' },
     ]
   },
   { type: 'separator' },

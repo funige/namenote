@@ -35,7 +35,7 @@ class Page {
     await this.unzipImage(this.canvasCtx, this.params.base64);
 
     this.updateThumbnail();
-    this.texts = this.getTexts(this.params.text);
+    this.texts = this.initTexts(this.params.text);
     this.loaded = true;
     this.project.views.forEach(view => {
       view.initPageData(this, this.project.pages.indexOf(this));
@@ -100,18 +100,16 @@ class Page {
     });
   }
 
-  getTexts(text) {
-    const result = document.createElement('div');
-    if (text) {
-      result.innerHTML = text;
-      result.childNodes.forEach((p) => {
-        Text.cleanup(p);
-        p.id = namenote.getUniqueID();
-      });
-    }
-    return result;
+  initTexts(html) {
+    const elements = document.createElement('div');
+    elements.innerHTML = html;
+    const texts = Text.toTexts(elements);
+    texts.map((text) => {
+      if (!text.key) text.key = namenote.getUniqueID();
+    })
+    return texts;
   }
-
+  
   getImage(rect) {
     return this.canvasCtx.getImageData(rect.x, rect.y, rect.width, rect.height);
   }
@@ -123,22 +121,26 @@ class Page {
   digest() {
     if (!this.params || !this.params.text) return '';
 
-    return this.params.text
-      .replace(/(<([^>]+)>)/ig, '/')
-      .replace(/\/+/g, '/')
-      .replace(/^\//, '').replace(/\/$/, '');
+    const result = this.texts.map((text) => {
+      return text.innerHTML
+                 .replace(/(<([^>]+)>)/ig, '/')
+                 .replace(/\/+/g, '/')
+                 .replace(/^\//, '').replace(/\/$/, '');
+    }).join('/');
+    //return result;
+    return `${result}<br>${this.pid}.json`;
   }
 
-  async toData() {
+  async makeData() {
     this.params.base64 = await this.zipImage(this.canvasCtx);
     this.params.pid = this.pid;
-    this.params.text = this.texts.innerHTML;
-
+    this.params.text = Text.toElements(this.texts).innerHTML;
+    //this.params.layers = [];
     return $.extend({}, this.params);
   }
 
   async save() {
-    const data = await this.toData();
+    const data = await this.makeData();
     await file.writeJSON(this.url, data);
 
     console.warn(`[save ${this.url}]`);

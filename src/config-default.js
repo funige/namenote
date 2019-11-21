@@ -10,7 +10,7 @@ const configDefault = {
   // divider.js
   sideBar: false,
   sideBarWidth: 250,
-  sideBarPosition: 'left',
+  sideBarPosition: 'right',
 
   // tablet-settings-form.js
   tabletCurveLeft: '0,0',

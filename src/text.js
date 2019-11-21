@@ -12,25 +12,32 @@ import { namenote } from './namenote.js';
 class Text {
   static getHTML(element) {
     const p = $(element.outerHTML)[0];
-    this.cleanup(p);
+    Text.cleanup(p);
     return p.outerHTML;
   }
 
   static cleanup(p) {
     p.classList.remove('editable', 'selected');
     p.style.color = '';
-    p.innerHTML = this.flatten(p.innerHTML);
+    p.innerHTML = Text.flatten(p.innerHTML);
     return p;
   }
 
   static flatten(text) {
-    return text
-      .replace(/\r|\n/g, '')
+    let result = text
+      .replace(/(\r|\n)/g, '')
       .replace(/(<([^>]+)>)/g, '\n')
-      .replace(/\/+/g, '/')
-      .replace(/^\//, '')
-      .replace(/\/$/, '')
+      .replace(/\n+/g, '\n')
+      .replace(/^\n/, '')
+      .replace(/\n$/, '')
+
       .replace(/\n/g, '<br>');
+    //result = result.replace(/\n/, '<div>&#8203;');
+    //result = result.replace(/\n/g, '</div><div>&#8203;');
+    //if (result.indexOf('div') > 0) result = result + '</div>'
+    //console.warn(result);
+
+    return result;
   }
 
   static toPlainText(html) { // for CSNF export
@@ -67,6 +74,23 @@ class Text {
     });
   }
 
+  static clearSelection() {
+    const sel = window.getSelection ? window.getSelection() : document.selection;
+    if (sel) {
+      if (sel.removeAllRanges) {
+        sel.removeAllRanges();
+      } else if (sel.empty) {
+        sel.empty();
+      }
+    }
+  }
+  
+  static initPosition(element) {
+    const width = element.offsetWidth;
+    const height = element.offsetHeight;
+    element.alt = JSON.stringify({ width: width, height: height });
+  }
+  
   static fixPosition(element) {
     const width = element.offsetWidth;
     const height = element.offsetHeight;
@@ -81,16 +105,43 @@ class Text {
     element.alt = JSON.stringify({ width: width, height: height });
   }
 
+  static toggleDirection(element) {
+    if (Text.isVert(element)) {
+      element.style.left = parseFloat(element.style.left) + element.offsetWidth + 'px';
+      element.style.writingMode = 'horizontal-tb';
+      element.alt = '';
+    } else {
+      element.style.writingMode = 'vertical-rl';
+      element.style.left = parseFloat(element.style.left) - element.offsetWidth + 'px';
+      element.alt = '';
+    }
+    setImmediate(() => { Text.initPosition(element); });
+  }
+
   static isVert(element) {
     return (element.style.writingMode === 'vertical-rl');
   }
 
-  static createNext(node) {
-    const p = (node) ? node.cloneNode() : this.createFromTemplate();
-    p.id = namenote.getUniqueID();
-    p.style.left = (parseFloat(p.style.left) - 12) + 'px';
-    p.innerHTML = '';
-    return p;
+  static increaseFontSize(element) {
+    const size = parseFloat(element.style.fontSize);
+    const newSize = (size >= 72) ? size : size + 1;
+    element.style.fontSize = newSize + 'px';
+  }
+
+  static decreaseFontSize(element) {
+    const size = parseFloat(element.style.fontSize);
+    const newSize = (size <= 8) ? size : size - 1;
+    element.style.fontSize = newSize + 'px';
+  }
+  
+  static createNext(source) {
+    //const p = (node) ? node.cloneNode() : this.createFromTemplate();
+    const text = (source) ? {...source} : { createFromTemplage: true };
+
+    text.key = namenote.getUniqueID();
+    text.left -= 12; //TODO: measureで測ること
+    text.innerHTML = '';
+    return text;
   }
 
   static createFromTemplate({
@@ -111,6 +162,92 @@ class Text {
     p.style.fontSize = size + 'px';
     p.style.writingMode = vert ? 'vertical-rl' : 'horizontal-tb';
     return p;
+  }
+
+  static shallowEqual(obj1, obj2) {
+    if (obj1 === undefined || obj2 === undefined ||
+        obj1 === null || obj2 === null) {
+      console.log('shallowEqual', obj1, obj2);
+      return;
+    }
+    return Object.keys(obj1).length === Object.keys(obj2).length &&
+           Object.keys(obj1).every(key => obj1[key] === obj2[key]);
+  }
+
+  static keyElement(key) {
+    return document.getElementById('p' + key);
+  }
+
+  static keyRect(key) {
+    const element = Text.keyElement(key);
+    if (element) {
+      console.warn('keyElement', element, element.parentNode, element.parentNode.parentNode);
+      const x = element.style.left;
+      const y = element.style.top;
+      const width = element.offsetWidth;
+      const height = element.offsetHeight;
+      console.log(x, y, width, height);
+    }
+    return null;
+  }
+  
+  // texts <-> elements
+
+  static toText(element, prefix) {
+    const text = {
+      innerHTML: Text.flatten(element.innerHTML),
+      x: parseFloat(element.style.left),
+      y: parseFloat(element.style.top),
+      size: parseFloat(element.style.fontSize),
+      vert: (element.style.writingMode === 'vertical-rl') ? true : false,
+    };
+    if (prefix && element.id) {
+      text.key = parseInt(element.id.replace(/^p/, ''));
+    }
+    return text;
+  }
+
+  static toElement(text, prefix) {
+    const element = document.createElement('div');
+    element.innerHTML = text.innerHTML;
+    element.style.left = text.x + 'px';
+    element.style.top = text.y + 'px';
+    element.style.fontSize = text.size + 'px';
+    element.style.writingMode = text.vert ? 'vertical-rl' : 'horizontal-tb';
+    if (prefix && text.key) {
+      element.id = prefix + text.key;
+    }
+    return element;
+  }
+  
+  static toTexts(elements, prefix) {
+    const texts = [];
+    if (elements instanceof HTMLElement) {
+      if (elements.childNodes.length) {
+        elements.childNodes.forEach((element) => {
+          if (element.nodeType === 1) {
+            texts.push(Text.toText(element, prefix));
+          }
+        });
+      }
+    } else {
+      // when elements is array of keys
+      elements.forEach((key) => {
+        const element = document.getElementById('p' + key);
+        texts.push(Text.toText(element, prefix));
+      })
+    }
+    return texts;
+  }
+
+  static toElements(texts, prefix) {
+    const elements = document.createElement('div');
+    if (texts.length) {
+      texts.forEach((text) => {
+        elements.appendChild(Text.toElement(text, prefix));
+      })
+    }
+    return elements;
   }
 }
 

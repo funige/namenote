@@ -144,7 +144,7 @@ ul, li {
     min-height: 1em;
     white-space: nowrap;
     cursor: default;
-    outline: 1px solid #eee; //85bffd;
+    outline: 1px solid rgba(0, 0, 0, 0.1); //#eee; //85bffd;
     background: rgba(255,255,255,0);
     z-index: 1000;
     color: #bf0058;
@@ -508,8 +508,11 @@ span .ui-icon {
     text-decoration: none;
     color: #454545;
     background-color: #f6f6f6;
-    padding: 5.2px 13px;
 
+    padding: 8px 13px 2px 13px;
+    margin: 6px 5px 6px 0;
+    float: right;
+    
     border: 1px solid #c5c5c5;
     border-radius: 3px;
 
@@ -531,6 +534,16 @@ span .ui-icon {
 .sortable-ghost {
     opacity: 0.1;
 }
+
+/*
+.ui-dialog-buttonset > a {
+    position: relative;
+    border: 1px solid #c5c5c5;
+    float: right;
+    color: red;
+    background-color: pink;
+    padding: 10px 10px;
+}*/
 
 ////////////////////////////////////////////////////////////////
 

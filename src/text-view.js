@@ -19,12 +19,12 @@ class TextView extends View {
       append: () => {
         const toPID = this.project.currentPage.pid;
         const to = this.project.currentTextIndex();
-        command.addText(this, to, toPID);
+        command.addText(this.project, to, toPID);
       },
       trash: () => {
         const fromPID = this.project.currentPage.pid;
         const from = this.project.currentTextIndex();
-        command.removeText(this, from, fromPID);
+        command.removeText(this.project, from, fromPID);
       }
     });
 
@@ -52,52 +52,35 @@ class TextView extends View {
 
   initPage(page) {
     const pd = this.pageData[page.pid];
-    if (!pd || !pd.element) {
-      console.log('textView: abort init page');
-    }
+    if (!pd || !pd.element) return;
 
-    page.texts.childNodes.forEach((p) => {
-      const text = $('<div class="dock-text"></div>')[0];
-      const handle = $(`
-        <div class="sort-handle">
-          <span class="ui-icon ui-icon-grip-dotted-vertical"></span>
-        </div>`)[0];
+    const ul = pd.element.getElementsByTagName('ul')[0];
+    page.texts.forEach((text) => {
+      const p = $('<div>').addClass('dock-text').html(text.innerHTML);
+      const handle = this.handleDiv();
+      p.attr('id', 't' + text.key);
+      p.attr('contentEditable', true);
 
-      text.id = p.id.replace(/^p/, 't');
-      text.innerHTML = p.innerHTML;
-      text.style.whiteSpace = 'nowrap';
-      text.contentEditable = true;
-      text.addEventListener('input', (e) => {
-        const id = e.target.id.replace(/^t/, 'p');
-        const element = document.getElementById(id);
-        if (element) {
-          element.innerHTML = e.target.innerHTML;
-        }
-      });
-
-      text.addEventListener('change', (e) => {
-      });
-      text.addEventListener('focus', (e) => {
+      const li = $('<li>').append(handle).append(p).appendTo(ul);
+      p.on('focus', (e) => {
         this.onFocus(e);
       });
-      text.addEventListener('blur', (e) => {
+      p.on('blur', (e) => {
         this.onBlur(e);
       });
-
-      const li = $('<li></li>');
-      li.append($(handle));
-      li.append($(text));
-      $(pd.element.getElementsByTagName('ul')[0]).append(li);
+      p.on('input', (e) => {
+        this.onInput(e);
+      });
     });
 
-    Sortable.create(pd.element.getElementsByTagName('ul')[0], {
+    Sortable.create(ul, {
       animation: 150,
       handle: '.sort-handle',
       group: 'text-view',
       onEnd: (e) => {
         const oldPID = this.detectPID(e.from.parentNode);
         const newPID = this.detectPID(e.to.parentNode);
-        command.moveText(this, e.oldIndex, e.newIndex, oldPID, newPID);
+        command.moveText(this.project, e.oldIndex, e.newIndex, oldPID, newPID);
       }
     });
   }
@@ -115,16 +98,24 @@ class TextView extends View {
 
   async loadProject(project) {
     super.loadProject(project);
-
+    
     // Init project
     this.pageData = {};
-    this.initProject(project);
+    if (!project) {
+      this.content.innerHTML = '';
+      return;
+    }
 
+    this.initProject(project);
     this.onLoadProject(project);
   }
 
-  getTextRect(tid) {
-    return Rect.get(document.querySelector('#t' + tid));
+  keyElement(key) {
+    return document.getElementById('t' + key);
+  }
+  
+  keyRect(key) {
+    return Rect.get(this.keyElement(key));
   }
 
   initCurrentPage() {
@@ -132,57 +123,69 @@ class TextView extends View {
     this.onSetCurrentPage(page);
   }
 
-  initCurrentTID() {
-    this.project.currentTID.forEach((tid) => {
-      this.onAddCurrentTID(tid);
+  initCurrentKeys() {
+    this.project.currentKeys.forEach((key) => {
+      this.onAddCurrentKey(key);
     });
   }
 
-  onAddCurrentTID(tid) {
-    const tmp = $('#t' + tid);
+  onAddCurrentKey(key) {
+    const tmp = $('#t' + key);
     tmp.addClass('selected');
     tmp.prev().addClass('selected');
   }
 
-  onClearCurrentTID() {
-    this.project.currentTID.forEach((tid) => {
-      const tmp = $('#t' + tid);
+  onClearCurrentKey() {
+    this.project.currentKeys.forEach((key) => {
+      const tmp = $('#t' + key);
       tmp.removeClass('selected');
       tmp.prev().removeClass('selected');
     });
   }
 
   onFocus(e) {
-    const tid = e.target.id.replace(/^t/, '');
-    this.project.clearCurrentTID();
-    this.project.addCurrentTID(tid);
+    const key = parseInt(e.target.id.replace(/^t/, ''));
+    this.project.clearCurrentKey();
+    this.project.addCurrentKey(key);
   }
 
   onBlur(e) {
-    const id = e.target.id.replace(/^t/, 'p');
-    const element = document.getElementById(id);
-    if (element) {
-      const toText = Text.getHTML(element);
+    Text.clearSelection();
 
+    /*
+    const key = parseInt(e.target.id.replace(/^t/, ''));
+    const element = document.getElementById('p' + key);
+    if (element) {
       const pid = this.detectPID(element);
       const page = pageManager.find(this.project, pid);
-      const index = this.project.findTextIndex(page, id);
+      const index = this.project.findTextIndex(page, key);
 
-      const fromText = page.texts.childNodes[index].outerHTML;
+      const toText = page.toText(element, 'p');
+      const fromText = page.texts[index];
+      console.warn(page.texts, fromText, toText);
 
-      if (fromText !== toText) {
+      if (!this.shallowEqual(fromText, toText)) {
         console.log('text edited!', fromText, toText);
-        command.editText(this, toText, index, pid);
+        command.editText(this.project, toText, index, pid);
       }
     }
+    */
   }
 
+  onInput(e) {
+    const key = parseInt(e.target.id.replace(/^t/, ''));
+    const element = document.getElementById('p' + key);
+    if (element) {
+      element.innerHTML = e.target.innerHTML;
+    }
+  }
+  
   onLoadProject(project) {
     const snapshot = this.snapshots[project.url] || {};
     this.content.scrollTop = snapshot.scrollTop || 0;
 
     this.initCurrentPage();
-    this.initCurrentTID();
+    this.initCurrentKeys();
   }
 
   onUnloadProject(project) {
@@ -191,6 +194,7 @@ class TextView extends View {
     };
   }
 
+//onEditText() {} // これはundoの時動かない。repaintも動いてない？
   onEditImage() {}
 }
 

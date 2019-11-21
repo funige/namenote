@@ -1,15 +1,17 @@
 import { config } from './config.js';
 import { shortcut } from './shortcut.js';
 import { recentURL } from './recent-url.js';
-import { controller } from './controller.js';
+import { pointer } from './pointer.js';
 
 import { command } from './command.js';
 import { action } from './action.js';
+import { reducer } from './reducer.js';
 import { ui } from './ui.js';
 import { dialog } from './dialog.js';
 import { file } from './file.js';
 import { history } from './history.js';
 import { autosave } from './autosave.js';
+import { Text } from './text.js';
 
 import { projectManager } from './project-manager.js';
 import { pageManager } from './page-manager.js';
@@ -35,9 +37,10 @@ class Namenote {
     this.config = config;
     this.shortcut = shortcut;
     this.recentURL = recentURL;
-    this.controller = controller;
+    this.pointer = pointer;
     this.command = command;
     this.action = action;
+    this.reducer = reducer;
     this.history = history;
 
     this.projectManager = projectManager;
@@ -49,6 +52,7 @@ class Namenote {
 
     this.Canvas = Canvas; // test
     this.autosave = autosave;
+    this.Text = Text;
   }
 
   init() {
@@ -56,7 +60,7 @@ class Namenote {
     shortcut.load();
     recentURL.load();
 
-    controller.init();
+    pointer.init();
     ui.init();
     autosave.init();
 
@@ -83,7 +87,7 @@ class Namenote {
     };
 
     window.oncontextmenu = (e) => {
-      console.log('contextmenu');
+      //console.log('contextmenu');
       return false;
     };
   }
@@ -108,7 +112,7 @@ class Namenote {
   }
 
   getUniqueID() {
-    const id = 'p' + maxID;
+    const id = maxID;
     maxID = maxID + 1;
     return id;
   }

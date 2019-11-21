@@ -64,7 +64,7 @@ class Autosave {
   push(target) {
     if (!target) {
       console.error('autosave.push target === null');
-      return;
+      return false;
     }
 
     target.dirty = true;

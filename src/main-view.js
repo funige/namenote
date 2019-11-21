@@ -9,6 +9,7 @@ import { DrawingLayer } from './drawing-layer.js';
 import { pageManager } from './page-manager.js';
 import { ScrollBar } from './scroll-bar.js';
 import { Rect } from './rect.js';
+import { Text } from './text.js';
 
 // $('.main-view')[0].parentNode.scrollTop = ...
 
@@ -28,8 +29,10 @@ class MainView extends View {
 
   loadProject(project) {
     super.loadProject(project);
+    this.pageData = {};
     if (!project) {
-      title.set(null);
+      title.set();
+      this.element.innerHTML = '';
       return;
     }
 
@@ -43,9 +46,7 @@ class MainView extends View {
     this.steps = this.getSteps();
     this.flip = false;
 
-    this.pageData = {};
     this.initProject(project);
-
     this.onLoadProject(project);
   }
 
@@ -57,7 +58,7 @@ class MainView extends View {
         <div class='corner-scroll-bar'></div>
         <div class='singlepage-content'></div>
         <canvas class='drawing-layer'></canvas>
-      `);
+        `);
       this.content = this.element.querySelector('.singlepage-content');
       this.rightScrollBar = new ScrollBar(this.content, 'right');
       this.bottomScrollBar = new ScrollBar(this.content, 'bottom');
@@ -70,6 +71,7 @@ class MainView extends View {
       this.rightScrollBar = null;
       this.bottomScrollBar = null;
     }
+
     this.drawingLayer.init(this.content);
 
     project.pages.forEach((page, index) => {
@@ -78,8 +80,8 @@ class MainView extends View {
         this.initPage(page);
       }
     });
+    this.setAnchor();
   }
-
 
   initPage(page) {
     const pd = this.pageData[page.pid];
@@ -88,6 +90,17 @@ class MainView extends View {
 
     pd.texts = this.createTexts(page);
     pd.texts.childNodes.forEach((p) => {
+      $(p)
+        .on('input', (e) => {
+          this.onInput(e);
+        })
+        .on('blur', (e) => {
+          this.removeEditable(p);
+        });
+      
+      setImmediate(() => {
+        Text.initPosition(p);
+      }) 
     });
 
     pd.canvas.className = 'canvas';
@@ -105,11 +118,10 @@ class MainView extends View {
     this.updateImage(page.pid);
   }
 
-  // //////////////
 
   initPageData(page, index) {
     super.initPageData(page, index);
-    this.setPageRect(page.pid, index);
+    this.updatePageRect(page.pid, index);
   }
 
   createPageElement(pid, index) {
@@ -119,10 +131,23 @@ class MainView extends View {
     return element;
   }
 
-  getTextRect(tid) {
-    return Rect.get(document.querySelector('#p' + tid));
+  keyElement(key) {
+    return document.getElementById('p' + key);
+  }
+  
+  keyRect(key) {
+    return Rect.get(this.keyElement(key));
   }
 
+  projectRect() {
+    const rect = this.pageRectFor(this.project.pages.length - 1);
+    const margin = 50;
+    return {
+      x: rect.x + rect.width + margin,
+      y: rect.y + rect.height + margin,
+    };
+  }
+  
   pageRectFor(index) {
     const width = Math.round(this.project.canvasSize.width * this.scale);
     const height = Math.round(this.project.canvasSize.height * this.scale);
@@ -140,14 +165,15 @@ class MainView extends View {
     this.steps = this.getSteps();
 
     this.project.pages.forEach((page, index) => {
-      this.setPageRect(page.pid, index);
+      this.updatePageRect(page.pid, index);
       if (updateImageNeeded) {
         this.updateImage(page.pid);
       }
     });
+    this.setAnchor();
   }
 
-  setPageRect(pid, index) {
+  updatePageRect(pid, index) {
     const pd = this.pageData[pid];
     const rect = this.pageRectFor(index);
 
@@ -162,6 +188,18 @@ class MainView extends View {
     if (pd.marks) pd.marks.style.transform = `scale(${this.scale})`;
   }
 
+  setAnchor() {
+    if (!this.anchor) {
+      this.anchor = document.createElement('div');
+      this.anchor.className = 'anchor';
+      this.content.appendChild(this.anchor);
+    }
+
+    const rect = this.projectRect();
+    this.anchor.style.left = rect.x + 'px';
+    this.anchor.style.top = rect.y + 'px';
+  }
+
   updateImage(pid) {
     const page = pageManager.find(this.project, pid);
     if (page && page.loaded) {
@@ -172,6 +210,14 @@ class MainView extends View {
     }
   }
 
+  onInput(e) {
+    const key = parseInt(e.target.id.replace(/^p/, ''));
+    const element = document.getElementById('t' + key);
+    if (element) {
+      element.innerHTML = e.target.innerHTML;
+    }
+  }
+  
   onEditImage(toImage, rect, pid) {
     this.updateImage(pid);
 
@@ -194,12 +240,11 @@ class MainView extends View {
     return (1.0 / this.scale) >> 1; // eslint-disable-line no-bitwise
   }
 
-
   /* flipView() {
-    if (!this.project) return
-    this.flip = ~this.flip
-    this.element.style.transform = (this.flip) ? 'scale(-1, 1)' : ''
-  } */
+     if (!this.project) return
+     this.flip = ~this.flip
+     this.element.style.transform = (this.flip) ? 'scale(-1, 1)' : ''
+     } */
 
   zoom() {
     if (!this.project) return;
@@ -237,19 +282,22 @@ class MainView extends View {
     this.onSetCurrentPage(page);
   }
 
-  initCurrentTID() {
-    this.project.currentTID.forEach((tid) => {
-      this.onAddCurrentTID(tid);
+  initCurrentKeys() {
+    this.project.currentKeys.forEach((key) => {
+      this.onAddCurrentKey(key);
     });
   }
-
-  onAddCurrentTID(tid) {
-    $('#p' + tid).addClass('selected');
+  
+  onAddCurrentKey(key) {
+    this.addSelected(this.keyElement(key));
   }
 
-  onClearCurrentTID() {
-    this.project.currentTID.forEach((tid) => {
-      $('#p' + tid).removeClass('selected');
+  onClearCurrentKey() {
+    this.project.currentKeys.forEach((key) => {
+      const element = this.keyElement(key);
+      console.log('onClearCurrentKey', key, element)
+      this.removeSelected(element);
+      this.removeEditable(element);
     });
   }
 
@@ -262,7 +310,7 @@ class MainView extends View {
     this.onresize();
 
     this.initCurrentPage();
-    this.initCurrentTID();
+    this.initCurrentKeys();
   }
 
   onUnloadProject(project) {
@@ -291,6 +339,42 @@ class MainView extends View {
 
     this.drawingLayer.onresize();
   }
+
+
+  addSelected(element) {
+    if (element && !element.classList.contains('selected')) {
+      element.classList.add('selected');
+    }
+  }
+
+  removeSelected(element) {
+    if (element && element.classList.contains('selected')) {
+      element.classList.remove('selected');
+    }
+  }
+
+  toggleEditable(element) {
+    if (element && !element.classList.contains('editable')) {
+      this.addEditable(element);
+    } else {
+      this.removeEditable(element);
+    }
+  }
+  
+  addEditable(element) {
+    if (element && !element.classList.contains('editable')) {
+      element.classList.add('editable');
+      element.contentEditable = true;
+    }
+  }
+
+  removeEditable(element) {
+    if (element && element.classList.contains('editable')) {
+      element.classList.remove('editable');
+      element.contentEditable = false;
+    }
+  }
+  
 }
 
 export { MainView };

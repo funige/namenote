@@ -46,6 +46,30 @@ class History {
   hasRedo() {
     return (this.redoItems.length > 0);
   }
+
+  play(record) {
+    record.forEach((item) => {
+      console.warn(`[forward ${type}]`);
+      const type = item[0];
+      const handler = 'do' + type.charAt(0).toUpperCase() + type.slice(1);
+      if (this[handler]) {
+        this[handler](item.slice(1));
+      }
+    })
+  }
+
+  rewind(record) {
+    console.log(`back ${type}`);
+    for (let i = record.length - 1; i >= 0; i--) {
+      console.warn(`[rewind ${type}]`);
+      const item = record[i];
+      const type = item[0];
+      const handler = 'undo' + type.charAt(0).toUpperCase() + type.slice(1);
+      if (this[handler]) {
+        this[handler](item.slice(1));
+      }
+    }
+  }
 }
 
 const history = new History();

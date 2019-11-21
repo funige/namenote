@@ -4,45 +4,50 @@ class LocalAdapter {
     this.type = 'local';
   }
 
-  async stat(url) {
+  async getHash(path) {
+    const stat = await this.stat(path);
+    return stat.mtimeMs;
+  }
+  
+  async stat(path) {
     return new Promise((resolve, reject) => {
-      this.fs.stat(url, (err, stat) => {
+      this.fs.stat(path, (err, stat) => {
         if (err) reject(err);
         resolve(stat);
       });
     });
   }
 
-  async mkdir(url) {
+  async mkdir(path) {
     return new Promise((resolve, reject) => {
-      this.fs.mkdir(url, (err) => {
+      this.fs.mkdir(path, (err) => {
         if (err) reject(err);
         resolve();
       });
     });
   }
   
-  async readdir(url) {
+  async readdir(path) {
     return new Promise((resolve, reject) => {
-      this.fs.readdir(url, { withFileTypes: true }, (err, dirents) => {
+      this.fs.readdir(path, { withFileTypes: true }, (err, dirents) => {
         if (err) reject(err);
         resolve(dirents);
       });
     });
   }
 
-  async readFile(url) {
+  async readFile(path) {
     return new Promise((resolve, reject) => {
-      this.fs.readFile(url, 'utf8', (err, data) => {
+      this.fs.readFile(path, 'utf8', (err, data) => {
         if (err) reject(err);
         resolve(data);
       });
     });
   }
 
-  async writeFile(url, data, encoding = 'utf8') {
+  async writeFile(path, data, encoding = 'utf8') {
     return new Promise((resolve, reject) => {
-      this.fs.writeFile(url, data, encoding, (err) => {
+      this.fs.writeFile(path, data, encoding, (err) => {
         if (err) reject(err);
         resolve();
       });
@@ -52,31 +57,6 @@ class LocalAdapter {
   auth() {
     return null;
   }
-  
-  /*
-  stat(url, callback) {
-    return this.fs.stat(url, callback);
-  }
-
-  mkdir(url, callback) {
-    return this.fs.mkdir(url, callback);
-  }
-
-  readdir(url, callback) {
-    return this.fs.readdir(url, { withFileTypes: true }, callback);
-  }
-
-  readFile(url, callback) {
-    return this.fs.readFile(url, 'utf8', callback);
-  }
-
-  writeFile(url, data, encoding, callback) {
-    if (arguments.length < 4) {
-      callback = encoding;
-      encoding = 'utf8';
-    }
-    return this.fs.writeFile(url, data, encoding, callback);
-  }*/
 }
 
 export { LocalAdapter };

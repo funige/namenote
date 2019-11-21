@@ -27,9 +27,10 @@ class File {
   }
 
   async readJSON(url) {
-    return url.match(/\.namenote$/)
-      ? dummy.project
-      : dummy.page;
+    if (url.match(/\.namenote$/)) {
+      return dummy.project;
+    }
+    return dummy.page;
   }
 }
 

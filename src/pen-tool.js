@@ -11,22 +11,25 @@ class PenTool extends Tool {
   }
 
   onDown(x, y) {
+    console.log(this.name + 'onDown');
     if (!namenote.mainView) return;
-    this.drawingLayer = namenote.mainView.drawingLayer;
-    if (!this.drawingLayer) return;
-
-    if (this.drawingLayer.canvas) {
-      this.ctx = this.drawingLayer.canvas.getContext('2d');
-      this.scale = namenote.mainView.scale;
+    const canvas = namenote.mainView.drawingLayer.canvas;
+    if (canvas) {
+      this.ctx = canvas.getContext('2d');
       this.addPoint(x, y);
     }
   }
 
   onUp(stroke) {
-    this.draw(stroke);
+    console.log(this.name + ' onUp');
+    if (this.ctx) {
+      this.draw(stroke);
+      this.ctx = null;
+    }
   }
 
   onMove(x, y) {
+    //console.log(this.name + ' onMove');
     if (this.ctx) {
       this.addPoint(x, y);
     }
@@ -37,11 +40,11 @@ class PenTool extends Tool {
     const scale = mainView.scale;
 
     const w = 5 * scale;
-    const left = x - this.drawingLayer.offsetX - w / 2;
-    const top = y - this.drawingLayer.offsetY - w / 2;
+    const left = x - mainView.drawingLayer.offsetX - w / 2;
+    const top = y - mainView.drawingLayer.offsetY - w / 2;
 
-    this.drawingLayer.ctx.fillStyle = '#ff0000';
-    this.drawingLayer.ctx.fillRect(left, top, w, w);
+    this.ctx.fillStyle = '#ff0000';
+    this.ctx.fillRect(left, top, w, w);
   }
 
   draw(stroke) {
@@ -51,8 +54,8 @@ class PenTool extends Tool {
       if (page && page.loaded) {
         this.drawPage(page, stroke);
       }
+      namenote.mainView.drawingLayer.clear();
     }
-    this.drawingLayer.clear();
   }
 
   drawPage(page, stroke) {
@@ -63,8 +66,8 @@ class PenTool extends Tool {
     const pageOffsetX = pageRect.x - mainView.content.scrollLeft;
     const pageOffsetY = pageRect.y - mainView.content.scrollTop;
 
-    const dx = this.drawingLayer.offsetX + pageOffsetX;
-    const dy = this.drawingLayer.offsetY + pageOffsetY;
+    const dx = mainView.drawingLayer.offsetX + pageOffsetX;
+    const dy = mainView.drawingLayer.offsetY + pageOffsetY;
     const scale = mainView.scale;
     stroke.forEach(point => {
       point[0] = (point[0] - dx) / scale;
@@ -93,32 +96,6 @@ class PenTool extends Tool {
     page.project.views.forEach((view) => {
       view.onEditImage(toImage, rect, pid);
     });
-  }
-
-  getBound(stroke, w) {
-    let xmin = stroke[0][0];
-    let ymin = stroke[0][1];
-    let xmax = xmin;
-    let ymax = ymin;
-
-    stroke.forEach(point => {
-      const x = point[0];
-      const y = point[1];
-
-      if (x > xmax) xmax = x;
-      if (y > ymax) ymax = y;
-      if (x < xmin) xmin = x;
-      if (y < ymin) ymin = y;
-    });
-
-    const rect = {
-      x: Math.floor(xmin - w / 2),
-      y: Math.floor(ymin - w / 2),
-      width: Math.ceil(xmax - xmin + w + 1),
-      height: Math.ceil(ymax - ymin + w + 1)
-    };
-    console.warn('getBound', rect);
-    return rect;
   }
 }
 
