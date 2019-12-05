@@ -10,8 +10,10 @@ class Page {
     this.project = project;
     this.pid = pid;
     this.url = `${project.baseURL}/${pid}.json`;
-    this.width = project.pageSize.width;
+    this.width = project.pageSize.width; //画像サイズ。古いデータは[364x364]だったりする
     this.height = project.pageSize.height;
+    this.canvasWidth = project.canvasSize.width; 
+    this.canvasHeight = project.canvasSize.height;
 
     if (!isBlank) {
       file.readJSON(this.url)
@@ -84,10 +86,10 @@ class Page {
   zipImage(ctx) {
     return new Promise((resolve, reject) => {
       const imageData = ctx.getImageData(0, 0, this.width, this.height);
-      //    console.log('...', imageData.data.buffer, this.width, this.height);
+      //console.log('...', imageData.data.buffer, this.width, this.height);
 
       const zip = new JSZip();
-      zip.file('image', imageData.data.buffer, { createFolders: false, binary: true });
+      zip.file('image', imageData.data.buffer, {createFolders: false, binary: true});
       zip.generateAsync({
         type: 'base64',
         compression: 'DEFLATE',
@@ -145,6 +147,7 @@ class Page {
 
     console.warn(`[save ${this.url}]`);
   }
+
 }
 
 export { Page };

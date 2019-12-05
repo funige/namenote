@@ -19,7 +19,10 @@ class TextView extends View {
       append: () => {
         const toPID = this.project.currentPage.pid;
         const to = this.project.currentTextIndex();
-        command.addText(this.project, to, toPID);
+        command.addText(this.project, to, toPID, (text) => {
+          console.log('[calback...]', text);
+          document.getElementById('t' + text.key).focus();
+        });
       },
       trash: () => {
         const fromPID = this.project.currentPage.pid;
@@ -64,6 +67,7 @@ class TextView extends View {
       const li = $('<li>').append(handle).append(p).appendTo(ul);
       p.on('focus', (e) => {
         this.onFocus(e);
+        console.log('[textonFocus]', e.target.id);
       });
       p.on('blur', (e) => {
         this.onBlur(e);
@@ -151,24 +155,18 @@ class TextView extends View {
 
   onBlur(e) {
     Text.clearSelection();
-
     /*
-    const key = parseInt(e.target.id.replace(/^t/, ''));
-    const element = document.getElementById('p' + key);
-    if (element) {
-      const pid = this.detectPID(element);
-      const page = pageManager.find(this.project, pid);
-      const index = this.project.findTextIndex(page, key);
-
-      const toText = page.toText(element, 'p');
-      const fromText = page.texts[index];
-      console.warn(page.texts, fromText, toText);
-
-      if (!this.shallowEqual(fromText, toText)) {
-        console.log('text edited!', fromText, toText);
-        command.editText(this.project, toText, index, pid);
+    setTimeout(() => {
+      if (e.target.innerHTML === '') {
+        const activeElement = document.activeElement;
+        if (!activeElement || !Text.hasSameKey(activeElement, e.target)) {
+          const key = parseInt(e.target.id.replace(/^[pt]/, ''));
+          const page = this.project.currentPage; //this.detectPID(e.target);
+          const index = this.project.findTextIndex(page, key);
+          command.removeText(this.project, index, page.pid);
+        }
       }
-    }
+    }, 0);
     */
   }
 
@@ -177,6 +175,7 @@ class TextView extends View {
     const element = document.getElementById('p' + key);
     if (element) {
       element.innerHTML = e.target.innerHTML;
+      Text.fixPosition(element);
     }
   }
   

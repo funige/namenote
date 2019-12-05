@@ -92,6 +92,7 @@ class Text {
   }
   
   static fixPosition(element) {
+    console.warn('[fixPosition]', element.id, element.alt);
     const width = element.offsetWidth;
     const height = element.offsetHeight;
 
@@ -133,24 +134,43 @@ class Text {
     const newSize = (size <= 8) ? size : size - 1;
     element.style.fontSize = newSize + 'px';
   }
-  
-  static createNext(source) {
-    //const p = (node) ? node.cloneNode() : this.createFromTemplate();
-    const text = (source) ? {...source} : { createFromTemplage: true };
 
+  static createNext(source, callback) {
+    const text = (source) ? {...source} : this.createFromTemplate();
     text.key = namenote.getUniqueID();
-    text.left -= 12; //TODO: measureで測ること
     text.innerHTML = '';
+
+    if (source) {
+      if (source.vert) {
+        console.log('createnext left', text.size);
+        const width = (text.size * 1.5);
+        text.x -= width;
+
+      } else {
+        const element = document.getElementById('p' + source.key);
+        const height = element.offsetHeight + (text.size * 0.5);
+        console.log('createnext bottom', height);
+        text.y += height;
+      }
+    }
+
+    setTimeout(() => {
+      if (callback) {
+        callback(text);
+      }
+    }, 0);
+
     return text;
   }
 
   static createFromTemplate({
-    x = 0,
-    y = 0,
+    x = 100, //0,
+    y = 100, //0,
     font = 'sans-serif',
     size = 14,
     vert = true
   } = {}) {
+    /*
     const p = document.createElement('div');
     p.className = 'text';
     p.contentEditable = false;
@@ -162,6 +182,16 @@ class Text {
     p.style.fontSize = size + 'px';
     p.style.writingMode = vert ? 'vertical-rl' : 'horizontal-tb';
     return p;
+    */
+    const text = {
+      x: x,
+      y: y,
+      font: font,
+      size: size,
+      vert: vert,
+      innerHTML: 'んん'
+    };
+    return text;
   }
 
   static shallowEqual(obj1, obj2) {
@@ -191,8 +221,22 @@ class Text {
     return null;
   }
   
+  static hasSameKey(element, element2) {
+    const key = parseInt(element.id.replace(/^[pt]/, ''));
+    const key2 = parseInt(element2.id.replace(/^[pt]/, ''));
+    return (key === key2);
+  }
+  
   // texts <-> elements
 
+  static sync(element, text) {
+    element.innerHTML = text.innerHTML;
+    element.style.left = text.x + 'px';
+    element.style.top = text.y + 'px';
+    element.style.fontSize = text.size + 'px';
+    element.style.writingMode = text.vert ? 'vertical-rl' : 'horizontal-tb';
+  }
+  
   static toText(element, prefix) {
     const text = {
       innerHTML: Text.flatten(element.innerHTML),
@@ -209,14 +253,12 @@ class Text {
 
   static toElement(text, prefix) {
     const element = document.createElement('div');
-    element.innerHTML = text.innerHTML;
-    element.style.left = text.x + 'px';
-    element.style.top = text.y + 'px';
-    element.style.fontSize = text.size + 'px';
-    element.style.writingMode = text.vert ? 'vertical-rl' : 'horizontal-tb';
+    element.classList.add('text');
+
     if (prefix && text.key) {
       element.id = prefix + text.key;
     }
+    Text.sync(element, text);
     return element;
   }
   
@@ -244,7 +286,8 @@ class Text {
     const elements = document.createElement('div');
     if (texts.length) {
       texts.forEach((text) => {
-        elements.appendChild(Text.toElement(text, prefix));
+        const element = Text.toElement(text, prefix);
+        elements.appendChild(element);
       })
     }
     return elements;

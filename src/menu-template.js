@@ -24,6 +24,7 @@ const fileMenuTemplate = [
       { label: 'Dock', click: 'dock' },
       { label: 'Developer Tools', click: 'developerTools' },
       { type: 'separator' },
+      { label: 'Multipage', click: 'toggleMultipage' },
       { label: 'Repaint', click: 'repaint' },
     ]
   },

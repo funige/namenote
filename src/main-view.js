@@ -58,7 +58,7 @@ class MainView extends View {
         <div class='corner-scroll-bar'></div>
         <div class='singlepage-content'></div>
         <canvas class='drawing-layer'></canvas>
-        `);
+      `);
       this.content = this.element.querySelector('.singlepage-content');
       this.rightScrollBar = new ScrollBar(this.content, 'right');
       this.bottomScrollBar = new ScrollBar(this.content, 'bottom');
@@ -83,25 +83,38 @@ class MainView extends View {
     this.setAnchor();
   }
 
+  createText(text) {
+    const element = Text.toElement(text, 'p');
+    element.addEventListener('input', (e) => {
+      this.onInput(e);
+    });
+    element.addEventListener('blur', (e) => {
+      this.onBlur(e);
+    });
+    element.addEventListener('focus', (e) => {
+      console.log('[mainonFocus]', element.id);
+    });
+    setImmediate(() => {
+      Text.initPosition(element);
+    });
+    return element;
+  }
+  
+  createTexts(page) {
+    const elements = document.createElement('div');
+    page.texts.forEach((text) => {
+      const element = this.createText(text)
+      elements.appendChild(element);
+    })
+    return elements;
+  }
+
   initPage(page) {
     const pd = this.pageData[page.pid];
-    pd.frame = this.createFrame();
+    pd.frame = this.createFrame(page);
     pd.canvas = this.createCanvas(page);
 
     pd.texts = this.createTexts(page);
-    pd.texts.childNodes.forEach((p) => {
-      $(p)
-        .on('input', (e) => {
-          this.onInput(e);
-        })
-        .on('blur', (e) => {
-          this.removeEditable(p);
-        });
-      
-      setImmediate(() => {
-        Text.initPosition(p);
-      }) 
-    });
 
     pd.canvas.className = 'canvas';
     pd.texts.className = 'texts';
@@ -111,8 +124,8 @@ class MainView extends View {
 
     pd.frame.appendChild(pd.marks);
     pd.frame.appendChild(pd.canvas);
-    pd.frame.appendChild(pd.texts);
     pd.element.appendChild(pd.frame);
+    pd.element.appendChild(pd.texts);
     $(pd.element).removeClass('preload');
 
     this.updateImage(page.pid);
@@ -184,8 +197,9 @@ class MainView extends View {
       pd.element.style.top = rect.y + 'px';
     }
     if (pd.texts) pd.texts.style.transform = `scale(${this.scale})`;
-    if (pd.canvas) pd.canvas.style.transform = `scale(${this.scale})`;
-    if (pd.marks) pd.marks.style.transform = `scale(${this.scale})`;
+    if (pd.frame) pd.frame.style.transform = `scale(${this.scale})`;
+    //if (pd.canvas) pd.canvas.style.transform = `scale(${this.scale})`;
+    //if (pd.marks) pd.marks.style.transform = `scale(${this.scale})`;
   }
 
   setAnchor() {
@@ -210,41 +224,65 @@ class MainView extends View {
     }
   }
 
+  updateText(text) {
+    const element = document.getElementById('p' + text.key);
+    if (element) {
+      Text.sync(element, text);
+      Text.initPosition(element);
+    }
+  }
+
+  onBlur(e) {
+    this.removeEditable(e.target);
+    /*
+    setTimeout(() => {
+      if (e.target.innerHTML === '') {
+        const activeElement = document.activeElement;
+        if (!activeElement || !Text.hasSameKey(activeElement, e.target)) {
+           const key = parseInt(e.target.id.replace(/^[pt]/, ''));
+          const page = this.project.currentPage; //this.detectPID(e.target);
+          const index = this.project.findTextIndex(page, key);
+          command.removeText(this.project, index, page.pid);
+        }
+      }
+    }, 0);
+     */
+  }
+  
   onInput(e) {
     const key = parseInt(e.target.id.replace(/^p/, ''));
+    setImmediate(() => {
+      Text.fixPosition(e.target);
+    }) 
+    
     const element = document.getElementById('t' + key);
     if (element) {
       element.innerHTML = e.target.innerHTML;
     }
   }
+
+  onFocus(e) {
+    let target = e.target;
+    while (target) {
+      if (target.classList.contains('page')) {
+        console.log('[focus]', target.classList);
+        if (!target.classList.contains('selected')) {
+          const page = pageManager.find(this.project, this.detectPID(target));
+          this.project.setCurrentPage(page);
+        }
+        return;
+      }
+      target = target.parentNode;
+    }
+  }
   
   onEditImage(toImage, rect, pid) {
     this.updateImage(pid);
-
-    /* const page = pageManager.find(this.project, pid);
-    const pd = this.pageData[pid];
-    const blur = this.getSteps();
-    rect.x -= blur;
-    rect.y -= blur;
-    rect.width += blur * 2;
-    rect.height += blur * 2;
-
-    pd.ctx.filter = `blur(${this.getSteps()}px)`;
-    pd.ctx.clearRect(rect.x, rect.y, rect.width, rect.height);
-    pd.ctx.drawImage(page.canvas,
-                     rect.x, rect.y, rect.width, rect.height,
-                     rect.x, rect.y, rect.width, rect.height); */
   }
 
   getSteps() {
     return (1.0 / this.scale) >> 1; // eslint-disable-line no-bitwise
   }
-
-  /* flipView() {
-     if (!this.project) return
-     this.flip = ~this.flip
-     this.element.style.transform = (this.flip) ? 'scale(-1, 1)' : ''
-     } */
 
   zoom() {
     if (!this.project) return;
@@ -277,6 +315,18 @@ class MainView extends View {
     }
   }
 
+  diffPage(page) {
+    const record = [];
+    const texts = page.texts;
+    const pd = this.pageData[page.pid];
+    if (!pd || !pd.texts) throw new Error('umm?');
+
+    pd.texts.childNodes.forEach((p, index) => {
+      console.warn('...diffPage', p, index);
+    });
+    return record;
+  }
+  
   initCurrentPage() {
     const page = this.project.currentPage;
     this.onSetCurrentPage(page);
@@ -297,7 +347,6 @@ class MainView extends View {
       const element = this.keyElement(key);
       console.log('onClearCurrentKey', key, element)
       this.removeSelected(element);
-      this.removeEditable(element);
     });
   }
 
@@ -321,6 +370,22 @@ class MainView extends View {
     };
   }
 
+  onEditText(toText, index, pid) {
+    console.log(this.id, 'on editText*', toText);
+    this.updateText(toText);
+  }
+  
+  onAddText(text, to, toPID) {
+    console.log(this.id, 'on addText*', text, to, toPID);
+
+    const pd = this.pageData[toPID];
+    const nodes = pd.texts.childNodes;
+
+    const p = this.createText(text);
+    console.warn('onAddText', p);
+    pd.texts.insertBefore(p, nodes[to + 1]);
+  }
+
   onresize() {
     if (this.content) {
       this.offsetWidth = this.content.offsetWidth;
@@ -330,9 +395,9 @@ class MainView extends View {
       this.scrollWidth = this.content.scrollWidth;
       this.scrollHeight = this.content.scrollHeight;
       console.log('resize',
-        this.offsetWidth, this.offsetHeight, '-',
-        this.scrollLeft, this.scrollTop, '-',
-        this.scrollWidth, this.scrollHeight);
+                  this.offsetWidth, this.offsetHeight, '-',
+                  this.scrollLeft, this.scrollTop, '-',
+                  this.scrollWidth, this.scrollHeight);
     }
     if (this.rightScrollBar) this.rightScrollBar.onresize();
     if (this.bottomScrollBar) this.bottomScrollBar.onresize();
@@ -353,17 +418,10 @@ class MainView extends View {
     }
   }
 
-  toggleEditable(element) {
-    if (element && !element.classList.contains('editable')) {
-      this.addEditable(element);
-    } else {
-      this.removeEditable(element);
-    }
-  }
-  
   addEditable(element) {
     if (element && !element.classList.contains('editable')) {
       element.classList.add('editable');
+      element.style.userSelect = 'text';
       element.contentEditable = true;
     }
   }
@@ -371,6 +429,7 @@ class MainView extends View {
   removeEditable(element) {
     if (element && element.classList.contains('editable')) {
       element.classList.remove('editable');
+      element.style.userSelect = 'none';
       element.contentEditable = false;
     }
   }

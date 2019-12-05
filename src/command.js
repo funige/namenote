@@ -36,18 +36,18 @@ class Command {
   }
 
   undo() {
-    console.log('undo');
     if (history.hasUndo()) {
       const record = history.popUndo();
+      console.log('undo', record);
       history.pushRedo(record);
       action.rewind(record);
     }
   }
 
   redo() {
-    console.log('redo');
     if (history.hasRedo()) {
       const record = history.popRedo();
+      console.log('redo', record)
       history.pushUndo(record, true);
       action.play(record);
     }
@@ -81,8 +81,8 @@ class Command {
     $(namenote.pageView.element).hide();
     $(namenote.textView.element).show();
     dockTab.select('text');
-    console.log('text', namenote.textView.content.scrollHeight);
-    console.log('page', namenote.pageView.content.scrollHeight);
+    //console.log('text', namenote.textView.content.scrollHeight);
+    //console.log('page', namenote.pageView.content.scrollHeight);
   }
 
   showPageView() {
@@ -90,9 +90,6 @@ class Command {
     $(namenote.pageView.element).show();
     $(namenote.textView.element).hide();
     dockTab.select('page');
-
-    console.log('text', namenote.textView.content.scrollHeight);
-    console.log('page', namenote.pageView.content.scrollHeight);
   }
 
   showNoteView() {
@@ -166,16 +163,27 @@ class Command {
     const project = namenote.mainView.project;
     if (!project) return;
 
-    
     // とりあえず
     if (project.currentKeys.length === 1) {
       const key = project.currentKeys[0];
       const element = namenote.mainView.keyElement(key);
       
       if (element === document.activeElement) {
-        namenote.mainView.removeEditable(element);
+        //namenote.mainView.removeEditable(element);
         const element2 = namenote.textView.keyElement(key);
-        if (element2) element2.focus();
+
+        console.warn('element2', element2);
+        if (element2) {
+          element2.focus();
+          setImmediate(() => {
+            if (element === document.activeElement) {
+              element.blur();
+            }
+          });
+
+        } else {
+          element.blur();
+        }
 
       } else {
         namenote.mainView.addEditable(element);
@@ -283,13 +291,12 @@ class Command {
     action.play(record);
   }
 
-  addText(project, to, toPID) {
+  addText(project, to, toPID, callback) {
     const record = [];
 
     const page = pageManager.find(project, toPID);
     const index = (to >= 0) ? to : page.texts.length - 1;
-    const text = Text.createNext(page.texts[index]);
-    console.log(text);
+    const text = Text.createNext(page.texts[index], callback);
 
     record.push(['addText', text, index + 1, toPID, project.url]);
     history.pushUndo(record);
@@ -317,6 +324,11 @@ class Command {
     const element = document.getElementById('p' + key);
     if (element) {
       const index = project.findTextIndex(project.currentPage, key);
+      if (index < 0) {
+        console.error('???', index, key, document.getElementById('p' + key));
+        return null;
+      }
+      
       const page = project.currentPage;
       const fromText = page.texts[index];
       const toText = Text.toText(element, 'p');
@@ -324,6 +336,8 @@ class Command {
       if (!page) console.error('error?', page);
       if (!Text.shallowEqual(fromText, toText)) {
         //console.warn('changed', fromText, toText);
+
+        if (!fromText) console.error('???' + fromText, project, key);
         return ['editText', fromText, toText, index, page.pid, project.url];
       }
     }
@@ -342,12 +356,12 @@ class Command {
     if (record.length > 0) {
       history.pushUndo(record);
       action.play(record);
-      console.log('editTexts', record);
+      console.log('editTexts...');
     } else {
-      console.log('editTexts', 'no text changed');
+      console.log('editTexts...', 'no text changed');
     }
   }
-  
+
   editImage(project, toImage, rect, pid) {
     const record = [];
     const page = pageManager.find(project, pid);
@@ -400,6 +414,7 @@ class Command {
   }
   repaint() {
     console.log('repaint');
+    namenote.loadProject(namenote.currentProject());
   }
 }
 

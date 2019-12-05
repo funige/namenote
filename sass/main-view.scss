@@ -20,7 +20,6 @@
     background-color: white;
 
     transform-origin: top left;
-//  overflow: hidden; // はみだしたテキストを表示
 }
 
 .main-view .page.preload {
@@ -38,6 +37,12 @@
 .main-view .page .marks {
     position: absolute;
     transform-origin: top left;
+}
+
+.main-view .page .frame {
+    position: absolute;
+    transform-origin: top left;
+    overflow: hidden;
 }
 
 .main-view canvas.drawing-layer {
@@ -82,7 +87,9 @@ $scroll-bar-width-rest: calc(100% - 18px); //calc(100% - 12px);
     background-color: #eee;
     right: 0;
     overflow: hidden;
-
+    border-left: 1px solid rgba(0,0,0,0.1);
+    z-index: 2;
+    
     .slider {
         width: calc(100% - 4px);
         left: 2px;
@@ -103,7 +110,9 @@ $scroll-bar-width-rest: calc(100% - 18px); //calc(100% - 12px);
     background-color: #eee;
     bottom: 0;
     overflow: hidden;
-
+    border-top: 1px solid rgba(0,0,0,0.1);
+    z-index: 2;
+    
     .slider {
         width: 50px;
         height: calc(100% - 4px);
@@ -119,6 +128,7 @@ $scroll-bar-width-rest: calc(100% - 18px); //calc(100% - 12px);
     right: 0;
     bottom: 0;
     overflow: hidden;
+    z-index: 2;
 }
 
 .anchor {
@@ -130,5 +140,6 @@ $scroll-bar-width-rest: calc(100% - 18px); //calc(100% - 12px);
 
 .main-view .text {
     position: absolute;
+    user-select: text;
 }
 

@@ -55,8 +55,9 @@ class Project {
 
     //とりあえず動くように
     if (!this.params.sheet_size) {
-    this.params.sheet_size = [257, 364];
+      this.params.sheet_size = this.params.canvas_size; //[257, 364];
     }
+    
     return this;
   }
 
@@ -144,8 +145,8 @@ class Project {
       [100, 1, 39, 47, 180, 270]
     ], options);
 
-    const width = shape.topx(this.canvasSize.width);
-    const height = shape.topx(this.canvasSize.height);
+    const width = this.canvasSize.width;
+    const height = this.canvasSize.height;
     const string = `
       <svg class="marks" width="${width}" height="${height}">
         ${arr.join('')}

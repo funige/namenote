@@ -22,6 +22,9 @@ class TextMoveTool extends Tool {
   }
 
   onDown(x, y) {
+    const key = pointer.info.key;
+    namenote.mainView.project.setCurrentKey(key);
+
     console.log(this.name, 'onDown');
     this.array = Text.toTexts(namenote.mainView.project.currentKeys);
     this.x0 = x;
@@ -40,7 +43,6 @@ class TextMoveTool extends Tool {
       
       if (element !== document.activeElement) {
         setImmediate(() => {
-          console.log('[focus]', pointer.info.key);
           element.focus();
         });
       }
@@ -54,6 +56,7 @@ class TextMoveTool extends Tool {
     const scale = namenote.mainView.scale;
     const dx = (x - this.x0) / scale;
     const dy = (y - this.y0) / scale;
+
     namenote.mainView.project.currentKeys.forEach((key, index) => {
       const item = this.array[index];
       const element = document.getElementById('p' + key);

@@ -146,6 +146,17 @@ class PageView extends View {
     };
   }
 
+  onEditText(toText, index, pid) {
+    console.log(this.id, 'on editText*', toText);
+    const page = pageManager.find(this.project, pid);
+    const pd = this.pageData[pid];
+    
+    const div = pd.element.getElementsByClassName('digest')[0];
+    if (div) {
+      div.innerHTML = page.digest();
+    }
+  }
+
   onEditImage(toImage, rect, pid) {
     const page = pageManager.find(this.project, pid);
     this.updateThumbnail(page);

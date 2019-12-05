@@ -46,28 +46,23 @@ class View {
     return li;
   }
 
-  createFrame() {
+  createFrame(page) {
     const frame = document.createElement('div');
     frame.className = 'frame';
+    frame.style.width = page.canvasWidth + 'px';
+    frame.style.height = page.canvasHeight + 'px';
     return frame;
   }
 
-  createCanvas(page, width, height) {
+  createCanvas(page) {
     const canvas = document.createElement('canvas');
-    canvas.width = (width !== undefined) ? width : page.width;
-    canvas.height = (height !== undefined) ? height : page.height;
+    canvas.width = page.width;
+    canvas.height = page.height;
     return canvas;
   }
 
   createTexts(page) {
-    const elements = Text.toElements(page.texts, 'p');
-    elements.childNodes.forEach((p) => {
-      p.classList.add('text');
-    })
-    return elements;
-    //const texts = document.createElement('div');
-    //texts.innerHTML = page.texts.innerHTML;
-    //return texts;
+    return Text.toElements(page.texts, 'p');
   }
 
   isDialog() {
@@ -214,42 +209,42 @@ class View {
   // Default update methods
 
   onMovePage(from, to) {
-    console.log(this.id, 'move page', from, to);
+    console.log(this.id, 'on movePage', from, to);
     this.loadProject(this.project);
   }
 
   onMoveText(from, to, fromPID, toPID) {
-    console.log(this.id, 'move text', from, to, fromPID, toPID);
+    console.log(this.id, 'on moveText', from, to, fromPID, toPID);
     this.loadProject(this.project);
   }
 
   onAddPage(pid, to) {
-    console.log(this.id, 'add page', pid, to);
+    console.log(this.id, 'on addPage', pid, to);
     this.loadProject(this.project);
   }
 
   onRemovePage(from) {
-    console.log(this.id, 'remove page', from);
+    console.log(this.id, 'on removePage', from);
     this.loadProject(this.project);
   }
 
   onAddText(text, to, toPID) {
-    console.log(this.id, 'add text', text, to, toPID);
+    console.log(this.id, 'on addText', text, to, toPID);
     this.loadProject(this.project);
   }
 
   onRemoveText(from, fromPID) {
-    console.log(this.id, 'remove text', from, fromPID);
+    console.log(this.id, 'on removeText', from, fromPID);
     this.loadProject(this.project);
   }
 
   onEditText(toText, index, pid) {
-    console.log(this.id, 'edit text'); //, toText, index, pid);
+    console.log(this.id, 'on editText'); //, toText, index, pid);
     this.loadProject(this.project);
   }
 
   onEditImage(toImage, rect, pid) {
-    console.log(this.id, 'edit image', toImage, rect, pid);
+    console.log(this.id, 'on editImage', toImage, rect, pid);
     this.loadProject(this.project);
   }
 

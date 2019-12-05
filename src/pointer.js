@@ -8,21 +8,21 @@ const MIN_MOVE = 5;
 const API = {
   POINTER: {
     type: 'pointer',
-    down: 'onpointerdown',
-    move: 'onpointermove',
-    up: 'onpointerup'
+    down: 'pointerdown',
+    move: 'pointermove',
+    up: 'pointerup'
   },
   TOUCH: {
     type: 'touch',
-    down: 'ontouchstart',
-    move: 'ontouchmove',
-    up: 'ontouchend'
+    down: 'touchstart',
+    move: 'touchmove',
+    up: 'touchend'
   },
   MOUSE: {
     type: 'mouse',
-    down: 'onmousedown',
-    move: 'onmousemove',
-    up: 'onmouseup'
+    down: 'mousedown',
+    move: 'mousemove',
+    up: 'mouseup'
   }
 };
 
@@ -48,7 +48,15 @@ class Pointer {
   }
 
   init() {
-    window[api.down] = (e) => {
+    document.addEventListener('pointerdown', (e) => {
+      this.isPen = (e.pointerType === 'pen');
+    });
+    document.addEventListener('pointerup', (e) => {
+      this.isPen = false;
+    });
+    
+    //window['on' + api.down] = (e) => {
+    document.addEventListener(api.down, (e) => {
       //if (e.touches && e.touches[0].length > 1 && !moved) {
       //  if (numTouches < e.touches.length) numTouches = e.touches.length;
       //} else {
@@ -57,22 +65,27 @@ class Pointer {
       //}
       this.initStroke(e);
       this.downHandler(e);
-    };
+    });
+    //};
 
-    window[api.up] = (e) => {
+    //window['on' + api.up] = (e) => {
+    document.addEventListener(api.up, (e) => {
       if (e.pointerId && e.pointerId !== pointerId) return;
       this.upHandler(e);
       if (stroke) {
-        console.log(stroke.length, 'points'); //flat());
+        //console.log(stroke.length, 'points'); //flat());
         stroke = null;
       }
-    };
+    });
+    //};
 
-    window[api.move] = (e) => {
+    //  window['on' + api.move] = (e) => {
+    document.addEventListener(api.move, (e) => {
       if (e.pointerId && e.pointerId !== pointerId) return;
       if (stroke) this.updateStroke(e);
       this.moveHandler(e);
-    };
+    }, {passive: false});
+    //};
 
     document.addEventListener('keydown', (e) => {
       this.altKey = e.altKey;
@@ -100,8 +113,10 @@ class Pointer {
       const project = projectManager.find(info.projectURL);
       if (project) {
         project.setCurrentPage(pageManager.find(project, info.pid));
+        return project;
       }
     }
+    return null;
   }
 
   downHandler(e) {
@@ -109,19 +124,18 @@ class Pointer {
     this.info = info;
     
     if (info.view) {
-      const project = projectManager.find(info.projectURL);
+      const project = this.selectPage(info);
+      //console.warn(info, project);
+      
       if (project) {
-        if (info.pid) {
-          project.setCurrentPage(pageManager.find(project, info.pid));
-        }
-
-        this.selectPage(info);
-
         if (info.view === 'main' && info.key) {
-          project.addCurrentKey(info.key);
+          //project.addCurrentKey(info.key);
           
-          if (e.target.contentEditable === 'true') return;
-          toolManager.push('textMove');
+          if (e.target.contentEditable !== 'true') {
+            toolManager.push('textMove');
+          } else {
+            toolManager.push('dummy');
+          }
 
         } else if (this.spaceKey) {
           toolManager.push('hand');
@@ -131,7 +145,7 @@ class Pointer {
 
         } else if (info.view === 'main' && !info.key) {
           if (project.currentKeys.length > 0) {
-            console.error('clear current key...');
+            console.log('[clear current key ]');
             project.clearCurrentKey();
             return;
           }
@@ -153,10 +167,22 @@ class Pointer {
     }
   }
 
+  //これではダメだ
+  //onDownでペン以外の時はdummyツールに。ペンの時はpreventDefault。
+  //全部preventDefaultすると拡大縮小も効かなくなってしまう。
+
+  //undo連打で拡大してしまう=>(pen以外で)ピンチで縮小できなくてハマる問題
+  
   moveHandler(e) {
     if (stroke) {
       //console.log('onmove', toolManager.currentTool().name);
       toolManager.currentTool().onMove(this.x, this.y);
+
+      if ((toolManager.currentTool().name === 'pen') && !(this.isPen)) {
+        // one finger scroll on mobile
+      } else {
+        e.preventDefault();
+      }
     }
   }
 
@@ -176,7 +202,7 @@ class Pointer {
           const result = target.id.match(/^p(\d+)$/);
           info.key = parseInt(result[1]);
 
-          console.warn('contentEditable=', target.contentEditable);
+          //console.warn('contentEditable=', target.contentEditable);
           if (target.contentEditable === true) {
             info.editable = true;
           }

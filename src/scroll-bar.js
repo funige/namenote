@@ -47,7 +47,6 @@ class ScrollBar {
   }
 
   onresize() {
-    console.warn(this);
     switch (this.type) {
       case 'bottom':
         this.slideHorizontal();
