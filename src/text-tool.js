@@ -15,15 +15,24 @@ class TextTool extends Tool {
 
   onDown(x, y) {
     console.log(this.name, 'onDown');
-    this.x0 = x;
-    this.y0 = y;
+
+    const mainView = namenote.mainView;
+    const pageRect = mainView.getPageRect(mainView.project.currentPage.pid);
+    const pageOffsetX = pageRect.x - mainView.content.scrollLeft;
+    const pageOffsetY = pageRect.y - mainView.content.scrollTop;
+    const dx = mainView.drawingLayer.offsetX + pageOffsetX;
+    const dy = mainView.drawingLayer.offsetY + pageOffsetY;
+
+    const scale = mainView.scale;
+    this.x0 = (x - dx) / scale;
+    this.y0 = (y - dy) / scale;
   }
 
   onUp(stroke) {
     console.log(this.name, 'onUp');
     if (!pointer.isMoved()) {
       this.addTextAt(this.x0, this.y0);
-      console.log('add text');
+      console.log('add text', this.x0, this.y0);
     }
     toolManager.pop();
   }
@@ -35,7 +44,7 @@ class TextTool extends Tool {
     const project = namenote.mainView.project;
     const page = project.currentPage;
     if (page) {
-      command.addText(project, page.texts.length - 1, page.pid, () => {
+      command.addText(project, page.texts.length - 1, page.pid, x, y, () => {
         command.toggleEditable();
       });
     }

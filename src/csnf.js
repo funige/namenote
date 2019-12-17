@@ -39,7 +39,7 @@ class CSNF {
               file.writeFile(filename, writeStream.toBuffer());
             });
 
-            //          const writeStream = file.createWriteStream(filename);
+            // const writeStream = file.createWriteStream(filename);
             const writeStream = new memoryStreams.WritableStream();
             pack.pipe(writeStream);
             if (callback) callback();
@@ -91,7 +91,8 @@ class CSNF {
           level: 6
         }
       }).then((content) => {
-        data[item.name] = pack.newBuffer(content);
+        //data[item.name] = pack.newBuffer(content);
+        data[item.name] = new Buffer(content);
         console.log(item.name, content.length, 'bytes...');
 
         this.zipData(images, callback);
@@ -174,7 +175,7 @@ class CSNF {
     const shape = [];
 
     for (let i = 0; i < count; i++) {
-      const element = page.toElement(page.texts[i]); //page.texts.children[i];
+      const element = Text.toElement(page.texts[i]); //page.texts.children[i];
       const rect = await Text.measure(element);
 
       let x = parseFloat(element.style.left) + rect.width / 2;

@@ -15,7 +15,7 @@ class ProjectManager {
     const url = `${baseURL}/${params.name}.namenote`;
     console.warn('project manager create', baseURL, url);
 
-    file.mkdir(baseURL);
+    await file.mkdir(baseURL);
     const template = { params: projectTemplate.Manga, pids: [] };
     const project = new Project(url, template);
 

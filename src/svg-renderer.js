@@ -1,3 +1,5 @@
+import { Text } from './text.js';
+
 
 class SVGRenderer {
   init() {
@@ -5,7 +7,7 @@ class SVGRenderer {
 
   getFixedTexts(page) {
     const array = page.texts.map((text) => {
-      return page.toElement(text).outerHTML
+      return Text.toElement(text).outerHTML
                  .replace(/&nbsp;/g, '&#160;')
                  .replace(/&copy;/g, '&#169;')
                  .replace(/&laquo;/g, '&#171;')

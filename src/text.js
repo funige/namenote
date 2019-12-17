@@ -135,11 +135,15 @@ class Text {
     element.style.fontSize = newSize + 'px';
   }
 
-  static createNext(source, callback) {
+  static createNext(source, x, y, callback) {
     const text = (source) ? {...source} : this.createFromTemplate();
     text.key = namenote.getUniqueID();
     text.innerHTML = '';
-
+    if (x || y) {
+      text.x = x;
+      text.y = y;
+    }
+    
     if (source) {
       if (source.vert) {
         console.log('createnext left', text.size);

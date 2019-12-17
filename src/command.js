@@ -291,12 +291,12 @@ class Command {
     action.play(record);
   }
 
-  addText(project, to, toPID, callback) {
+  addText(project, to, toPID, x, y, callback) {
     const record = [];
 
     const page = pageManager.find(project, toPID);
     const index = (to >= 0) ? to : page.texts.length - 1;
-    const text = Text.createNext(page.texts[index], callback);
+    const text = Text.createNext(page.texts[index], x, y, callback);
 
     record.push(['addText', text, index + 1, toPID, project.url]);
     history.pushUndo(record);

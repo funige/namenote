@@ -72,6 +72,7 @@
     "npm": "^6.11.2",
     "pdfmake": "git+https://github.com/ArthurClemens/pdfmake.git",
     "restructure": "git+https://github.com/ArthurClemens/restructure.git",
+    "tar-stream": "^2.1.0",
     "xtend": "^4.0.2",
     "yarn": "^1.17.3"
   },
