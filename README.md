@@ -2,10 +2,7 @@
 # Namenote
 ![](https://travis-ci.org/funige/namenote.svg?branch=master)
 
-年内に「Namenote2」として再起動したいと思います。
-
-お待ちを……
-
+開発凍結中です
 
 <!--
 Namenoteは、漫画のネームを快適に書くために作られた新しいツールです。
