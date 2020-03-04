@@ -17,7 +17,7 @@ import { svgRenderer } from './svg-renderer.js';
 import { ExportPDFForm } from './export-pdf-form.js';
 import { ExportCSNFForm } from './export-csnf-form.js';
 import { PDF } from './pdf.js';
-import { CSNF } from './csnf.js';
+import { CSNFExporter } from './csnf-exporter.js';
 import { namenote } from './namenote.js';
 
 // "url" may contain a storage scheme. ("file" or "dropbox")
@@ -109,11 +109,11 @@ class File {
     const result = await dialog.open(form);
 
     if (result) {
-      const csnf = new CSNF(project, { monitor: form });
-      csnf.write(result, () => {
-        console.log('export csnf', result);
-        dialog.close();
-      });
+      const csnf = new CSNFExporter(project, { monitor: form });
+      await csnf.write(result)
+      console.log('export csnf', result);
+      dialog.close();
+
     } else {
       console.log('export csnf canceled.');
       dialog.close();

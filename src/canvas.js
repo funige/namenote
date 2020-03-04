@@ -7,6 +7,7 @@ class Canvas {
     ctx.drawImage(canvas, x, y, width, height, x, y, width, height);
   }
 
+  /*
   static makeBitmap(canvas, scale) {
     const width = canvas.width;
     const height = canvas.height;
@@ -46,6 +47,7 @@ class Canvas {
     }
     return bitmap;
   }
+  */
 }
 
 export { Canvas };

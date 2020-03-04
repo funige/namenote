@@ -64,6 +64,7 @@ class Text {
       const tmp = element.cloneNode(true);
       tmp.id = '';
       tmp.style.visibility = 'hidden';
+      tmp.style.position = 'absolute';
       $('body')[0].appendChild(tmp);
 
       setTimeout(() => {
