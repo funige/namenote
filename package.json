@@ -57,7 +57,7 @@
     "bl": "^3.0.0",
     "dropbox": "^4.0.30",
     "dropbox-fs": "^0.3.1",
-    "electron": "^5.0.10",
+    "electron": "^7.2.4",
     "electron-json-storage": "^4.1.7",
     "end-of-stream": "^1.4.1",
     "fontkit": "git+https://github.com/ArthurClemens/fontkit.git",
